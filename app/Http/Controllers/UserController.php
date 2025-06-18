@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function create(Request $request)
+    private const adminToken = 'Happy Pride';
+    public function createUser(Request $request)
     {
         // Validate the request data
         $request->validate([
@@ -22,9 +23,33 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
+        $user->role = 'user';
         $user->save();
 
         return response()->json(['message' => 'User created successfully'], 201);
+    }
+
+    public function createAdmin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($request->input('token') == self::adminToken) {
+            $user = new User();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = bcrypt($request->input('password'));
+            $user->role = 'admin';
+            $user->token = $request->input('token');
+            $user->save();
+
+            return response()->json(['message' => 'Admin created successfully'], 201);
+        } else {
+            return response()->json(['message' => 'Invalid admin token'], 403);
+        }
     }
 
     public function login(Request $request)
