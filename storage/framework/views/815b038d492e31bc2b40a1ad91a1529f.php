@@ -65,7 +65,15 @@ const closeBtn = document.getElementById('close-modal-btn');
 openBtn.addEventListener('click', function(e) {
     e.preventDefault();
     modal.style.display = 'flex';
-    setTimeout(() => { document.getElementById('event-start').focus(); }, 200);
+    // Set min for startInput to now
+    const startInput = document.getElementById('event-start');
+    if (startInput) {
+        const now = new Date();
+        const pad = n => n.toString().padStart(2, '0');
+        const local = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+        startInput.min = local;
+    }
+    setTimeout(() => { startInput && startInput.focus(); }, 200);
 });
 closeBtn.addEventListener('click', function() {
     modal.style.display = 'none';
@@ -118,35 +126,15 @@ function showSuccess() {
 function resetModal() {
     // Restore modal content to form
     modalContent.innerHTML = `
-        <div class=\"modal-header\">
-            <span class=\"modal-icon\">
-                <svg width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"></line><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"></line><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"></line></svg>
-            </span>
-            <h2>Create New Event</h2>
-            <button class=\"modal-close-btn\" id=\"close-modal-btn\" aria-label=\"Close\">
-                <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line></svg>
-            </button>
-        </div>
-        <form id=\"new-event-form\" class=\"modal-form\" autocomplete=\"off\">
-            <div>
-                <label for=\"event-start\">Start Time</label>
-                <input type=\"datetime-local\" id=\"event-start\" name=\"start_time\" required>
-            </div>
-            <div>
-                <label for=\"event-end\">End Time</label>
-                <input type=\"datetime-local\" id=\"event-end\" name=\"end_time\" required>
-            </div>
-            <div>
-                <label for=\"event-location\">Location</label>
-                <input type=\"text\" id=\"event-location\" name=\"location\" required placeholder=\"e.g. Main Office, Park...\">
-            </div>
-            <div>
-                <label for=\"event-description\">Description</label>
-                <textarea id=\"event-description\" name=\"description\" rows=\"3\" required placeholder=\"What is this event about?\"></textarea>
-            </div>
-            <button type=\"submit\" class=\"btn primary-btn\">Create Event</button>
-        </form>
-    `;
+        <div class=\"modal-header\">\n            <span class=\"modal-icon\">\n                <svg width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"></line><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"></line><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"></line></svg>\n            </span>\n            <h2>Create New Event</h2>\n            <button class=\"modal-close-btn\" id=\"close-modal-btn\" aria-label=\"Close\">\n                <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line></svg>\n            </button>\n        </div>\n        <form id=\"new-event-form\" class=\"modal-form\" autocomplete=\"off\">\n            <div>\n                <label for=\"event-start\">Start Time</label>\n                <input type=\"datetime-local\" id=\"event-start\" name=\"start_time\" required>\n            </div>\n            <div>\n                <label for=\"event-end\">End Time</label>\n                <input type=\"datetime-local\" id=\"event-end\" name=\"end_time\" required>\n            </div>\n            <div>\n                <label for=\"event-location\">Location</label>\n                <input type=\"text\" id=\"event-location\" name=\"location\" required placeholder=\"e.g. Main Office, Park...\">\n            </div>\n            <div>\n                <label for=\"event-description\">Description</label>\n                <textarea id=\"event-description\" name=\"description\" rows=\"3\" required placeholder=\"What is this event about?\"></textarea>\n            </div>\n            <button type=\"submit\" class=\"btn primary-btn\">Create Event</button>\n        </form>\n    `;
+    // Set min for startInput to now after modal is reset
+    const startInput = document.getElementById('event-start');
+    if (startInput) {
+        const now = new Date();
+        const pad = n => n.toString().padStart(2, '0');
+        const local = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+        startInput.min = local;
+    }
     // Re-bind close and submit events
     document.getElementById('close-modal-btn').addEventListener('click', function() {
         modal.style.display = 'none';
