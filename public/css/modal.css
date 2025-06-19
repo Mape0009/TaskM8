@@ -1,0 +1,181 @@
+/* Modal Styles for Create New Event */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(30, 41, 59, 0.18);
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    backdrop-filter: blur(2px);
+}
+.modal-content {
+    background: #fff;
+    padding: 0;
+    border-radius: 18px;
+    min-width: 370px;
+    max-width: 95vw;
+    box-shadow: 0 12px 40px rgba(30,41,59,0.18), 0 1.5px 6px rgba(0,0,0,0.04);
+    position: relative;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    animation: modalPopIn 0.25s cubic-bezier(.4,2,.6,1);
+    box-sizing: border-box;
+    margin: 0;
+}
+@keyframes modalPopIn {
+    from { transform: translateY(40px) scale(0.98); opacity: 0; }
+    to { transform: none; opacity: 1; }
+}
+.modal-header {
+    background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+    color: #fff;
+    padding: 1.3rem 2rem 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+.modal-header .modal-icon {
+    width: 2.2rem; height: 2.2rem;
+    background: rgba(255,255,255,0.13);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+}
+.modal-header h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+.modal-close-btn {
+    position: absolute;
+    top: 1.1rem; right: 1.1rem;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    width: 2.2rem; height: 2.2rem;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+.modal-close-btn:hover {
+    background: rgba(255,255,255,0.13);
+    color: #e0e7ef;
+}
+.modal-form {
+    padding: 2rem 2rem 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    background: #fff;
+}
+.modal-form label {
+    font-size: 1rem;
+    color: #334155;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+.modal-form input[type="datetime-local"],
+.modal-form input[type="text"],
+.modal-form textarea {
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f8fafc;
+    transition: border 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    outline: none;
+    margin-top: 0.2rem;
+}
+.modal-form input:focus,
+.modal-form textarea:focus {
+    border: 1.5px solid #6366f1;
+    box-shadow: 0 0 0 2px #6366f133;
+    background: #fff;
+}
+.modal-form textarea {
+    resize: vertical;
+    min-height: 60px;
+    max-height: 180px;
+}
+.modal-form .btn.primary-btn {
+    background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 0;
+    font-size: 1.13rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.2px;
+}
+.modal-form .btn.primary-btn:hover {
+    background: linear-gradient(90deg, #4f46e5 0%, #2563eb 100%);
+    box-shadow: 0 4px 16px rgba(99,102,241,0.13);
+}
+.modal-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem 2.5rem 2rem;
+    background: #fff;
+    border-radius: 18px;
+    min-width: 340px;
+    animation: fadeInModal 0.3s;
+}
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.modal-success .checkmark {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.2rem;
+    animation: popCheck 0.4s cubic-bezier(.4,2,.6,1);
+}
+@keyframes popCheck {
+    0% { transform: scale(0.7); opacity: 0; }
+    80% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+}
+.modal-success svg {
+    color: #fff;
+    width: 2.2rem; height: 2.2rem;
+}
+.modal-success h3 {
+    margin: 0.5rem 0 0.2rem 0;
+    font-size: 1.25rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+.modal-success p {
+    color: #64748b;
+    font-size: 1rem;
+    margin: 0;
+}
+@media (max-width: 500px) {
+    .modal-content { min-width: 95vw; padding: 0; }
+    .modal-form, .modal-success { padding: 1.2rem 0.7rem; }
+    .modal-header { padding: 1rem 0.7rem 0.7rem 0.7rem; }
+} 

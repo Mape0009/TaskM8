@@ -1,0 +1,112 @@
+/* Header Styles */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2.5vw 1.2rem 2vw;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    position: relative;
+    z-index: 10;
+}
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #6366f1;
+    letter-spacing: -1px;
+}
+.navigation ul {
+    display: flex;
+    gap: 2.2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.navigation a {
+    color: #334155;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 1.08rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+}
+.navigation a.active, .navigation a:hover {
+    background: #f1f5f9;
+    color: #6366f1;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 50%;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.theme-toggle-btn:hover {
+    background: #f1f5f9;
+}
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 0.3rem 0.9rem 0.3rem 0.5rem;
+}
+.user-avatar {
+    width: 2.2rem;
+    height: 2.2rem;
+    background: #6366f1;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.user-info-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.user-greeting {
+    margin: 0;
+    font-size: 1rem;
+    color: #334155;
+    font-weight: 500;
+}
+.create-event-btn-header {
+    background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.3rem;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.create-event-btn-header:hover {
+    background: linear-gradient(90deg, #4f46e5 0%, #2563eb 100%);
+    box-shadow: 0 4px 16px rgba(99,102,241,0.13);
+} 
