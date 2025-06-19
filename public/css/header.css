@@ -16,11 +16,23 @@
     gap: 2.5rem;
 }
 .logo {
-    font-size: 1.5rem;
+    font-size: 25.5rem;
     font-weight: 700;
     color: #6366f1;
     letter-spacing: -1px;
 }
+.logo-img {
+    height: 2.1rem;
+    max-height: 3.2em;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    vertical-align: middle;
+}
+.logo-img-dark { display: none; }
+.logo-img-light { display: block; }
+body.dark-mode .logo-img-dark { display: block; }
+body.dark-mode .logo-img-light { display: none; }
 .navigation ul {
     display: flex;
     gap: 2.2rem;
@@ -199,5 +211,9 @@ body.dark-mode .create-event-btn-header:hover {
   }
   .navigation {
     display: none !important;
+  }
+  .logo-img {
+    height: 4rem;
+    max-height: 2.2em;
   }
 } 

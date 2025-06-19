@@ -1,6 +1,9 @@
 <header class="main-header">
     <div class="header-left">
-        <div class="logo">TaskM8</div>
+        <div class="logo">
+            <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8 Logo" class="logo-img logo-img-dark" />
+            <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8 Logo Dark" class="logo-img logo-img-light" />
+        </div>
         <nav class="navigation" id="main-nav">
             <ul>
                 <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Dashboard</a></li>
