@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('startDate');
             $table->dateTime('endDate');
             $table->text('description')->nullable();
-            $table->json('Participants')->nullable();
+            $table->json('participants')->nullable();
         });
     }
 
