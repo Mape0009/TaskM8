@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PinCode extends Model
 {
-    $fillable = [
+    protected $fillable = [
         'pincode',
         'mailId',
         'createdAt',
