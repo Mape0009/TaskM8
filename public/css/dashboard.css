@@ -53,6 +53,7 @@ body {
 /* Main Header Styles */
 .main-header {
     background-color: var(--color-background-secondary);
+    color: var(--color-text-primary);
     padding: calc(var(--spacing-unit) * 2.5) calc(var(--spacing-unit) * 6); /* 20px 48px */
     display: flex;
     justify-content: space-between;
@@ -565,6 +566,16 @@ body {
     }
     .event-list, .friend-list {
         grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing-unit) * 40), 1fr)); /* 320px minimum */
+    }
+    .search-bar input {
+        width: 92vw;
+        max-width: 98vw;
+        min-width: 0;
+        box-sizing: border-box;
+        margin: 0.5em auto 1.2em auto;
+        display: block;
+        padding-left: 1.1em;
+        padding-right: 1.1em;
     }
 }
 

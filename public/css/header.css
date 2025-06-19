@@ -109,4 +109,95 @@
 .create-event-btn-header:hover {
     background: linear-gradient(90deg, #4f46e5 0%, #2563eb 100%);
     box-shadow: 0 4px 16px rgba(99,102,241,0.13);
+}
+body.dark-mode .main-header {
+    background: #1A1A1E;
+    color: #F0F0F0;
+    border-bottom: 1px solid #333338;
+}
+body.dark-mode .header-left {
+    /* No color change needed, inherits from .main-header */
+}
+body.dark-mode .logo {
+    color: #00C2FF;
+}
+body.dark-mode .navigation a {
+    color: #A0A0A0;
+    background: transparent;
+}
+body.dark-mode .navigation a.active, body.dark-mode .navigation a:hover {
+    background: #2A2A30;
+    color: #00C2FF;
+}
+body.dark-mode .header-right {
+    /* No color change needed, inherits from .main-header */
+}
+body.dark-mode .user-profile-header {
+    background: #2A2A30;
+}
+body.dark-mode .user-avatar {
+    background: #28E0B9;
+    color: #0A0A0C;
+    border: 2px solid #333338;
+}
+body.dark-mode .user-greeting {
+    color: #00C2FF;
+}
+body.dark-mode .create-event-btn-header {
+    background: linear-gradient(145deg, #007BFF, #00C2FF);
+    color: #F0F0F0;
+}
+body.dark-mode .create-event-btn-header:hover {
+    background: linear-gradient(145deg, #00C2FF, #007BFF);
+}
+
+@media (max-width: 992px) {
+  .main-header {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0.6em 1.2em !important;
+    min-height: unset !important;
+    height: auto !important;
+    gap: 0 !important;
+    box-sizing: border-box;
+    background: var(--color-background-secondary, #23232A);
+  }
+  .header-left, .header-right {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.7em !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .main-header > * {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+  }
+  .theme-toggle-btn.mobile {
+    display: none !important;
+  }
+  .main-header .theme-toggle-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.2em 0 0.2em;
+  }
+  .logo {
+    font-size: 1.25em !important;
+    font-weight: 800;
+    color: #00C2FF;
+    letter-spacing: -1px;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .user-profile-header, .create-event-btn-header {
+    margin: 0 !important;
+    padding: 0.1em 0.5em !important;
+  }
+  .navigation {
+    display: none !important;
+  }
 } 
