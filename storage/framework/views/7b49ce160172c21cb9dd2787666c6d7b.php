@@ -16,9 +16,7 @@
         <header class="content-header">
             <h1></h1>
         </header>
-        <div class="search-bar">
-            <input type="text" placeholder="Søg efter begivenheder...">
-        </div>
+        
 
         <section class="event-listing">
             <h2>Mine begivenheder</h2>

@@ -15,9 +15,6 @@
     <main class="main-content-full">
         <header class="content-header">
         </header>
-        <div class="search-bar">
-            <input type="text" placeholder="Søg efter begivenheder...">
-        </div>
         <section class="stats-cards">
             <div class="stat-card">
                 <div class="stat-info">

@@ -16,15 +16,15 @@
         <header class="content-header">
             <h1></h1>
         </header>
-        <div class="search-bar">
+        {{-- <div class="search-bar">
             <input type="text" placeholder="Søg efter medlemmer...">
-        </div>
+        </div> --}}
 
         <section class="friends-listing">
             <h2>Alle Medlemmer</h2>
             <div class="friend-list">
                 <!-- Friend Card 1 -->
-                <div class="friend-card event-card"> {{-- Reusing event-card styling --}}
+                <div class="friend-card event-card"> 
                     <div class="friend-header" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
                         <div class="avatar" style="width: 60px; height: 60px; font-size: 24px;">UT</div>
                         <div>
