@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\PinCode;
 use App\Models\Mail;
 
 class PinCodeController extends Controller
