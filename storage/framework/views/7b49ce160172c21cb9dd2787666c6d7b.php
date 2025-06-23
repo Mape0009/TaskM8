@@ -14,10 +14,10 @@
 
     <main class="main-content-full">
         <header class="content-header">
-            <h1>Begivenheder</h1>
+            <h1></h1>
         </header>
         <div class="search-bar">
-            <input type="text" placeholder="Search your events...">
+            <input type="text" placeholder="Søg efter begivenheder...">
         </div>
 
         <section class="event-listing">

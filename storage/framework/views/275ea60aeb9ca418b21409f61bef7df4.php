@@ -124,31 +124,31 @@
 </head>
 <body>
     <div class="auth-container">
-        <h2>Create Account</h2>
+        <h2>Lav Konto</h2>
         <form action="#" method="POST">
             <div class="input-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <label for="name">Navn</label>
+                <input type="text" id="name" name="name" placeholder="Skriv dit navn" required>
             </div>
             <div class="input-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Skriv din email" required>
             </div>
             <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Create a password" required>
+                <label for="password">Adgangskode</label>
+                <input type="password" id="password" name="password" placeholder="Lav adgangskode" required>
             </div>
             <div class="input-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+                <label for="confirm-password">Bekræft adgangskode</label>
+                <input type="password" id="confirm-password" name="confirm_password" placeholder="Bekræft adgangskode" required>
             </div>
             <div class="input-group">
-                <label for="phone">Phone Number (Optional)</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                <label for="phone">Tlf Nummer (Optional)</label>
+                <input type="tel" id="phone" name="phone" placeholder="Skriv dit telefon-nummer">
             </div>
-            <button type="submit" class="btn primary-btn">Sign Up</button>
+            <button type="submit" class="btn primary-btn">Opret Konto</button>
         </form>
-        <p>Already have an account? <a href="/signin">Sign In</a></p>
+        <p>Har du allerede en konto? <a href="/signin">Login</a></p>
     </div>
 </body>
 </html> <?php /**PATH C:\Users\Tobia\Documents\GitHub\TaskM8\resources\views/auth/signup.blade.php ENDPATH**/ ?>

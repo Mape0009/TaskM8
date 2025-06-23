@@ -66,9 +66,8 @@
                         <option value="weekly">Ugenligt</option>
                         <option value="monthly">Månedligt</option>
                         <option value="monthly">Årligt</option>
-                        <option value="custom">Custom</option>
                     </select>
-                    <input type="text" id="custom-interval" name="custom_interval" placeholder="Describe custom interval" class="custom-interval-input" style="display: none;">
+                    <input type="text" id="custom-interval" name="custom_interval" placeholder="" class="custom-interval-input" style="display: none;">
                 </div>
             </div>
             <div>

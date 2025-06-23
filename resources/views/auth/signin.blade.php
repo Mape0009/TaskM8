@@ -124,19 +124,19 @@
 </head>
 <body>
     <div class="auth-container">
-        <h2>Sign In</h2>
+        <h2>Login</h2>
         <form action="#" method="POST">
             <div class="input-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Skriv email" required>
             </div>
             <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <label for="password">Adgangskode</label>
+                <input type="password" id="password" name="password" placeholder="Skriv adgangskode" required>
             </div>
-            <button type="submit" class="btn primary-btn">Sign In</button>
+            <button type="submit" class="btn primary-btn">Login</button>
         </form>
-        <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+        <p>Har du ingen konto? <a href="/signup">Opret Konto</a></p>
     </div>
 </body>
 </html> 

@@ -14,26 +14,31 @@
 
     <main class="main-content-full">
         <header class="content-header">
-            <h1>Dashboard</h1>
-            <p>Here's what's happening today</p>
         </header>
         <div class="search-bar">
-            <input type="text" placeholder="Search for events and activities...">
+            <input type="text" placeholder="Søg efter begivenheder...">
         </div>
         <section class="stats-cards">
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-title">Mine Begivenheder</span>
+                    <span class="stat-title">Afventer svar: </span>
                     <span class="stat-value">12</span>
                 </div>
                 <div class="stat-icon"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
             </div>
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-title">Medlemmer</span>
-                    <span class="stat-value">24</span>
+                    <span class="stat-title">Mine Begivenheder: </span>
+                    <span class="stat-value">4</span>
                 </div>
-                <div class="stat-icon"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"></path><circle cx="10" cy="7" r="4"></circle></svg></div>
+                <div class="stat-icon"><svg class="icon" fill="non  e" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"></path><circle cx="10" cy="7" r="4"></circle></svg></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-title">Medlemmer: </span>
+                    <span class="stat-value">13</span>
+                </div>
+            <div class="stat-icon"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"></path><circle cx="10" cy="7" r="4"></circle></svg></div>
             </div>
         </section>
         <section class="upcoming-events">
