@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('eventName');
             $table->dateTime('startDate');
             $table->dateTime('endDate');
-            $table->text('description')->nullable();
+            $table->string('description')->nullable();
+            $table->string('location')->nullable();
         });
     }
 
