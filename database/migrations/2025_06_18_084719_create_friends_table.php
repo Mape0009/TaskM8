@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('friends', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('eventName');
-            $table->dateTime('startDate');
-            $table->dateTime('endDate');
-            $table->string('description')->nullable();
-            $table->string('location')->nullable();
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
+            $table->foreignId('friendId')->constrained('users')->onDelete('cascade');
+            $table->unique(['userId', 'friendId'], 'friends_unique_pair');
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('friends');
     }
 };
