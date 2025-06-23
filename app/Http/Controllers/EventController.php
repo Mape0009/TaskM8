@@ -27,7 +27,7 @@ class EventController extends Controller
         $event->startDate = $request->input('startDate');
         $event->endDate = $request->input('endDate');
         $event->description = $request->input('description');
-        $event->Participants = $request->input('Participants', []);
+        $event->location = $request->input('location');
         $event->save();
         return response()->json($event, 201);
     }
