@@ -33,8 +33,11 @@ if (openBtnMobile) {
         }
         setTimeout(() => { startInput && startInput.focus(); }, 200);
         // Also close the mobile dropdown
-        mobileNavOverlay.classList.remove('open');
-        document.body.style.overflow = '';
+        const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+        if (mobileNavOverlay) {
+            mobileNavOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
     });
 }
 if (closeBtn) {

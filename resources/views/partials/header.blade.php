@@ -94,8 +94,9 @@
             </ul>
         </nav>
         <div class="mobile-divider integrated"></div>
-        <div class="mobile-user-profile minimal integrated">
+        <div class="mobile-user-profile minimal integrated" style="flex-direction:column;align-items:center;justify-content:center;">
             <div class="user-avatar integrated">U</div>
+            <div class="user-info-header"><p class="user-greeting">Velkommen, Bruger!</p></div>
         </div>
         <button class="create-event-btn-header mobile minimal premium integrated">+ Ny Begivenhed</button>
     </div>
