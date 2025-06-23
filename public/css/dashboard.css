@@ -5,9 +5,10 @@
     --color-background-tertiary: #e9ecef; 
     --color-text-primary: #23272f; 
     --color-text-secondary: #7a7f87; 
-    --color-text-accent: #2563eb; 
-    --color-accent-primary: #2563eb; 
-    --color-accent-secondary: #3ddad7; 
+    --color-text-accent: #00C2FF; 
+    --color-accent-primary: #007BFF; 
+    --color-accent-secondary: #007BFF; 
+    --color-accent-themelight: #ffc30f; 
     --color-border: #d1d5db; 
     --color-shadow-light: rgba(30, 34, 44, 0.04); 
     --color-shadow-dark: rgba(30, 34, 44, 0.10); 
@@ -23,7 +24,7 @@ body.dark-mode {
     --color-text-secondary: #A0A0A0;
     --color-text-accent: #00C2FF;
     --color-accent-primary: #007BFF;
-    --color-accent-secondary: #28E0B9;
+    --color-accent-secondary: #007BFF;
     --color-border: #333338;
     --color-shadow-light: rgba(0, 0, 0, 0.2);
     --color-shadow-dark: rgba(0, 0, 0, 0.6);
@@ -132,14 +133,14 @@ body {
 .user-profile-header {
     display: flex;
     align-items: center;
-    gap: calc(var(--spacing-unit) * 1.5); /* 12px */
+    gap: calc(var(--spacing-unit) * 1.5); 
 }
 
 .user-avatar {
-    width: calc(var(--spacing-unit) * 5); /* 40px */
-    height: calc(var(--spacing-unit) * 5); /* 40px */
+    width: calc(var(--spacing-unit) * 5); 
+    height: calc(var(--spacing-unit) * 5); 
     border-radius: 50%;
-    background-color: var(--color-accent-secondary); /* Accent color for avatar background */
+    background-color: var(--color-accent-secondary); 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -147,8 +148,8 @@ body {
     font-size: calc(var(--spacing-unit) * 2); /* 16px */
     color: var(--color-background-primary); /* Dark text on accent background */
     border: 2px solid var(--color-border); /* Subtle border */
-    box-shadow: 0 1px 4px var(--color-shadow-light); /* Soft shadow */
-    transition: box-shadow 0.15s ease; /* Subtle transition */
+    box-shadow: 0 1px 4px var(--color-shadow-light); 
+    transition: box-shadow 0.15s ease; 
 }
 
 .user-avatar:hover {
@@ -850,7 +851,7 @@ body {
 .theme-toggle-btn .icon {
     width: 24px;
     height: 24px;
-    color: var(--color-accent-primary);
+    color: var(--color-accent-themelight);
     transition: color 0.2s;
 }
 .theme-toggle-btn .moon { display: none; }

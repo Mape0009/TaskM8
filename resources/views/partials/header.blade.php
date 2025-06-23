@@ -6,9 +6,9 @@
         </div>
         <nav class="navigation" id="main-nav">
             <ul>
-                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Dashboard</a></li>
-                <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Events</a></li>
-                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Friends</a></li>
+                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
+                <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
+                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Medlemmer</a></li>
             </ul>
         </nav>
     </div>
@@ -23,13 +23,13 @@
         <div class="user-profile-header">
             <div class="user-avatar">U</div>
             <div class="user-info-header">
-                <p class="user-greeting">Welcome, User!</p>
+                <p class="user-greeting">Velkommen, Bruger!</p>
             </div>
         </div>
-        <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> New Event</button>
+        <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Ny Begivenhed</button>
     </div>
 </header>
-<script src="{{ asset('js/theme-toggle.js') }}"></script> <!-- Global dark/light mode toggle -->
+<script src="{{ asset('js/theme-toggle.js') }}"></script> 
 <!-- New Event Modal -->
 <div id="new-event-modal" class="modal">
     <div class="modal-content" id="modal-content">
@@ -37,7 +37,7 @@
             <span class="modal-icon">
                 <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
             </span>
-            <h2>Create New Event</h2>
+            <h2>Lav ny begivenhed</h2>
             <button class="modal-close-btn" id="close-modal-btn" aria-label="Close">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
@@ -45,40 +45,41 @@
         <form id="new-event-form" class="modal-form" autocomplete="off">
             <div>
                 <label for="event-title">Title</label>
-                <input type="text" id="event-title" name="title" required placeholder="Event title">
+                <input type="text" id="event-title" name="title" required placeholder="Title">
             </div>
             <div>
-                <label for="event-start">Start Time</label>
+                <label for="event-start">Start Tid</label>
                 <input type="datetime-local" id="event-start" name="start_time" required>
             </div>
             <div>
-                <label for="event-end">End Time</label>
+                <label for="event-end">Slut tid</label>
                 <input type="datetime-local" id="event-end" name="end_time" required>
             </div>
             <div class="repeat-container">
                 <label class="repeat-checkbox-label">
-                    <input type="checkbox" id="event-repeat" name="repeat"> Repeat
+                    <input type="checkbox" id="event-repeat" name="repeat"> Gentagelse
                 </label>
                 <div id="repeat-options" class="repeat-options" style="display: none;">
                     <label for="repeat-interval">Interval</label>
                     <select id="repeat-interval" name="repeat_interval" class="repeat-select">
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
+                        <option value="daily">Dagligt</option>
+                        <option value="weekly">Ugenligt</option>
+                        <option value="monthly">Månedligt</option>
+                        <option value="monthly">Årligt</option>
                         <option value="custom">Custom</option>
                     </select>
                     <input type="text" id="custom-interval" name="custom_interval" placeholder="Describe custom interval" class="custom-interval-input" style="display: none;">
                 </div>
             </div>
             <div>
-                <label for="event-location">Location</label>
-                <input type="text" id="event-location" name="location" required placeholder="e.g. Main Office, Park...">
+                <label for="event-location">Lokation</label>
+                <input type="text" id="event-location" name="location" required placeholder="Placering">
             </div>
             <div>
-                <label for="event-description">Description</label>
-                <textarea id="event-description" name="description" rows="3" required placeholder="What is this event about?"></textarea>
+                <label for="event-description">Beskrivelse</label>
+                <textarea id="event-description" name="description" rows="3" required placeholder="Hvad er begivenheden om?"></textarea>
             </div>
-            <button type="submit" class="btn primary-btn">Create Event</button>
+            <button type="submit" class="btn primary-btn">Lav Begivenhed</button>
         </form>
     </div>
 </div>
@@ -88,16 +89,16 @@
     <div class="mobile-nav-content minimal glassy integrated-dropdown">
         <nav class="mobile-navigation minimal premium integrated">
             <ul>
-                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Dashboard</a></li>
-                <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Events</a></li>
-                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Friends</a></li>
+                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
+                <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
+                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Medlemmer</a></li>
             </ul>
         </nav>
         <div class="mobile-divider integrated"></div>
         <div class="mobile-user-profile minimal integrated">
             <div class="user-avatar integrated">U</div>
         </div>
-        <button class="create-event-btn-header mobile minimal premium integrated">+ New Event</button>
+        <button class="create-event-btn-header mobile minimal premium integrated">+ Ny Begivenhed</button>
     </div>
 </div>
 
@@ -179,8 +180,8 @@ function showSuccess() {
             <div class="checkmark">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
             </div>
-            <h3>Event Created!</h3>
-            <p>Your event has been added successfully.</p>
+            <h3>Event Lavet!</h3>
+            <p>Dit event er nu lavet!</p>
         </div>
     `;
     setTimeout(() => {

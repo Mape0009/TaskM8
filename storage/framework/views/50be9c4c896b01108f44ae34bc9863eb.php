@@ -22,14 +22,14 @@
             </div>
             <ul class="event-details-list">
                 <li><span class="event-details-label">Start:</span> <span class="event-details-value"><?php echo e($event->start_time ?? '-'); ?></span></li>
-                <li><span class="event-details-label">End:</span> <span class="event-details-value"><?php echo e($event->end_time ?? '-'); ?></span></li>
-                <li><span class="event-details-label">Location:</span> <span class="event-details-value"><?php echo e($event->location ?? '-'); ?></span></li>
+                <li><span class="event-details-label">Slut:</span> <span class="event-details-value"><?php echo e($event->end_time ?? '-'); ?></span></li>
+                <li><span class="event-details-label">Lokation:</span> <span class="event-details-value"><?php echo e($event->location ?? '-'); ?></span></li>
             </ul>
             <div class="event-details-description">
                 <?php echo e($event->description ?? 'No description provided.'); ?>
 
             </div>
-            <a href="<?php echo e(url('/events')); ?>" class="back-btn">&larr; Back to Events</a>
+            <a href="<?php echo e(url('/events')); ?>" class="back-btn">&larr; Tilbage til begivenheder</a>
         </div>
     </main>
 </body>

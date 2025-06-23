@@ -83,7 +83,7 @@ body.dark-mode .logo-img-light { display: none; }
 .user-avatar {
     width: 2.2rem;
     height: 2.2rem;
-    background: #6366f1;
+    background: #28E0B9;
     color: #fff;
     border-radius: 50%;
     display: flex;
@@ -128,7 +128,7 @@ body.dark-mode .main-header {
     border-bottom: 1px solid #333338;
 }
 body.dark-mode .header-left {
-    /* No color change needed, inherits from .main-header */
+
 }
 body.dark-mode .logo {
     color: #00C2FF;
