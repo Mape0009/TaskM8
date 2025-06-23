@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Friends extends Model
 {
     protected $fillable = [
-        'eventName',
-        'startDate',
-        'endDate',
-        'description',
+        'userId',
+        'friendId',
     ];
 }

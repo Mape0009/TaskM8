@@ -12,5 +12,6 @@ class Mail extends Model
         'senderId',
         'recipientId',
         'sentAt',
+        'pinCodeId',
     ];
 }

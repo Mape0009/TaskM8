@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('pin_codes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('eventName');
-            $table->dateTime('startDate');
-            $table->dateTime('endDate');
-            $table->text('description')->nullable();
+            $table->string('pincode')->unique();
+            $table->foreignId('mailId')->constrained('mails')->onDelete('cascade');
+            $table->timestamp('createdAt')->useCurrent();
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('pin_codes');
     }
 };
