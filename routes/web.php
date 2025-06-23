@@ -63,7 +63,7 @@ Route::post('/login', [UserController::class, 'login']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 
 // Event Routes
-Route::get('/events', [EventController::class, 'index']);
+Route::get('/allEvents', [EventController::class, 'index']);
 Route::get('/event/{id}', [EventController::class, 'show']);
 Route::post('/event/create', [EventController::class, 'create']);
 Route::put('/event/update/{id}', [EventController::class, 'update']);
