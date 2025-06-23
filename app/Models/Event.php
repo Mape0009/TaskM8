@@ -11,6 +11,5 @@ class Event extends Model
         'startDate',
         'endDate',
         'description',
-        'participants',
     ];
 }
