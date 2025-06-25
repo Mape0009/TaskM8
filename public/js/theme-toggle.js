@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (btn) {
             btn.classList.toggle('dark', isDark);
             if (sun && moon) {
-                sun.style.display = isDark ? 'none' : 'inline';
-                moon.style.display = isDark ? 'inline' : 'none';
+                sun.style.display = isDark ? 'inline' : 'none';
+                moon.style.display = isDark ? 'none' : 'inline';
             }
         }
     }

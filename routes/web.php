@@ -35,18 +35,18 @@ Route::get('/events/{id}', function ($id, Request $request) {
     // Dummy data for two events
     $dummyEvents = [
         1 => [
-            'title' => 'Monthly Team Sync',
+            'title' => 'Dummy Data Title',
             'start_time' => '2025-07-01 10:00',
             'end_time' => '2025-07-01 11:00',
-            'location' => 'Main Office',
-            'description' => 'A recurring meeting to align on project progress and upcoming tasks.',
+            'location' => 'Mercantec',
+            'description' => 'Beskrivelse med dummy data.',
         ],
         2 => [
-            'title' => 'Grill Night',
+            'title' => 'Havnefest',
             'start_time' => '2025-07-05 18:00',
             'end_time' => '2025-07-05 23:00',
-            'location' => 'Backyard',
-            'description' => 'Beers with the boys',
+            'location' => 'Havnen',
+            'description' => 'Husk bajer',
         ],
     ];
     $event = $dummyEvents[$id] ?? null;
