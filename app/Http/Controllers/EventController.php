@@ -10,14 +10,14 @@ class EventController extends Controller
 {
     public function index()
     {
-        $allEvents = Event::all();
-        return response()->json($allEvents);
+        $events = Event::all();
+        return view('events', compact('events'));
     }
 
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return response()->json($event);
+        return view('event', compact('event'));
     }
 
     public function create(Request $request)

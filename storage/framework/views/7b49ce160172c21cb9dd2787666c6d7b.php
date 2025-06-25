@@ -21,32 +21,20 @@
         <section class="event-listing">
             <h2>Mine begivenheder</h2>
             <div class="event-list">
-                <!-- Event Card 1 -->
-                <div class="event-card">
-                    <div class="event-header">
-                        <span class="event-icon"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></span>
-                        <h3>Havnefest</h3>
+                <?php $__empty_1 = true; $__currentLoopData = $events; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $event): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <div class="event-card">
+                        <div class="event-header">
+                            <h3><?php echo e($event->eventName); ?></h3>
+                        </div>
+                        <p class="event-description"><?php echo e($event->description); ?></p>
+                        <div class="event-actions">
+                            <a href="/events/<?php echo e($event->id); ?>" class="btn primary-btn">Se detaljer</a>
+                            <button class="btn secondary-btn">Rediger <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
+                        </div>
                     </div>
-                    <p class="event-description">Fest på havnen! Husk det gode humør.</p>
-                    <div class="event-actions">
-                        <a href="/events/1" class="btn primary-btn">Se detaljer</a>
-                        <button class="btn secondary-btn">Rediger <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
-                    </div>
-                </div>
-
-                <!-- Event Card 2 -->
-                <div class="event-card">
-                    <div class="event-header">
-                        <span class="event-icon"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span>
-                        <h3>Byfest</h3>
-                    </div>
-                    <p class="event-description">Fest for byens beboere! Kom glad og drik bajer.</p>
-                    
-                    <div class="event-actions">
-                        <a href="/events/2" class="btn primary-btn">Se detaljer</a>
-                        <button class="btn secondary-btn">Rediger <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
-                    </div>
-                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <p>Ingen begivenheder fundet.</p>
+                <?php endif; ?>
             </div>
         </section>
     </main>

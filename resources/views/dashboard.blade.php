@@ -47,39 +47,20 @@
         <section class="upcoming-events">
             <h2>Kommende Begivenheder</h2>
             <div class="event-list">
-                <div class="event-card">
-                    <div class="event-header">
-                        <span class="event-icon"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></span>
-                        <h3>Havnefest</h3>
+                @forelse($events as $event)
+                    <div class="event-card">
+                        <div class="event-header">
+                            <h3>{{ $event->eventName }}</h3>
+                        </div>
+                        <p class="event-description">{{ $event->description }}</p>
+                        <div class="event-actions">
+                            <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
+                            <button class="btn secondary-btn">Rediger <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
+                        </div>
                     </div>
-                    <p class="event-description">Fest på havnen! Husk det gode humør</p>
-                    <div class="event-actions">
-                        <a href="#" class="btn primary-btn">Svar</a>
-                        <a href="{{ url('/events') }}" class="btn secondary-btn">Se detaljer <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></a>
-                    </div>
-                </div>
-                <div class="event-card">
-                    <div class="event-header">
-                        <span class="event-icon"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.836 0H20v-5m0 11v5h-.581m-15.838 0H4v-5m2.597-8.597a2 2 0 112.828 2.828L7 15l-2 3v4h4l3-2 3.597-3.597m-2.828-2.828l1.414 1.414L15 15l2-3v-4h-4l-3-2-3.597 3.597z"></path></svg></span>
-                        <h3>Byfest</h3>
-                    </div>
-                    <p class="event-description">Fest for byens beboere. Kom glad!</p>
-                    <div class="event-actions">
-                        <a href="#" class="btn primary-btn">Svar</a>
-                        <a href="{{ url('/events') }}" class="btn secondary-btn">Se detaljer <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></a>
-                    </div>
-                </div>
-                <div class="event-card">
-                    <div class="event-header">
-                        <span class="event-icon"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span>
-                        <h3>Grillaften</h3>
-                    </div>
-                    <p class="event-description">Roklubben holder grillaften!</p>
-                    <div class="event-actions">
-                        <a href="#" class="btn primary-btn">Svar</a>
-                        <a href="{{ url('/events') }}" class="btn secondary-btn">Se detaljer <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></a>
-                    </div>
-                </div>
+                @empty
+                    <p>Ingen begivenheder fundet.</p>
+                @endforelse
             </div>
         </section>
     </main>

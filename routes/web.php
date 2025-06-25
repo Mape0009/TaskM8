@@ -6,13 +6,15 @@ use App\Http\Controllers\EventParticipantController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\UserController;
+use App\Models\Event;
 
 Route::get('/', function () {
     return redirect('/dashboard');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $events = Event::orderBy('startDate', 'desc')->get();
+    return view('dashboard', compact('events'));
 });
 
 Route::get('/events', function () {
