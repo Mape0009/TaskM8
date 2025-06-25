@@ -23,10 +23,11 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
+        $user->phonenumber = $request->input('phonenumber', null);
         $user->role = 'user';
         $user->save();
 
-        return response()->json(['message' => 'User created successfully'], 201);
+        return redirect('/signin')->with('success', 'User created successfully! Please log in.');
     }
 
     public function createAdmin(Request $request)
@@ -65,7 +66,7 @@ class UserController extends Controller
             return response()->json(['message' => 'Login successful', 'user' => $user], 200);
         }
 
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        return redirect('/dashboard')->with('success', 'Login successful');
     }
 
     public function show($id)

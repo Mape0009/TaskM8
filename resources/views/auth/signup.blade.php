@@ -125,7 +125,8 @@
 <body>
     <div class="auth-container">
         <h2>Lav Konto</h2>
-        <form action="#" method="POST">
+        <form action="/user/create" method="POST">
+            @csrf
             <div class="input-group">
                 <label for="name">Navn</label>
                 <input type="text" id="name" name="name" placeholder="Skriv dit navn" required>
@@ -140,15 +141,15 @@
             </div>
             <div class="input-group">
                 <label for="confirm-password">Bekræft adgangskode</label>
-                <input type="password" id="confirm-password" name="confirm_password" placeholder="Bekræft adgangskode" required>
+                <input type="password" id="confirm-password" name="password_confirmation" placeholder="Bekræft adgangskode" required>
             </div>
             <div class="input-group">
                 <label for="phone">Tlf Nummer (Optional)</label>
-                <input type="tel" id="phone" name="phone" placeholder="Skriv dit telefon-nummer">
+                <input type="tel" id="phone" name="phonenumber" placeholder="Skriv dit telefon-nummer">
             </div>
             <button type="submit" class="btn primary-btn">Opret Konto</button>
         </form>
         <p>Har du allerede en konto? <a href="/signin">Login</a></p>
     </div>
 </body>
-</html> 
+</html>

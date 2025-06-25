@@ -125,7 +125,8 @@
 <body>
     <div class="auth-container">
         <h2>Login</h2>
-        <form action="#" method="POST">
+        <form action="/login" method="POST">
+            @csrf
             <div class="input-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Skriv email" required>
