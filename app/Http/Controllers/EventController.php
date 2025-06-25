@@ -29,7 +29,7 @@ class EventController extends Controller
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->save();
-        return response()->json($event, 201);
+        return redirect()->back()->with('success', 'Event created successfully!');
     }
 
     public function update(Request $request, $id)
@@ -39,6 +39,7 @@ class EventController extends Controller
         $event->startDate = $request->input('startDate');
         $event->endDate = $request->input('endDate');
         $event->description = $request->input('description');
+        $event->location = $request->input('location');
         $event->save();
         return response()->json($event);
     }

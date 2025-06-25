@@ -70,10 +70,11 @@ if (startInput && endInput) {
     });
 }
 if (form) {
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        showSuccess();
-    });
+    // Remove the preventDefault and showSuccess to allow normal form submission
+    // form.addEventListener('submit', function(e) {
+    //     e.preventDefault();
+    //     showSuccess();
+    // });
 }
 function showSuccess() {
     modalContent.innerHTML = `
@@ -190,4 +191,23 @@ function addTapScale(selector) {
     });
 }
 addTapScale('.mobile-navigation.premium a');
-addTapScale('.create-event-btn-header.premium'); 
+addTapScale('.create-event-btn-header.premium');
+// Show success modal if event was created (from backend)
+document.addEventListener('DOMContentLoaded', function() {
+    const successMsg = document.getElementById('event-success-message');
+    if (successMsg) {
+        modal.style.display = 'flex';
+        modalContent.innerHTML = `
+            <div class="modal-success">
+                <div class="checkmark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+                </div>
+                <h3>${successMsg.textContent}</h3>
+            </div>
+        `;
+        setTimeout(() => {
+            modal.style.display = 'none';
+            window.location.hash = '';
+        }, 1800);
+    }
+});

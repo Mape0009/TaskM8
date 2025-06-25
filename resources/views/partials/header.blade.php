@@ -42,18 +42,19 @@
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
         </div>
-        <form id="new-event-form" class="modal-form" autocomplete="off">
+        <form id="new-event-form" class="modal-form" autocomplete="off" method="POST" action="/events/create">
+            @csrf
             <div>
                 <label for="event-title">Title</label>
-                <input type="text" id="event-title" name="title" required placeholder="Hvad er titlen?">
+                <input type="text" id="event-title" name="eventName" required placeholder="Hvad er titlen?">
             </div>
             <div>
                 <label for="event-start">Start Tid</label>
-                <input type="datetime-local" id="event-start" name="start_time" required>
+                <input type="datetime-local" id="event-start" name="startDate" required>
             </div>
             <div>
                 <label for="event-end">Slut tid</label>
-                <input type="datetime-local" id="event-end" name="end_time" required>
+                <input type="datetime-local" id="event-end" name="endDate" required>
             </div>
             <div class="repeat-container">
                 <label class="repeat-checkbox-label">
@@ -102,5 +103,9 @@
     </div>
 </div>
 
+@if(session('success'))
+    <div id="event-success-message" style="display:none;">{{ session('success') }}</div>
+@endif
+
 <script src="{{ asset('js/theme-toggle.js') }}"></script>
-<script src="{{ asset('js/header.js') }}"></script> 
+<script src="{{ asset('js/header.js') }}"></script>
