@@ -125,7 +125,7 @@
 <body>
     <div class="auth-container">
         <h2>Login</h2>
-        <form action="/login" method="POST">
+        <form action="{{ route('login') }}" method="POST">
             @csrf
             <div class="input-group">
                 <label for="email">Email</label>
@@ -140,4 +140,4 @@
         <p>Har du ingen konto? <a href="/signup">Opret Konto</a></p>
     </div>
 </body>
-</html> 
+</html>

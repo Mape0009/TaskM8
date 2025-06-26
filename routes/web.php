@@ -6,6 +6,7 @@ use App\Http\Controllers\EventParticipantController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Models\Event;
 
 Route::get('/', function () {
@@ -36,7 +37,7 @@ Route::get('/signin', function () {
 // User routes
 Route::post('/user/create', [UserController::class, 'createUser']);
 Route::post('/admin/create', [UserController::class, 'createAdmin']);
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/user/{id}', [UserController::class, 'show']);
 
 // Event Routes

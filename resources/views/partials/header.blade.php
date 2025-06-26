@@ -107,5 +107,21 @@
     <div id="event-success-message" style="display:none;">{{ session('success') }}</div>
 @endif
 
+@php
+    $hasToken = session('token');
+@endphp
+
+@if($hasToken)
+    <div class="user-info">
+        <p>Logged in as: {{ session('name') }}</p>
+        <form id="logout-form" action="{{ url('/api/auth/logout') }}" method="POST">
+            @csrf
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+@else
+    <!-- Show login/signup links -->
+@endif
+
 <script src="{{ asset('js/theme-toggle.js') }}"></script>
 <script src="{{ asset('js/header.js') }}"></script>
