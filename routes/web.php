@@ -43,7 +43,7 @@ Route::get('/user/{id}', [UserController::class, 'show']);
 // Event Routes
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{id}', [EventController::class, 'show']);
-Route::post('/events/create', [EventController::class, 'create']);
+Route::post('/events/create', [EventController::class, 'create'])->middleware('auth')->name('events.create');
 Route::put('/events/update/{id}', [EventController::class, 'update']);
 Route::delete('/events/delete/{id}', [EventController::class, 'delete']);
 
