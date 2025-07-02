@@ -30,4 +30,10 @@ class AuthController extends Controller
 
         return response([$jwt])->withCookie($cookie);
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return response()->json(['message' => 'Logged out successfully']);
+    }
 }
