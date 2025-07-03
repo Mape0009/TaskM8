@@ -28,12 +28,39 @@ class AuthController extends Controller
 
         $cookie = cookie('jwt', $jwt);
 
-        return response([$jwt])->withCookie($cookie);
+        return redirect('/')->withCookie($cookie);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return response()->json(['message' => 'Logged out successfully']);
+        try {
+            $jwt = $request->cookie('jwt');
+
+            if ($jwt) {
+                $decoded = JWT::decode($jwt, new \Firebase\JWT\Key(config('app.key'), 'HS256'));
+                $encryptedToken = $decoded->{0};
+                $decryptedToken = \Crypt::decrypt($encryptedToken);
+
+                // Simulate request with Bearer token to resolve current token user
+                $request->headers->set('Authorization', 'Bearer ' . $decryptedToken);
+
+                $user = $request->user();
+
+                if ($user && $user->currentAccessToken()) {
+                    $user->currentAccessToken()->delete(); // Revoke token
+                }
+            }
+        } catch (\Exception $e) {
+            // Optionally log error or ignore
+        }
+
+        // Log out of Laravel session as well
+        \Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        $cookie = \Cookie::forget('jwt');
+
+        return response()->json(['message' => 'Logged out successfully'])->withCookie($cookie);
     }
 }

@@ -83,6 +83,10 @@
         </form>
     </div>
 </div>
+<form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn">Log ud</button>
+</form>
 
 <!-- Mobile Nav Overlay -->
 <div id="mobile-nav-overlay" class="mobile-nav-overlay">

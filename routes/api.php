@@ -6,4 +6,4 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 
 //Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('logout', [AuthController::class, 'logout'])->middleware('web')->name('logout');
