@@ -23,7 +23,7 @@
         <div class="user-profile-header">
             <div class="user-avatar">U</div>
             <div class="user-info-header">
-                <p class="user-greeting">Velkommen, Bruger!</p>
+                <p class="user-greeting">Velkommen, {{ Auth::user()->name }}!</p>
             </div>
         </div>
         <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Ny Begivenhed</button>
