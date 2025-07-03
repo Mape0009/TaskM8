@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Firebase\JWT\JWT;
@@ -61,6 +61,6 @@ class AuthController extends Controller
 
         $cookie = \Cookie::forget('jwt');
 
-        return response()->json(['message' => 'Logged out successfully'])->withCookie($cookie);
+        return redirect('/')->withCookie($cookie);
     }
 }
