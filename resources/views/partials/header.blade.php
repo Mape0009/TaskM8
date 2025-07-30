@@ -20,12 +20,21 @@
             <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         </button>
+        @if (Auth::check())
         <div class="user-profile-header">
             <div class="user-avatar">U</div>
             <div class="user-info-header">
-                <p class="user-greeting">Velkommen, {{ Auth::user()->name }}!</p>
+                
+                    <p class="user-greeting">Velkommen, {{ Auth::user()->name }}!</p>
+                
+                
             </div>
         </div>
+        @else
+        <div class="login-header">
+            <a href="{{ route('login') }}" class="btn">Log ind</a>
+        </div>
+        @endif
         <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Ny Begivenhed</button>
     </div>
 </header>
@@ -83,10 +92,12 @@
         </form>
     </div>
 </div>
-<form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn">Log ud</button>
-</form>
+@if (Auth::check())
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn">Log ud</button>
+    </form>
+@endif
 
 <!-- Mobile Nav Overlay -->
 <div id="mobile-nav-overlay" class="mobile-nav-overlay">
