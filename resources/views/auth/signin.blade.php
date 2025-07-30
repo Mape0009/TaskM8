@@ -125,7 +125,7 @@
 <body>
     <div class="auth-container">
         <h2>Login</h2>
-        <form action="/login" method="POST">
+        <form action="{{ route('loginPost') }}" method="POST">
             @csrf
             <div class="input-group">
                 <label for="email">Email</label>

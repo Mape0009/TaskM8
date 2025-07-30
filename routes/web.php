@@ -6,6 +6,7 @@ use App\Http\Controllers\EventParticipantController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Models\Event;
 
 Route::get('/', function () {
@@ -23,7 +24,7 @@ Route::get('/events', function () {
 
 Route::get('/friends', function () {
     return view('friends');
-});
+})->middleware('auth');
 
 Route::get('/signup', function () {
     return view('auth.signup');
@@ -31,18 +32,18 @@ Route::get('/signup', function () {
 
 Route::get('/signin', function () {
     return view('auth.signin');
-});
+})->name('login');
 
 // User routes
+Route::post('/loginPost', [AuthController::class, 'login'])->name('loginPost');
 Route::post('/user/create', [UserController::class, 'createUser']);
 Route::post('/admin/create', [UserController::class, 'createAdmin']);
-Route::post('/login', [UserController::class, 'login']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 
 // Event Routes
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{id}', [EventController::class, 'show']);
-Route::post('/events/create', [EventController::class, 'create']);
+Route::post('/events/create', [EventController::class, 'create'])->middleware('auth')->name('events.create');
 Route::put('/events/update/{id}', [EventController::class, 'update']);
 Route::delete('/events/delete/{id}', [EventController::class, 'delete']);
 
