@@ -29,7 +29,15 @@ class EventController extends Controller
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->save();
-        return redirect()->back()->with('success', 'Event created successfully!');
+        
+        // Redirect til dashboard med success-besked og fjern den straks
+        return redirect('/dashboard')->with('success', 'Event er nu lavet!');
+    }
+
+    public function clearSuccessMessage()
+    {
+        session()->forget('success');
+        return response()->json(['message' => 'Success message cleared']);
     }
 
     public function update(Request $request, $id)

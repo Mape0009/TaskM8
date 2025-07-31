@@ -40,24 +40,29 @@ if (openBtnMobile) {
         }
     });
 }
+// Fjern eller kommenter klik-udenfor og Escape logik
+// window.addEventListener('click', function(e) {
+//     if (e.target === modal) {
+//         modal.style.display = 'none';
+//         resetModal();
+//     }
+// });
+// window.addEventListener('keydown', function(e) {
+//     if (e.key === 'Escape' && modal.style.display === 'flex') {
+//         modal.style.display = 'none';
+//         resetModal();
+//     }
+// });
+
+// Opdater closeBtn event: kun closeBtn kan lukke modalen
 if (closeBtn) {
     closeBtn.addEventListener('click', function() {
         modal.style.display = 'none';
         resetModal();
     });
 }
-window.addEventListener('click', function(e) {
-    if (e.target === modal) {
-        modal.style.display = 'none';
-        resetModal();
-    }
-});
-window.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && modal.style.display === 'flex') {
-        modal.style.display = 'none';
-        resetModal();
-    }
-});
+
+// Form reset og reload efter submit (uden AJAX)
 const form = document.getElementById('new-event-form');
 const startInput = document.getElementById('event-start');
 const endInput = document.getElementById('event-end');
@@ -70,11 +75,13 @@ if (startInput && endInput) {
     });
 }
 if (form) {
-    // Remove the preventDefault and showSuccess to allow normal form submission
-    // form.addEventListener('submit', function(e) {
-    //     e.preventDefault();
-    //     showSuccess();
-    // });
+    form.addEventListener('submit', function() {
+        // Efter submit vil siden automatisk reloade pga. form action (ingen AJAX)
+        // Modal reset håndteres ved reload, men for ekstra sikkerhed kan vi resette felter her
+        setTimeout(() => {
+            form.reset();
+        }, 100);
+    });
 }
 function showSuccess() {
     modalContent.innerHTML = `
@@ -93,9 +100,7 @@ function showSuccess() {
 }
 function resetModal() {
     // Restore modal content to form
-    modalContent.innerHTML = `
-        <div class=\"modal-header\">\n            <span class=\"modal-icon\">\n                <svg width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"></line><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"></line><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"></line></svg>\n            </span>\n            <h2>Create New Event</h2>\n            <button class=\"modal-close-btn\" id=\"close-modal-btn\" aria-label=\"Close\">\n                <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line></svg>\n            </button>\n        </div>\n        <form id=\"new-event-form\" class=\"modal-form\" autocomplete=\"off\">\n            <div>\n                <label for=\"event-title\">Title</label>\n                <input type=\"text\" id=\"event-title\" name=\"title\" required placeholder=\"Event title\">\n            </div>\n            <div>\n                <label for=\"event-start\">Start Time</label>\n                <input type=\"datetime-local\" id=\"event-start\" name=\"start_time\" required>\n            </div>\n            <div>\n                <label for=\"event-end\">End Time</label>\n                <input type=\"datetime-local\" id=\"event-end\" name=\"end_time\" required>\n            </div>\n            <div class=\"repeat-container\">\n                <label class=\"repeat-checkbox-label\">\n                    <input type=\"checkbox\" id=\"event-repeat\" name=\"repeat\"> Repeat\n                </label>\n                <div id=\"repeat-options\" class=\"repeat-options\" style=\"display: none;\">\n                    <label for=\"repeat-interval\">Interval</label>\n                    <select id=\"repeat-interval\" name=\"repeat_interval\" class=\"repeat-select\">\n                        <option value=\"daily\">Daily</option>\n                        <option value=\"weekly\">Weekly</option>\n                        <option value=\"monthly\">Monthly</option>\n                        <option value=\"custom\">Custom</option>\n                    </select>\n                    <input type=\"text\" id=\"custom-interval\" name=\"custom_interval\" placeholder=\"Describe custom interval\" class=\"custom-interval-input\" style=\"display: none;\">\n                </div>\n            </div>\n            <div>\n                <label for=\"event-location\">Location</label>\n                <input type=\"text\" id=\"event-location\" name=\"location\" required placeholder=\"e.g. Main Office, Park...\">\n            </div>\n            <div>\n                <label for=\"event-description\">Description</label>\n                <textarea id=\"event-description\" name=\"description\" rows=\"3\" required placeholder=\"What is this event about?\"></textarea>\n            </div>\n            <button type=\"submit\" class=\"btn primary-btn\">Create Event</button>\n        </form>\n    `;
-    // Set min for startInput to now after modal is reset
+   // Set min for startInput to now after modal is reset
     const startInput = document.getElementById('event-start');
     if (startInput) {
         const now = new Date();
@@ -207,7 +212,10 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         setTimeout(() => {
             modal.style.display = 'none';
-            window.location.hash = '';
+            // Fjern success-beskeden fra DOM
+            successMsg.remove();
+            // Genindlæs siden for at fjerne success-beskeden fra session
+            window.location.reload();
         }, 1800);
     }
 });

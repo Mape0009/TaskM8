@@ -45,5 +45,6 @@ Route::delete('/events/delete/{id}', [EventController::class, 'delete']);
 
 // Event Participant Routes
 Route::get('/participants', [EventParticipantController::class, 'index']);
+Route::post('/events/clear-success', [EventController::class, 'clearSuccessMessage']);
 Route::get('/participant/{id}', [EventParticipantController::class, 'show']);
 Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'delete']);
