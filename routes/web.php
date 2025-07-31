@@ -26,17 +26,13 @@ Route::get('/friends', function () {
     return view('friends');
 })->middleware('auth');
 
-Route::get('/signup', function () {
-    return view('auth.signup');
-});
 
-Route::get('/signin', function () {
-    return view('auth.signin');
-})->name('login');
+Route::view('signup', 'auth.signup');
+Route::view('signin', 'auth.signin')->name('login');
 
 // User routes
 Route::post('/loginPost', [AuthController::class, 'login'])->name('loginPost');
-Route::post('/user/create', [UserController::class, 'createUser']);
+Route::post('/user/create', [UserController::class, 'createUser'])->name('user.create');
 Route::post('/admin/create', [UserController::class, 'createAdmin']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 

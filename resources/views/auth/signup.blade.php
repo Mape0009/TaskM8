@@ -125,7 +125,7 @@
 <body>
     <div class="auth-container">
         <h2>Lav Konto</h2>
-        <form action="/user/create" method="POST">
+        <form action="{{ route('user.create') }}" method="POST">
             @csrf
             <div class="input-group">
                 <label for="name">Navn</label>
