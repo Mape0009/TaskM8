@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         html {
-            font-size: 75%; /* Adjust for zoomed out effect on auth pages */
+            font-size: 75%;
         }
         body {
             display: flex;
@@ -48,7 +48,7 @@
             font-weight: 500;
         }
         .input-group input {
-            width: calc(100% - (var(--spacing-unit) * 4)); /* Adjust for padding */
+            width: calc(100% - (var(--spacing-unit) * 4)); 
             padding: calc(var(--spacing-unit) * 2);
             background-color: var(--color-background-tertiary);
             border: 1px solid var(--color-border);
@@ -96,7 +96,6 @@
             color: var(--color-text-accent);
         }
 
-        /* Responsive Adjustments for Auth Pages */
         @media (max-width: 576px) {
             .auth-container {
                 padding: calc(var(--spacing-unit) * 4);

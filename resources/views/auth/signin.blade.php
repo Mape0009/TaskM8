@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         html {
-            font-size: 75%; /* Adjust for zoomed out effect on auth pages */
+            font-size: 75%; 
         }
         body {
             display: flex;

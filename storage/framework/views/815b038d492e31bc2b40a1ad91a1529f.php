@@ -101,9 +101,7 @@
 <!-- Mobile Nav Overlay -->
 <div id="mobile-nav-overlay" class="mobile-nav-overlay">
     <div class="mobile-nav-content minimal glassy integrated-dropdown">
-        <div class="mobile-nav-header">
-            <div class="mobile-logo">TaskM8</div>
-        </div>
+        
         
         <nav class="mobile-navigation minimal premium integrated">
             <ul>

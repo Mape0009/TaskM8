@@ -1569,6 +1569,8 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $remember_token
+     * @property string|null $phonenumber
+     * @property bool $loggedIn
      * @property string|null $birthdate
      * @property string $role
      * @property string $password
@@ -1587,6 +1589,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User wherePassword($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereRole($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereBirthdate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereLoggedin($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<User>|User wherePhonenumber($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereRememberToken($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereUpdatedAt($value)
