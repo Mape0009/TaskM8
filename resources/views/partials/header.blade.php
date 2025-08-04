@@ -7,8 +7,10 @@
         <nav class="navigation" id="main-nav">
             <ul>
                 <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
+                @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
                 <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Medlemmer</a></li>
+                @endif
             </ul>
         </nav>
     </div>
@@ -22,20 +24,23 @@
         </button>
         @if (Auth::check())
         <div class="user-profile-header">
-            <div class="user-avatar">U</div>
+            <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
             <div class="user-info-header">
-                
-                    <p class="user-greeting">Velkommen, {{ Auth::user()->name }}!</p>
-                
-                
+                <p class="user-greeting">Velkommen, {{ Auth::user()->name }}!</p>
             </div>
         </div>
+        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+            @csrf
+            <button type="submit" class="btn logout-btn">Log ud</button>
+        </form>
         @else
         <div class="login-header">
-            <a href="{{ route('login') }}" class="btn">Log ind</a>
+            <a href="{{ route('login') }}" class="btn login-btn">Log ind</a>
         </div>
         @endif
+        @if (Auth::check())
         <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Ny Begivenhed</button>
+        @endif
     </div>
 </header>
 <link rel="stylesheet" href="{{ asset('css/header.css') }}">
@@ -92,29 +97,55 @@
         </form>
     </div>
 </div>
-@if (Auth::check())
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="btn">Log ud</button>
-    </form>
-@endif
 
 <!-- Mobile Nav Overlay -->
 <div id="mobile-nav-overlay" class="mobile-nav-overlay">
     <div class="mobile-nav-content minimal glassy integrated-dropdown">
+        <div class="mobile-nav-header">
+            <div class="mobile-logo">TaskM8</div>
+        </div>
+        
         <nav class="mobile-navigation minimal premium integrated">
             <ul>
                 <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
+                @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
                 <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Medlemmer</a></li>
+                @endif
             </ul>
         </nav>
+        
+        @if (Auth::check())
         <div class="mobile-divider integrated"></div>
-        <div class="mobile-user-profile minimal integrated" style="flex-direction:column;align-items:center;justify-content:center;">
-            <div class="user-avatar integrated">U</div>
-            <div class="user-info-header"><p class="user-greeting">Velkommen, Bruger!</p></div>
+        <div class="mobile-user-section">
+            <div class="mobile-user-profile minimal integrated">
+                <div class="user-avatar integrated">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                <div class="user-info-header">
+                    <p class="user-greeting">Velkommen, {{ Auth::user()->name }}!</p>
+                </div>
+            </div>
+            <div class="mobile-actions">
+                <button class="create-event-btn-header mobile minimal premium integrated">+ Ny Begivenhed</button>
+                <form action="{{ route('logout') }}" method="POST" class="mobile-logout-form">
+                    @csrf
+                    <button type="submit" class="btn logout-btn mobile">Log ud</button>
+                </form>
+            </div>
         </div>
-        <button class="create-event-btn-header mobile minimal premium integrated">+ Ny Begivenhed</button>
+        @else
+        <div class="mobile-divider integrated"></div>
+        <div class="mobile-user-section">
+            <div class="mobile-user-profile minimal integrated">
+                <div class="user-avatar integrated">?</div>
+                <div class="user-info-header">
+                    <p class="user-greeting">Ikke logget ind</p>
+                </div>
+            </div>
+            <div class="mobile-actions">
+                <a href="{{ route('login') }}" class="btn login-btn mobile">Log ind</a>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 

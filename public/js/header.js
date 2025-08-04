@@ -131,22 +131,8 @@ if (repeatCheckbox && repeatOptions && repeatInterval && customInterval) {
         customInterval.style.display = this.value === 'custom' ? 'block' : 'none';
     });
 }
-// Mobile dropdown menu logic
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const mainNav = document.getElementById('main-nav');
-if (mobileMenuBtn && mainNav) {
-    mobileMenuBtn.addEventListener('click', function() {
-        mainNav.classList.toggle('open');
-        mobileMenuBtn.classList.toggle('open');
-    });
-    // Optional: close menu when clicking a link (for SPA feel)
-    mainNav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            mainNav.classList.remove('open');
-            mobileMenuBtn.classList.remove('open');
-        });
-    });
-}
+// Mobile dropdown menu logic - removed duplicate functionality
+// The mobile nav overlay handles all mobile navigation now
 // Mobile nav overlay logic (toggle on hamburger click, no close icon)
 const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
 const openMobileBtn = document.getElementById('mobile-menu-btn');
