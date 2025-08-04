@@ -26,17 +26,14 @@ Route::get('/friends', function () {
     return view('friends');
 })->middleware('auth');
 
-Route::get('/signup', function () {
-    return view('auth.signup');
-});
 
-Route::get('/signin', function () {
-    return view('auth.signin');
-})->name('login');
+Route::view('signup', 'auth.signup');
+Route::view('signin', 'auth.signin')->name('login');
 
 // User routes
 Route::post('/loginPost', [AuthController::class, 'login'])->name('loginPost');
-Route::post('/user/create', [UserController::class, 'createUser']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/user/create', [UserController::class, 'createUser'])->name('user.create');
 Route::post('/admin/create', [UserController::class, 'createAdmin']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 
@@ -49,5 +46,6 @@ Route::delete('/events/delete/{id}', [EventController::class, 'delete']);
 
 // Event Participant Routes
 Route::get('/participants', [EventParticipantController::class, 'index']);
+Route::post('/events/clear-success', [EventController::class, 'clearSuccessMessage']);
 Route::get('/participant/{id}', [EventParticipantController::class, 'show']);
 Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'delete']);

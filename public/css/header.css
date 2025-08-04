@@ -108,6 +108,119 @@ body.dark-mode .logo-img-light { display: none; }
     color: #334155;
     font-weight: 500;
 }
+
+/* Login/Logout Button Styles */
+.login-btn, .logout-btn {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.3rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+}
+
+.login-btn:hover, .logout-btn:hover {
+    background: #4f46e5;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.13);
+    color: #fff;
+    text-decoration: none;
+}
+
+body.dark-mode .login-btn, body.dark-mode .logout-btn {
+    background: linear-gradient(145deg, #007BFF, #00C2FF);
+    color: #F0F0F0;
+}
+
+body.dark-mode .login-btn:hover, body.dark-mode .logout-btn:hover {
+    background: linear-gradient(145deg, #00C2FF, #007BFF);
+}
+
+/* Mobile Login/Logout Button Styles */
+.login-btn.mobile, .logout-btn.mobile {
+    width: auto !important;
+    min-width: 120px !important;
+    max-width: 90vw !important;
+    padding: 0.7em 1.2em !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+    text-align: center;
+}
+
+/* Mobile Navigation Improvements */
+.mobile-nav-header {
+    text-align: center;
+    padding: 1em 0 0.5em 0;
+    margin-bottom: 0.5em;
+}
+
+.mobile-logo {
+    font-size: 1.5em;
+    font-weight: 900;
+    color: #6366f1;
+    letter-spacing: -1.2px;
+}
+
+body.dark-mode .mobile-logo {
+    color: #00C2FF;
+}
+
+.mobile-user-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    padding: 0.5em 0;
+}
+
+.mobile-user-profile.minimal.integrated {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.5em;
+    background: rgba(99,102,241,0.05);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 280px;
+}
+
+body.dark-mode .mobile-user-profile.minimal.integrated {
+    background: rgba(0,194,255,0.1);
+}
+
+.mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+    width: 100%;
+    max-width: 280px;
+    align-items: center;
+}
+
+.mobile-logout-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.mobile-logout-form button {
+    width: 100%;
+    max-width: 200px;
+}
+
+.create-event-btn-header.mobile.minimal.premium.integrated {
+    width: 100% !important;
+    max-width: 280px !important;
+    justify-content: center;
+    margin: 0 !important;
+}
 .create-event-btn-header {
     background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
     color: #fff;
@@ -180,6 +293,13 @@ body.dark-mode .create-event-btn-header:hover {
     gap: 0 !important;
     box-sizing: border-box;
     background: var(--color-background-secondary, #23232A);
+  }
+  
+  /* Hide login/logout buttons and user profile in main header on mobile */
+  .main-header .user-profile-header,
+  .main-header .login-header,
+  .main-header .logout-btn {
+    display: none !important;
   }
   .header-left, .header-right {
     flex-direction: row !important; 

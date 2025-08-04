@@ -7,8 +7,10 @@
         <nav class="navigation" id="main-nav">
             <ul>
                 <li><a href="/dashboard" class="<?php echo e($currentPage == 'dashboard' ? 'active' : ''); ?>">Forside</a></li>
+                <?php if(Auth::check()): ?>
                 <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
                 <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Medlemmer</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </div>
@@ -20,13 +22,25 @@
             <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         </button>
+        <?php if(Auth::check()): ?>
         <div class="user-profile-header">
-            <div class="user-avatar">U</div>
+            <div class="user-avatar"><?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?></div>
             <div class="user-info-header">
-                <p class="user-greeting">Velkommen, Bruger!</p>
+                <p class="user-greeting">Velkommen, <?php echo e(Auth::user()->name); ?>!</p>
             </div>
         </div>
+        <form action="<?php echo e(route('logout')); ?>" method="POST" style="display: inline;">
+            <?php echo csrf_field(); ?>
+            <button type="submit" class="btn logout-btn">Log ud</button>
+        </form>
+        <?php else: ?>
+        <div class="login-header">
+            <a href="<?php echo e(route('login')); ?>" class="btn login-btn">Log ind</a>
+        </div>
+        <?php endif; ?>
+        <?php if(Auth::check()): ?>
         <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Ny Begivenhed</button>
+        <?php endif; ?>
     </div>
 </header>
 <link rel="stylesheet" href="<?php echo e(asset('css/header.css')); ?>">
@@ -42,7 +56,7 @@
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
         </div>
-        <form id="new-event-form" class="modal-form" autocomplete="off" method="POST" action="/events/create">
+        <form id="new-event-form" class="modal-form" autocomplete="off" method="POST" action="<?php echo e(route('events.create')); ?>">
             <?php echo csrf_field(); ?>
             <div>
                 <label for="event-title">Title</label>
@@ -87,19 +101,51 @@
 <!-- Mobile Nav Overlay -->
 <div id="mobile-nav-overlay" class="mobile-nav-overlay">
     <div class="mobile-nav-content minimal glassy integrated-dropdown">
+        <div class="mobile-nav-header">
+            <div class="mobile-logo">TaskM8</div>
+        </div>
+        
         <nav class="mobile-navigation minimal premium integrated">
             <ul>
                 <li><a href="/dashboard" class="<?php echo e($currentPage == 'dashboard' ? 'active' : ''); ?>">Forside</a></li>
+                <?php if(Auth::check()): ?>
                 <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
                 <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Medlemmer</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
+        
+        <?php if(Auth::check()): ?>
         <div class="mobile-divider integrated"></div>
-        <div class="mobile-user-profile minimal integrated" style="flex-direction:column;align-items:center;justify-content:center;">
-            <div class="user-avatar integrated">U</div>
-            <div class="user-info-header"><p class="user-greeting">Velkommen, Bruger!</p></div>
+        <div class="mobile-user-section">
+            <div class="mobile-user-profile minimal integrated">
+                <div class="user-avatar integrated"><?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?></div>
+                <div class="user-info-header">
+                    <p class="user-greeting">Velkommen, <?php echo e(Auth::user()->name); ?>!</p>
+                </div>
+            </div>
+            <div class="mobile-actions">
+                <button class="create-event-btn-header mobile minimal premium integrated">+ Ny Begivenhed</button>
+                <form action="<?php echo e(route('logout')); ?>" method="POST" class="mobile-logout-form">
+                    <?php echo csrf_field(); ?>
+                    <button type="submit" class="btn logout-btn mobile">Log ud</button>
+                </form>
+            </div>
         </div>
-        <button class="create-event-btn-header mobile minimal premium integrated">+ Ny Begivenhed</button>
+        <?php else: ?>
+        <div class="mobile-divider integrated"></div>
+        <div class="mobile-user-section">
+            <div class="mobile-user-profile minimal integrated">
+                <div class="user-avatar integrated">?</div>
+                <div class="user-info-header">
+                    <p class="user-greeting">Ikke logget ind</p>
+                </div>
+            </div>
+            <div class="mobile-actions">
+                <a href="<?php echo e(route('login')); ?>" class="btn login-btn mobile">Log ind</a>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
 
