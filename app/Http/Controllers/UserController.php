@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    private const adminToken = 'Happy Pride';
     public function createUser(Request $request)
     {
         // Validate the request data
@@ -51,22 +50,6 @@ class UserController extends Controller
         } else {
             return response()->json(['message' => 'Invalid admin token'], 403);
         }
-    }
-
-    public function login(Request $request)
-    {
-        $email = $request->input('email');
-        $password = $request->input('password');
-
-        $user = User::where('email', $email)->first();
-        if ($user && Hash::check($password, $user->password)) 
-        {
-            $user->loggedIn = true;
-            $user->save();
-            return response()->json(['message' => 'Login successful', 'user' => $user], 200);
-        }
-
-        return redirect('/dashboard')->with('success', 'Login successful');
     }
 
     public function show($id)
