@@ -28,7 +28,7 @@
                 <li><span class="event-details-label">Lokation:</span> <span class="event-details-value"><?php echo e($event->location ?? '-'); ?></span></li>
             </ul>
             <div class="event-details-description">
-                <?php echo e($event->description ?? 'No description provided.'); ?>
+                <?php echo e($event->description ?? 'Der er ingen beskrivelse af denne begivenhed.'); ?>
 
             </div>
             <a href="<?php echo e(url('/events')); ?>" class="back-btn">&larr; Tilbage til begivenheder</a>

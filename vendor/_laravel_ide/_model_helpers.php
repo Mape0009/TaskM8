@@ -5,6 +5,22 @@ namespace App\Models {
     /**
      * App\Models\Event
      *
+     * @property string|null $location
+     * @property string|null $description
+     * @property string $endDate
+     * @property string $startDate
+     * @property string $eventName
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereUpdatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEventname($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereStartdate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEnddate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereLocation($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event query()
@@ -304,6 +320,18 @@ namespace App\Models {
     /**
      * App\Models\EventParticipant
      *
+     * @property string $status
+     * @property int $userId
+     * @property int $eventId
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereUpdatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereEventid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereUserid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereStatus($value)
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant query()
@@ -603,6 +631,16 @@ namespace App\Models {
     /**
      * App\Models\Friends
      *
+     * @property int $friendId
+     * @property int $userId
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Friends>|Friends whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Friends>|Friends whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Friends>|Friends whereUpdatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Friends>|Friends whereUserid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Friends>|Friends whereFriendid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Friends>|Friends newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Friends>|Friends newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Friends>|Friends query()
@@ -902,6 +940,22 @@ namespace App\Models {
     /**
      * App\Models\Mail
      *
+     * @property string $sentAt
+     * @property int $recipientId
+     * @property int $senderId
+     * @property string $body
+     * @property string $subject
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail whereUpdatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail whereSubject($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail whereBody($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail whereSenderid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail whereRecipientid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail whereSentat($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Mail>|Mail query()
@@ -1201,6 +1255,18 @@ namespace App\Models {
     /**
      * App\Models\PinCode
      *
+     * @property string $createdAt
+     * @property int $mailId
+     * @property string $pincode
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereUpdatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode wherePincode($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereMailid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereCreatedat($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode query()
@@ -1503,11 +1569,15 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $remember_token
+     * @property string|null $birthdate
+     * @property string $role
      * @property string $password
      * @property \Illuminate\Support\Carbon|null $email_verified_at
      * @property string $email
      * @property string $name
      * @property int $id
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+     * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereId($value)
@@ -1515,6 +1585,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereEmail($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereEmailVerifiedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User wherePassword($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereRole($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereBirthdate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereRememberToken($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereUpdatedAt($value)
