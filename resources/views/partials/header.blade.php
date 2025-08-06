@@ -1,3 +1,6 @@
+<script src="{{ asset('js/theme-toggle.js') }}"></script>
+<script src="{{ asset('js/header.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('css/header.css') }}">
 <header class="main-header">
     <div class="header-left">
         <div class="logo">
@@ -43,7 +46,6 @@
         @endif
     </div>
 </header>
-<link rel="stylesheet" href="{{ asset('css/header.css') }}">
 <!-- New Event Modal -->
 <div id="new-event-modal" class="modal">
     <div class="modal-content" id="modal-content">
@@ -100,10 +102,7 @@
 
 <!-- Mobile Nav Overlay -->
 <div id="mobile-nav-overlay" class="mobile-nav-overlay">
-    <div class="mobile-nav-content minimal glassy integrated-dropdown">
-        {{-- <div class="mobile-nav-header">
-            <div class="mobile-logo">TaskM8</div>
-        </div> --}}
+    <div class="mobile-nav-content minimal glassy integrated-dropdown"> 
         
         <nav class="mobile-navigation minimal premium integrated">
             <ul>
@@ -152,6 +151,3 @@
 @if(session('success'))
     <div id="event-success-message" style="display:none;">{{ session('success') }}</div>
 @endif
-
-<script src="{{ asset('js/theme-toggle.js') }}"></script>
-<script src="{{ asset('js/header.js') }}"></script>

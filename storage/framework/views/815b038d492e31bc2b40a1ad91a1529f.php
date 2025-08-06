@@ -1,3 +1,6 @@
+<script src="<?php echo e(asset('js/theme-toggle.js')); ?>"></script>
+<script src="<?php echo e(asset('js/header.js')); ?>"></script>
+<link rel="stylesheet" href="<?php echo e(asset('css/header.css')); ?>">
 <header class="main-header">
     <div class="header-left">
         <div class="logo">
@@ -43,7 +46,6 @@
         <?php endif; ?>
     </div>
 </header>
-<link rel="stylesheet" href="<?php echo e(asset('css/header.css')); ?>">
 <!-- New Event Modal -->
 <div id="new-event-modal" class="modal">
     <div class="modal-content" id="modal-content">
@@ -100,8 +102,7 @@
 
 <!-- Mobile Nav Overlay -->
 <div id="mobile-nav-overlay" class="mobile-nav-overlay">
-    <div class="mobile-nav-content minimal glassy integrated-dropdown">
-        
+    <div class="mobile-nav-content minimal glassy integrated-dropdown"> 
         
         <nav class="mobile-navigation minimal premium integrated">
             <ul>
@@ -149,7 +150,4 @@
 
 <?php if(session('success')): ?>
     <div id="event-success-message" style="display:none;"><?php echo e(session('success')); ?></div>
-<?php endif; ?>
-
-<script src="<?php echo e(asset('js/theme-toggle.js')); ?>"></script>
-<script src="<?php echo e(asset('js/header.js')); ?>"></script><?php /**PATH C:\Users\Tobia\Documents\GitHub\TaskM8\resources\views/partials/header.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\Users\Tobia\Documents\GitHub\TaskM8\resources\views/partials/header.blade.php ENDPATH**/ ?>
