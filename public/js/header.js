@@ -8,7 +8,6 @@ if (openBtn) {
     openBtn.addEventListener('click', function(e) {
         e.preventDefault();
         modal.style.display = 'flex';
-        // Set min for startInput to now
         const startInput = document.getElementById('event-start');
         if (startInput) {
             const now = new Date();
@@ -23,7 +22,6 @@ if (openBtnMobile) {
     openBtnMobile.addEventListener('click', function(e) {
         e.preventDefault();
         modal.style.display = 'flex';
-        // Set min for startInput to now
         const startInput = document.getElementById('event-start');
         if (startInput) {
             const now = new Date();
@@ -32,7 +30,6 @@ if (openBtnMobile) {
             startInput.min = local;
         }
         setTimeout(() => { startInput && startInput.focus(); }, 200);
-        // Also close the mobile dropdown
         const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
         if (mobileNavOverlay) {
             mobileNavOverlay.classList.remove('open');
@@ -40,21 +37,7 @@ if (openBtnMobile) {
         }
     });
 }
-// Fjern eller kommenter klik-udenfor og Escape logik
-// window.addEventListener('click', function(e) {
-//     if (e.target === modal) {
-//         modal.style.display = 'none';
-//         resetModal();
-//     }
-// });
-// window.addEventListener('keydown', function(e) {
-//     if (e.key === 'Escape' && modal.style.display === 'flex') {
-//         modal.style.display = 'none';
-//         resetModal();
-//     }
-// });
 
-// Opdater closeBtn event: kun closeBtn kan lukke modalen
 if (closeBtn) {
     closeBtn.addEventListener('click', function() {
         modal.style.display = 'none';
@@ -62,7 +45,7 @@ if (closeBtn) {
     });
 }
 
-// Form reset og reload efter submit (uden AJAX)
+// Form reset og reload efter submit 
 const form = document.getElementById('new-event-form');
 const startInput = document.getElementById('event-start');
 const endInput = document.getElementById('event-end');
@@ -76,8 +59,6 @@ if (startInput && endInput) {
 }
 if (form) {
     form.addEventListener('submit', function() {
-        // Efter submit vil siden automatisk reloade pga. form action (ingen AJAX)
-        // Modal reset håndteres ved reload, men for ekstra sikkerhed kan vi resette felter her
         setTimeout(() => {
             form.reset();
         }, 100);
@@ -99,8 +80,6 @@ function showSuccess() {
     }, 1400);
 }
 function resetModal() {
-    // Restore modal content to form
-   // Set min for startInput to now after modal is reset
     const startInput = document.getElementById('event-start');
     if (startInput) {
         const now = new Date();
@@ -108,7 +87,6 @@ function resetModal() {
         const local = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
         startInput.min = local;
     }
-    // Re-bind close and submit events
     document.getElementById('close-modal-btn').addEventListener('click', function() {
         modal.style.display = 'none';
         resetModal();
@@ -131,9 +109,7 @@ if (repeatCheckbox && repeatOptions && repeatInterval && customInterval) {
         customInterval.style.display = this.value === 'custom' ? 'block' : 'none';
     });
 }
-// Mobile dropdown menu logic - removed duplicate functionality
-// The mobile nav overlay handles all mobile navigation now
-// Mobile nav overlay logic (toggle on hamburger click, no close icon)
+// Mobile nav
 const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
 const openMobileBtn = document.getElementById('mobile-menu-btn');
 if (openMobileBtn && mobileNavOverlay) {
@@ -147,14 +123,14 @@ if (openMobileBtn && mobileNavOverlay) {
             document.body.style.overflow = 'hidden';
         }
     });
-    // Also close when clicking outside the dropdown
+
     mobileNavOverlay.addEventListener('click', function(e) {
         if (e.target === mobileNavOverlay) {
             mobileNavOverlay.classList.remove('open');
             document.body.style.overflow = '';
         }
     });
-    // Close on nav link click
+   
     mobileNavOverlay.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             mobileNavOverlay.classList.remove('open');
@@ -171,7 +147,7 @@ if (themeToggleBtnMobile && themeToggleBtn) {
         themeToggleBtn.click();
     });
 }
-// Micro-interaction: scale up nav links and button on tap/click
+
 function addTapScale(selector) {
     document.querySelectorAll(selector).forEach(el => {
         el.addEventListener('touchstart', () => el.classList.add('tapped'));
@@ -183,7 +159,7 @@ function addTapScale(selector) {
 }
 addTapScale('.mobile-navigation.premium a');
 addTapScale('.create-event-btn-header.premium');
-// Show success modal if event was created (from backend)
+
 document.addEventListener('DOMContentLoaded', function() {
     const successMsg = document.getElementById('event-success-message');
     if (successMsg) {
@@ -198,9 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         setTimeout(() => {
             modal.style.display = 'none';
-            // Fjern success-beskeden fra DOM
             successMsg.remove();
-            // Genindlæs siden for at fjerne success-beskeden fra session
             window.location.reload();
         }, 1800);
     }
