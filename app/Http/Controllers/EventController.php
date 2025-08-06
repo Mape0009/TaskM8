@@ -39,7 +39,6 @@ class EventController extends Controller
         $event->ownerId = auth()->user()->id;
         $event->save();
         
-        // Redirect til dashboard med success-besked og fjern den straks
         return redirect('/dashboard')->with('success', 'Event er nu lavet!');
     }
 
