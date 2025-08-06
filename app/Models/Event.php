@@ -12,5 +12,6 @@ class Event extends Model
         'endDate',
         'description',
         'location',
+        'ownerId',
     ];
 }

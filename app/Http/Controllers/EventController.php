@@ -10,7 +10,15 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::all();
+        $userId = auth()->user()->id;
+
+        $ownedEvents = Event::where('ownerId', $userId);
+
+        $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
+        $participatedEvents = Event::whereIn('id', $participantEventIds);
+
+        $events = $ownedEvents->union($participatedEvents)->get();
+
         return view('events', compact('events'));
     }
 
@@ -28,6 +36,7 @@ class EventController extends Controller
         $event->endDate = $request->input('endDate');
         $event->description = $request->input('description');
         $event->location = $request->input('location');
+        $event->ownerId = auth()->user()->id;
         $event->save();
         
         // Redirect til dashboard med success-besked og fjern den straks
