@@ -15,6 +15,7 @@
     --spacing-unit: 8px;
 }
 
+html.dark-mode,
 body.dark-mode {
     /* Dark Theme  */
     --color-background-primary: #0A0A0C;

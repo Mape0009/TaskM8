@@ -160,6 +160,60 @@ function addTapScale(selector) {
 addTapScale('.mobile-navigation.premium a');
 addTapScale('.create-event-btn-header.premium');
 
+// User Profile Dropdown functionality
+const userProfileTrigger = document.getElementById('user-profile-trigger');
+const userDropdownMenu = document.getElementById('user-dropdown-menu');
+const userProfileDropdown = document.querySelector('.user-profile-dropdown');
+
+if (userProfileTrigger && userDropdownMenu) {
+    userProfileTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        userProfileDropdown.classList.toggle('open');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!userProfileDropdown.contains(e.target)) {
+            userProfileDropdown.classList.remove('open');
+        }
+    });
+
+    // Close dropdown when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            userProfileDropdown.classList.remove('open');
+        }
+    });
+
+    // Settings button functionality (placeholder for future implementation)
+    const settingsBtn = document.getElementById('settings-btn');
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // TODO: Add settings functionality
+            console.log('Settings clicked - functionality to be implemented');
+            userProfileDropdown.classList.remove('open');
+        });
+    }
+}
+
+// Mobile settings button functionality
+const mobileSettingsBtn = document.getElementById('mobile-settings-btn');
+if (mobileSettingsBtn) {
+    mobileSettingsBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        // TODO: Add settings functionality
+        console.log('Mobile settings clicked - functionality to be implemented');
+        // Close mobile nav overlay
+        const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+        if (mobileNavOverlay) {
+            mobileNavOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const successMsg = document.getElementById('event-success-message');
     if (successMsg) {
