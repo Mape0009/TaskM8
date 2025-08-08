@@ -82,52 +82,89 @@
 <div id="new-event-modal" class="modal">
     <div class="modal-content" id="modal-content">
         <div class="modal-header">
-            <span class="modal-icon">
-                <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            </span>
-            <h2>Lav ny begivenhed</h2>
-            <button class="modal-close-btn" id="close-modal-btn" aria-label="Close">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-        </div>
-        <form id="new-event-form" class="modal-form" autocomplete="off" method="POST" action="<?php echo e(route('events.create')); ?>">
-            <?php echo csrf_field(); ?>
-            <div>
-                <label for="event-title">Title</label>
-                <input type="text" id="event-title" name="eventName" required placeholder="Hvad er titlen?">
-            </div>
-            <div>
-                <label for="event-start">Start Tid</label>
-                <input type="datetime-local" id="event-start" name="startDate" required>
-            </div>
-            <div>
-                <label for="event-end">Slut tid</label>
-                <input type="datetime-local" id="event-end" name="endDate" required>
-            </div>
-            <div class="repeat-container">
-                <label class="repeat-checkbox-label">
-                    <input type="checkbox" id="event-repeat" name="repeat"> Gentagelse
-                </label>
-                <div id="repeat-options" class="repeat-options" style="display: none;">
-                    <label for="repeat-interval">Interval</label>
-                    <select id="repeat-interval" name="repeat_interval" class="repeat-select">
-                        <option value="daily">Dagligt</option>
-                        <option value="weekly">Ugenligt</option>
-                        <option value="monthly">Månedligt</option>
-                        <option value="monthly">Årligt</option>
-                    </select>
-                    <input type="text" id="custom-interval" name="custom_interval" placeholder="" class="custom-interval-input" style="display: none;">
+            <div class="modal-header-content">
+                <div class="modal-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <div class="modal-title">
+                    <h2>Opret ny begivenhed</h2>
+                    <p class="modal-subtitle">Udfyld informationerne nedenfor</p>
                 </div>
             </div>
-            <div>
-                <label for="event-location">Lokation</label>
-                <input type="text" id="event-location" name="location" required placeholder="Hvor er lokationen?">
+            <button class="modal-close-btn" id="close-modal-btn" aria-label="Luk">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="new-event-form" class="modal-form" autocomplete="off" method="POST" action="<?php echo e(route('events.create')); ?>">
+            <?php echo csrf_field(); ?>
+            
+            <div class="form-section">
+                <h3 class="section-title">Grundlæggende information</h3>
+                <div class="form-row">
+                    <label for="event-title">Titel</label>
+                    <input type="text" id="event-title" name="eventName" required placeholder="Indtast begivenhedens titel">
+                </div>
+                <div class="form-row">
+                    <label for="event-location">Lokation</label>
+                    <input type="text" id="event-location" name="location" required placeholder="Indtast lokation">
+                </div>
+                <div class="form-row">
+                    <label for="event-description">Beskrivelse</label>
+                    <textarea id="event-description" name="description" rows="3" required placeholder="Beskriv begivenheden"></textarea>
+                </div>
             </div>
-            <div>
-                <label for="event-description">Beskrivelse</label>
-                <textarea id="event-description" name="description" rows="3" required placeholder="Hvad er begivenheden om?"></textarea>
+            
+            <div class="form-section">
+                <h3 class="section-title">Tidspunkt</h3>
+                <div class="form-row">
+                    <label for="event-start">Start tidspunkt</label>
+                    <input type="datetime-local" id="event-start" name="startDate" required>
+                </div>
+                <div class="form-row">
+                    <label for="event-end">Slut tidspunkt</label>
+                    <input type="datetime-local" id="event-end" name="endDate" required>
+                </div>
             </div>
-            <button type="submit" class="btn primary-btn">Lav Begivenhed</button>
+            
+            <div class="form-section">
+                <h3 class="section-title">Gentagelse</h3>
+                <div class="repeat-section">
+                    <div class="repeat-toggle">
+                        <input type="checkbox" id="event-repeat" name="repeat">
+                        <label for="event-repeat">Aktiver gentagelse</label>
+                    </div>
+                    <div id="repeat-options" class="repeat-options" style="display: none;">
+                        <div class="repeat-field">
+                            <label for="repeat-interval">Gentagelse interval</label>
+                            <select id="repeat-interval" name="repeat_interval" class="repeat-select">
+                                <option value="daily">Dagligt</option>
+                                <option value="weekly">Ugentligt</option>
+                                <option value="monthly">Månedligt</option>
+                                <option value="yearly">Årligt</option>
+                                <option value="custom">Tilpasset</option>
+                            </select>
+                        </div>
+                        <div class="repeat-field" id="custom-interval-field" style="display: none;">
+                            <label for="custom-interval">Tilpasset interval</label>
+                            <input type="text" id="custom-interval" name="custom_interval" placeholder="F.eks. hver 2. uge, hver 3. dag" class="custom-interval-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn secondary-btn" id="cancel-btn">Annuller</button>
+                <button type="submit" class="btn primary-btn">Opret begivenhed</button>
+            </div>
         </form>
     </div>
 </div>

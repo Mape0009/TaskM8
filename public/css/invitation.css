@@ -1,0 +1,564 @@
+/* Invitation Button Styles */
+.invite-btn {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.15);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.invite-btn:hover {
+    background: linear-gradient(90deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(16,185,129,0.25);
+    transform: translateY(-1px);
+}
+
+.invite-btn .icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Dark mode for invite button */
+body.dark-mode .invite-btn {
+    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
+    box-shadow: 0 2px 8px rgba(0,194,255,0.15);
+}
+
+body.dark-mode .invite-btn:hover {
+    background: linear-gradient(90deg, #007BFF 0%, #0056CC 100%);
+    box-shadow: 0 4px 16px rgba(0,194,255,0.25);
+}
+
+/* Invitation Modal Specific Styles */
+.invite-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.invite-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 1rem;
+}
+
+.invite-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.3px;
+}
+
+body.dark-mode .invite-section h3 {
+    color: #F0F0F0;
+}
+
+body.dark-mode .invite-section {
+    border-bottom: 1px solid #333338;
+}
+
+/* Email Input Styles */
+.email-input-container {
+    margin-bottom: 1rem;
+}
+
+.email-input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.email-input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.email-input:focus {
+    border: 1.5px solid #10b981;
+    box-shadow: 0 0 0 2px rgba(16,185,129,0.1);
+    background: #fff;
+}
+
+.add-email-btn {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.add-email-btn:hover {
+    background: linear-gradient(90deg, #059669 0%, #047857 100%);
+    transform: translateY(-1px);
+}
+
+/* Dark mode for email input */
+body.dark-mode .email-input {
+    background: #2A2A30;
+    color: #F0F0F0;
+    border: 1.5px solid #333338;
+}
+
+body.dark-mode .email-input:focus {
+    border: 1.5px solid #00C2FF;
+    box-shadow: 0 0 0 2px rgba(0,194,255,0.1);
+    background: #23232A;
+}
+
+body.dark-mode .add-email-btn {
+    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
+}
+
+body.dark-mode .add-email-btn:hover {
+    background: linear-gradient(90deg, #007BFF 0%, #0056CC 100%);
+}
+
+/* Email List Styles */
+.email-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.email-tag {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(16,185,129,0.2);
+    animation: tagSlideIn 0.3s ease;
+}
+
+@keyframes tagSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.remove-email-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    transition: background 0.2s ease;
+}
+
+.remove-email-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* Dark mode for email tags */
+body.dark-mode .email-tag {
+    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
+    box-shadow: 0 2px 4px rgba(0,194,255,0.2);
+}
+
+/* Search Input Styles */
+.search-container {
+    margin-bottom: 1rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.search-input:focus {
+    border: 1.5px solid #6366f1;
+    box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+    background: #fff;
+}
+
+body.dark-mode .search-input {
+    background: #2A2A30;
+    color: #F0F0F0;
+    border: 1.5px solid #333338;
+}
+
+body.dark-mode .search-input:focus {
+    border: 1.5px solid #00C2FF;
+    box-shadow: 0 0 0 2px rgba(0,194,255,0.1);
+    background: #23232A;
+}
+
+/* Invitees List Styles */
+.invitees-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+body.dark-mode .invitees-list {
+    border: 1px solid #333338;
+    background: #2A2A30;
+}
+
+.invitee-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background 0.2s ease;
+}
+
+.invitee-item:last-child {
+    border-bottom: none;
+}
+
+.invitee-item:hover {
+    background: #f1f5f9;
+}
+
+body.dark-mode .invitee-item {
+    border-bottom: 1px solid #333338;
+}
+
+body.dark-mode .invitee-item:hover {
+    background: #23232A;
+}
+
+.invitee-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex: 1;
+}
+
+.invitee-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.invitee-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.invitee-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.95rem;
+}
+
+.invitee-email {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+body.dark-mode .invitee-name {
+    color: #F0F0F0;
+}
+
+body.dark-mode .invitee-email {
+    color: #A0A0A0;
+}
+
+.invitee-select-btn {
+    background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.invitee-select-btn:hover {
+    background: linear-gradient(90deg, #4f46e5 0%, #2563eb 100%);
+    transform: translateY(-1px);
+}
+
+body.dark-mode .invitee-select-btn {
+    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
+}
+
+body.dark-mode .invitee-select-btn:hover {
+    background: linear-gradient(90deg, #007BFF 0%, #0056CC 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .email-input-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .add-email-btn {
+        width: 100%;
+    }
+    
+    .invitee-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    
+    .invitee-select-btn {
+        align-self: flex-end;
+    }
+}
+
+/* Event Actions Container */
+.event-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+@media (max-width: 480px) {
+    .event-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .event-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Event Details Actions */
+.event-actions-details {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.event-actions-details .invite-btn {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.85rem 1.7rem;
+    font-size: 1.08rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.10);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.event-actions-details .invite-btn:hover {
+    background: linear-gradient(90deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(16,185,129,0.13);
+    transform: translateY(-1px);
+}
+
+.event-actions-details .invite-btn .icon {
+    width: 16px;
+    height: 16px;
+}
+
+body.dark-mode .event-actions-details .invite-btn {
+    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
+    box-shadow: 0 2px 8px rgba(0,194,255,0.10);
+}
+
+body.dark-mode .event-actions-details .invite-btn:hover {
+    background: linear-gradient(90deg, #007BFF 0%, #0056CC 100%);
+    box-shadow: 0 4px 16px rgba(0,194,255,0.13);
+}
+
+@media (max-width: 600px) {
+    .event-actions-details {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+    }
+    
+    .event-actions-details .invite-btn,
+    .event-actions-details .back-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.invite-btn, .event-actions-details .invite-btn, .add-email-btn {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.15);
+    transition: all 0.2s ease;
+}
+.invite-btn:hover, .event-actions-details .invite-btn:hover, .add-email-btn:hover {
+    background: linear-gradient(90deg, #059669 0%, #047857 100%) !important;
+    box-shadow: 0 4px 16px rgba(16,185,129,0.25);
+    transform: translateY(-1px);
+}
+body.dark-mode .invite-btn, body.dark-mode .event-actions-details .invite-btn, body.dark-mode .add-email-btn {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.15);
+}
+body.dark-mode .invite-btn:hover, body.dark-mode .event-actions-details .invite-btn:hover, body.dark-mode .add-email-btn:hover {
+    background: linear-gradient(90deg, #059669 0%, #047857 100%) !important;
+    box-shadow: 0 4px 16px rgba(16,185,129,0.25);
+    transform: translateY(-1px);
+}
+
+.invite-modal-content {
+    border-radius: 16px;
+    min-width: 400px;
+    max-width: 95vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
+    overflow: hidden;
+    background: #fff;
+    padding: 0;
+}
+.invite-modal-header {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+}
+.invite-modal-header .modal-header-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex: 1;
+}
+.invite-modal-header .modal-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.invite-modal-header .modal-title {
+    flex: 1;
+}
+.invite-modal-header .modal-title h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    letter-spacing: -0.025em;
+    line-height: 1.3;
+}
+.invite-modal-header .modal-subtitle {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.8);
+    margin: 0;
+    font-weight: 400;
+}
+.invite-modal-header .modal-close-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+.invite-modal-header .modal-close-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+.invite-modal-form {
+    padding: 2rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+@media (max-width: 600px) {
+    .invite-modal-content {
+        min-width: 95vw;
+        margin: 1rem;
+        max-height: 95vh;
+    }
+    .invite-modal-header {
+        padding: 1.25rem 1.5rem;
+    }
+    .invite-modal-form {
+        padding: 1.2rem;
+        gap: 1.2rem;
+    }
+}
+body.dark-mode .invite-modal-content {
+    background: #1f2937;
+}
+body.dark-mode .invite-modal-header {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #fff;
+}
+body.dark-mode .invite-modal-form {
+    background: #1f2937;
+}
