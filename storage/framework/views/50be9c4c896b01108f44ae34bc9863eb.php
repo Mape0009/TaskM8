@@ -153,8 +153,7 @@
         }
 
         function loadPreviousInvitees() {
-            // Her ville man normalt hente tidligere inviterede fra serveren
-            // For nu viser vi bare nogle eksempel data
+            // Her ville man normalt hente tidligere inviterede 
             const inviteesList = document.getElementById('invitees-list');
             inviteesList.innerHTML = `
                 <div class="invitee-item">

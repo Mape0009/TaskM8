@@ -15,6 +15,26 @@
     <main class="main-content-full">
         <header class="content-header">
         </header>
+        
+        @if(session('success'))
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <div class="message-content">
+                    <h3 class="message-title">Begivenhed oprettet!</h3>
+                    <p class="message-subtitle">Din begivenhed er blevet oprettet succesfuldt</p>
+                </div>
+                <button class="close-btn" onclick="closeSuccessMessage()" aria-label="Luk besked">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        @endif
+        
         <section class="stats-cards">
             <div class="stat-card">
                 <div class="stat-info">

@@ -68,26 +68,14 @@ if (startInput && endInput) {
 }
 if (form) {
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
         // Show loading state
         const submitBtn = form.querySelector('.primary-btn');
         const originalText = submitBtn.textContent;
         submitBtn.textContent = 'Opretter...';
         submitBtn.disabled = true;
         
-        // Simulate form submission (replace with actual form submission)
-        setTimeout(() => {
-            // Show success message
-            showSuccess();
-            
-            // Reset form
-            form.reset();
-            
-            // Reset button
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 1000);
+        // Allow the form to actually submit to the server
+        // The success message will be handled by the server redirect
     });
 }
 
@@ -394,6 +382,42 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Success message functionality
+function closeSuccessMessage() {
+    const successMessage = document.getElementById('successMessage');
+    if (successMessage) {
+        successMessage.style.opacity = '0';
+        successMessage.style.transform = 'translateY(-20px) scale(0.95)';
+        successMessage.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        setTimeout(() => {
+            successMessage.remove();
+        }, 400);
+    }
+}
+
+// Auto-hide success message after 6 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const successMessage = document.getElementById('successMessage');
+    if (successMessage) {
+        // Add entrance animation
+        successMessage.style.opacity = '0';
+        successMessage.style.transform = 'translateY(-20px) scale(0.95)';
+        
+        setTimeout(() => {
+            successMessage.style.opacity = '1';
+            successMessage.style.transform = 'translateY(0) scale(1)';
+            successMessage.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        }, 100);
+        
+        // Auto-hide after 6 seconds
+        setTimeout(() => {
+            if (successMessage.parentNode) {
+                closeSuccessMessage();
+            }
+        }, 6000);
+    }
+});
+
 function initializeModalListeners() {
     // Re-get elements after reset
     const newForm = document.getElementById('new-event-form');
@@ -420,26 +444,14 @@ function initializeModalListeners() {
     // Set up form submission
     if (newForm) {
         newForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
             // Show loading state
             const submitBtn = newForm.querySelector('.primary-btn');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Opretter...';
             submitBtn.disabled = true;
             
-            // Simulate form submission (replace with actual form submission)
-            setTimeout(() => {
-                // Show success message
-                showSuccess();
-                
-                // Reset form
-                newForm.reset();
-                
-                // Reset button
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 1000);
+            // Allow the form to actually submit to the server
+            // The success message will be handled by the server redirect
         });
     }
     
