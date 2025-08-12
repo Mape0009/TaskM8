@@ -57,7 +57,7 @@
                         <p class="event-description"><?php echo e($event->description); ?></p>
                         <div class="event-actions">
                             <a href="/events/<?php echo e($event->id); ?>" class="btn primary-btn">Se detaljer</a>
-                            <button class="btn secondary-btn">Rediger <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
+                            <a href="<?php echo e(route('events.edit', ['id' => $event->id])); ?>" class="btn secondary-btn">Rediger <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></a>
                         </div>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

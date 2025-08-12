@@ -389,6 +389,23 @@ body.dark-mode .event-details-description {
     color: #F0F0F0;
     border: 1px solid #333338;
 }
+.event-actions-details {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+.event-actions-details .btn {
+    flex: 0 0 auto;
+}
+.event-actions-details .secondary-btn .arrow-icon {
+    width: 16px;
+    height: 16px;
+}
+@media (max-width: 600px) {
+    .event-actions-details { justify-content: flex-start; }
+}
 .back-btn {
     display: inline-block;
     background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);

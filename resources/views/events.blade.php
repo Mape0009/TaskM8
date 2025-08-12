@@ -29,8 +29,7 @@
                         <p class="event-description">{{ $event->description }}</p>
                         <div class="event-actions">
                             <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
-                            <button class="btn secondary-btn">Rediger <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
-                            <!-- Inviter knappen er fjernet her -->
+                            <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, @json($event->eventName))">Inviter <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
                         </div>
                     </div>
                 @empty

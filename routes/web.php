@@ -14,13 +14,16 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $events = Event::orderBy('startDate', 'desc')->get();
+    $events = Event::query()
+        ->when(auth()->check(), function ($query) {
+            $query->where('user_id', auth()->id());
+        })
+        ->orderBy('startDate', 'desc')
+        ->get();
     return view('dashboard', compact('events'));
 });
 
-Route::get('/events', function () {
-    return view('events');
-});
+// Fjernet gammel events-view route, så controlleren håndterer det
 
 Route::get('/friends', function () {
     return view('friends');
@@ -39,11 +42,12 @@ Route::get('/user/{id}', [UserController::class, 'show']);
 Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('user.change-password')->middleware('auth');
 
 // Event Routes
-Route::get('/events', [EventController::class, 'index']);
-Route::get('/events/{id}', [EventController::class, 'show']);
+Route::get('/events', [EventController::class, 'index'])->middleware('auth');
+Route::get('/events/{id}', [EventController::class, 'show'])->middleware('auth');
+Route::get('/events/{id}/edit', [EventController::class, 'edit'])->middleware('auth')->name('events.edit');
 Route::post('/events/create', [EventController::class, 'create'])->middleware('auth')->name('events.create');
-Route::put('/events/update/{id}', [EventController::class, 'update']);
-Route::delete('/events/delete/{id}', [EventController::class, 'delete']);
+Route::put('/events/update/{id}', [EventController::class, 'update'])->middleware('auth')->name('events.update');
+Route::delete('/events/delete/{id}', [EventController::class, 'delete'])->middleware('auth');
 
 // Event Participant Routes
 Route::get('/participants', [EventParticipantController::class, 'index']);

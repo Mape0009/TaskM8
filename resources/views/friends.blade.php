@@ -33,9 +33,7 @@
                         </div>
                     </div>
                     
-                    <div class="event-actions">
-                        <button class="btn primary-btn">Inviter</button>
-                    </div>
+                    <div class="event-actions"></div>
                 </div>
 
                 <!-- Friend Card 2 -->
@@ -48,9 +46,7 @@
                         </div>
                     </div>
                     
-                    <div class="event-actions">
-                        <button class="btn primary-btn">Inviter</button>
-                    </div>
+                    <div class="event-actions"></div>
                 </div>
             </div>
         </section>

@@ -422,7 +422,6 @@ body {
     background-color: var(--color-accent-primary);
     color: white;
     border: none;
-    flex-grow: 1;
 }
 
 .primary-btn:hover {
@@ -451,6 +450,30 @@ body {
     width: calc(var(--spacing-unit) * 2); /* 16px */
     height: calc(var(--spacing-unit) * 2); /* 16px */
     stroke-width: 2;
+}
+
+/* Make primary and invite buttons equal width inside event actions */
+.event-actions .primary-btn,
+.event-actions .invite-btn { 
+    min-width: 170px; 
+}
+.event-actions .invite-btn {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border: none;
+}
+.event-actions .invite-btn:hover {
+    background: linear-gradient(90deg, #059669 0%, #047857 100%);
+}
+
+/* Ensure button sizes remain compact, even if a single card spans full width */
+.event-actions .btn {
+    flex: 0 0 auto;
+}
+
+.event-actions .primary-btn,
+.event-actions .secondary-btn {
+    min-width: auto;
 }
 
 .friend-card .avatar {
