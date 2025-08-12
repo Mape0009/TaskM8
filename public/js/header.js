@@ -339,8 +339,16 @@ if (userProfileTrigger && userDropdownMenu) {
     if (settingsBtn) {
         settingsBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            // TODO: Add settings functionality
-            console.log('Settings clicked - functionality to be implemented');
+            // Open settings modal
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'flex';
+                // Focus on first input
+                const firstInput = settingsModal.querySelector('input');
+                if (firstInput) {
+                    setTimeout(() => firstInput.focus(), 200);
+                }
+            }
             userProfileDropdown.classList.remove('open');
         });
     }
@@ -351,8 +359,16 @@ const mobileSettingsBtn = document.getElementById('mobile-settings-btn');
 if (mobileSettingsBtn) {
     mobileSettingsBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        // TODO: Add settings functionality
-        console.log('Mobile settings clicked - functionality to be implemented');
+        // Open settings modal
+        const settingsModal = document.getElementById('settings-modal');
+        if (settingsModal) {
+            settingsModal.style.display = 'flex';
+            // Focus on first input
+            const firstInput = settingsModal.querySelector('input');
+            if (firstInput) {
+                setTimeout(() => firstInput.focus(), 200);
+            }
+        }
         // Close mobile nav overlay
         const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
         if (mobileNavOverlay) {
@@ -362,59 +378,255 @@ if (mobileSettingsBtn) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const successMsg = document.getElementById('event-success-message');
-    if (successMsg) {
-        modal.style.display = 'flex';
-        modalContent.innerHTML = `
-            <div class="modal-success">
-                <div class="checkmark">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
-                </div>
-                <h3>${successMsg.textContent}</h3>
-            </div>
-        `;
-        setTimeout(() => {
-            modal.style.display = 'none';
-            successMsg.remove();
-            window.location.reload();
-        }, 1800);
-    }
-});
+// Settings modal functionality
+const settingsModal = document.getElementById('settings-modal');
+const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
+const cancelSettingsBtn = document.getElementById('cancel-settings-btn');
 
-// Success message functionality
-function closeSuccessMessage() {
-    const successMessage = document.getElementById('successMessage');
-    if (successMessage) {
-        successMessage.style.opacity = '0';
-        successMessage.style.transform = 'translateY(-20px) scale(0.95)';
-        successMessage.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-        setTimeout(() => {
-            successMessage.remove();
-        }, 400);
+function resetSettingsModal() {
+    if (settingsModal) {
+        const modalContent = settingsModal.querySelector('.modal-content');
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <div class="modal-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </div>
+                    <div class="modal-title">
+                        <h2>Indstillinger</h2>
+                        <p class="modal-subtitle">Administrer din konto</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="close-settings-modal-btn" aria-label="Luk">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="change-password-form" class="modal-form" method="POST" action="{{ route('user.change-password') }}">
+                @csrf
+                
+                <div class="form-section">
+                    <h3 class="section-title">Skift adgangskode</h3>
+                    <div class="form-row">
+                        <label for="current-password">Nuværende adgangskode</label>
+                        <input type="password" id="current-password" name="current_password" required placeholder="Indtast din nuværende adgangskode">
+                        @error('current_password')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-row">
+                        <label for="new-password">Ny adgangskode</label>
+                        <input type="password" id="new-password" name="new_password" required placeholder="Indtast din nye adgangskode">
+                        @error('new_password')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-row">
+                        <label for="new-password-confirm">Bekræft ny adgangskode</label>
+                        <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="Gentag din nye adgangskode">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn secondary-btn" id="cancel-settings-btn">Annuller</button>
+                    <button type="submit" class="btn primary-btn">Skift adgangskode</button>
+                </div>
+            </form>
+        `;
+        
+        // Re-initialize event listeners
+        initializeSettingsModalListeners();
     }
 }
 
-// Auto-hide success message after 6 seconds
+function initializeSettingsModalListeners() {
+    // Re-get elements after reset
+    const newCloseSettingsModalBtn = document.getElementById('close-settings-modal-btn');
+    const newCancelSettingsBtn = document.getElementById('cancel-settings-btn');
+    const newPasswordForm = document.getElementById('change-password-form');
+    
+    // Set up close button
+    if (newCloseSettingsModalBtn) {
+        newCloseSettingsModalBtn.addEventListener('click', function() {
+            settingsModal.style.display = 'none';
+        });
+    }
+    
+    // Set up cancel button
+    if (newCancelSettingsBtn) {
+        newCancelSettingsBtn.addEventListener('click', function() {
+            settingsModal.style.display = 'none';
+        });
+    }
+    
+    // Set up password form
+    if (newPasswordForm) {
+        newPasswordForm.addEventListener('submit', function(e) {
+            const submitBtn = newPasswordForm.querySelector('.primary-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Skifter adgangskode...';
+            submitBtn.disabled = true;
+            
+            // Add loading spinner
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            spinner.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12a9 9 0 11-6.219-8.56"/>
+                </svg>
+            `;
+            submitBtn.appendChild(spinner);
+        });
+    }
+}
+
+if (settingsModal) {
+    // Close modal when clicking outside
+    settingsModal.addEventListener('click', function(e) {
+        if (e.target === settingsModal) {
+            settingsModal.style.display = 'none';
+        }
+    });
+    
+    // Close modal with close button
+    if (closeSettingsModalBtn) {
+        closeSettingsModalBtn.addEventListener('click', function() {
+            settingsModal.style.display = 'none';
+        });
+    }
+    
+    // Close modal with cancel button
+    if (cancelSettingsBtn) {
+        cancelSettingsBtn.addEventListener('click', function() {
+            settingsModal.style.display = 'none';
+        });
+    }
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && settingsModal.style.display === 'flex') {
+            settingsModal.style.display = 'none';
+        }
+    });
+    
+    // Handle password change form submission
+    const passwordForm = document.getElementById('change-password-form');
+    if (passwordForm) {
+        passwordForm.addEventListener('submit', function(e) {
+            // Show loading state
+            const submitBtn = passwordForm.querySelector('.primary-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Skifter adgangskode...';
+            submitBtn.disabled = true;
+            
+            // Add loading spinner
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            spinner.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12a9 9 0 11-6.219-8.56"/>
+                </svg>
+            `;
+            submitBtn.appendChild(spinner);
+            
+            // Allow form to submit - success will be handled by server redirect
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    const successMessage = document.getElementById('successMessage');
-    if (successMessage) {
-        // Add entrance animation
-        successMessage.style.opacity = '0';
-        successMessage.style.transform = 'translateY(-20px) scale(0.95)';
-        
-        setTimeout(() => {
-            successMessage.style.opacity = '1';
-            successMessage.style.transform = 'translateY(0) scale(1)';
-            successMessage.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-        }, 100);
-        
-        // Auto-hide after 6 seconds
-        setTimeout(() => {
-            if (successMessage.parentNode) {
-                closeSuccessMessage();
+    const successMsg = document.getElementById('event-success-message');
+    if (successMsg) {
+        // Check if it's a password change success message
+        if (successMsg.querySelector('.modal-success')) {
+            // Show in settings modal if it's open, otherwise show in main modal
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal && settingsModal.style.display === 'flex') {
+                // Show success in settings modal
+                const modalContent = settingsModal.querySelector('.modal-content');
+                modalContent.innerHTML = successMsg.querySelector('.modal-success').outerHTML;
+                
+                // Add close button
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'modal-close-btn';
+                closeBtn.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                `;
+                closeBtn.addEventListener('click', function() {
+                    settingsModal.style.display = 'none';
+                    // Reset modal content after closing
+                    setTimeout(() => {
+                        resetSettingsModal();
+                        window.location.reload();
+                    }, 300);
+                });
+                modalContent.appendChild(closeBtn);
+                
+                // Auto-close after 3 seconds
+                setTimeout(() => {
+                    if (settingsModal.style.display === 'flex') {
+                        settingsModal.style.display = 'none';
+                        setTimeout(() => {
+                            resetSettingsModal();
+                            window.location.reload();
+                        }, 300);
+                    }
+                }, 3000);
+            } else {
+                // Show in main modal
+                modal.style.display = 'flex';
+                modalContent.innerHTML = successMsg.querySelector('.modal-success').outerHTML;
+                
+                // Add close button
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'modal-close-btn';
+                closeBtn.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                `;
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 300);
+                });
+                modalContent.appendChild(closeBtn);
+                
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 300);
+                }, 3000);
             }
-        }, 6000);
+        } else {
+            // Regular event success message
+            modal.style.display = 'flex';
+            modalContent.innerHTML = `
+                <div class="modal-success">
+                    <div class="checkmark">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+                    </div>
+                    <h3>${successMsg.textContent}</h3>
+                </div>
+            `;
+            setTimeout(() => {
+                modal.style.display = 'none';
+                successMsg.remove();
+                window.location.reload();
+            }, 1800);
+        }
     }
 });
 

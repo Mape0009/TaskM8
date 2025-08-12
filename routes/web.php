@@ -36,6 +36,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/user/create', [UserController::class, 'createUser'])->name('user.create');
 Route::post('/admin/create', [UserController::class, 'createAdmin']);
 Route::get('/user/{id}', [UserController::class, 'show']);
+Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('user.change-password')->middleware('auth');
 
 // Event Routes
 Route::get('/events', [EventController::class, 'index']);

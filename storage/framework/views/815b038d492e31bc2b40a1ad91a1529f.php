@@ -169,6 +169,77 @@
     </div>
 </div>
 
+<!-- Settings Modal -->
+<div id="settings-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-header-content">
+                <div class="modal-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </div>
+                <div class="modal-title">
+                    <h2>Indstillinger</h2>
+                    <p class="modal-subtitle">Administrer din konto</p>
+                </div>
+            </div>
+            <button class="modal-close-btn" id="close-settings-modal-btn" aria-label="Luk">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="change-password-form" class="modal-form" method="POST" action="<?php echo e(route('user.change-password')); ?>">
+            <?php echo csrf_field(); ?>
+            
+            <div class="form-section">
+                <h3 class="section-title">Skift adgangskode</h3>
+                <div class="form-row">
+                    <label for="current-password">Nuværende adgangskode</label>
+                    <input type="password" id="current-password" name="current_password" required placeholder="Indtast din nuværende adgangskode">
+                    <?php $__errorArgs = ['current_password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+                <div class="form-row">
+                    <label for="new-password">Ny adgangskode</label>
+                    <input type="password" id="new-password" name="new_password" required placeholder="Indtast din nye adgangskode">
+                    <?php $__errorArgs = ['new_password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+                <div class="form-row">
+                    <label for="new-password-confirm">Bekræft ny adgangskode</label>
+                    <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="Gentag din nye adgangskode">
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn secondary-btn" id="cancel-settings-btn">Annuller</button>
+                <button type="submit" class="btn primary-btn">Skift adgangskode</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Mobile Nav Overlay -->
 <div id="mobile-nav-overlay" class="mobile-nav-overlay">
     <div class="mobile-nav-content minimal glassy integrated-dropdown"> 
@@ -234,7 +305,23 @@
 </div>
 
 <?php if(session('success')): ?>
-    <div id="event-success-message" style="display:none;"><?php echo e(session('success')); ?></div>
+    <div id="event-success-message" style="display:none;">
+        <?php if(str_contains(session('success'), 'adgangskode')): ?>
+            <div class="modal-success">
+                <div class="checkmark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M8 12l2.5 2.5L16 9"/>
+                    </svg>
+                </div>
+                <h3>Adgangskode ændret!</h3>
+                <p><?php echo e(session('success')); ?></p>
+            </div>
+        <?php else: ?>
+            <?php echo e(session('success')); ?>
+
+        <?php endif; ?>
+    </div>
 <?php endif; ?>
 
 <script src="<?php echo e(asset('js/theme-toggle.js')); ?>"></script>
