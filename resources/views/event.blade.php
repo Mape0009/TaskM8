@@ -64,28 +64,32 @@
                 </button>
             </div>
             <div class="modal-form">
-                <div class="invite-section">
-                    <h3>Inviter via email</h3>
-                    <div class="email-input-container">
-                        <div class="email-input-group">
-                            <input type="email" id="email-input" placeholder="Indtast email adresse" class="email-input">
-                            <button type="button" onclick="addEmail()" class="add-email-btn">Tilføj</button>
+                <form action="{{ route('events.invite', $event->id) }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="eventIdInvite" value="{{ $event->id }}">
+                    <div class="invite-section">
+                        <h3>Inviter via email</h3>
+                        <div class="email-input-container">
+                            <div class="email-input-group">
+                                <input type="email" id="email-input" placeholder="Indtast email adresse" class="email-input" name="emailsInvite[]">
+                                <button type="button" onclick="addEmail()" class="add-email-btn">Tilføj</button>
+                            </div>
+                        </div>
+                        <div id="email-list" class="email-list"></div>
+                    </div>
+                    
+                    <div class="invite-section">
+                        <h3>Tidligere inviterede</h3>
+                        <div class="search-container">
+                            <input type="text" id="search-invitees" placeholder="Søg efter tidligere inviterede..." class="search-input">
+                        </div>
+                        <div id="invitees-list" class="invitees-list">
+                            <!-- Tidligere inviterede vil blive indlæst her -->
                         </div>
                     </div>
-                    <div id="email-list" class="email-list"></div>
-                </div>
-                
-                <div class="invite-section">
-                    <h3>Tidligere inviterede</h3>
-                    <div class="search-container">
-                        <input type="text" id="search-invitees" placeholder="Søg efter tidligere inviterede..." class="search-input">
-                    </div>
-                    <div id="invitees-list" class="invitees-list">
-                        <!-- Tidligere inviterede vil blive indlæst her -->
-                    </div>
-                </div>
-                
-                <button type="button" onclick="sendInvitations()" class="btn primary-btn">Send invitationer</button>
+                    
+                    <button type="button" onclick="sendInvitations()" class="btn primary-btn">Send invitationer</button>
+                </form>
             </div>
         </div>
     </div>

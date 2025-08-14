@@ -18,6 +18,9 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('events'));
 });
 
+
+Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
+
 Route::get('/events', function () {
     return view('events');
 });
