@@ -109,6 +109,272 @@ body.dark-mode .logo-img-light { display: none; }
     font-weight: 500;
 }
 
+/* User Profile Dropdown Styles */
+.user-profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: #f8fafc;
+    border: none;
+    border-radius: 8px;
+    padding: 0.3rem 0.9rem 0.3rem 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.user-profile-trigger:hover {
+    background: #f1f5f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-arrow {
+    color: #64748b;
+    transition: transform 0.2s;
+    margin-left: 0.3rem;
+}
+
+.user-profile-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    min-width: 280px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+}
+
+.user-profile-dropdown.open .user-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-header {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dropdown-user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.dropdown-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #28E0B9;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.dropdown-user-details {
+    flex: 1;
+}
+
+.dropdown-user-name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.4;
+}
+
+.dropdown-user-email {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 0;
+}
+
+.dropdown-items {
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    text-align: left;
+    font-family: inherit;
+}
+
+.dropdown-item:hover {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.dropdown-item-icon {
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.dropdown-logout {
+    color: #dc2626;
+}
+
+.dropdown-logout:hover {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.dropdown-logout .dropdown-item-icon {
+    color: #dc2626;
+}
+
+.dropdown-logout-form {
+    margin: 0;
+}
+
+/* Dark mode styles for dropdown */
+body.dark-mode .user-profile-trigger {
+    background: #2A2A30;
+}
+
+body.dark-mode .user-profile-trigger:hover {
+    background: #333338;
+}
+
+body.dark-mode .dropdown-arrow {
+    color: #a0a0a0;
+}
+
+body.dark-mode .user-dropdown-menu {
+    background: #1A1A1E;
+    border: 1px solid #333338;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .dropdown-header {
+    border-bottom: 1px solid #333338;
+}
+
+body.dark-mode .dropdown-avatar {
+    background: #28E0B9;
+    color: #0A0A0C;
+}
+
+body.dark-mode .dropdown-user-name {
+    color: #f0f0f0;
+}
+
+body.dark-mode .dropdown-user-email {
+    color: #a0a0a0;
+}
+
+body.dark-mode .dropdown-divider {
+    background: #333338;
+}
+
+body.dark-mode .dropdown-item {
+    color: #d1d5db;
+}
+
+body.dark-mode .dropdown-item:hover {
+    background: #2A2A30;
+    color: #f0f0f0;
+}
+
+body.dark-mode .dropdown-item-icon {
+    color: #9ca3af;
+}
+
+body.dark-mode .dropdown-logout {
+    color: #f87171;
+}
+
+body.dark-mode .dropdown-logout:hover {
+    background: #2d1b1b;
+    color: #f87171;
+}
+
+body.dark-mode .dropdown-logout .dropdown-item-icon {
+    color: #f87171;
+}
+
+/* Mobile Settings Button Styles */
+.mobile-settings-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 280px;
+    padding: 0.7rem 1.2rem;
+    background: var(--color-background-secondary, #f8fafc);
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 8px;
+    color: var(--color-text-primary, #374151);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.mobile-settings-btn:hover {
+    background: var(--color-background-tertiary, #f1f5f9);
+    transform: translateY(-1px);
+}
+
+.mobile-settings-icon {
+    color: var(--color-text-secondary, #6b7280);
+    flex-shrink: 0;
+}
+
+/* Dark mode styles for mobile settings button */
+body.dark-mode .mobile-settings-btn {
+    background: #2A2A30;
+    border: 1px solid #333338;
+    color: #d1d5db;
+}
+
+body.dark-mode .mobile-settings-btn:hover {
+    background: #333338;
+}
+
+body.dark-mode .mobile-settings-icon {
+    color: #9ca3af;
+}
+
 /* Login/Logout Button Styles */
 .login-btn, .logout-btn {
     background: #6366f1;
@@ -297,6 +563,7 @@ body.dark-mode .create-event-btn-header:hover {
   
   /* Hide login/logout buttons and user profile in main header on mobile */
   .main-header .user-profile-header,
+  .main-header .user-profile-dropdown,
   .main-header .login-header,
   .main-header .logout-btn {
     display: none !important;
@@ -343,92 +610,7 @@ body.dark-mode .create-event-btn-header:hover {
   }
 } 
 
-/* --- Moved from header.blade.php --- */
-/* Premium Repeat Controls Styling */
-.repeat-container {
-    margin-bottom: 0.5em;
-    padding: 1em 0 0 0;
-    border-radius: 10px;
-    background: var(--color-background-tertiary, #f8fafc);
-    display: flex;
-    flex-direction: column;
-    gap: 0.7em;
-}
-body.dark-mode .repeat-container {
-    background: #23232A;
-}
-.repeat-checkbox-label {
-    font-weight: 600;
-    color: var(--color-accent-primary, #2563eb);
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    font-size: 1.08em;
-    cursor: pointer;
-}
-.repeat-checkbox-label input[type="checkbox"] {
-    accent-color: var(--color-accent-primary, #2563eb);
-    width: 1.1em;
-    height: 1.1em;
-    border-radius: 4px;
-    margin-right: 0.4em;
-}
-.repeat-options {
-    margin-top: 0.2em;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-}
-.repeat-select {
-    padding: 0.6em 1.2em;
-    border-radius: 8px;
-    border: 1.5px solid var(--color-border, #d1d5db);
-    font-size: 1em;
-    background: #fff;
-    color: #23272f;
-    font-weight: 500;
-    transition: border 0.2s, box-shadow 0.2s;
-    outline: none;
-    margin-top: 0.2em;
-}
-.repeat-select:focus {
-    border: 1.5px solid var(--color-accent-primary, #2563eb);
-    box-shadow: 0 0 0 2px #2563eb33;
-}
-body.dark-mode .repeat-select {
-    background: #2A2A30;
-    color: #F0F0F0;
-    border: 1.5px solid #333338;
-}
-body.dark-mode .repeat-select:focus {
-    border: 1.5px solid #00C2FF;
-    box-shadow: 0 0 0 2px #00C2FF33;
-}
-.custom-interval-input {
-    margin-top: 0.3em;
-    padding: 0.6em 1.2em;
-    border-radius: 8px;
-    border: 1.5px solid var(--color-border, #d1d5db);
-    font-size: 1em;
-    background: #fff;
-    color: #23272f;
-    font-weight: 500;
-    transition: border 0.2s, box-shadow 0.2s;
-    outline: none;
-}
-.custom-interval-input:focus {
-    border: 1.5px solid var(--color-accent-primary, #2563eb);
-    box-shadow: 0 0 0 2px #2563eb33;
-}
-body.dark-mode .custom-interval-input {
-    background: #2A2A30;
-    color: #F0F0F0;
-    border: 1.5px solid #333338;
-}
-body.dark-mode .custom-interval-input:focus {
-    border: 1.5px solid #00C2FF;
-    box-shadow: 0 0 0 2px #00C2FF33;
-}
+/* --- Modal styles moved to modal.css --- */
 /* Mobile Dropdown Header */
 .mobile-menu-btn {
     display: none;
@@ -616,6 +798,43 @@ body.dark-mode .custom-interval-input:focus {
         background: linear-gradient(90deg, rgba(99,102,241,0.06) 0%, rgba(0,0,0,0.01) 100%);
         margin: 0.5em 0 0.5em 0;
         border-radius: 1px;
+    }
+    
+    .mobile-theme-toggle {
+        padding: 0 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .theme-toggle-btn.mobile {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        color: var(--color-text-primary);
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .theme-toggle-btn.mobile:hover {
+        background: var(--color-background-tertiary);
+        transform: translateY(-1px);
+    }
+    
+    .theme-toggle-btn.mobile .icon {
+        width: 20px;
+        height: 20px;
+        color: var(--color-text-primary);
+    }
+    
+    .theme-toggle-btn.mobile span {
+        color: var(--color-text-primary);
     }
     .mobile-user-profile.minimal.integrated {
         display: flex;

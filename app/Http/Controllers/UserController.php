@@ -26,7 +26,7 @@ class UserController extends Controller
         $user->role = 'user';
         $user->save();
 
-        return redirect('/signin')->with('success', 'User created successfully! Please log in.');
+        return redirect('/signin')->with('success', 'Bruger oprettet. Log ind for at begynde.');
     }
 
     public function createAdmin(Request $request)
@@ -46,9 +46,9 @@ class UserController extends Controller
             $user->token = $request->input('token');
             $user->save();
 
-            return response()->json(['message' => 'Admin created successfully'], 201);
+            return response()->json(['message' => 'Admin oprettet'], 201);
         } else {
-            return response()->json(['message' => 'Invalid admin token'], 403);
+            return response()->json(['message' => 'Ugyldig admin token'], 403);
         }
     }
 
@@ -84,6 +84,27 @@ class UserController extends Controller
         }
         $user->save();
 
-        return response()->json(['message' => 'User updated successfully'], 200);
+        return response()->json(['message' => 'Bruger opdateret'], 200);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = auth()->user();
+
+        // Check if current password matches
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Den nuværende adgangskode er ikke korrekt.']);
+        }
+
+        // Update password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return back()->with('success', 'Adgangskode er blevet ændret!');
     }
 }

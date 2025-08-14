@@ -29,7 +29,6 @@ class Authenticate extends Middleware
      */
     public function handle($request, Closure $next, ...$guards): Response
     {
-        dd('at authenticate middleware');
         // Check for JWT in cookie or Authorization header
         $jwtCookie = $request->cookie('jwt');
         $jwtHeader = null;
