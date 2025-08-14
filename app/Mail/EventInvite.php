@@ -14,11 +14,16 @@ class EventInvite extends Mailable
     use Queueable, SerializesModels;
 
     /**
+     * The event data for the email.
+     */
+    public $event;
+
+    /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($event)
     {
-        //
+        $this->event = $event;
     }
 
     /**
@@ -37,7 +42,8 @@ class EventInvite extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.event_invite',
+            with: ['event' => $this->event],
         );
     }
 
@@ -49,5 +55,16 @@ class EventInvite extends Mailable
     public function attachments(): array
     {
         return [];
+    }
+    /**
+     * Send the event invite email to a recipient.
+     *
+     * @param string $recipientEmail
+     * @param mixed $eventData
+     * @return void
+     */
+    public static function sendMail($recipientEmail, $eventData)
+    {
+        \Mail::to($recipientEmail)->send(new self($eventData));
     }
 }
