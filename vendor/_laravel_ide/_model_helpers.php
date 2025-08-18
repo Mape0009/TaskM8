@@ -5,6 +5,7 @@ namespace App\Models {
     /**
      * App\Models\Event
      *
+     * @property int $ownerId
      * @property string|null $location
      * @property string|null $description
      * @property string $endDate
@@ -21,6 +22,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEnddate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereLocation($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereOwnerid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event query()
