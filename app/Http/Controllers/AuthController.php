@@ -16,7 +16,7 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         if (!Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
-            return response()->json(['message' => 'Invalid credentials'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return redirect('/signin')->withErrors(['email' => 'Invalid credentials']);
         }
 
         $user = Auth::user();

@@ -14,7 +14,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
         // Create a new user
@@ -29,6 +29,7 @@ class UserController extends Controller
         return redirect('/signin')->with('success', 'Bruger oprettet. Log ind for at begynde.');
     }
 
+    /*
     public function createAdmin(Request $request)
     {
         $request->validate([
@@ -51,6 +52,7 @@ class UserController extends Controller
             return response()->json(['message' => 'Ugyldig admin token'], 403);
         }
     }
+    */
 
     public function show($id)
     {
