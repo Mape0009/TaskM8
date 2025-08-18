@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rediger: {{ $event->eventName }} | TaskM8</title>
+    {{-- <title>Rediger: {{ $event->eventName }} | TaskM8</title> --}}
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
@@ -35,12 +35,12 @@
         <div class="edit-card">
             <div class="edit-header">
                 <h1 class="edit-title">Rediger begivenhed</h1>
-                <a href="{{ url('/events/'.$event->id) }}" class="back-btn">&larr; Tilbage</a>
+                {{-- <a href="{{ url('/events/'.$event->id) }}" class="back-btn">&larr; Tilbage</a> --}}
             </div>
 
             <form class="edit-form" method="POST" action="{{ route('events.update', ['id' => $event->id]) }}">
-                @csrf
-                @method('PUT')
+             @csrf
+             @method('PUT')
 
                 <div class="form-row">
                     <label for="eventName">Titel</label>
@@ -56,7 +56,6 @@
                     <div class="form-row">
                         <label for="startDate">Start tidspunkt</label>
                         <input type="datetime-local" id="startDate" name="startDate" value="{{ old('startDate', \Carbon\Carbon::parse($event->startDate)->format('Y-m-d\TH:i')) }}" required />
-                        <span class="helper">Format: ÅÅÅÅ-MM-DD TT:MM</span>
                     </div>
                     <div class="form-row">
                         <label for="endDate">Slut tidspunkt</label>
@@ -70,7 +69,7 @@
                 </div>
 
                 <div class="form-actions">
-                    <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a>
+                    {{-- <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a> --}}
                     <button type="submit" class="btn primary-btn">Gem ændringer</button>
                 </div>
             </form>

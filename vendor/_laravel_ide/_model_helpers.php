@@ -5,6 +5,7 @@ namespace App\Models {
     /**
      * App\Models\Event
      *
+     * @property int $ownerId
      * @property string|null $location
      * @property string|null $description
      * @property string $endDate
@@ -12,10 +13,8 @@ namespace App\Models {
      * @property string $eventName
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property int|null $user_id
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEventname($value)
@@ -23,6 +22,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEnddate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereLocation($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereOwnerid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event query()

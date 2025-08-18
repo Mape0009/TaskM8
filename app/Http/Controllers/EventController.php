@@ -60,6 +60,12 @@ class EventController extends Controller
         return response()->json($event);
     }
 
+    public function edit($id)
+{
+    $event = Event::findOrFail($id);
+    return view('events.edit', compact('event'));
+}
+
     public function delete($id)
     {
         $event = Event::findOrFail($id);
