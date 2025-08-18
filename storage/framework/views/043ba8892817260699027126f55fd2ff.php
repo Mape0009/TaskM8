@@ -17,7 +17,6 @@
             <h1></h1>
         </header>
         
-
         <section class="friends-listing">
             <h2>Alle Medlemmer</h2>
             <div class="friend-list">
@@ -31,9 +30,7 @@
                         </div>
                     </div>
                     
-                    <div class="event-actions">
-                        <button class="btn primary-btn">Inviter</button>
-                    </div>
+                    <div class="event-actions"></div>
                 </div>
 
                 <!-- Friend Card 2 -->
@@ -46,9 +43,7 @@
                         </div>
                     </div>
                     
-                    <div class="event-actions">
-                        <button class="btn primary-btn">Inviter</button>
-                    </div>
+                    <div class="event-actions"></div>
                 </div>
             </div>
         </section>

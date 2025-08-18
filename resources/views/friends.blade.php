@@ -16,10 +16,7 @@
         <header class="content-header">
             <h1></h1>
         </header>
-        {{-- <div class="search-bar">
-            <input type="text" placeholder="Søg efter medlemmer...">
-        </div> --}}
-
+        
         <section class="friends-listing">
             <h2>Alle Medlemmer</h2>
             <div class="friend-list">
@@ -33,9 +30,7 @@
                         </div>
                     </div>
                     
-                    <div class="event-actions">
-                        <button class="btn primary-btn">Inviter</button>
-                    </div>
+                    <div class="event-actions"></div>
                 </div>
 
                 <!-- Friend Card 2 -->
@@ -48,9 +43,7 @@
                         </div>
                     </div>
                     
-                    <div class="event-actions">
-                        <button class="btn primary-btn">Inviter</button>
-                    </div>
+                    <div class="event-actions"></div>
                 </div>
             </div>
         </section>

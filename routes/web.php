@@ -18,6 +18,8 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('events'));
 });
 
+Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
+
 
 Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
 
@@ -45,8 +47,12 @@ Route::post('/user/change-password', [UserController::class, 'changePassword'])-
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{id}', [EventController::class, 'show']);
 Route::post('/events/create', [EventController::class, 'create'])->middleware('auth')->name('events.create');
-Route::put('/events/update/{id}', [EventController::class, 'update']);
+Route::put('/events/update/{id}', [EventController::class, 'update']) ->middleware('auth')->name('events.update');
 Route::delete('/events/delete/{id}', [EventController::class, 'delete']);
+
+Route::get('/events/{id}/edit', [EventController::class, 'edit'])
+    ->middleware('auth')
+    ->name('events.edit');
 
 // Event Participant Routes
 Route::get('/participants', [EventParticipantController::class, 'index']);
