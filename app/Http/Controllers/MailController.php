@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Mail\EventInvite;
+use App\Models\User;
 
 class MailController extends Controller
 {
@@ -18,7 +19,12 @@ class MailController extends Controller
         ];
 
         foreach ($emails as $email) {
-            EventInvite::sendMail($email, $eventData);
+            if (User::where('email', $email)->exists()) {
+                EventInvite::sendExistingUserMail($email, $eventData);
+            }
+            else {
+                EventInvite::sendNewUserMail($email, $eventData);
+            }
         }
 
         return response()->json(['success' => true]);

@@ -42,7 +42,7 @@ class EventInvite extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.event_invite',
+            view: 'emails.mailForm',
             with: ['event' => $this->event],
         );
     }
@@ -63,7 +63,12 @@ class EventInvite extends Mailable
      * @param mixed $eventData
      * @return void
      */
-    public static function sendMail($recipientEmail, $eventData)
+    public static function sendNewUserMail($recipientEmail, $eventData)
+    {
+        \Mail::to($recipientEmail)->send(new self($eventData));
+    }
+
+    public static function sendExistingUserMail($recipientEmail, $eventData)
     {
         \Mail::to($recipientEmail)->send(new self($eventData));
     }
