@@ -8,7 +8,7 @@
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(16,185,129,0.15);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
@@ -18,7 +18,7 @@
 
 .invite-btn:hover {
     background: linear-gradient(90deg, #059669 0%, #047857 100%);
-    box-shadow: 0 4px 16px rgba(16,185,129,0.25);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
     transform: translateY(-1px);
 }
 
@@ -29,13 +29,13 @@
 
 /* Dark mode for invite button */
 body.dark-mode .invite-btn {
-    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
-    box-shadow: 0 2px 8px rgba(0,194,255,0.15);
+    background: linear-gradient(90deg, #00c2ff 0%, #007bff 100%);
+    box-shadow: 0 2px 8px rgba(0, 194, 255, 0.15);
 }
 
 body.dark-mode .invite-btn:hover {
-    background: linear-gradient(90deg, #007BFF 0%, #0056CC 100%);
-    box-shadow: 0 4px 16px rgba(0,194,255,0.25);
+    background: linear-gradient(90deg, #007bff 0%, #0056cc 100%);
+    box-shadow: 0 4px 16px rgba(0, 194, 255, 0.25);
 }
 
 /* Invitation Modal Specific Styles */
@@ -59,7 +59,7 @@ body.dark-mode .invite-btn:hover {
 }
 
 body.dark-mode .invite-section h3 {
-    color: #F0F0F0;
+    color: #f0f0f0;
 }
 
 body.dark-mode .invite-section {
@@ -90,7 +90,7 @@ body.dark-mode .invite-section {
 
 .email-input:focus {
     border: 1.5px solid #10b981;
-    box-shadow: 0 0 0 2px rgba(16,185,129,0.1);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
     background: #fff;
 }
 
@@ -114,23 +114,23 @@ body.dark-mode .invite-section {
 
 /* Dark mode for email input */
 body.dark-mode .email-input {
-    background: #2A2A30;
-    color: #F0F0F0;
+    background: #2a2a30;
+    color: #f0f0f0;
     border: 1.5px solid #333338;
 }
 
 body.dark-mode .email-input:focus {
-    border: 1.5px solid #00C2FF;
-    box-shadow: 0 0 0 2px rgba(0,194,255,0.1);
-    background: #23232A;
+    border: 1.5px solid #00c2ff;
+    box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.1);
+    background: #23232a;
 }
 
 body.dark-mode .add-email-btn {
-    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
+    background: linear-gradient(90deg, #00c2ff 0%, #007bff 100%);
 }
 
 body.dark-mode .add-email-btn:hover {
-    background: linear-gradient(90deg, #007BFF 0%, #0056CC 100%);
+    background: linear-gradient(90deg, #007bff 0%, #0056cc 100%);
 }
 
 /* Email List Styles */
@@ -151,7 +151,7 @@ body.dark-mode .add-email-btn:hover {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    box-shadow: 0 2px 4px rgba(16,185,129,0.2);
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
     animation: tagSlideIn 0.3s ease;
 }
 
@@ -182,13 +182,13 @@ body.dark-mode .add-email-btn:hover {
 }
 
 .remove-email-btn:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Dark mode for email tags */
 body.dark-mode .email-tag {
-    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
-    box-shadow: 0 2px 4px rgba(0,194,255,0.2);
+    background: linear-gradient(90deg, #00c2ff 0%, #007bff 100%);
+    box-shadow: 0 2px 4px rgba(0, 194, 255, 0.2);
 }
 
 /* Search Input Styles */
@@ -209,20 +209,20 @@ body.dark-mode .email-tag {
 
 .search-input:focus {
     border: 1.5px solid #6366f1;
-    box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
     background: #fff;
 }
 
 body.dark-mode .search-input {
-    background: #2A2A30;
-    color: #F0F0F0;
+    background: #2a2a30;
+    color: #f0f0f0;
     border: 1.5px solid #333338;
 }
 
 body.dark-mode .search-input:focus {
-    border: 1.5px solid #00C2FF;
-    box-shadow: 0 0 0 2px rgba(0,194,255,0.1);
-    background: #23232A;
+    border: 1.5px solid #00c2ff;
+    box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.1);
+    background: #23232a;
 }
 
 /* Invitees List Styles */
@@ -236,7 +236,7 @@ body.dark-mode .search-input:focus {
 
 body.dark-mode .invitees-list {
     border: 1px solid #333338;
-    background: #2A2A30;
+    background: #2a2a30;
 }
 
 .invitee-item {
@@ -261,7 +261,7 @@ body.dark-mode .invitee-item {
 }
 
 body.dark-mode .invitee-item:hover {
-    background: #23232A;
+    background: #23232a;
 }
 
 .invitee-info {
@@ -302,11 +302,11 @@ body.dark-mode .invitee-item:hover {
 }
 
 body.dark-mode .invitee-name {
-    color: #F0F0F0;
+    color: #f0f0f0;
 }
 
 body.dark-mode .invitee-email {
-    color: #A0A0A0;
+    color: #a0a0a0;
 }
 
 .invitee-select-btn {
@@ -327,11 +327,11 @@ body.dark-mode .invitee-email {
 }
 
 body.dark-mode .invitee-select-btn {
-    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
+    background: linear-gradient(90deg, #00c2ff 0%, #007bff 100%);
 }
 
 body.dark-mode .invitee-select-btn:hover {
-    background: linear-gradient(90deg, #007BFF 0%, #0056CC 100%);
+    background: linear-gradient(90deg, #007bff 0%, #0056cc 100%);
 }
 
 /* Responsive Design */
@@ -340,17 +340,17 @@ body.dark-mode .invitee-select-btn:hover {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .add-email-btn {
         width: 100%;
     }
-    
+
     .invitee-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.8rem;
     }
-    
+
     .invitee-select-btn {
         align-self: flex-end;
     }
@@ -369,7 +369,7 @@ body.dark-mode .invitee-select-btn:hover {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .event-actions .btn {
         width: 100%;
         justify-content: center;
@@ -394,7 +394,7 @@ body.dark-mode .invitee-select-btn:hover {
     font-size: 1.08rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(16,185,129,0.10);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
@@ -404,7 +404,7 @@ body.dark-mode .invitee-select-btn:hover {
 
 .event-actions-details .invite-btn:hover {
     background: linear-gradient(90deg, #059669 0%, #047857 100%);
-    box-shadow: 0 4px 16px rgba(16,185,129,0.13);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.13);
     transform: translateY(-1px);
 }
 
@@ -414,13 +414,13 @@ body.dark-mode .invitee-select-btn:hover {
 }
 
 body.dark-mode .event-actions-details .invite-btn {
-    background: linear-gradient(90deg, #00C2FF 0%, #007BFF 100%);
-    box-shadow: 0 2px 8px rgba(0,194,255,0.10);
+    background: linear-gradient(90deg, #00c2ff 0%, #007bff 100%);
+    box-shadow: 0 2px 8px rgba(0, 194, 255, 0.1);
 }
 
 body.dark-mode .event-actions-details .invite-btn:hover {
-    background: linear-gradient(90deg, #007BFF 0%, #0056CC 100%);
-    box-shadow: 0 4px 16px rgba(0,194,255,0.13);
+    background: linear-gradient(90deg, #007bff 0%, #0056cc 100%);
+    box-shadow: 0 4px 16px rgba(0, 194, 255, 0.13);
 }
 
 @media (max-width: 600px) {
@@ -429,7 +429,7 @@ body.dark-mode .event-actions-details .invite-btn:hover {
         align-items: stretch;
         gap: 0.8rem;
     }
-    
+
     .event-actions-details .invite-btn,
     .event-actions-details .back-btn {
         width: 100%;
@@ -437,27 +437,35 @@ body.dark-mode .event-actions-details .invite-btn:hover {
     }
 }
 
-.invite-btn, .event-actions-details .invite-btn, .add-email-btn {
+.invite-btn,
+.event-actions-details .invite-btn,
+.add-email-btn {
     background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;
     color: #fff;
     border: none;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(16,185,129,0.15);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
     transition: all 0.2s ease;
 }
-.invite-btn:hover, .event-actions-details .invite-btn:hover, .add-email-btn:hover {
+.invite-btn:hover,
+.event-actions-details .invite-btn:hover,
+.add-email-btn:hover {
     background: linear-gradient(90deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(16,185,129,0.25);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
     transform: translateY(-1px);
 }
-body.dark-mode .invite-btn, body.dark-mode .event-actions-details .invite-btn, body.dark-mode .add-email-btn {
+body.dark-mode .invite-btn,
+body.dark-mode .event-actions-details .invite-btn,
+body.dark-mode .add-email-btn {
     background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;
     color: #fff;
-    box-shadow: 0 2px 8px rgba(16,185,129,0.15);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
 }
-body.dark-mode .invite-btn:hover, body.dark-mode .event-actions-details .invite-btn:hover, body.dark-mode .add-email-btn:hover {
+body.dark-mode .invite-btn:hover,
+body.dark-mode .event-actions-details .invite-btn:hover,
+body.dark-mode .add-email-btn:hover {
     background: linear-gradient(90deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(16,185,129,0.25);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
     transform: translateY(-1px);
 }
 
@@ -465,7 +473,7 @@ body.dark-mode .invite-btn:hover, body.dark-mode .event-actions-details .invite-
     border-radius: 16px;
     min-width: 400px;
     max-width: 95vw;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     background: #fff;
     padding: 0;
@@ -488,7 +496,7 @@ body.dark-mode .invite-btn:hover, body.dark-mode .event-actions-details .invite-
 .invite-modal-header .modal-icon {
     width: 40px;
     height: 40px;
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -507,12 +515,12 @@ body.dark-mode .invite-btn:hover, body.dark-mode .event-actions-details .invite-
 }
 .invite-modal-header .modal-subtitle {
     font-size: 0.875rem;
-    color: rgba(255,255,255,0.8);
+    color: rgba(255, 255, 255, 0.8);
     margin: 0;
     font-weight: 400;
 }
 .invite-modal-header .modal-close-btn {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 8px;
     width: 36px;
@@ -526,7 +534,7 @@ body.dark-mode .invite-btn:hover, body.dark-mode .event-actions-details .invite-
     flex-shrink: 0;
 }
 .invite-modal-header .modal-close-btn:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
     transform: scale(1.05);
 }
 .invite-modal-form {

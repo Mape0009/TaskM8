@@ -2,8 +2,10 @@
     display: none;
     position: fixed;
     z-index: 1000;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
@@ -19,7 +21,8 @@
     max-height: 90vh;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1);
     position: relative;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
     border: 1px solid #e5e7eb;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -30,13 +33,13 @@
     margin: 0;
 }
 @keyframes modalSlideIn {
-    from { 
-        transform: translateY(20px) scale(0.95); 
-        opacity: 0; 
+    from {
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
     }
-    to { 
-        transform: none; 
-        opacity: 1; 
+    to {
+        transform: none;
+        opacity: 1;
     }
 }
 
@@ -370,7 +373,7 @@ body.dark-mode .custom-interval-input:focus {
 }
 body.dark-mode .form-actions {
     border-top-color: #374151;
-} 
+}
 
 /* Error message styles for form validation */
 .error-message {
@@ -403,7 +406,8 @@ body.dark-mode .form-actions {
     border: 2px solid #e5e7eb;
     border-radius: 8px;
     font-size: 0.875rem;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
     background: #ffffff;
     color: #111827;
     transition: all 0.2s ease;
@@ -466,7 +470,8 @@ body.dark-mode .form-actions {
     border-radius: 8px;
     font-size: 0.875rem;
     font-weight: 500;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
@@ -596,4 +601,4 @@ body.dark-mode .modal-success p {
     to {
         transform: rotate(360deg);
     }
-} 
+}

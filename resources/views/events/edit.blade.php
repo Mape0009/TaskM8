@@ -3,31 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{-- <title>Rediger: {{ $event->eventName }} | TaskM8</title> --}}
+    <title>Rediger: {{ $event->eventName }} | TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/editevent.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .edit-container {max-width: 880px; margin: 2rem auto; padding: 0 1rem;}
-        .edit-card {background: var(--color-background-secondary); border:1px solid var(--color-border); border-radius: 16px; box-shadow: 0 10px 30px var(--color-shadow-light); padding: 2rem;}
-        .edit-header {display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem}
-        .edit-title {font-size: 1.5rem; font-weight: 700; letter-spacing: -.2px; color: var(--color-text-primary)}
-        .edit-form .form-row {display:flex; flex-direction:column; gap:.5rem; margin-bottom:1rem}
-        .edit-form label {font-weight: 600; color: var(--color-text-primary)}
-        .edit-form input[type="text"],
-        .edit-form input[type="datetime-local"],
-        .edit-form textarea {border:1px solid var(--color-border); background: var(--color-background-primary); color: var(--color-text-primary); border-radius: 10px; padding:.85rem 1rem; font: inherit}
-        .edit-form textarea {resize: vertical; min-height: 110px}
-        .edit-grid {display:grid; grid-template-columns:1fr 1fr; gap:1rem}
-        .form-actions {display:flex; gap:.75rem; justify-content:flex-end; margin-top:1.5rem}
-        .helper {color: var(--color-text-secondary); font-size:.9rem}
-
-        @media (max-width: 768px) {
-            .edit-grid {grid-template-columns: 1fr}
-        }
-    </style>
 </head>
 <body>
     @include('partials.header', ['currentPage' => 'events'])
@@ -35,7 +17,6 @@
         <div class="edit-card">
             <div class="edit-header">
                 <h1 class="edit-title">Rediger begivenhed</h1>
-                {{-- <a href="{{ url('/events/'.$event->id) }}" class="back-btn">&larr; Tilbage</a> --}}
             </div>
 
             <form class="edit-form" method="POST" action="{{ route('events.update', ['id' => $event->id]) }}">
@@ -69,7 +50,7 @@
                 </div>
 
                 <div class="form-actions">
-                    {{-- <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a> --}}
+                    <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a>
                     <button type="submit" class="btn primary-btn">Gem ændringer</button>
                 </div>
             </form>
