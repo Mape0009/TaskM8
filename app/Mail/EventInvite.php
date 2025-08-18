@@ -56,19 +56,4 @@ class EventInvite extends Mailable
     {
         return [];
     }
-    /**
-     * Send the event invite email to a recipient.
-     *
-     * @param string $recipientEmail
-     * @return void
-     */
-    public static function sendNewUserMail($recipientEmail, $eventData)
-    {
-        \Mail::to($recipientEmail)->send(new self($eventData));
-    }
-
-    public static function sendExistingUserMail($recipientEmail, $eventData)
-    {
-        \Mail::to($recipientEmail)->send(new self($eventData));
-    }
 }
