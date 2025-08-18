@@ -479,7 +479,7 @@ body.dark-mode .form-actions {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    min-height: 44px;
+    min-height: 25px;
 }
 
 .btn.primary-btn {

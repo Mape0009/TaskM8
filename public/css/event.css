@@ -431,7 +431,7 @@ body.dark-mode .event-details-description {
     text-decoration: none;
     box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
     transition: background 0.2s, box-shadow 0.2s;
-    margin-top: 0.7em;
+    margin-bottom: 0.7rem;
     text-align: center;
     letter-spacing: 0.02em;
 }
