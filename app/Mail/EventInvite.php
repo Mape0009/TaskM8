@@ -60,7 +60,6 @@ class EventInvite extends Mailable
      * Send the event invite email to a recipient.
      *
      * @param string $recipientEmail
-     * @param mixed $eventData
      * @return void
      */
     public static function sendNewUserMail($recipientEmail, $eventData)
