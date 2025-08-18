@@ -17,7 +17,6 @@
             <h1></h1>
         </header>
         
-
         <section class="friends-listing">
             <h2>Alle Medlemmer</h2>
             <div class="friend-list">

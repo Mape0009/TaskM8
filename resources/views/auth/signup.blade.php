@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - TaskM8</title>
+    <title>Opret konto - TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="auth-container">
-        <h2>Lav Konto</h2>
+        <h2>Opret Konto</h2>
         <form action="{{ route('user.create') }}" method="POST">
             @csrf
             <div class="input-group">
@@ -31,7 +31,7 @@
                 <input type="password" id="confirm-password" name="password_confirmation" placeholder="Bekræft adgangskode" required>
             </div>
             <div class="input-group">
-                <label for="phone">Tlf Nummer (Optional)</label>
+                <label for="phone">Telefon-Nummer (Valgfrit)</label>
                 <input type="tel" id="phone" name="phonenumber" placeholder="Skriv dit telefon-nummer">
             </div>
             <button type="submit" class="btn primary-btn">Opret Konto</button>

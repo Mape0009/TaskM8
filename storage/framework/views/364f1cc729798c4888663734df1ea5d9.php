@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In - TaskM8</title>
+    <title>Login - TaskM8</title>
     <link rel="stylesheet" href="<?php echo e(asset('css/dashboard.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('css/login.css')); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
