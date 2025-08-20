@@ -294,9 +294,6 @@
     .form-actions {
         flex-direction: column;
     }
-    .btn {
-        width: 100%;
-    }
 }
 
 /* Dark Mode Styles */

@@ -432,7 +432,6 @@ body.dark-mode .event-actions-details .invite-btn:hover {
 
     .event-actions-details .invite-btn,
     .event-actions-details .back-btn {
-        width: 100%;
         justify-content: center;
     }
 }
