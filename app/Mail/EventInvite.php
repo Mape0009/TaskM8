@@ -15,13 +15,17 @@ class EventInvite extends Mailable
 
     /**
      * The event data for the email.
+     *
+     * @var array
      */
     public $event;
 
     /**
      * Create a new message instance.
+     *
+     * @param array $event
      */
-    public function __construct($event)
+    public function __construct(array $event)
     {
         $this->event = $event;
     }

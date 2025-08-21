@@ -134,13 +134,20 @@
         <div class="section">
             <h2>Begivenhedsdetaljer</h2>
     
-            <div class="event-card">
-                <p><strong>📛 Titel:</strong> Sommerhygge i haven</p>
-                <p><strong>📅 Tid:</strong> 15. august 2025 · 16:00 – 21:00</p>
-                <p><strong>📍 Lokation:</strong> Valbyparken, København</p>
-                <p><strong>📝 Beskrivelse:</strong> Kom og nyd en afslappet eftermiddag med mad, drikke og godt selskab!</p>
-                <p><strong>👤 Inviteret af:</strong> jonas@example.com</p>
-            </div>
+      <div class="event-card">
+        <p><strong>📛 Titel:</strong> {{ $event['title'] ?? '' }}</p>
+        <p><strong>📅 Tid:</strong> 
+          @if(!empty($event['time']))
+            {{ \Carbon\Carbon::parse($event['time'])->format('d. F Y · H:i') }}
+            @if(!empty($event['end_time']))
+              – {{ \Carbon\Carbon::parse($event['end_time'])->format('H:i') }}
+            @endif
+          @endif
+        </p>
+        <p><strong>📍 Lokation:</strong> {{ $event['location'] ?? '' }}</p>
+        <p><strong>📝 Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>
+        <p><strong>👤 Inviteret af:</strong> {{ $event['inviter_email'] ?? '' }}</p>
+      </div>
     
         <h2>Bekræft din deltagelse</h2>
     
