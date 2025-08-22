@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('pincode')->unique();
-            $table->foreignId('mailId')->constrained('mails')->onDelete('cascade');
             $table->timestamp('createdAt')->useCurrent();
         });
     }

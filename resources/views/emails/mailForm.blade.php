@@ -163,7 +163,7 @@
         <p>For at deltage, skal du oprette en konto og bekræfte din identitet med den midlertidige PIN-kode nedenfor:</p>
     
         <div class="pin-block">
-            493872
+            {{ $event['pin_code'] ?? '' }}
     </div>
     
         <p style="text-align:center;">

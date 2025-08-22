@@ -10,15 +10,10 @@ class PinCodeController extends Controller
 {
     public function generatePinCode(Request $request)
     {
-        $request->validate([
-            'mailId' => 'required|exists:mails,id',
-        ]);
-
         $pinCode = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
 
         $pinCodeModel = new PinCode();
         $pinCodeModel->pincode = $pinCode;
-        $pinCodeModel->mailId = $request->mailId;
         $pinCodeModel->createdAt = now();
         $pinCodeModel->save();
 

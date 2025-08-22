@@ -8,7 +8,6 @@ class PinCode extends Model
 {
     protected $fillable = [
         'pincode',
-        'mailId',
         'createdAt',
     ];
 }

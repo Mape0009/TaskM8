@@ -21,7 +21,7 @@ Route::get('/dashboard', function () {
 Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
 
 
-//Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
+Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
 Route::view('test', 'test');
 Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.invite');
 
