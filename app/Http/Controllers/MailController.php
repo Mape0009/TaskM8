@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\EventInvite;
+use App\Mail\ExistingUserInvite;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\PinCode;
@@ -56,11 +57,14 @@ class MailController extends Controller
             $existingUser = User::where('email', $email)->first();
 
             if ($existingUser) {
-                // Existing user: do not send pin; just add as participant (pending)
+                // Existing user: add as participant (pending) and notify without pin
                 EventParticipant::updateOrCreate(
                     ['eventId' => $event->id, 'userId' => $existingUser->id],
                     ['status' => 'pending']
                 );
+                $eventData = $eventDataBase;
+                $eventData['invite_email'] = $email;
+                Mail::to($email)->send(new ExistingUserInvite($eventData));
                 continue;
             }
 
