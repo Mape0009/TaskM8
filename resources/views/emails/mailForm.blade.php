@@ -5,6 +5,7 @@
 <title>TaskM8 Begivenhedsinvitation</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+    /* RESET & GLOBAL */
     body {
       margin: 0;
       padding: 0;
@@ -126,20 +127,27 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Du er inviteret!</h1>
+            <h1>🎉 Du er inviteret!</h1>
             <p>via TaskM8 – platformen til nem planlægning</p>
         </div>
     
         <div class="section">
             <h2>Begivenhedsdetaljer</h2>
     
-            <div class="event-card">
-                <p><strong>Titel:</strong> Sommerhygge i haven</p>
-                <p><strong>Tid:</strong> 15. august 2025 · 16:00 – 21:00</p>
-                <p><strong>Lokation:</strong> Valbyparken, København</p>
-                <p><strong>Beskrivelse:</strong> Kom og nyd en afslappet eftermiddag med mad, drikke og godt selskab!</p>
-                <p><strong>Inviteret af:</strong> jonas@example.com</p>
-            </div>
+      <div class="event-card">
+        <p><strong>📛 Titel:</strong> {{ $event['title'] ?? '' }}</p>
+        <p><strong>📅 Tid:</strong> 
+          @if(!empty($event['time']))
+            {{ \Carbon\Carbon::parse($event['time'])->format('d. F Y · H:i') }}
+            @if(!empty($event['end_time']))
+              – {{ \Carbon\Carbon::parse($event['end_time'])->format('H:i') }}
+            @endif
+          @endif
+        </p>
+        <p><strong>📍 Lokation:</strong> {{ $event['location'] ?? '' }}</p>
+        <p><strong>📝 Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>
+        <p><strong>👤 Inviteret af:</strong> {{ $event['inviter_email'] ?? '' }}</p>
+      </div>
     
         <h2>Bekræft din deltagelse</h2>
     
@@ -150,7 +158,7 @@
     </div>
     
         <p style="text-align:center;">
-    <a href="https://taskm8.dk/opret" class="btn">Opret konto og deltag</a>
+    <a href="https://taskm8.dk/opret" class="btn">➡️ Opret konto og deltag</a>
     </p>
     
         <div class="info-box">

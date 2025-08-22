@@ -15,13 +15,17 @@ class EventInvite extends Mailable
 
     /**
      * The event data for the email.
+     *
+     * @var array
      */
     public $event;
 
     /**
      * Create a new message instance.
+     *
+     * @param array $event
      */
-    public function __construct($event)
+    public function __construct(array $event)
     {
         $this->event = $event;
     }
@@ -42,7 +46,7 @@ class EventInvite extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.event_invite',
+            view: 'emails.mailForm',
             with: ['event' => $this->event],
         );
     }
@@ -55,16 +59,5 @@ class EventInvite extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-    /**
-     * Send the event invite email to a recipient.
-     *
-     * @param string $recipientEmail
-     * @param mixed $eventData
-     * @return void
-     */
-    public static function sendMail($recipientEmail, $eventData)
-    {
-        \Mail::to($recipientEmail)->send(new self($eventData));
     }
 }
