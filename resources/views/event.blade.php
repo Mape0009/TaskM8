@@ -71,7 +71,7 @@
                         <h3>Inviter via email</h3>
                         <div class="email-input-container">
                             <div class="email-input-group">
-                                <input type="email" id="email-input" placeholder="Indtast email adresse" class="email-input" name="emailsInvite[]">
+                                <input type="email" id="email-input" placeholder="Indtast email adresse" class="email-input">
                                 <button type="button" onclick="addEmail()" class="add-email-btn">Tilføj</button>
                             </div>
                         </div>
@@ -83,9 +83,7 @@
                         <div class="search-container">
                             <input type="text" id="search-invitees" placeholder="Søg efter tidligere inviterede..." class="search-input">
                         </div>
-                        <div id="invitees-list" class="invitees-list">
-                            <!-- Tidligere inviterede vil blive indlæst her -->
-                        </div>
+                        <div id="invitees-list" class="invitees-list"></div>
                     </div>
                     
                     <button type="button" onclick="sendInvitations()" class="btn primary-btn">Send invitationer</button>
@@ -96,12 +94,10 @@
 
     <script>
         let currentEventId = null;
-        let currentEventName = '';
         let addedEmails = [];
 
         function openInviteModal(eventId, eventName) {
             currentEventId = eventId;
-            currentEventName = eventName;
             document.getElementById('invite-modal').style.display = 'flex';
             loadPreviousInvitees();
         }
@@ -117,7 +113,6 @@
         function addEmail() {
             const emailInput = document.getElementById('email-input');
             const email = emailInput.value.trim();
-            
             if (email && isValidEmail(email) && !addedEmails.includes(email)) {
                 addedEmails.push(email);
                 emailInput.value = '';
@@ -133,7 +128,6 @@
         function updateEmailList() {
             const emailList = document.getElementById('email-list');
             emailList.innerHTML = '';
-            
             addedEmails.forEach(email => {
                 const emailTag = document.createElement('div');
                 emailTag.className = 'email-tag';
@@ -156,7 +150,6 @@
         }
 
         function loadPreviousInvitees() {
-            // Her ville man normalt hente tidligere inviterede 
             const inviteesList = document.getElementById('invitees-list');
             inviteesList.innerHTML = `
                 <div class="invitee-item">
@@ -167,7 +160,7 @@
                             <span class="invitee-email">john@example.com</span>
                         </div>
                     </div>
-                    <button class="invitee-select-btn" onclick="selectInvitee('john@example.com', 'John Doe')">Vælg</button>
+                    <button class="invitee-select-btn" onclick="selectInvitee('john@example.com')">Vælg</button>
                 </div>
                 <div class="invitee-item">
                     <div class="invitee-info">
@@ -177,12 +170,12 @@
                             <span class="invitee-email">jane@example.com</span>
                         </div>
                     </div>
-                    <button class="invitee-select-btn" onclick="selectInvitee('jane@example.com', 'Jane Smith')">Vælg</button>
+                    <button class="invitee-select-btn" onclick="selectInvitee('jane@example.com')">Vælg</button>
                 </div>
             `;
         }
 
-        function selectInvitee(email, name) {
+        function selectInvitee(email) {
             if (!addedEmails.includes(email)) {
                 addedEmails.push(email);
                 updateEmailList();
@@ -190,23 +183,30 @@
         }
 
         function sendInvitations() {
-            // Her ville man normalt sende invitationerne til serveren
-            console.log('Sending invitations for event:', currentEventId);
-            console.log('Emails to invite:', addedEmails);
-            
-            // Vis success besked
-            alert('Invitationer er blevet sendt!');
-            closeInviteModal();
+            const form = document.querySelector('#invite-modal form');
+
+            // Fjern gamle hidden inputs
+            form.querySelectorAll('input[name="emailsInvite[]"]').forEach(el => el.remove());
+
+            // Tilføj emails som hidden inputs
+            addedEmails.forEach(email => {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'emailsInvite[]';
+                hiddenInput.value = email;
+                form.appendChild(hiddenInput);
+            });
+
+            form.submit();
         }
 
-        // Event listeners
         document.getElementById('email-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 addEmail();
             }
         });
 
-        // Luk modal når man klikker udenfor
         document.getElementById('invite-modal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeInviteModal();
@@ -214,4 +214,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
