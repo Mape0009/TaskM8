@@ -13,8 +13,10 @@ namespace App\Models {
      * @property string $eventName
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int|null $user_id
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEventname($value)
@@ -1257,8 +1259,8 @@ namespace App\Models {
     /**
      * App\Models\PinCode
      *
+     * @property string|null $email
      * @property string $createdAt
-     * @property int $mailId
      * @property string $pincode
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
@@ -1267,8 +1269,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode wherePincode($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereMailid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereCreatedat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode whereEmail($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PinCode>|PinCode query()

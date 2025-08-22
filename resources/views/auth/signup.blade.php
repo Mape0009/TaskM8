@@ -20,8 +20,13 @@
             </div>
             <div class="input-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Skriv din email" required>
+                <input type="email" id="email" name="email" placeholder="Skriv din email" value="{{ request('email') }}" required>
             </div>
+            <div class="input-group">
+                <label for="pin">Invitationskode (PIN)</label>
+                <input type="text" id="pin" name="pin" placeholder="4-cifret kode" value="{{ request('pin') }}" maxlength="4">
+            </div>
+            <input type="hidden" name="event_id" value="{{ request('event') }}">
             <div class="input-group">
                 <label for="password">Adgangskode</label>
                 <input type="password" id="password" name="password" placeholder="Lav adgangskode" required>

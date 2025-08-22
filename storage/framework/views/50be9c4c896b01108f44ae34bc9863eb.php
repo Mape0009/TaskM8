@@ -33,6 +33,34 @@
 
             </div>
             <div class="event-actions-details">
+                <?php if(auth()->guard()->check()): ?>
+                <?php
+                    $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
+                    $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+                ?>
+                <?php if(!$isOwner): ?>
+                <style>
+                    .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+                    .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
+                    .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
+                    @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
+                </style>
+                <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+                    <?php echo csrf_field(); ?>
+                    <label>
+                        <input type="radio" name="status" value="accepted" <?php echo e($isAccepted ? 'checked' : ''); ?> onchange="this.form.submit()">
+                        <span>Deltager</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="status" value="declined" <?php echo e($isAccepted ? '' : 'checked'); ?> onchange="this.form.submit()">
+                        <span>Deltager ikke</span>
+                    </label>
+                </form>
+                <?php endif; ?>
+                <?php endif; ?>
+                <a href="<?php echo e(url('/events')); ?>" class="back-btn">&larr; Tilbage</a>
+                <?php if(auth()->guard()->check()): ?>
+                <?php if(isset($event->ownerId) && $event->ownerId === auth()->id()): ?>
                 <button class="btn invite-btn" onclick="openInviteModal(<?php echo e($event->id); ?>, '<?php echo e($event->eventName); ?>')">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -42,7 +70,8 @@
                     </svg>
                     Inviter til begivenhed
                 </button>
-                <a href="<?php echo e(url('/events')); ?>" class="back-btn">&larr; Tilbage til begivenheder</a>
+                <?php endif; ?>
+                <?php endif; ?>
             </div>
         </section>
     </main>

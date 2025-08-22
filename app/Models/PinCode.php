@@ -9,5 +9,7 @@ class PinCode extends Model
     protected $fillable = [
         'pincode',
         'createdAt',
+        'email',
+        'eventId',
     ];
 }

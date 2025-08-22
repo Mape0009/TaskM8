@@ -32,6 +32,34 @@
                 {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
             </div>
             <div class="event-actions-details">
+                @auth
+                @php
+                    $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
+                    $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+                @endphp
+                @if(!$isOwner)
+                <style>
+                    .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+                    .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
+                    .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
+                    @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
+                </style>
+                <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+                    @csrf
+                    <label>
+                        <input type="radio" name="status" value="accepted" {{ $isAccepted ? 'checked' : '' }} onchange="this.form.submit()">
+                        <span>Deltager</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="status" value="declined" {{ $isAccepted ? '' : 'checked' }} onchange="this.form.submit()">
+                        <span>Deltager ikke</span>
+                    </label>
+                </form>
+                @endif
+                @endauth
+                <a href="{{ url('/events') }}" class="back-btn">&larr; Tilbage</a>
+                @auth
+                @if(isset($event->ownerId) && $event->ownerId === auth()->id())
                 <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -41,7 +69,8 @@
                     </svg>
                     Inviter til begivenhed
                 </button>
-                <a href="{{ url('/events') }}" class="back-btn">&larr; Tilbage til begivenheder</a>
+                @endif
+                @endauth
             </div>
         </section>
     </main>

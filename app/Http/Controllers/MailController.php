@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\EventInvite;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\PinCode;
 
 class MailController extends Controller
 {
@@ -51,10 +52,27 @@ class MailController extends Controller
         ]);
 
         foreach ($emails as $email) {
-            // Generate a simple 4-digit pin code per recipient
+            // Generate and persist a 4-digit pin code per recipient, valid for 7 days
             $pinCode = str_pad((string)random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+
+            PinCode::create([
+                'pincode' => $pinCode,
+                'email' => $email,
+                'eventId' => $event->id,
+                'createdAt' => now(),
+            ]);
+
             $eventData = $eventDataBase;
             $eventData['pin_code'] = $pinCode;
+            $eventData['invite_email'] = $email;
+            // Create a signed, encrypted invite URL for signup
+            $payload = base64_encode(json_encode([
+                'email' => $email,
+                'pin' => $pinCode,
+                'event' => $event->id,
+                'ts' => now()->timestamp,
+            ]));
+            $eventData['invite_url'] = url('/signup') . '?token=' . urlencode($payload);
 
             if (User::where('email', $email)->exists()) {
                 self::sendExistingUserMail($email, $eventData);

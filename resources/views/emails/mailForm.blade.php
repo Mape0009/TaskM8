@@ -167,7 +167,7 @@
     </div>
     
         <p style="text-align:center;">
-    <a href="https://taskm8.dk/opret" class="btn">➡️ Opret konto og deltag</a>
+    <a href="{{ $event['invite_url'] ?? (url('/signup') . '?email=' . urlencode($event['invite_email'] ?? '') . '&pin=' . urlencode($event['pin_code'] ?? '') . '&event=' . urlencode($event['id'] ?? '')) }}" class="btn">➡️ Opret konto og deltag</a>
     </p>
     
         <div class="info-box">
