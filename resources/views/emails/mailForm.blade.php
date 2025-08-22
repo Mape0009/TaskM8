@@ -99,6 +99,15 @@
       background: linear-gradient(to right, #3b82f6, #1a73e8);
       transform: scale(1.02);
     }
+
+.btn,
+.btn:link,
+.btn:visited,
+.btn:hover,
+.btn:active {
+  color: white !important;
+  text-decoration: none;
+}
  
     .info-box {
       background: #f1f3f4;
@@ -127,7 +136,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎉 Du er inviteret!</h1>
+            <h1>Du er inviteret!</h1>
             <p>via TaskM8 – platformen til nem planlægning</p>
         </div>
     
@@ -135,8 +144,8 @@
             <h2>Begivenhedsdetaljer</h2>
     
       <div class="event-card">
-        <p><strong>📛 Titel:</strong> {{ $event['title'] ?? '' }}</p>
-        <p><strong>📅 Tid:</strong> 
+        <p><strong>Titel:</strong> {{ $event['title'] ?? '' }}</p>
+        <p><strong>Tid:</strong> 
           @if(!empty($event['time']))
             {{ \Carbon\Carbon::parse($event['time'])->format('d. F Y · H:i') }}
             @if(!empty($event['end_time']))
@@ -144,9 +153,9 @@
             @endif
           @endif
         </p>
-        <p><strong>📍 Lokation:</strong> {{ $event['location'] ?? '' }}</p>
-        <p><strong>📝 Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>
-        <p><strong>👤 Inviteret af:</strong> {{ $event['inviter_email'] ?? '' }}</p>
+        <p><strong>Lokation:</strong> {{ $event['location'] ?? '' }}</p>
+        <p><strong>Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>
+        <p><strong>Inviteret af:</strong> {{ $event['inviter_email'] ?? '' }}</p>
       </div>
     
         <h2>Bekræft din deltagelse</h2>

@@ -9421,3 +9421,11 @@ Did you mean one of these?
 [2025-08-22 05:42:53] local.INFO: MailController@sendEventInvites was called  
 [2025-08-22 05:43:01] local.INFO: MailController@sendEventInvites was called  
 [2025-08-22 05:43:01] local.INFO: Sending event invites {"eventData":{"id":2,"title":"ddshj","location":"dds","time":"2025-08-19 09:10:00","end_time":"2025-08-21 09:10:00","description":"dds","inviter_email":"tobiasdk22@gmail.com"},"recipients":["tobiasdk22@gmail.com"]} 
+[2025-08-22 06:07:52] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 06:07:52] local.INFO: Sending event invites {"eventData":{"id":2,"title":"ddshj","location":"dds","time":"2025-08-19 09:10:00","end_time":"2025-08-21 09:10:00","description":"dds","inviter_email":"tobiasdk22@gmail.com"},"recipients":["tobiasdk22@gmail.com"]} 
+[2025-08-22 06:11:22] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 06:11:22] local.INFO: Sending event invites {"eventData":{"id":2,"title":"ddshj","location":"dds","time":"2025-08-19 09:10:00","end_time":"2025-08-21 09:10:00","description":"dds","inviter_email":"tobiasdk22@gmail.com"},"recipients":["tobiasdk22@gmail.com"]} 
+[2025-08-22 06:12:41] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 06:12:41] local.INFO: Sending event invites {"eventData":{"id":2,"title":"ddshj","location":"dds","time":"2025-08-19 09:10:00","end_time":"2025-08-21 09:10:00","description":"dds","inviter_email":"tobiasdk22@gmail.com"},"recipients":["tobiasdk22@gmail.com"]} 
+[2025-08-22 06:12:41] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 06:12:41] local.INFO: Sending event invites {"eventData":{"id":2,"title":"ddshj","location":"dds","time":"2025-08-19 09:10:00","end_time":"2025-08-21 09:10:00","description":"dds","inviter_email":"tobiasdk22@gmail.com"},"recipients":["tobiasdk22@gmail.com"]} 
