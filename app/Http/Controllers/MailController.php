@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\EventInvite;
 use App\Models\User;
 use App\Models\Event;
-use App\Http\Controllers\PinCodeController;
 
 class MailController extends Controller
 {
@@ -30,13 +29,13 @@ class MailController extends Controller
 
         $event = Event::find($eventId);
         if (!$event) {
-            return response()->json(['success' => false, 'message' => 'Event not found'], 404);
+            return redirect()->back()->with('success', 'Kunne ikke finde begivenheden.');
         }
 
         $inviter = $request->user();
         $inviterEmail = $inviter ? $inviter->email : null;
 
-        $eventData = [
+        $eventDataBase = [
             'id' => $event->id,
             'title' => $event->eventName ?? '',
             'location' => $event->location ?? '',
@@ -46,24 +45,24 @@ class MailController extends Controller
             'inviter_email' => $inviterEmail,
         ];
 
-        // Log the event data and recipient emails
         Log::info('Sending event invites', [
-            'eventData' => $eventData,
+            'eventId' => $event->id,
             'recipients' => $emails,
         ]);
 
-        $pinCodeController = new PinCodeController();
         foreach ($emails as $email) {
-            $pinCodeResponse = $pinCodeController->generatePinCode($request);
-            $pinCodeData = $pinCodeResponse->getData(true);
-            $eventData['pin_code'] = $pinCodeData['pincode'] ?? null;
+            // Generate a simple 4-digit pin code per recipient
+            $pinCode = str_pad((string)random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+            $eventData = $eventDataBase;
+            $eventData['pin_code'] = $pinCode;
+
             if (User::where('email', $email)->exists()) {
-                MailController::sendExistingUserMail($email, $eventData);
+                self::sendExistingUserMail($email, $eventData);
             } else {
-                MailController::sendNewUserMail($email, $eventData);
+                self::sendNewUserMail($email, $eventData);
             }
         }
 
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('success', 'Invitationen er sendt.');
     }
 }
