@@ -371,7 +371,6 @@ body.dark-mode .invitee-select-btn:hover {
     }
 
     .event-actions .btn {
-        width: 100%;
         justify-content: center;
     }
 }

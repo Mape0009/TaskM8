@@ -62,6 +62,11 @@
     font-size: 0.9rem;
 }
 
+.btn.primary-btn {
+    min-height: 40px;
+}
+
+
 @media (max-width: 768px) {
     .edit-grid {
         grid-template-columns: 1fr;

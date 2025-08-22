@@ -323,6 +323,7 @@ body.dark-mode .form-row select {
     color: #f9fafb;
     border-color: #4b5563;
 }
+
 body.dark-mode .form-row input:focus,
 body.dark-mode .form-row textarea:focus,
 body.dark-mode .form-row select:focus {

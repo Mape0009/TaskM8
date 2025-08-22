@@ -50,8 +50,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a>
                     <button type="submit" class="btn primary-btn">Gem ændringer</button>
+                    <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a>
                 </div>
             </form>
         </div>
