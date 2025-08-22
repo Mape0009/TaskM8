@@ -9415,3 +9415,9 @@ Did you mean one of these?
 [2025-08-21 10:30:05] local.INFO: Sending event invites {"eventData":{"id":1,"title":"Test","location":"Her","time":"2025-08-07 10:55:00","end_time":"2025-08-08 10:55:00","description":"Ja","inviter_email":"mads@test.com"},"recipients":["plantmailsarduino@gmail.com"]} 
 [2025-08-21 10:31:23] local.INFO: MailController@sendEventInvites was called  
 [2025-08-21 10:31:23] local.INFO: Sending event invites {"eventData":{"id":5,"title":"Din mor","location":"Inde i din mor","time":"2025-08-22 12:30:00","end_time":"2025-08-30 12:30:00","description":"Charlies ide","inviter_email":"mads@test.com"},"recipients":["plantmailsarduino@gmail.com"]} 
+[2025-08-22 05:42:34] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 05:42:34] local.INFO: Sending event invites {"eventData":{"id":2,"title":"ddshj","location":"dds","time":"2025-08-19 09:10:00","end_time":"2025-08-21 09:10:00","description":"dds","inviter_email":"tobiasdk22@gmail.com"},"recipients":["tobiasdk22@gmail.com"]} 
+[2025-08-22 05:42:51] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 05:42:53] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 05:43:01] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 05:43:01] local.INFO: Sending event invites {"eventData":{"id":2,"title":"ddshj","location":"dds","time":"2025-08-19 09:10:00","end_time":"2025-08-21 09:10:00","description":"dds","inviter_email":"tobiasdk22@gmail.com"},"recipients":["tobiasdk22@gmail.com"]} 

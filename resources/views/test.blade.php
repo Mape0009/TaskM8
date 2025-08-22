@@ -9,7 +9,7 @@
     <p>Email</p>
     <form action="{{ route('events.invite') }}" method="POST">
         @csrf
-    <input type="hidden" name="eventIdInvite" value="5">
+    <input type="hidden" name="eventIdInvite" value="2">
         <input type="email" name="emailsInvite[]" required>
         <button type="submit">Send Invite</button>
     </form>
