@@ -9893,3 +9893,7 @@ Did you mean one of these?
 [2025-08-22 09:23:40] local.INFO: Sending event invites {"eventId":3,"recipients":["logegow817@iotrama.com"]} 
 [2025-08-22 09:26:38] local.INFO: MailController@sendEventInvites was called  
 [2025-08-22 09:26:38] local.INFO: Sending event invites {"eventId":3,"recipients":["logegow817@iotrama.com"]} 
+[2025-08-22 09:31:37] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 09:31:37] local.INFO: Sending event invites {"eventId":1,"recipients":["madspedersen125@gmail.com"]} 
+[2025-08-22 09:35:40] local.INFO: MailController@sendEventInvites was called  
+[2025-08-22 09:35:40] local.INFO: Sending event invites {"eventId":1,"recipients":["logegow817@iotrama.com"]} 

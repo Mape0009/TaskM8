@@ -9,6 +9,7 @@ use App\Mail\EventInvite;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\PinCode;
+use App\Models\EventParticipant;
 
 class MailController extends Controller
 {
@@ -52,7 +53,18 @@ class MailController extends Controller
         ]);
 
         foreach ($emails as $email) {
-            // Generate and persist a 4-digit pin code per recipient, valid for 7 days
+            $existingUser = User::where('email', $email)->first();
+
+            if ($existingUser) {
+                // Existing user: do not send pin; just add as participant (pending)
+                EventParticipant::updateOrCreate(
+                    ['eventId' => $event->id, 'userId' => $existingUser->id],
+                    ['status' => 'pending']
+                );
+                continue;
+            }
+
+            // New user: generate PIN and send invite link
             $pinCode = str_pad((string)random_int(0, 9999), 4, '0', STR_PAD_LEFT);
 
             PinCode::create([
@@ -65,7 +77,6 @@ class MailController extends Controller
             $eventData = $eventDataBase;
             $eventData['pin_code'] = $pinCode;
             $eventData['invite_email'] = $email;
-            // Create a signed, encrypted invite URL for signup
             $payload = base64_encode(json_encode([
                 'email' => $email,
                 'pin' => $pinCode,
@@ -74,11 +85,7 @@ class MailController extends Controller
             ]));
             $eventData['invite_url'] = url('/signup') . '?token=' . urlencode($payload);
 
-            if (User::where('email', $email)->exists()) {
-                self::sendExistingUserMail($email, $eventData);
-            } else {
-                self::sendNewUserMail($email, $eventData);
-            }
+            self::sendNewUserMail($email, $eventData);
         }
 
         return redirect()->back()->with('success', 'Invitationen er sendt.');
