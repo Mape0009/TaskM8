@@ -40,8 +40,8 @@ class MailController extends Controller
             'id' => $event->id,
             'title' => $event->eventName ?? '',
             'location' => $event->location ?? '',
-            'time' => $event->start_time ?? '',
-            'end_time' => $event->end_time ?? '',
+            'time' => $event->startDate ?? '',
+            'end_time' => $event->endDate ?? '',
             'description' => $event->description ?? '',
             'inviter_email' => $inviterEmail,
         ];

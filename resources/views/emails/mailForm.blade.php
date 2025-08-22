@@ -149,7 +149,7 @@
           @if(!empty($event['time']))
             {{ \Carbon\Carbon::parse($event['time'])->format('d. F Y · H:i') }}
             @if(!empty($event['end_time']))
-              – {{ \Carbon\Carbon::parse($event['end_time'])->format('H:i') }}
+              – {{ \Carbon\Carbon::parse($event['end_time'])->format('d. F Y · H:i') }}
             @endif
           @endif
         </p>
