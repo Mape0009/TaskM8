@@ -1,6 +1,5 @@
 import './bootstrap';
 
-// Theme toggle logic
 function setTheme(isDark) {
     document.body.classList.toggle('dark-mode', isDark);
     const btn = document.getElementById('theme-toggle-btn');
@@ -14,7 +13,6 @@ function setTheme(isDark) {
 function getPreferredTheme() {
     const stored = localStorage.getItem('theme');
     if (stored) return stored === 'dark';
-    // Fallback to system preference
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 

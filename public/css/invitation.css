@@ -229,6 +229,7 @@ body.dark-mode .search-input:focus {
 .invitees-list {
     max-height: 200px;
     overflow-y: auto;
+    overflow-x: hidden;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     background: #f8fafc;

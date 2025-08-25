@@ -32,6 +32,7 @@ Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('event
 
 
 Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
+Route::get('/events/{eventId}/invitees', [MailController::class, 'getPreviousInvitees'])->middleware('auth')->name('events.invitees');
 Route::view('test', 'test');
 Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.invite');
 

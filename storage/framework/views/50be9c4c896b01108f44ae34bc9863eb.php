@@ -193,30 +193,40 @@
             return emailRegex.test(email);
         }
 
-        function loadPreviousInvitees() {
+        async function loadPreviousInvitees() {
             const inviteesList = document.getElementById('invitees-list');
-            inviteesList.innerHTML = `
-                <div class="invitee-item">
-                    <div class="invitee-info">
-                        <div class="invitee-avatar">J</div>
-                        <div class="invitee-details">
-                            <span class="invitee-name">John Doe</span>
-                            <span class="invitee-email">john@example.com</span>
+            inviteesList.innerHTML = '<div class="invitee-item">Henter inviterede...</div>';
+            try {
+                const res = await fetch('<?php echo e(route('events.invitees', $event->id)); ?>', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                if (!res.ok) throw new Error('Failed');
+                const all = await res.json();
+                // show max 3; scroll if more exist
+                const items = (all || []).slice(0, 3);
+                if (!items.length) {
+                    inviteesList.innerHTML = '<div class="invitee-item">Ingen tidligere inviterede</div>';
+                    return;
+                }
+                inviteesList.innerHTML = '';
+                items.forEach(i => {
+                    const initials = (i.name || i.email || '?').trim().charAt(0).toUpperCase();
+                    const item = document.createElement('div');
+                    item.className = 'invitee-item';
+                    item.innerHTML = `
+                        <div class="invitee-info">
+                            <div class="invitee-avatar">${initials}</div>
+                            <div class="invitee-details">
+                                <span class="invitee-name">${i.name || 'Ukendt'}</span>
+                                <span class="invitee-email">${i.email}</span>
+                            </div>
                         </div>
-                    </div>
-                    <button class="invitee-select-btn" onclick="selectInvitee('john@example.com')">Vælg</button>
-                </div>
-                <div class="invitee-item">
-                    <div class="invitee-info">
-                        <div class="invitee-avatar">J</div>
-                        <div class="invitee-details">
-                            <span class="invitee-name">Jane Smith</span>
-                            <span class="invitee-email">jane@example.com</span>
-                        </div>
-                    </div>
-                    <button class="invitee-select-btn" onclick="selectInvitee('jane@example.com')">Vælg</button>
-                </div>
-            `;
+                        <button class="invitee-select-btn">Vælg</button>
+                    `;
+                    item.querySelector('.invitee-select-btn').addEventListener('click', () => selectInvitee(i.email));
+                    inviteesList.appendChild(item);
+                });
+            } catch (e) {
+                inviteesList.innerHTML = '<div class="invitee-item">Kunne ikke hente inviterede.</div>';
+            }
         }
 
         function selectInvitee(email) {

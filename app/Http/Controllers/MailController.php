@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Event;
 use App\Models\PinCode;
 use App\Models\EventParticipant;
+use App\Models\Mail as MailModel;
 
 class MailController extends Controller
 {
@@ -65,6 +66,16 @@ class MailController extends Controller
                 $eventData = $eventDataBase;
                 $eventData['invite_email'] = $email;
                 Mail::to($email)->send(new ExistingUserInvite($eventData));
+                // Record mail for previous invitees list
+                if ($inviter) {
+                    MailModel::create([
+                        'subject' => 'Event Invitation',
+                        'body' => $eventData['description'] ?? '',
+                        'senderId' => $inviter->id,
+                        'recipientId' => $existingUser->id,
+                        'sentAt' => now(),
+                    ]);
+                }
                 continue;
             }
 
@@ -90,8 +101,34 @@ class MailController extends Controller
             $eventData['invite_url'] = url('/signup') . '?token=' . urlencode($payload);
 
             self::sendNewUserMail($email, $eventData);
+            // New user doesn't have a recipientId yet; skip recording here
         }
 
         return redirect()->back()->with('success', 'Invitationen er sendt.');
+    }
+
+    public function getPreviousInvitees(Request $request, $eventId)
+    {
+        $user = $request->user();
+        if (!$user) {
+            return response()->json([], 401);
+        }
+        // Get distinct users previously invited by current user (any event), prefer most recent
+        $rows = MailModel::where('senderId', $user->id)
+            ->orderBy('sentAt', 'desc')
+            ->with('recipient')
+            ->get()
+            ->unique('recipientId')
+            ->take(50);
+        $result = $rows->map(function ($m) {
+            return [
+                'id' => $m->recipientId,
+                'name' => optional($m->recipient)->name,
+                'email' => optional($m->recipient)->email,
+            ];
+        })->filter(function ($i) {
+            return !empty($i['email']);
+        })->values();
+        return response()->json($result);
     }
 }
