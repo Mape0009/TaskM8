@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('role')->default('user');
             $table->date('birthdate')->nullable();
-            $table->boolean('loggedIn')->default(false);
             $table->string('phonenumber')->nullable();
             $table->rememberToken();
             $table->timestamps();
