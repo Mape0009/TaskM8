@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Exists;
 
 class UserController extends Controller
 {
@@ -16,6 +17,10 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
+        
+        if (User::where('email', $request->input('email'))->exists()) {
+            return back()->withErrors(['email' => 'Emailen er allerede i brug.']);
+        }
 
         // Create a new user
         $user = new User();
