@@ -27,6 +27,18 @@
         <section class="event-details-card">
             <ul class="event-details-list">
                 <li><span class="event-details-label">Lokation:</span> <span class="event-details-value">{{ $event->location ?? '-' }}</span></li>
+                @php
+                    $acceptedCount = \App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count();
+                @endphp
+                <li>
+                    <span class="event-details-label">Deltagere:</span>
+                    <span class="event-details-value">
+                        {{ $acceptedCount }}
+                        @if(!empty($event->participantLimit))
+                            / {{ $event->participantLimit }}
+                        @endif
+                    </span>
+                </li>
             </ul>
             <div class="event-details-description">
                 {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}

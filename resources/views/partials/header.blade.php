@@ -136,6 +136,14 @@
             </div>
             
             <div class="form-section">
+                <h3 class="section-title">Deltagerbegrænsning (valgfri)</h3>
+                <div class="form-row">
+                    <label for="participant-limit">Maks. antal deltagere</label>
+                    <input type="number" id="participant-limit" name="participantLimit" min="1" placeholder="F.eks. 20">
+                </div>
+            </div>
+
+            <div class="form-section">
                 <h3 class="section-title">Gentagelse</h3>
                 <div class="repeat-section">
                     <div class="repeat-toggle">

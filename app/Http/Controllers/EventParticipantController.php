@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EventParticipant;
+use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 
 class EventParticipantController extends Controller
@@ -59,6 +60,15 @@ class EventParticipantController extends Controller
         $userId = Auth::id();
         if (!$userId) {
             return redirect('/signin');
+        }
+        if ($request->input('status') === 'accepted') {
+            $event = Event::find($eventId);
+            if ($event && $event->participantLimit) {
+                $acceptedCount = EventParticipant::where('eventId', $eventId)->where('status', 'accepted')->count();
+                if ($acceptedCount >= $event->participantLimit && !EventParticipant::where('eventId', $eventId)->where('userId', $userId)->where('status', 'accepted')->exists()) {
+                    return redirect()->back()->with('success', 'Begivenheden er fuld.');
+                }
+            }
         }
         if ($request->input('status') === 'accepted') {
             // Update existing row (pending/whatever) to accepted, or create if missing

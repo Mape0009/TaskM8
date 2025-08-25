@@ -30,6 +30,14 @@ class EventController extends Controller
 
     public function create(Request $request)
     {
+        $request->validate([
+            'eventName' => 'required|string|max:255',
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+            'description' => 'nullable|string',
+            'location' => 'nullable|string|max:255',
+            'participantLimit' => 'nullable|integer|min:1',
+        ]);
         $event = new Event();
         $event->eventName = $request->input('eventName');
         $event->startDate = $request->input('startDate');
@@ -37,6 +45,7 @@ class EventController extends Controller
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->ownerId = auth()->user()->id;
+        $event->participantLimit = $request->input('participantLimit');
         $event->save();
         
         return redirect('/dashboard')->with('success', 'Event er nu lavet!');
