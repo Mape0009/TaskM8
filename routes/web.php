@@ -90,7 +90,9 @@ Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'
 // task Routes
 Route::view('task', 'task');
 //Route::view('taskOverview', 'taskOverview');
+//Route::view('taskDetails', 'taskDetails');
+Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('task.details');
 Route::get('/taskOverview', [TaskController::class, 'index']);
 Route::post('/tasks/create', [TaskController::class, 'create'])->name('task.create');
 Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('task.edit');
-Route::delete('/tasks/delete/{id}', [TaskController::class, 'delete'])->name('task.delete');
+Route::delete('/tasks/{id}', [TaskController::class, 'delete'])->name('task.delete');

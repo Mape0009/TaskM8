@@ -45,6 +45,12 @@ class TaskController extends Controller
         $tasks = Task::findOrFail($id);
         $tasks->delete();
 
-        return response()->json(null, 204);
+        return view('task');
+    }
+
+    public function show($id)
+    {
+        $task = Task::findOrFail($id);
+        return view('taskDetails', compact('task'));
     }
 }
