@@ -190,7 +190,6 @@
                 const res = await fetch('{{ route('events.invitees', $event->id) }}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
                 if (!res.ok) throw new Error('Failed');
                 const all = await res.json();
-                // show max 3; scroll if more exist
                 const items = (all || []).slice(0, 3);
                 if (!items.length) {
                     inviteesList.innerHTML = '<div class="invitee-item">Ingen tidligere inviterede</div>';
@@ -229,7 +228,6 @@
         function sendInvitations() {
             const form = document.querySelector('#invite-modal form');
 
-            // Fjern gamle hidden inputs
             form.querySelectorAll('input[name="emailsInvite[]"]').forEach(el => el.remove());
 
             // Tilføj emails som hidden inputs
