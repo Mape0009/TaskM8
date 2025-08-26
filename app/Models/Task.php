@@ -8,6 +8,7 @@ class Task extends Model
 {
     protected $fillable = [
         'taskName',
+        'eventId',
     ];
 
 }
