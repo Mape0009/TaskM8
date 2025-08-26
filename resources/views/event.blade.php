@@ -24,6 +24,16 @@
             </div>
         </section>
         <section class="event-details-card">
+            <div class="event-card-actions-top">
+                <a href="{{ url('/events') }}" class="back-btn" aria-label="Tilbage til begivenheder">Tilbage</a>
+                @auth
+                @if(isset($event->ownerId) && $event->ownerId === auth()->id())
+                <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">
+                    Inviter til begivenhed
+                </button>
+                @endif
+                @endauth
+            </div>
             <ul class="event-details-list">
                 <li><span class="event-details-label">Lokation:</span> <span class="event-details-value">{{ $event->location ?? '-' }}</span></li>
                 @php
@@ -42,41 +52,31 @@
             <div class="event-details-description">
                 {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
             </div>
-            <div class="event-actions-details">
-                @auth
-                @php
-                    $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
-                    $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
-                @endphp
-                @if(!$isOwner)
-                <style>
-                    .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
-                    .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
-                    .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
-                    @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
-                </style>
-                <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
-                    @csrf
-                    <label>
-                        <input type="radio" name="status" value="accepted" {{ $isAccepted ? 'checked' : '' }} onchange="this.form.submit()">
-                        <span>Deltager</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="status" value="declined" {{ $isAccepted ? '' : 'checked' }} onchange="this.form.submit()">
-                        <span>Deltager ikke</span>
-                    </label>
-                </form>
-                @endif
-                @endauth
-                <a href="{{ url('/events') }}" class="back-btn">Tilbage</a>
-                @auth
-                @if(isset($event->ownerId) && $event->ownerId === auth()->id())
-                <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">
-                    Inviter til begivenhed
-                </button>
-                @endif
-                @endauth
-            </div>
+            @auth
+            @php
+                $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
+                $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+            @endphp
+            @if(!$isOwner)
+            <style>
+                .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+                .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
+                .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
+                @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
+            </style>
+            <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+                @csrf
+                <label>
+                    <input type="radio" name="status" value="accepted" {{ $isAccepted ? 'checked' : '' }} onchange="this.form.submit()">
+                    <span>Deltager</span>
+                </label>
+                <label>
+                    <input type="radio" name="status" value="declined" {{ $isAccepted ? '' : 'checked' }} onchange="this.form.submit()">
+                    <span>Deltager ikke</span>
+                </label>
+            </form>
+            @endif
+            @endauth
         </section>
     </main>
 

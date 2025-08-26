@@ -60,6 +60,10 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         $event = Event::findOrFail($id);
+        // Enforce ownership
+        if ($event->ownerId !== auth()->id()) {
+            abort(403, 'Ikke tilladt.');
+        }
         $event->eventName = $request->input('eventName');
         $event->startDate = $request->input('startDate');
         $event->endDate = $request->input('endDate');
@@ -70,14 +74,22 @@ class EventController extends Controller
     }
 
     public function edit($id)
-{
-    $event = Event::findOrFail($id);
-    return view('events.edit', compact('event'));
-}
+    {
+        $event = Event::findOrFail($id);
+        // Enforce ownership
+        if ($event->ownerId !== auth()->id()) {
+            abort(403, 'Ikke tilladt.');
+        }
+        return view('events.edit', compact('event'));
+    }
 
     public function delete($id)
     {
         $event = Event::findOrFail($id);
+        // Enforce ownership
+        if ($event->ownerId !== auth()->id()) {
+            abort(403, 'Ikke tilladt.');
+        }
         $event->delete();
         return response()->json(null, 204);
     }

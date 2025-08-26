@@ -24,6 +24,16 @@
             </div>
         </section>
         <section class="event-details-card">
+            <div class="event-card-actions-top">
+                <a href="<?php echo e(url('/events')); ?>" class="back-btn" aria-label="Tilbage til begivenheder">Tilbage</a>
+                <?php if(auth()->guard()->check()): ?>
+                <?php if(isset($event->ownerId) && $event->ownerId === auth()->id()): ?>
+                <button class="btn invite-btn" onclick="openInviteModal(<?php echo e($event->id); ?>, '<?php echo e($event->eventName); ?>')">
+                    Inviter til begivenhed
+                </button>
+                <?php endif; ?>
+                <?php endif; ?>
+            </div>
             <ul class="event-details-list">
                 <li><span class="event-details-label">Lokation:</span> <span class="event-details-value"><?php echo e($event->location ?? '-'); ?></span></li>
                 <?php
@@ -45,41 +55,31 @@
                 <?php echo e($event->description ?? 'Der er ingen beskrivelse af denne begivenhed.'); ?>
 
             </div>
-            <div class="event-actions-details">
-                <?php if(auth()->guard()->check()): ?>
-                <?php
-                    $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
-                    $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
-                ?>
-                <?php if(!$isOwner): ?>
-                <style>
-                    .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
-                    .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
-                    .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
-                    @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
-                </style>
-                <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
-                    <?php echo csrf_field(); ?>
-                    <label>
-                        <input type="radio" name="status" value="accepted" <?php echo e($isAccepted ? 'checked' : ''); ?> onchange="this.form.submit()">
-                        <span>Deltager</span>
-                    </label>
-                    <label>
-                        <input type="radio" name="status" value="declined" <?php echo e($isAccepted ? '' : 'checked'); ?> onchange="this.form.submit()">
-                        <span>Deltager ikke</span>
-                    </label>
-                </form>
-                <?php endif; ?>
-                <?php endif; ?>
-                <a href="<?php echo e(url('/events')); ?>" class="back-btn">Tilbage</a>
-                <?php if(auth()->guard()->check()): ?>
-                <?php if(isset($event->ownerId) && $event->ownerId === auth()->id()): ?>
-                <button class="btn invite-btn" onclick="openInviteModal(<?php echo e($event->id); ?>, '<?php echo e($event->eventName); ?>')">
-                    Inviter til begivenhed
-                </button>
-                <?php endif; ?>
-                <?php endif; ?>
-            </div>
+            <?php if(auth()->guard()->check()): ?>
+            <?php
+                $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
+                $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+            ?>
+            <?php if(!$isOwner): ?>
+            <style>
+                .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+                .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
+                .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
+                @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
+            </style>
+            <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+                <?php echo csrf_field(); ?>
+                <label>
+                    <input type="radio" name="status" value="accepted" <?php echo e($isAccepted ? 'checked' : ''); ?> onchange="this.form.submit()">
+                    <span>Deltager</span>
+                </label>
+                <label>
+                    <input type="radio" name="status" value="declined" <?php echo e($isAccepted ? '' : 'checked'); ?> onchange="this.form.submit()">
+                    <span>Deltager ikke</span>
+                </label>
+            </form>
+            <?php endif; ?>
+            <?php endif; ?>
         </section>
     </main>
 

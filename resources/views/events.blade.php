@@ -27,8 +27,11 @@
                         <p class="event-description">{{ $event->description }}</p>
                         <div class="event-actions">
                             <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
-                            <a href="/events/{{ $event->id }}/edit" class="btn secondary-btn">Rediger</a>
-
+                            @auth
+                                @if(isset($event->ownerId) && $event->ownerId === auth()->id())
+                                    <a href="/events/{{ $event->id }}/edit" class="btn secondary-btn">Rediger</a>
+                                @endif
+                            @endauth
                         </div>
                     </div>
                 @empty

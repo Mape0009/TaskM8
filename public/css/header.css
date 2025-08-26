@@ -28,6 +28,7 @@
     display: block;
     object-fit: contain;
     vertical-align: middle;
+    max-width: 100%;
 }
 .logo-img-dark {
     display: none;
@@ -621,7 +622,7 @@ body.dark-mode .create-event-btn-header:hover {
         display: none !important;
     }
     .logo-img {
-        height: 4rem;
+        height: 2rem;
         max-height: 2.2em;
     }
 }
@@ -780,6 +781,8 @@ body.dark-mode .header-modal .btn.secondary-btn:hover { background: #4b5563; bor
         justify-content: center;
         margin-left: auto;
         order: 10;
+        width: 44px;
+        height: 44px;
     }
 }
 @keyframes dropdownIn {
