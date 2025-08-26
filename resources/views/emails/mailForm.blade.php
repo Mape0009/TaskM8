@@ -23,13 +23,20 @@
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9fbfe; border:1px solid #d2e3fc; border-left:6px solid #1a73e8; border-radius:12px; padding:20px; margin-bottom:24px;">
                 <tr><td style="padding:20px;">
                   <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Titel:</strong> {{ $event['title'] ?? '' }}</p>
-                  <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Tid:</strong> 
-                    @if(!empty($event['time']))
-                      {{ \Carbon\Carbon::parse($event['time'])->format('d. F Y · H:i') }}
-                      @if(!empty($event['end_time']))
-                        – {{ \Carbon\Carbon::parse($event['end_time'])->format('d. F Y · H:i') }}
-                      @endif
-                    @endif
+@if(!empty($event['time']))
+  <p style="margin:6px 0; font-size:15px;">
+    <strong style="color:#1a73e8;">Starttidspunkt:</strong> 
+    {{ \Carbon\Carbon::parse($event['time'])->format('d. F Y · H:i') }}
+  </p>
+@endif
+
+@if(!empty($event['end_time']))
+  <p style="margin:6px 0; font-size:15px;">
+    <strong style="color:#1a73e8;">Sluttidspunkt:</strong> 
+    {{ \Carbon\Carbon::parse($event['end_time'])->format('d. F Y · H:i') }}
+  </p>
+@endif
+
                   </p>
                   <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Lokation:</strong> {{ $event['location'] ?? '' }}</p>
                   <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>

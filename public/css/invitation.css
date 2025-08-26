@@ -1,3 +1,20 @@
+/* Invitation Modal Overlay */
+.invite-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    backdrop-filter: blur(4px);
+    overflow: hidden;
+    overscroll-behavior: contain;
+}
 /* Invitation Button Styles */
 .invite-btn {
     background: linear-gradient(90deg, #10b981 0%, #059669 100%);
@@ -357,88 +374,8 @@ body.dark-mode .invitee-select-btn:hover {
     }
 }
 
-/* Event Actions Container */
-.event-actions {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-@media (max-width: 480px) {
-    .event-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .event-actions .btn {
-        justify-content: center;
-    }
-}
-
-/* Event Details Actions */
-.event-actions-details {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.event-actions-details .invite-btn {
-    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 1.1rem 1.7rem;
-    font-size: 1.08rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    letter-spacing: 0.02em;
-}
-
-.event-actions-details .invite-btn:hover {
-    background: linear-gradient(90deg, #059669 0%, #047857 100%);
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.13);
-    transform: translateY(-1px);
-}
-
-.event-actions-details .invite-btn .icon {
-    width: 16px;
-    height: 16px;
-}
-
-body.dark-mode .event-actions-details .invite-btn {
-    background: linear-gradient(90deg, #00c2ff 0%, #007bff 100%);
-    box-shadow: 0 2px 8px rgba(0, 194, 255, 0.1);
-}
-
-body.dark-mode .event-actions-details .invite-btn:hover {
-    background: linear-gradient(90deg, #007bff 0%, #0056cc 100%);
-    box-shadow: 0 4px 16px rgba(0, 194, 255, 0.13);
-}
-
-@media (max-width: 600px) {
-    .event-actions-details {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.8rem;
-    }
-
-    .event-actions-details .invite-btn,
-    .event-actions-details .back-btn {
-        justify-content: center;
-    }
-}
-
-.invite-btn,
-.event-actions-details .invite-btn,
-.add-email-btn {
+.invite-modal .invite-btn,
+.invite-modal .add-email-btn {
     background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;
     color: #fff;
     border: none;
@@ -446,23 +383,20 @@ body.dark-mode .event-actions-details .invite-btn:hover {
     box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
     transition: all 0.2s ease;
 }
-.invite-btn:hover,
-.event-actions-details .invite-btn:hover,
-.add-email-btn:hover {
+.invite-modal .invite-btn:hover,
+.invite-modal .add-email-btn:hover {
     background: linear-gradient(90deg, #059669 0%, #047857 100%) !important;
     box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
     transform: translateY(-1px);
 }
-body.dark-mode .invite-btn,
-body.dark-mode .event-actions-details .invite-btn,
-body.dark-mode .add-email-btn {
+body.dark-mode .invite-modal .invite-btn,
+body.dark-mode .invite-modal .add-email-btn {
     background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;
     color: #fff;
     box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
 }
-body.dark-mode .invite-btn:hover,
-body.dark-mode .event-actions-details .invite-btn:hover,
-body.dark-mode .add-email-btn:hover {
+body.dark-mode .invite-modal .invite-btn:hover,
+body.dark-mode .invite-modal .add-email-btn:hover {
     background: linear-gradient(90deg, #059669 0%, #047857 100%) !important;
     box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
     transform: translateY(-1px);
@@ -476,6 +410,9 @@ body.dark-mode .add-email-btn:hover {
     overflow: hidden;
     background: #fff;
     padding: 0;
+    box-sizing: border-box;
+    max-height: 90vh;
+    overflow-x: hidden;
 }
 .invite-modal-header {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -544,6 +481,7 @@ body.dark-mode .add-email-btn:hover {
     gap: 2rem;
     max-height: 70vh;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 @media (max-width: 600px) {
     .invite-modal-content {
@@ -569,3 +507,44 @@ body.dark-mode .invite-modal-header {
 body.dark-mode .invite-modal-form {
     background: #1f2937;
 }
+
+/* Success message styling (for invite flow) */
+.invite-modal .modal-success {
+    text-align: center;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.invite-modal .modal-success .checkmark {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: checkmarkPulse 0.6s ease-out;
+}
+.invite-modal .modal-success .checkmark svg {
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+    stroke-width: 3;
+}
+.invite-modal .modal-success h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: inherit;
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+.invite-modal .modal-success p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+}
+body.dark-mode .invite-modal .modal-success h3 { color: #f9fafb; }
+body.dark-mode .invite-modal .modal-success p { color: #cbd5e1; }

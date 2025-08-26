@@ -626,7 +626,118 @@ body.dark-mode .create-event-btn-header:hover {
     }
 }
 
-/* --- Modal styles moved to modal.css --- */
+/* --- Header-owned modal styles (scoped) --- */
+.header-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    backdrop-filter: blur(4px);
+}
+.header-modal .modal-content { all: unset; }
+.header-modal .modal-content {
+    background: #ffffff;
+    padding: 0;
+    border-radius: 16px;
+    min-width: 480px;
+    max-width: 95vw;
+    max-height: 90vh;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1);
+    position: relative;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.header-modal .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.header-modal .modal-form {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: #fff;
+    overflow-y: auto;
+    max-height: calc(90vh - 120px);
+}
+.header-modal .modal-title { flex: 1; }
+.header-modal .modal-title h2 { font-size: 1.5rem; font-weight: 600; margin: 0 0 0.25rem 0; letter-spacing: -0.025em; line-height: 1.3; }
+.header-modal .modal-subtitle { font-size: 0.875rem; color: rgba(255,255,255,0.85); margin: 0; font-weight: 400; }
+.header-modal .modal-close-btn { background: rgba(255,255,255,0.1); border: none; border-radius: 8px; width: 36px; height: 36px; color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; flex-shrink: 0; }
+.header-modal .modal-close-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+.header-modal .form-section { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1rem; }
+.header-modal .section-title { font-size: 1rem; font-weight: 600; color: #374151; margin: 0 0 0.5rem 0; padding-bottom: 0.5rem; border-bottom: 1px solid #f3f4f6; letter-spacing: -0.025em; }
+.header-modal .form-row { display: flex; flex-direction: column; gap: 0.5rem; position: relative; }
+.header-modal .form-row label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin: 0; letter-spacing: -0.025em; }
+.header-modal .form-row input[type="text"],
+.header-modal .form-row input[type="datetime-local"],
+.header-modal .form-row input[type="password"],
+.header-modal .form-row textarea,
+.header-modal .form-row select { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 0.875rem; background: #ffffff; color: #1f2937; transition: all 0.2s ease; outline: none; box-sizing: border-box; font-family: inherit; }
+.header-modal .form-row textarea { resize: vertical; min-height: 80px; max-height: 200px; line-height: 1.5; }
+.header-modal .form-row input:focus,
+.header-modal .form-row textarea:focus,
+.header-modal .form-row select:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); background: #ffffff; }
+.header-modal .form-actions { display: flex; gap: 1rem; justify-content: flex-end; padding-top: 1rem; border-top: 1px solid #f3f4f6; margin-top: 0.5rem; }
+.header-modal .btn { padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; border: none; outline: none; letter-spacing: -0.025em; min-width: 120px; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+.header-modal .btn.primary-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; box-shadow: 0 4px 12px rgba(102,126,234,0.25); }
+.header-modal .btn.primary-btn:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 6px 20px rgba(102,126,234,0.35); transform: translateY(-1px); }
+.header-modal .btn.secondary-btn { background: #ffffff; color: #6b7280; border: 1.5px solid #e5e7eb; }
+.header-modal .btn.secondary-btn:hover { background: #f9fafb; border-color: #d1d5db; color: #374151; }
+.header-modal .error-message { color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; display: block; font-weight: 500; }
+.header-modal .repeat-section { width: 100%; }
+.header-modal .repeat-toggle { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; }
+.header-modal .repeat-toggle input[type="checkbox"] { width: 18px; height: 18px; accent-color: #667eea; cursor: pointer; margin: 0; }
+.header-modal .repeat-toggle label { font-size: 0.875rem; font-weight: 500; color: #374151; cursor: pointer; margin: 0; }
+.header-modal .repeat-options { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.25rem; margin-top: 0.75rem; display: none; flex-direction: column; gap: 1rem; }
+.header-modal .repeat-field { display: flex; flex-direction: column; gap: 0.5rem; }
+.header-modal .repeat-field label { font-size: 0.875rem; color: #6b7280; font-weight: 500; margin: 0; }
+.header-modal .repeat-select,
+.header-modal .custom-interval-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 0.875rem; background: #ffffff; color: #1f2937; font-weight: 400; transition: all 0.2s ease; outline: none; box-sizing: border-box; }
+.header-modal .repeat-select:focus,
+.header-modal .custom-interval-input:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); background: #ffffff; }
+@media (max-width: 600px) {
+    .header-modal .modal-content { min-width: 95vw; margin: 1rem; max-height: 95vh; }
+    .header-modal .modal-form { padding: 1.5rem; gap: 1.5rem; }
+    .header-modal .modal-header { padding: 1.25rem 1.5rem; }
+    .header-modal .form-actions { flex-direction: column; }
+}
+/* Dark mode for header modal */
+body.dark-mode .header-modal .modal-content { background: #1f2937; border-color: #374151; color: #f9fafb; }
+body.dark-mode .header-modal .modal-header { background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%); }
+body.dark-mode .header-modal .modal-form { background: #1f2937; }
+body.dark-mode .header-modal .section-title { color: #f3f4f6; border-bottom-color: #374151; }
+body.dark-mode .header-modal .form-row label { color: #d1d5db; }
+body.dark-mode .header-modal .form-row input[type="text"],
+body.dark-mode .header-modal .form-row input[type="datetime-local"],
+body.dark-mode .header-modal .form-row input[type="password"],
+body.dark-mode .header-modal .form-row textarea,
+body.dark-mode .header-modal .form-row select { background: #374151; color: #f9fafb; border-color: #4b5563; }
+body.dark-mode .header-modal .form-row input:focus,
+body.dark-mode .header-modal .form-row textarea:focus,
+body.dark-mode .header-modal .form-row select:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); background: #4b5563; }
+body.dark-mode .header-modal .btn.primary-btn { background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%); }
+body.dark-mode .header-modal .btn.secondary-btn { background: #374151; color: #d1d5db; border-color: #4b5563; }
+body.dark-mode .header-modal .btn.secondary-btn:hover { background: #4b5563; border-color: #6b7280; color: #f9fafb; }
+.header-modal .form-actions { display: flex; justify-content: flex-end; gap: 1rem; }
+.header-modal .btn { padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; }
+.header-modal .btn.primary-btn { background: #6366f1; color: #fff; }
+.header-modal .btn.secondary-btn { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+@keyframes modalSlideIn { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
 /* Mobile Dropdown Header */
 .mobile-menu-btn {
     display: none;
@@ -986,3 +1097,90 @@ body.dark-mode .create-event-btn-header:hover {
         display: none !important;
     }
 }
+
+/* --- Success message (rendered from header partial) --- */
+#event-success-message .modal-success {
+    text-align: center;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+#event-success-message .modal-success .checkmark {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: checkmarkPulse 0.6s ease-out;
+}
+#event-success-message .modal-success .checkmark svg {
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+    stroke-width: 3;
+}
+#event-success-message .modal-success h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: inherit;
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+#event-success-message .modal-success p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+}
+@keyframes checkmarkPulse {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+body.dark-mode #event-success-message .modal-success h3 { color: #f9fafb; }
+body.dark-mode #event-success-message .modal-success p { color: #cbd5e1; }
+
+/* Also style success content when injected into header modal */
+.header-modal .modal-success {
+    text-align: center;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.header-modal .modal-success .checkmark {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: checkmarkPulse 0.6s ease-out;
+}
+.header-modal .modal-success .checkmark svg {
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+    stroke-width: 3;
+}
+.header-modal .modal-success h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: inherit;
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+.header-modal .modal-success p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+}
+body.dark-mode .header-modal .modal-success h3 { color: #f9fafb; }
+body.dark-mode .header-modal .modal-success p { color: #cbd5e1; }

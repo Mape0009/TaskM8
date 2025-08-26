@@ -76,10 +76,9 @@
         <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Ny Begivenhed</button>
         <?php endif; ?>
     </div>
-</header>
-<link rel="stylesheet" href="<?php echo e(asset('css/header.css')); ?>">
+ </header>
 <!-- New Event Modal -->
-<div id="new-event-modal" class="modal">
+<div id="new-event-modal" class="header-modal">
     <div class="modal-content" id="modal-content">
         <div class="modal-header">
             <div class="modal-header-content">
@@ -178,7 +177,7 @@
 </div>
 
 <!-- Settings Modal -->
-<div id="settings-modal" class="modal">
+<div id="settings-modal" class="header-modal">
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-header-content">
