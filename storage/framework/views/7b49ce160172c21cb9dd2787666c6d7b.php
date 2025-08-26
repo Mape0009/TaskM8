@@ -29,6 +29,8 @@
                         <p class="event-description"><?php echo e($event->description); ?></p>
                         <div class="event-actions">
                             <a href="/events/<?php echo e($event->id); ?>" class="btn primary-btn">Se detaljer</a>
+                            <a href="/events/<?php echo e($event->id); ?>/edit" class="btn secondary-btn">Rediger</a>
+
                         </div>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
