@@ -228,7 +228,6 @@ unset($__errorArgs, $__bag); ?>
                     <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="Gentag din nye adgangskode">
                 </div>
             </div>
-            
             <div class="form-actions">
                 <button type="button" class="btn secondary-btn" id="cancel-settings-btn">Annuller</button>
                 <button type="submit" class="btn primary-btn">Skift adgangskode</button>
@@ -253,7 +252,6 @@ unset($__errorArgs, $__bag); ?>
         <div class="mobile-divider integrated"></div>
         <div class="mobile-theme-toggle">
         </div>
-        
         <?php if(Auth::check()): ?>
         <div class="mobile-divider integrated"></div>
         <div class="mobile-user-section">

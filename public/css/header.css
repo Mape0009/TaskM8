@@ -693,7 +693,6 @@ body.dark-mode .create-event-btn-header:hover {
 .header-modal .form-row input:focus,
 .header-modal .form-row textarea:focus,
 .header-modal .form-row select:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); background: #ffffff; }
-.header-modal .form-actions { display: flex; gap: 1rem; justify-content: flex-end; padding-top: 1rem; border-top: 1px solid #f3f4f6; margin-top: 0.5rem; }
 .header-modal .btn { padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; border: none; outline: none; letter-spacing: -0.025em; min-width: 120px; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
 .header-modal .btn.primary-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; box-shadow: 0 4px 12px rgba(102,126,234,0.25); }
 .header-modal .btn.primary-btn:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); box-shadow: 0 6px 20px rgba(102,126,234,0.35); transform: translateY(-1px); }

@@ -129,6 +129,8 @@
         </div>
     </div>
 
+    <script src="<?php echo e(asset('js/invitation.js')); ?>"></script>
+
     <script>
         let currentEventId = null;
         let addedEmails = [];
@@ -170,7 +172,7 @@
                 emailTag.className = 'email-tag';
                 emailTag.innerHTML = `
                     <span>${email}</span>
-                    <button onclick="removeEmail('${email}')" class="remove-email-btn">
+                    <button type="button" onclick="removeEmail('${email}')" class="remove-email-btn">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -211,7 +213,7 @@
                                 <span class="invitee-email">${i.email}</span>
                             </div>
                         </div>
-                        <button class="invitee-select-btn">Vælg</button>
+                        <button type="button" class="invitee-select-btn">Vælg</button>
                     `;
                     item.querySelector('.invitee-select-btn').addEventListener('click', () => selectInvitee(i.email));
                     inviteesList.appendChild(item);

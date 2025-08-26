@@ -214,7 +214,6 @@
                     <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="Gentag din nye adgangskode">
                 </div>
             </div>
-            
             <div class="form-actions">
                 <button type="button" class="btn secondary-btn" id="cancel-settings-btn">Annuller</button>
                 <button type="submit" class="btn primary-btn">Skift adgangskode</button>
