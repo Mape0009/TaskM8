@@ -266,7 +266,7 @@ unset($__errorArgs, $__bag); ?>
         <div class="mnav__section">
             <button class="mnav__user" id="mnav-user" aria-expanded="false" aria-controls="mnav-user-menu">
                 <span class="mnav__avatar"><?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?></span>
-                <span class="mnav__username"><?php echo e(Auth::user()->name); ?></span>
+                <span class="mnav__username">Velkommen, <?php echo e(Auth::user()->name); ?>!</span>
                 <svg class="mnav__chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
             </button>
             <ul class="mnav__submenu" id="mnav-user-menu" hidden>
