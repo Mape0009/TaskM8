@@ -222,61 +222,56 @@
     </div>
 </div>
 
-<!-- Mobile Nav Overlay -->
-<div id="mobile-nav-overlay" class="mobile-nav-overlay">
-    <div class="mobile-nav-content minimal glassy integrated-dropdown"> 
-        
-        <nav class="mobile-navigation minimal premium integrated">
-            <ul>
-                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
+<!-- Mobile Header/Nav Menu -->
+<div id="mnav" class="mnav" aria-hidden="true">
+    <div class="mnav__backdrop" id="mnav-backdrop"></div>
+    <aside class="mnav__panel" role="dialog" aria-modal="true" aria-labelledby="mnav-title">
+        <header class="mnav__header">
+            <div class="mnav__brand" id="mnav-title" aria-label="TaskM8">
+                <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8" class="logo-img logo-img-dark" />
+                <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8" class="logo-img logo-img-light" />
+            </div>
+            <button class="mnav__close" id="mnav-close" aria-label="Luk menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+        <nav class="mnav__nav" aria-label="Primær">
+            <ul class="mnav__list">
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">Forside</a></li>
                 @if (Auth::check())
-                <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
-                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Tidligere Inviteret</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'events' ? 'is-active' : '' }}" href="/events">Begivenheder</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'friends' ? 'is-active' : '' }}" href="/friends">Tidligere Inviteret</a></li>
                 @endif
             </ul>
         </nav>
-        <div class="mobile-divider integrated"></div>
-        <div class="mobile-theme-toggle">
-        </div>
+        
         @if (Auth::check())
-        <div class="mobile-divider integrated"></div>
-        <div class="mobile-user-section">
-            <div class="mobile-user-profile minimal integrated">
-                <div class="user-avatar integrated">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
-                <div class="user-info-header">
-                    <p class="user-greeting">Velkommen, {{ Auth::user()->name }}!</p>
-                </div>
-            </div>
-            <div class="mobile-actions">
-                <button class="create-event-btn-header mobile minimal premium integrated">+ Ny Begivenhed</button>
-                <button class="mobile-settings-btn" id="mobile-settings-btn">
-                    <svg class="mobile-settings-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                    Indstillinger
-                </button>
-                <form action="{{ route('logout') }}" method="POST" class="mobile-logout-form">
-                    @csrf
-                    <button type="submit" class="btn logout-btn mobile">Log ud</button>
-                </form>
-            </div>
+        <div class="mnav__section">
+            <button class="mnav__user" id="mnav-user" aria-expanded="false" aria-controls="mnav-user-menu">
+                <span class="mnav__avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                <span class="mnav__username">{{ Auth::user()->name }}</span>
+                <svg class="mnav__chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+            </button>
+            <ul class="mnav__submenu" id="mnav-user-menu" hidden>
+                <li><button class="mnav__action mnav__action--primary" id="mnav-create">Ny begivenhed</button></li>
+                <li><button class="mnav__action" id="mnav-settings">Skift adgangskode</button></li>
+                <li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="mnav__action mnav__action--danger">Log ud</button>
+                    </form>
+                </li>
+            </ul>
         </div>
         @else
-        <div class="mobile-divider integrated"></div>
-        <div class="mobile-user-section">
-            <div class="mobile-user-profile minimal integrated">
-                <div class="user-avatar integrated">?</div>
-                <div class="user-info-header">
-                    <p class="user-greeting">Ikke logget ind</p>
-                </div>
-            </div>
-            <div class="mobile-actions">
-                <a href="{{ route('login') }}" class="btn login-btn mobile">Log ind</a>
-            </div>
+        <div class="mnav__section">
+            <a href="{{ route('login') }}" class="mnav__action mnav__action--primary">Log ind</a>
         </div>
         @endif
-    </div>
+    </aside>
 </div>
 
 @if(session('success'))
