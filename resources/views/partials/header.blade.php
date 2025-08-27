@@ -130,10 +130,10 @@
             
             <div class="form-section">
                 <h3 class="section-title">Deltagerbegrænsning (valgfri)</h3>
-                <div class="form-row">
-                    <label for="participant-limit">Maks. antal deltagere</label>
-                    <input type="number" id="participant-limit" name="participantLimit" min="1" placeholder="F.eks. 20">
-                </div>
+                <div class="form-row participant-limit">
+                <label for="participant-limit">Maks antal deltagere</label>
+                <input type="number" id="participant-limit" name="participant-limit" required placeholder="Indtast maks antal deltagere" />
+            </div>
             </div>
 
             <div class="form-section">
@@ -145,7 +145,7 @@
                     </div>
                     <div id="repeat-options" class="repeat-options" style="display: none;">
                         <div class="repeat-field">
-                            <label for="repeat-interval">Gentagelse interval</label>
+                            <label for="repeat-interval">Hvor ofte?</label>
                             <select id="repeat-interval" name="repeat_interval" class="repeat-select">
                                 <option value="daily">Dagligt</option>
                                 <option value="weekly">Ugentligt</option>
@@ -231,7 +231,7 @@
                 <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
                 @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
-                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Medlemmer</a></li>
+                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Tidligere Inviteret</a></li>
                 @endif
             </ul>
         </nav>
