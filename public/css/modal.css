@@ -143,6 +143,7 @@
 }
 .form-row input[type="text"],
 .form-row input[type="datetime-local"],
+.form-row input[type="number"],
 .form-row textarea,
 .form-row select {
     width: 100%;
@@ -246,6 +247,14 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.repeat-options.show {
+    display: flex !important;
+    opacity: 1;
+    transform: translateY(0);
 }
 .repeat-field {
     display: flex;
@@ -318,6 +327,7 @@ body.dark-mode .form-row label {
 }
 body.dark-mode .form-row input[type="text"],
 body.dark-mode .form-row input[type="datetime-local"],
+body.dark-mode .form-row input[type="number"],
 body.dark-mode .form-row textarea,
 body.dark-mode .form-row select {
     background: #374151;
