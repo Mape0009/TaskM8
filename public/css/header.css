@@ -713,7 +713,11 @@ body.dark-mode .create-event-btn-header:hover {
     .header-modal .modal-content { min-width: 95vw; margin: 1rem; max-height: 95vh; }
     .header-modal .modal-form { padding: 1.5rem; gap: 1.5rem; }
     .header-modal .modal-header { padding: 1.25rem 1.5rem; }
-    .header-modal .form-actions { flex-direction: column; }
+    .header-modal .form-actions { flex-direction: column; gap: 0.75rem; }
+    .header-modal .form-actions .btn { width: 100%; min-width: 0; padding: 0.95rem 1.2rem; font-size: 1rem; border-radius: 10px; }
+    /* Reorder so primary appears first on mobile */
+    .header-modal .form-actions .primary-btn { order: 0; }
+    .header-modal .form-actions .secondary-btn { order: 1; }
 }
 /* Dark mode for header modal */
 body.dark-mode .header-modal .modal-content { background: #1f2937; border-color: #374151; color: #f9fafb; }
