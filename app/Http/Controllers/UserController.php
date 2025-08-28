@@ -34,31 +34,6 @@ class UserController extends Controller
         return redirect('/signin')->with('success', 'Bruger oprettet. Log ind for at begynde.');
     }
 
-    /*
-    public function createAdmin(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        if ($request->input('token') == self::adminToken) {
-            $user = new User();
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $user->password = bcrypt($request->input('password'));
-            $user->role = 'admin';
-            $user->token = $request->input('token');
-            $user->save();
-
-            return response()->json(['message' => 'Admin oprettet'], 201);
-        } else {
-            return response()->json(['message' => 'Ugyldig admin token'], 403);
-        }
-    }
-    */
-
     public function show($id)
     {
         // Find the user by ID
@@ -98,7 +73,7 @@ class UserController extends Controller
     {
         $request->validate([
             'current_password' => 'required|string',
-            'new_password' => 'required|string|min:8|confirmed',
+            'new_password' => 'required|string|min:6|confirmed',
         ]);
 
         $user = auth()->user();
