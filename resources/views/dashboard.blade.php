@@ -12,8 +12,6 @@
     @include('partials.header', ['currentPage' => 'dashboard'])
 
     <main class="main-content-full">
-        <header class="content-header">
-        </header>
         
         <section class="stats-cards">
             <div class="stat-card">

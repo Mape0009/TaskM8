@@ -13,9 +13,7 @@
     <?php echo $__env->make('partials.header', ['currentPage' => 'events'], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <main class="main-content-full">
-        <header class="content-header">
-            <h1></h1>
-        </header>
+
         <section class="event-listing">
             <h2>Mine begivenheder</h2>
             <div class="event-list">

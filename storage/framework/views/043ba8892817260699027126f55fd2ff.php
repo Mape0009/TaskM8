@@ -12,9 +12,6 @@
     <?php echo $__env->make('partials.header', ['currentPage' => 'friends'], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <main class="main-content-full">
-        <header class="content-header">
-            <h1></h1>
-        </header>
         
         <section class="friends-listing">
             <h2>Tidligere Inviteret</h2>

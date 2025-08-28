@@ -12,9 +12,6 @@
     @include('partials.header', ['currentPage' => 'friends'])
 
     <main class="main-content-full">
-        <header class="content-header">
-            <h1></h1>
-        </header>
         
         <section class="friends-listing">
             <h2>Tidligere Inviteret</h2>
