@@ -9,7 +9,7 @@
                 <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
                 @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
-                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Medlemmer</a></li>
+                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Tidligere Inviteret</a></li>
                 @endif
             </ul>
         </nav>

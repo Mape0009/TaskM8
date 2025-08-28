@@ -17,7 +17,7 @@
         </header>
         
         <section class="friends-listing">
-            <h2>Alle Medlemmer</h2>
+            <h2>Tidligere Inviteret</h2>
             <div class="friend-list">
                 <!-- Friend Card 1 -->
                 <div class="friend-card event-card"> 
