@@ -11,40 +11,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="edit-container">
+<div class="edit-container">
+    <div class="edit-header" style="display: flex; align-items: center; justify-content: space-between;">
+        <h2 class="edit-title">Create New Task</h2>
+        <a href="{{ url()->previous() }}" class="btn white-btn">← Back</a>
+    </div>
 
-        <div class="edit-header">
-            <h2 class="edit-title">Create New Task</h2>
-        </div>
+    <div class="edit-card">
+        <form action="{{ route('task.create') }}" method="POST" class="edit-form">
+            @csrf
 
-        <div class="edit-card">
-            <form action="{{ route('task.create') }}" method="POST" class="edit-form">
-                @csrf
+            <div class="form-row">
+                <label for="taskName">Name:</label>
+                <input type="text" id="taskName" name="taskName" placeholder="Task Name">
+            </div>
 
-                <div class="form-row">
-                    <label for="taskName">Name:</label>
-                    <input type="text" id="taskName" name="taskName" placeholder="Task Name">
-                </div>
+            <div class="form-row">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" placeholder="Task description"></textarea>
+            </div>
 
-                <div class="form-row">
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" placeholder="Task description"></textarea>
-                </div>
+            <div class="form-row">
+                <label for="event_id">Event:</label>
+                <select name="event_id" id="event_id" required>
+                    @foreach($events as $event)
+                        <option value="{{ $event->id }}">{{ $event->eventName }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-                <div class="form-row">
-                    <label for="event_id">Event:</label>
-                    <select name="event_id" id="event_id" required>
-                        @foreach($events as $event)
-                            <option value="{{ $event->id }}">{{ $event->eventName }}</option>
-                        @endforeach
-                    </select>
-                </div>
+            <div class="form-actions">
+                <button type="submit" class="btn primary-btn">Create Task</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-                <div class="form-actions">
-                    <button type="submit" class="btn primary-btn">Create Task</button>
-                </div>
-            </form>
-        </div>
-    </div> 
 </body>
 </html>

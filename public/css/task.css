@@ -47,3 +47,18 @@
 .edit-container {
     margin: 20px;
 }
+
+.white-btn {
+    background-color: white;
+    color: var(--color-text-primary); /* or just black */
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.white-btn:hover {
+    background-color: #f2f2f2;
+}

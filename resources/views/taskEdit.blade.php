@@ -12,9 +12,11 @@
 </head>
 <body>
 <div class="edit-container">
-    <div class="edit-header">
+    <div class="edit-header" style="display: flex; align-items: center; justify-content: space-between;">
         <h1 class="edit-title">Edit Task</h1>
+        <a href="{{ url()->previous() }}" class="btn white-btn">← Back</a>
     </div>
+
     <div class="edit-card">
         <form action="{{ route('task.update', ['id' => $tasks->id]) }}" method="POST" class="edit-form">
             @csrf
@@ -42,11 +44,11 @@
             </div>
 
             <div class="form-actions">
-
                 <button type="submit" class="btn primary-btn">Update Task</button>
             </div>
         </form>
     </div>
 </div>
+
 </body>
 </html>

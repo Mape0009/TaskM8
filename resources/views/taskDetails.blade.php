@@ -11,28 +11,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>  
-    <main class="main-content-full">
-        <header class="content-header">
+<main class="main-content-full">
+    <header class="content-header">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
             <h1>Task Details</h1>
-        </header>
-        <section class="task-details">
-            <div class="task-card">
-                <div class="task-header">
-                    <h3>{{ $task->taskName }}</h3>
-                    @if($task->description)
-                        <p>{{ $task->description }}</p>
-                    @endif
-                </div>
-                <div class="task-actions">
-                    <a href="/tasks/{{ $task->id }}/edit" class="btn primary-btn">Edit Task</a>
-                    <form action="{{ route('task.delete', ['id' => $task->id]) }}" method="POST">
-                        <input type="hidden" name="id" value="{{ $task->id }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn danger-btn">Delete Task</button>
-                    </form>
-                </div>
+            <a href="{{ url()->previous() }}" class="btn" style="background-color: white; color: black; border: 1px solid #ccc;">← Back</a>
+        </div>
+    </header>
+
+    <section class="task-details">
+        <div class="task-card">
+            <div class="task-header">
+                <h3>{{ $task->taskName }}</h3>
+                @if($task->description)
+                    <p>{{ $task->description }}</p>
+                @endif
             </div>
-        </section>
+            <div class="task-actions">
+                <a href="/tasks/{{ $task->id }}/edit" class="btn primary-btn">Edit Task</a>
+
+                <form action="{{ route('task.delete', ['id' => $task->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="id" value="{{ $task->id }}">
+                    <button type="submit" class="btn danger-btn">Delete Task</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
 </body>
 </html>

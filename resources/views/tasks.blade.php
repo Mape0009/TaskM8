@@ -13,15 +13,19 @@
 <body>
     <main class="main-content-full">
         <section class="task-listing">
-            <h2>My Tasks</h2>
+            <div class="task-listing-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                <h2>My Tasks</h2>
+                <a href="/tasks/create" class="btn primary-btn">Create New Task</a>
+            </div>
+
             <div class="task-list">
                 @foreach($tasks as $task)
                     <div class="task-card">
                         <div class="task-header">
                             <h3>{{ $task->taskName }}</h3>
-                                @if($task->description)
-                                    <p>{{ $task->description }}</p>
-                                @endif
+                            @if($task->description)
+                                <p>{{ $task->description }}</p>
+                            @endif
                         </div>
                         <div class="task-actions">
                             <a href="/tasks/{{ $task->id }}" class="btn primary-btn">View Details</a>
@@ -30,5 +34,6 @@
                 @endforeach
             </div>
         </section>
+    </main>
 </body>
 </html>
