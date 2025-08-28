@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\Models\PinCode;
-use App\Models\EventParticipant;
+use Illuminate\Validation\Rules\Exists;
 
 class UserController extends Controller
 {
@@ -16,25 +15,11 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'pin' => 'nullable|string|size:4',
-            'event_id' => 'nullable|integer',
+            'password' => 'required|string|min:6|confirmed',
         ]);
-
-        $pinRecord = null;
-        // If pin is present, validate it
-        if ($request->filled('pin')) {
-            $pin = $request->input('pin');
-            $email = $request->input('email');
-
-            $pinRecord = PinCode::where('email', $email)
-                ->where('pincode', $pin)
-                ->where('createdAt', '>=', now()->subDays(7))
-                ->first();
-
-            if (!$pinRecord) {
-                return back()->withErrors(['pin' => 'Ugyldig eller udløbet PIN-kode.'])->withInput();
-            }
+        
+        if (User::where('email', $request->input('email'))->exists()) {
+            return back()->withErrors(['email' => 'Emailen er allerede i brug.']);
         }
 
         // Create a new user
@@ -46,42 +31,7 @@ class UserController extends Controller
         $user->role = 'user';
         $user->save();
 
-        // If a valid pin was used, create a pending event participation so the event is visible, then delete the pin
-        if ($pinRecord) {
-            $eventId = $pinRecord->eventId ?: $request->input('event_id');
-            if (!empty($eventId)) {
-                EventParticipant::firstOrCreate(
-                    ['eventId' => $eventId, 'userId' => $user->id],
-                    ['status' => 'pending']
-                );
-            }
-            $pinRecord->delete();
-        }
-
         return redirect('/signin')->with('success', 'Bruger oprettet. Log ind for at begynde.');
-    }
-
-    public function createAdmin(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        if ($request->input('token') == self::adminToken) {
-            $user = new User();
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $user->password = bcrypt($request->input('password'));
-            $user->role = 'admin';
-            $user->token = $request->input('token');
-            $user->save();
-
-            return response()->json(['message' => 'Admin oprettet'], 201);
-        } else {
-            return response()->json(['message' => 'Ugyldig admin token'], 403);
-        }
     }
 
     public function show($id)
@@ -123,7 +73,7 @@ class UserController extends Controller
     {
         $request->validate([
             'current_password' => 'required|string',
-            'new_password' => 'required|string|min:8|confirmed',
+            'new_password' => 'required|string|min:6|confirmed',
         ]);
 
         $user = auth()->user();
