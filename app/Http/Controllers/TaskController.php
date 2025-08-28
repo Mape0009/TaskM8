@@ -19,7 +19,7 @@ class TaskController extends Controller
     {
         $tasks = Task::all();
 
-        return view('taskOverview', compact('tasks'));
+        return view('tasks', compact('tasks'));
     }
 
     public function create(Request $request)
@@ -27,19 +27,21 @@ class TaskController extends Controller
         $tasks = new Task();
         $tasks->taskName = $request->input('taskName');
         $tasks->eventId = $request->input('event_id');
+        $tasks->description = $request->input('description');
         $tasks->save();
 
 
-        return redirect('/taskOverview')->with('success', 'Task created successfully!');
+        return redirect('/tasks')->with('success', 'Task created successfully!');
     }
 
     public function update(Request $request, $id)
     {
         $tasks = Task::findOrFail($id);
         $tasks->taskName = $request->input('taskName');
+        $tasks->description = $request->input('description');
         $tasks->save();
 
-        return response()->json($tasks);
+        return redirect('tasks/' . $id)->with('success', 'Task updated successfully!');
     }
 
     public function edit($id)
@@ -54,7 +56,7 @@ class TaskController extends Controller
         $tasks = Task::findOrFail($id);
         $tasks->delete();
 
-        return redirect('/taskOverview')->with('success', 'Task deleted successfully!');
+        return redirect('/tasks')->with('success', 'Task deleted successfully!');
     }
 
     public function show($id)
