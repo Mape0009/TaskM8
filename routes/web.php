@@ -22,10 +22,17 @@ Route::get('/dashboard', function () {
         $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
         $participatedEvents = Event::whereIn('id', $participantEventIds);
         $events = $ownedEvents->union($participatedEvents)->orderBy('startDate', 'desc')->get();
+
+        $ownedEventsCount = $ownedEvents->count();
+        $participatedEventsCount = EventParticipant::where('userId', $userId)->count();
+        $totalEventsCount = $ownedEventsCount + $participatedEventsCount;
+        $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
     } else {
         $events = collect();
+        $totalEventsCount = 0;
+        $pendingEventsCount = 0;
     }
-    return view('dashboard', compact('events'));
+    return view('dashboard', compact('events', 'totalEventsCount', 'pendingEventsCount'));
 });
 
 Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
@@ -33,8 +40,6 @@ Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('event
 
 Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
 Route::get('/events/{eventId}/invitees', [MailController::class, 'getPreviousInvitees'])->middleware('auth')->name('events.invitees');
-Route::view('test', 'test');
-Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.invite');
 
 Route::get('/events', [EventController::class, 'index']);
 
@@ -43,7 +48,7 @@ Route::get('/friends', function () {
 })->middleware('auth');
 
 
-Route::get('signup', function(\Illuminate\Http\Request $request){
+Route::get('signup', function(Request $request){
     // If secure token present, decode into request inputs for prefill
     if ($request->filled('token')) {
         $raw = base64_decode($request->query('token'));
