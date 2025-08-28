@@ -56,25 +56,24 @@
             @php
                 $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
                 $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+                $isFull = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isAccepted;
             @endphp
             @if(!$isOwner)
-            <style>
-                .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
-                .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
-                .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
-                @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
-            </style>
-            <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+            @if(session('success'))
+                <div class="rsvp-flash">{{ session('success') }}</div>
+            @endif
+            <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST" class="rsvp-actions" aria-label="Deltagelsesvalg">
                 @csrf
-                <label>
-                    <input type="radio" name="status" value="accepted" {{ $isAccepted ? 'checked' : '' }} onchange="this.form.submit()">
-                    <span>Deltager</span>
-                </label>
-                <label>
-                    <input type="radio" name="status" value="declined" {{ $isAccepted ? '' : 'checked' }} onchange="this.form.submit()">
-                    <span>Deltager ikke</span>
-                </label>
+                <button type="submit" name="status" value="accepted" class="btn-rsvp accept {{ $isAccepted ? 'active' : '' }}" {{ $isFull ? 'disabled' : '' }}>
+                    <span class="btn-label">Deltag</span>
+                </button>
+                <button type="submit" name="status" value="declined" class="btn-rsvp decline {{ !$isAccepted ? 'active' : '' }}">
+                    <span class="btn-label">Deltager ikke</span>
+                </button>
             </form>
+            @if($isFull)
+                <div class="rsvp-note">Begivenheden er fuld.</div>
+            @endif
             @endif
             @endauth
         </section>

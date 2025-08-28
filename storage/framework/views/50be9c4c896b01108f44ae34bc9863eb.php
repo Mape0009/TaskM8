@@ -59,25 +59,24 @@
             <?php
                 $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
                 $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+                $isFull = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isAccepted;
             ?>
             <?php if(!$isOwner): ?>
-            <style>
-                .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
-                .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
-                .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
-                @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
-            </style>
-            <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+            <?php if(session('success')): ?>
+                <div class="rsvp-flash"><?php echo e(session('success')); ?></div>
+            <?php endif; ?>
+            <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST" class="rsvp-actions" aria-label="Deltagelsesvalg">
                 <?php echo csrf_field(); ?>
-                <label>
-                    <input type="radio" name="status" value="accepted" <?php echo e($isAccepted ? 'checked' : ''); ?> onchange="this.form.submit()">
-                    <span>Deltager</span>
-                </label>
-                <label>
-                    <input type="radio" name="status" value="declined" <?php echo e($isAccepted ? '' : 'checked'); ?> onchange="this.form.submit()">
-                    <span>Deltager ikke</span>
-                </label>
+                <button type="submit" name="status" value="accepted" class="btn-rsvp accept <?php echo e($isAccepted ? 'active' : ''); ?>" <?php echo e($isFull ? 'disabled' : ''); ?>>
+                    <span class="btn-label">Deltag</span>
+                </button>
+                <button type="submit" name="status" value="declined" class="btn-rsvp decline <?php echo e(!$isAccepted ? 'active' : ''); ?>">
+                    <span class="btn-label">Deltager ikke</span>
+                </button>
             </form>
+            <?php if($isFull): ?>
+                <div class="rsvp-note">Begivenheden er fuld.</div>
+            <?php endif; ?>
             <?php endif; ?>
             <?php endif; ?>
         </section>

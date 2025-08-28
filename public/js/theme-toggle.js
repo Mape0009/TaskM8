@@ -14,8 +14,9 @@
                 const sun = btn.querySelector('.sun');
                 const moon = btn.querySelector('.moon');
                 if (sun && moon) {
-                    sun.style.display = isDark ? 'inline' : 'none';
-                    moon.style.display = isDark ? 'none' : 'inline';
+                    // Show current mode: moon on dark, sun on light
+                    sun.style.display = isDark ? 'none' : 'inline';
+                    moon.style.display = isDark ? 'inline' : 'none';
                 }
             }
         });

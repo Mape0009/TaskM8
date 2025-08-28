@@ -36,13 +36,14 @@
             </div>
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-title">Medlemmer: </span>
-                    <span class="stat-value">13</span>
+                    <span class="stat-title">Tidligere Inviteret: </span>
+                    <span class="stat-value">0</span>
                 </div>
                 <div class="stat-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="blue"> <path stroke-linecap="round" stroke-linejoin="round"
-        d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493 M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07 M15 19.128v.106A12.318 12.318 0 0 1 8.624 21 c-2.331 0-4.512-.645-6.374-1.766l-.001-.109 a6.375 6.375 0 0 1 11.964-3.07 M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25 a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>
-            </div>
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493 M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07 M15 19.128v.106A12.318 12.318 0 0 1 8.624 21 c-2.331 0-4.512-.645-6.374-1.766l-.001-.109 a6.375 6.375 0 0 1 11.964-3.07 M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25 a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                    </svg>
+                </div>
             </div>
         </section>
         <section class="upcoming-events">
@@ -62,22 +63,13 @@
                                     $isParticipant = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
                                 ?>
                                 <?php if(!$isOwner): ?>
-                                    <style>
-                                        .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
-                                        .rsvp-inline label { display:flex; align-items:center; gap:0.4rem; cursor:pointer; }
-                                        .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
-                                        @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
-                                    </style>
-                                    <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+                                    <?php
+                                        $isFull = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isParticipant;
+                                    ?>
+                                    <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST" class="rsvp-actions rsvp-actions-inline" aria-label="Deltagelsesvalg">
                                         <?php echo csrf_field(); ?>
-                                        <label>
-                                            <input type="radio" name="status" value="accepted" <?php echo e($isParticipant ? 'checked' : ''); ?> onchange="this.form.submit()">
-                                            <span>Deltager</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="status" value="declined" <?php echo e($isParticipant ? '' : 'checked'); ?> onchange="this.form.submit()">
-                                            <span>Deltager ikke</span>
-                                        </label>
+                                        <button type="submit" name="status" value="accepted" class="btn-rsvp accept <?php echo e($isParticipant ? 'active' : ''); ?>" <?php echo e($isFull ? 'disabled' : ''); ?>>Deltag</button>
+                                        <button type="submit" name="status" value="declined" class="btn-rsvp decline <?php echo e(!$isParticipant ? 'active' : ''); ?>">Deltager ikke</button>
                                     </form>
                                 <?php endif; ?>
                             <?php endif; ?>

@@ -235,41 +235,12 @@ body {
     margin: calc(var(--spacing-unit) * 1) 0 0 0; /* 8px */
 }
 
-.search-bar {
-    margin-bottom: calc(var(--spacing-unit) * 5); /* 40px */
-}
-
-.search-bar input {
-    width: 100%;
-    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3); /* 16px 24px */
-    background-color: var(
-        --color-background-tertiary
-    ); /* Lighter background for input */
-    border: 1px solid var(--color-border); /* Subtle border */
-    border-radius: 10px;
-    color: var(--color-text-primary);
-    font-size: calc(var(--spacing-unit) * 1.875); /* 15px */
-    outline: none;
-    box-shadow: inset 0 1px 4px var(--color-shadow-light); /* Subtle inset shadow */
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.search-bar input:focus {
-    border-color: var(--color-accent-primary); /* Accent border on focus */
-    box-shadow: inset 0 1px 4px var(--color-shadow-dark),
-        0 0 0 3px rgba(0, 123, 255, 0.2); /* Soft glow on focus */
-}
-
-.search-bar input::placeholder {
-    color: var(--color-text-secondary); /* Placeholder color */
-}
-
 .stats-cards {
     display: grid;
     grid-template-columns: repeat(
         auto-fit,
         minmax(calc(var(--spacing-unit) * 35), 1fr)
-    ); /* 280px minimum */
+    ); 
     gap: calc(var(--spacing-unit) * 4); /* 32px */
     margin-bottom: calc(var(--spacing-unit) * 6); /* 48px */
 }
@@ -277,13 +248,13 @@ body {
 .stat-card {
     background-color: var(--color-background-secondary);
     padding: calc(var(--spacing-unit) * 4); /* 32px */
-    border-radius: 16px; /* Softer rounded corners */
-    box-shadow: 0 4px 15px var(--color-shadow-dark); /* Defined, but soft shadow */
+    border-radius: 16px; 
+    box-shadow: 0 4px 15px var(--color-shadow-dark); 
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid var(--color-border);
-    transition: background-color 0.15s ease, box-shadow 0.15s ease; /* Smooth hover */
+    transition: background-color 0.15s ease, box-shadow 0.15s ease; 
     position: relative;
     overflow: hidden;
 }
@@ -291,8 +262,8 @@ body {
 .stat-card:hover {
     background-color: var(
         --color-background-tertiary
-    ); /* Subtle background change */
-    box-shadow: 0 6px 20px var(--color-shadow-dark); /* Slightly more pronounced shadow on hover */
+    ); 
+    box-shadow: 0 6px 20px var(--color-shadow-dark); 
 }
 
 .stat-info .stat-title {
@@ -304,9 +275,8 @@ body {
 
 .stat-info .stat-value {
     font-size: calc(var(--spacing-unit) * 4.5); /* 36px */
-    font-weight: 700;
+    font-weight: 500;
     color: var(--color-text-primary);
-    letter-spacing: -0.5px;
 }
 
 .stat-icon {
@@ -498,6 +468,48 @@ body {
 .event-actions .primary-btn,
 .event-actions .secondary-btn {
     min-width: auto;
+}
+
+/* RSVP action buttons inline on cards */
+.rsvp-actions-inline {
+    display: inline-flex;
+    gap: calc(var(--spacing-unit) * 1);
+    margin-left: auto;
+}
+.btn-rsvp {
+    border: none;
+    padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2);
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px var(--color-shadow-light);
+    transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.btn-rsvp.accept {
+    background: linear-gradient(90deg, #0ea5e9 0%, #2563eb 100%);
+    color: #fff;
+}
+.btn-rsvp.accept.active {
+    background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+}
+.btn-rsvp.decline {
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+}
+.btn-rsvp.decline.active {
+    background: #fee2e2;
+    color: #991b1b;
+    border-color: #fecaca;
+}
+.btn-rsvp:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+.btn-rsvp:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px var(--color-shadow-dark);
 }
 
 .friend-card .avatar {

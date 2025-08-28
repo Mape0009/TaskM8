@@ -9,7 +9,7 @@
                 <li><a href="/dashboard" class="<?php echo e($currentPage == 'dashboard' ? 'active' : ''); ?>">Forside</a></li>
                 <?php if(Auth::check()): ?>
                 <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
-                <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Medlemmer</a></li>
+                <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Tidligere Inviteret</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
@@ -130,10 +130,10 @@
             
             <div class="form-section">
                 <h3 class="section-title">Deltagerbegrænsning (valgfri)</h3>
-                <div class="form-row">
-                    <label for="participant-limit">Maks. antal deltagere</label>
-                    <input type="number" id="participant-limit" name="participantLimit" min="1" placeholder="F.eks. 20">
-                </div>
+                <div class="form-row participant-limit">
+                <label for="participant-limit">Maks antal deltagere</label>
+                <input type="number" id="participant-limit" name="participant-limit" required placeholder="Indtast maks antal deltagere" />
+            </div>
             </div>
 
             <div class="form-section">
@@ -145,7 +145,7 @@
                     </div>
                     <div id="repeat-options" class="repeat-options" style="display: none;">
                         <div class="repeat-field">
-                            <label for="repeat-interval">Gentagelse interval</label>
+                            <label for="repeat-interval">Hvor ofte?</label>
                             <select id="repeat-interval" name="repeat_interval" class="repeat-select">
                                 <option value="daily">Dagligt</option>
                                 <option value="weekly">Ugentligt</option>
@@ -236,61 +236,56 @@ unset($__errorArgs, $__bag); ?>
     </div>
 </div>
 
-<!-- Mobile Nav Overlay -->
-<div id="mobile-nav-overlay" class="mobile-nav-overlay">
-    <div class="mobile-nav-content minimal glassy integrated-dropdown"> 
-        
-        <nav class="mobile-navigation minimal premium integrated">
-            <ul>
-                <li><a href="/dashboard" class="<?php echo e($currentPage == 'dashboard' ? 'active' : ''); ?>">Forside</a></li>
+<!-- Mobile Header/Nav Menu -->
+<div id="mnav" class="mnav" aria-hidden="true">
+    <div class="mnav__backdrop" id="mnav-backdrop"></div>
+    <aside class="mnav__panel" role="dialog" aria-modal="true" aria-labelledby="mnav-title">
+        <header class="mnav__header">
+            <div class="mnav__brand" id="mnav-title" aria-label="TaskM8">
+                <img src="<?php echo e(asset('TaskM8-Logo.png')); ?>" alt="TaskM8" class="logo-img logo-img-dark" />
+                <img src="<?php echo e(asset('TaskM8-Logo-Dark.png')); ?>" alt="TaskM8" class="logo-img logo-img-light" />
+            </div>
+            <button class="mnav__close" id="mnav-close" aria-label="Luk menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+        <nav class="mnav__nav" aria-label="Primær">
+            <ul class="mnav__list">
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'dashboard' ? 'is-active' : ''); ?>" href="/dashboard">Forside</a></li>
                 <?php if(Auth::check()): ?>
-                <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
-                <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Medlemmer</a></li>
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'events' ? 'is-active' : ''); ?>" href="/events">Begivenheder</a></li>
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'friends' ? 'is-active' : ''); ?>" href="/friends">Tidligere Inviteret</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
-        <div class="mobile-divider integrated"></div>
-        <div class="mobile-theme-toggle">
-        </div>
+        
         <?php if(Auth::check()): ?>
-        <div class="mobile-divider integrated"></div>
-        <div class="mobile-user-section">
-            <div class="mobile-user-profile minimal integrated">
-                <div class="user-avatar integrated"><?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?></div>
-                <div class="user-info-header">
-                    <p class="user-greeting">Velkommen, <?php echo e(Auth::user()->name); ?>!</p>
-                </div>
-            </div>
-            <div class="mobile-actions">
-                <button class="create-event-btn-header mobile minimal premium integrated">+ Ny Begivenhed</button>
-                <button class="mobile-settings-btn" id="mobile-settings-btn">
-                    <svg class="mobile-settings-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                    Indstillinger
-                </button>
-                <form action="<?php echo e(route('logout')); ?>" method="POST" class="mobile-logout-form">
-                    <?php echo csrf_field(); ?>
-                    <button type="submit" class="btn logout-btn mobile">Log ud</button>
-                </form>
-            </div>
+        <div class="mnav__section">
+            <button class="mnav__user" id="mnav-user" aria-expanded="false" aria-controls="mnav-user-menu">
+                <span class="mnav__avatar"><?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?></span>
+                <span class="mnav__username">Velkommen, <?php echo e(Auth::user()->name); ?>!</span>
+                <svg class="mnav__chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+            </button>
+            <ul class="mnav__submenu" id="mnav-user-menu" hidden>
+                <li><button class="mnav__action mnav__action--primary" id="mnav-create">Ny begivenhed</button></li>
+                <li><button class="mnav__action" id="mnav-settings">Skift adgangskode</button></li>
+                <li>
+                    <form action="<?php echo e(route('logout')); ?>" method="POST">
+                        <?php echo csrf_field(); ?>
+                        <button type="submit" class="mnav__action mnav__action--danger">Log ud</button>
+                    </form>
+                </li>
+            </ul>
         </div>
         <?php else: ?>
-        <div class="mobile-divider integrated"></div>
-        <div class="mobile-user-section">
-            <div class="mobile-user-profile minimal integrated">
-                <div class="user-avatar integrated">?</div>
-                <div class="user-info-header">
-                    <p class="user-greeting">Ikke logget ind</p>
-                </div>
-            </div>
-            <div class="mobile-actions">
-                <a href="<?php echo e(route('login')); ?>" class="btn login-btn mobile">Log ind</a>
-            </div>
+        <div class="mnav__section">
+            <a href="<?php echo e(route('login')); ?>" class="mnav__action mnav__action--primary">Log ind</a>
         </div>
         <?php endif; ?>
-    </div>
+    </aside>
 </div>
 
 <?php if(session('success')): ?>
