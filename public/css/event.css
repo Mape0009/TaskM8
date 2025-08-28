@@ -303,7 +303,7 @@ body.dark-mode .event-hero-bg {
     position: relative;
 }
 .event-hero-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 900;
     color: #1e293b;
     margin: 0 0 0.7rem 0;
@@ -347,6 +347,38 @@ body.dark-mode .event-hero-date {
     transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     position: relative;
     z-index: 2;
+}
+/* Top action bar inside event details card */
+.event-card-actions-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+.event-card-actions-top .back-btn {
+    background: #f3f4f6;
+    color: #334155;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.event-card-actions-top .back-btn:hover {
+    background: #e5e7eb;
+    border-color: #d1d5db;
+    color: #1f2937;
+}
+body.dark-mode .event-card-actions-top .back-btn {
+    background: #2a2a30;
+    color: #e5e7eb;
+    border-color: #333338;
+}
+body.dark-mode .event-card-actions-top .back-btn:hover {
+    background: #333338;
+    color: #fff;
 }
 body.dark-mode .event-details-card {
     background: #23232a;
@@ -407,6 +439,29 @@ body.dark-mode .event-details-description {
     margin-top: 0.5rem;
     flex-wrap: wrap;
 }
+.event-actions-details .invite-btn,
+.event-card-actions-top .invite-btn {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.85rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.13);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.02em;
+}
+.event-actions-details .invite-btn:hover,
+.event-card-actions-top .invite-btn:hover {
+    background: linear-gradient(90deg, #059669 0%, #047857 100%);
+}
+.event-actions-details .invite-btn .icon,
+.event-card-actions-top .invite-btn .icon { width: 16px; height: 16px; }
 .event-actions-details .btn {
     flex: 0 0 auto;
 }

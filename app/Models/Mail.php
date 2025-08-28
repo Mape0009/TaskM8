@@ -12,6 +12,10 @@ class Mail extends Model
         'senderId',
         'recipientId',
         'sentAt',
-        'pinCodeId',
     ];
+
+    public function recipient()
+    {
+        return $this->belongsTo(User::class, 'recipientId');
+    }
 }

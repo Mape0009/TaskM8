@@ -19,6 +19,7 @@ return new class extends Migration
             $table->dateTime('endDate');
             $table->string('description')->nullable();
             $table->string('location')->nullable();
+            $table->integer('participantLimit')->nullable();
             $table->unsignedBigInteger('ownerId');
             $table->foreign('ownerId')->references('id')->on('users')->onDelete('cascade');
         });

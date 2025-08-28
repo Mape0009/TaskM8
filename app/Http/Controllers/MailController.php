@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\EventInvite;
+use App\Mail\ExistingUserInvite;
 use App\Models\User;
 use App\Models\Event;
-use App\Http\Controllers\PinCodeController;
+use App\Models\PinCode;
+use App\Models\EventParticipant;
+use App\Models\Mail as MailModel;
 
 class MailController extends Controller
 {
@@ -30,40 +33,102 @@ class MailController extends Controller
 
         $event = Event::find($eventId);
         if (!$event) {
-            return response()->json(['success' => false, 'message' => 'Event not found'], 404);
+            return redirect()->back()->with('success', 'Kunne ikke finde begivenheden.');
         }
 
         $inviter = $request->user();
         $inviterEmail = $inviter ? $inviter->email : null;
 
-        $eventData = [
+        $eventDataBase = [
             'id' => $event->id,
             'title' => $event->eventName ?? '',
             'location' => $event->location ?? '',
-            'time' => $event->start_time ?? '',
-            'end_time' => $event->end_time ?? '',
+            'time' => $event->startDate ?? '',
+            'end_time' => $event->endDate ?? '',
             'description' => $event->description ?? '',
             'inviter_email' => $inviterEmail,
         ];
 
-        // Log the event data and recipient emails
         Log::info('Sending event invites', [
-            'eventData' => $eventData,
+            'eventId' => $event->id,
             'recipients' => $emails,
         ]);
 
-        $pinCodeController = new PinCodeController();
         foreach ($emails as $email) {
-            $pinCodeResponse = $pinCodeController->generatePinCode($request);
-            $pinCodeData = $pinCodeResponse->getData(true);
-            $eventData['pin_code'] = $pinCodeData['pincode'] ?? null;
-            if (User::where('email', $email)->exists()) {
-                MailController::sendExistingUserMail($email, $eventData);
-            } else {
-                MailController::sendNewUserMail($email, $eventData);
+            $existingUser = User::where('email', $email)->first();
+
+            if ($existingUser) {
+                // Existing user: add as participant (pending) and notify without pin
+                EventParticipant::updateOrCreate(
+                    ['eventId' => $event->id, 'userId' => $existingUser->id],
+                    ['status' => 'pending']
+                );
+                $eventData = $eventDataBase;
+                $eventData['invite_email'] = $email;
+                Mail::to($email)->send(new ExistingUserInvite($eventData));
+                // Record mail for previous invitees list
+                if ($inviter) {
+                    MailModel::create([
+                        'subject' => 'Event Invitation',
+                        'body' => $eventData['description'] ?? '',
+                        'senderId' => $inviter->id,
+                        'recipientId' => $existingUser->id,
+                        'sentAt' => now(),
+                    ]);
+                }
+                continue;
             }
+
+            // New user: generate PIN and send invite link
+            $pinCode = str_pad((string)random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+
+            PinCode::create([
+                'pincode' => $pinCode,
+                'email' => $email,
+                'eventId' => $event->id,
+                'createdAt' => now(),
+            ]);
+
+            $eventData = $eventDataBase;
+            $eventData['pin_code'] = $pinCode;
+            $eventData['invite_email'] = $email;
+            $payload = base64_encode(json_encode([
+                'email' => $email,
+                'pin' => $pinCode,
+                'event' => $event->id,
+                'ts' => now()->timestamp,
+            ]));
+            $eventData['invite_url'] = url('/signup') . '?token=' . urlencode($payload);
+
+            self::sendNewUserMail($email, $eventData);
+            // New user doesn't have a recipientId yet; skip recording here
         }
 
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('success', 'Invitationen er sendt.');
+    }
+
+    public function getPreviousInvitees(Request $request, $eventId)
+    {
+        $user = $request->user();
+        if (!$user) {
+            return response()->json([], 401);
+        }
+        // Get distinct users previously invited by current user (any event), prefer most recent
+        $rows = MailModel::where('senderId', $user->id)
+            ->orderBy('sentAt', 'desc')
+            ->with('recipient')
+            ->get()
+            ->unique('recipientId')
+            ->take(50);
+        $result = $rows->map(function ($m) {
+            return [
+                'id' => $m->recipientId,
+                'name' => optional($m->recipient)->name,
+                'email' => optional($m->recipient)->email,
+            ];
+        })->filter(function ($i) {
+            return !empty($i['email']);
+        })->values();
+        return response()->json($result);
     }
 }

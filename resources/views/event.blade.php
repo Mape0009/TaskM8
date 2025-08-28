@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $event->eventName ?? 'Event Details' }} | TaskM8</title>
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/invitation.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -25,31 +24,66 @@
             </div>
         </section>
         <section class="event-details-card">
+            <div class="event-card-actions-top">
+                <a href="{{ url('/events') }}" class="back-btn" aria-label="Tilbage til begivenheder">Tilbage</a>
+                @auth
+                @if(isset($event->ownerId) && $event->ownerId === auth()->id())
+                <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">
+                    Inviter til begivenhed
+                </button>
+                @endif
+                @endauth
+            </div>
             <ul class="event-details-list">
                 <li><span class="event-details-label">Lokation:</span> <span class="event-details-value">{{ $event->location ?? '-' }}</span></li>
+                @php
+                    $acceptedCount = \App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count();
+                @endphp
+                <li>
+                    <span class="event-details-label">Deltagere:</span>
+                    <span class="event-details-value">
+                        {{ $acceptedCount }}
+                        @if(!empty($event->participantLimit))
+                            / {{ $event->participantLimit }}
+                        @endif
+                    </span>
+                </li>
             </ul>
             <div class="event-details-description">
                 {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
             </div>
-            <div class="event-actions-details">
-                <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="8.5" cy="7" r="4"></circle>
-                        <line x1="20" y1="8" x2="20" y2="14"></line>
-                        <line x1="23" y1="11" x2="17" y2="11"></line>
-                    </svg>
-                    Inviter til begivenhed
-                </button>
-                <a href="{{ url('/events') }}" class="back-btn">&larr; Tilbage til begivenheder</a>
-            </div>
+            @auth
+            @php
+                $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
+                $isAccepted = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+            @endphp
+            @if(!$isOwner)
+            <style>
+                .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+                .rsvp-inline label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; }
+                .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
+                @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
+            </style>
+            <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+                @csrf
+                <label>
+                    <input type="radio" name="status" value="accepted" {{ $isAccepted ? 'checked' : '' }} onchange="this.form.submit()">
+                    <span>Deltager</span>
+                </label>
+                <label>
+                    <input type="radio" name="status" value="declined" {{ $isAccepted ? '' : 'checked' }} onchange="this.form.submit()">
+                    <span>Deltager ikke</span>
+                </label>
+            </form>
+            @endif
+            @endauth
         </section>
     </main>
 
     <!-- Invitation Modal -->
-    <div id="invite-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div id="invite-modal" class="invite-modal">
+        <div class="invite-modal-content">
+            <div class="invite-modal-header">
                 <span class="modal-icon">
                     <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -63,7 +97,7 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
-            <div class="modal-form">
+            <div class="invite-modal-form">
                 <form action="{{ route('events.invite', $event->id) }}" method="POST">
                     @csrf
                     <input type="hidden" name="eventIdInvite" value="{{ $event->id }}">
@@ -91,6 +125,8 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('js/invitation.js') }}"></script>
 
     <script>
         let currentEventId = null;
@@ -133,7 +169,7 @@
                 emailTag.className = 'email-tag';
                 emailTag.innerHTML = `
                     <span>${email}</span>
-                    <button onclick="removeEmail('${email}')" class="remove-email-btn">
+                    <button type="button" onclick="removeEmail('${email}')" class="remove-email-btn">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -149,30 +185,39 @@
             return emailRegex.test(email);
         }
 
-        function loadPreviousInvitees() {
+        async function loadPreviousInvitees() {
             const inviteesList = document.getElementById('invitees-list');
-            inviteesList.innerHTML = `
-                <div class="invitee-item">
-                    <div class="invitee-info">
-                        <div class="invitee-avatar">J</div>
-                        <div class="invitee-details">
-                            <span class="invitee-name">John Doe</span>
-                            <span class="invitee-email">john@example.com</span>
+            inviteesList.innerHTML = '<div class="invitee-item">Henter inviterede...</div>';
+            try {
+                const res = await fetch('{{ route('events.invitees', $event->id) }}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                if (!res.ok) throw new Error('Failed');
+                const all = await res.json();
+                const items = (all || []).slice(0, 3);
+                if (!items.length) {
+                    inviteesList.innerHTML = '<div class="invitee-item">Ingen tidligere inviterede</div>';
+                    return;
+                }
+                inviteesList.innerHTML = '';
+                items.forEach(i => {
+                    const initials = (i.name || i.email || '?').trim().charAt(0).toUpperCase();
+                    const item = document.createElement('div');
+                    item.className = 'invitee-item';
+                    item.innerHTML = `
+                        <div class="invitee-info">
+                            <div class="invitee-avatar">${initials}</div>
+                            <div class="invitee-details">
+                                <span class="invitee-name">${i.name || 'Ukendt'}</span>
+                                <span class="invitee-email">${i.email}</span>
+                            </div>
                         </div>
-                    </div>
-                    <button class="invitee-select-btn" onclick="selectInvitee('john@example.com')">Vælg</button>
-                </div>
-                <div class="invitee-item">
-                    <div class="invitee-info">
-                        <div class="invitee-avatar">J</div>
-                        <div class="invitee-details">
-                            <span class="invitee-name">Jane Smith</span>
-                            <span class="invitee-email">jane@example.com</span>
-                        </div>
-                    </div>
-                    <button class="invitee-select-btn" onclick="selectInvitee('jane@example.com')">Vælg</button>
-                </div>
-            `;
+                        <button type="button" class="invitee-select-btn">Vælg</button>
+                    `;
+                    item.querySelector('.invitee-select-btn').addEventListener('click', () => selectInvitee(i.email));
+                    inviteesList.appendChild(item);
+                });
+            } catch (e) {
+                inviteesList.innerHTML = '<div class="invitee-item">Kunne ikke hente inviterede.</div>';
+            }
         }
 
         function selectInvitee(email) {
@@ -185,7 +230,6 @@
         function sendInvitations() {
             const form = document.querySelector('#invite-modal form');
 
-            // Fjern gamle hidden inputs
             form.querySelectorAll('input[name="emailsInvite[]"]').forEach(el => el.remove());
 
             // Tilføj emails som hidden inputs

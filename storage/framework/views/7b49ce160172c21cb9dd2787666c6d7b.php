@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Begivenheder</title>
-    <link rel="stylesheet" href="<?php echo e(asset('css/dashboard.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('css/header.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('css/modal.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/dashboard.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('css/event.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('css/invitation.css')); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -29,6 +27,11 @@
                         <p class="event-description"><?php echo e($event->description); ?></p>
                         <div class="event-actions">
                             <a href="/events/<?php echo e($event->id); ?>" class="btn primary-btn">Se detaljer</a>
+                            <?php if(auth()->guard()->check()): ?>
+                                <?php if(isset($event->ownerId) && $event->ownerId === auth()->id()): ?>
+                                    <a href="/events/<?php echo e($event->id); ?>/edit" class="btn secondary-btn">Rediger</a>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

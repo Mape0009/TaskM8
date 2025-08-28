@@ -110,6 +110,7 @@
     gap: 2rem;
     background: #ffffff;
     overflow-y: auto;
+    overflow-x: hidden;
     max-height: calc(90vh - 120px);
 }
 
@@ -179,7 +180,7 @@
     border-top: 1px solid #f3f4f6;
     margin-top: 1rem;
 }
-.btn {
+.modal .btn {
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
     font-size: 0.875rem;
@@ -191,22 +192,22 @@
     letter-spacing: -0.025em;
     min-width: 120px;
 }
-.btn.primary-btn {
+.modal .btn.primary-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
 }
-.btn.primary-btn:hover {
+.modal .btn.primary-btn:hover {
     background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
     transform: translateY(-1px);
 }
-.btn.secondary-btn {
+.modal .btn.secondary-btn {
     background: #ffffff;
     color: #6b7280;
     border: 1.5px solid #e5e7eb;
 }
-.btn.secondary-btn:hover {
+.modal .btn.secondary-btn:hover {
     background: #f9fafb;
     border-color: #d1d5db;
     color: #374151;
@@ -382,12 +383,12 @@ body.dark-mode .form-actions {
     font-weight: 500;
 }
 
-.form-row {
+.modal-form .form-row {
     position: relative;
     margin-bottom: 1.5rem;
 }
 
-.form-row label {
+.modal-form .form-row label {
     display: block;
     font-size: 0.875rem;
     font-weight: 500;
@@ -396,9 +397,9 @@ body.dark-mode .form-actions {
     letter-spacing: -0.025em;
 }
 
-.form-row input,
-.form-row textarea,
-.form-row select {
+.modal-form .form-row input,
+.modal-form .form-row textarea,
+.modal-form .form-row select {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 2px solid #e5e7eb;
@@ -412,25 +413,25 @@ body.dark-mode .form-actions {
     box-sizing: border-box;
 }
 
-.form-row input:focus,
-.form-row textarea:focus,
-.form-row select:focus {
+.modal-form .form-row input:focus,
+.modal-form .form-row textarea:focus,
+.modal-form .form-row select:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.form-row input::placeholder,
-.form-row textarea::placeholder {
+.modal-form .form-row input::placeholder,
+.modal-form .form-row textarea::placeholder {
     color: #9ca3af;
 }
 
-.form-row input.error {
+.modal-form .form-row input.error {
     border-color: #dc2626;
     box-shadow: 0 0 0 1px #dc2626;
 }
 
-.form-row input.error:focus {
+.modal-form .form-row input.error:focus {
     border-color: #dc2626;
     box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
 }
@@ -462,7 +463,7 @@ body.dark-mode .form-actions {
     margin-top: 1rem;
 }
 
-.btn {
+.modal .btn {
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 8px;
@@ -480,33 +481,33 @@ body.dark-mode .form-actions {
     min-height: 25px;
 }
 
-.btn.primary-btn {
+.modal .btn.primary-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #ffffff;
     box-shadow: 0 4px 14px rgba(102, 126, 234, 0.25);
 }
 
-.btn.primary-btn:hover {
+.modal .btn.primary-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
 }
 
-.btn.primary-btn:active {
+.modal .btn.primary-btn:active {
     transform: translateY(0);
 }
 
-.btn.secondary-btn {
+.modal .btn.secondary-btn {
     background: #f3f4f6;
     color: #374151;
     border: 1px solid #d1d5db;
 }
 
-.btn.secondary-btn:hover {
+.modal .btn.secondary-btn:hover {
     background: #e5e7eb;
     border-color: #9ca3af;
 }
 
-.btn:disabled {
+.modal .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none !important;

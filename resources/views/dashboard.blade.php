@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskM8 Forside</title>
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -57,7 +56,31 @@
                         <p class="event-description">{{ $event->description }}</p>
                         <div class="event-actions">
                             <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
-                            <a href="{{ route('events.edit', ['id' => $event->id]) }}" class="btn secondary-btn">Rediger <svg class="icon arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></a>
+                            @auth
+                                @php
+                                    $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
+                                    $isParticipant = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+                                @endphp
+                                @if(!$isOwner)
+                                    <style>
+                                        .rsvp-inline { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+                                        .rsvp-inline label { display:flex; align-items:center; gap:0.4rem; cursor:pointer; }
+                                        .rsvp-inline input[type='radio'] { accent-color:#6366f1; }
+                                        @media (max-width:600px){ .rsvp-inline{ width:100%; justify-content:flex-start; } }
+                                    </style>
+                                    <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST" class="rsvp-inline" aria-label="Deltagelsesvalg">
+                                        @csrf
+                                        <label>
+                                            <input type="radio" name="status" value="accepted" {{ $isParticipant ? 'checked' : '' }} onchange="this.form.submit()">
+                                            <span>Deltager</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="status" value="declined" {{ $isParticipant ? '' : 'checked' }} onchange="this.form.submit()">
+                                            <span>Deltager ikke</span>
+                                        </label>
+                                    </form>
+                                @endif
+                            @endauth
                         </div>
                     </div>
                 @empty

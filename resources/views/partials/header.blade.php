@@ -76,20 +76,13 @@
         <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Ny Begivenhed</button>
         @endif
     </div>
-</header>
-<link rel="stylesheet" href="{{ asset('css/header.css') }}">
+ </header>
 <!-- New Event Modal -->
-<div id="new-event-modal" class="modal">
+<div id="new-event-modal" class="header-modal">
     <div class="modal-content" id="modal-content">
         <div class="modal-header">
             <div class="modal-header-content">
                 <div class="modal-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
                 </div>
                 <div class="modal-title">
                     <h2>Opret ny begivenhed</h2>
@@ -136,6 +129,14 @@
             </div>
             
             <div class="form-section">
+                <h3 class="section-title">Deltagerbegrænsning (valgfri)</h3>
+                <div class="form-row">
+                    <label for="participant-limit">Maks. antal deltagere</label>
+                    <input type="number" id="participant-limit" name="participantLimit" min="1" placeholder="F.eks. 20">
+                </div>
+            </div>
+
+            <div class="form-section">
                 <h3 class="section-title">Gentagelse</h3>
                 <div class="repeat-section">
                     <div class="repeat-toggle">
@@ -170,15 +171,11 @@
 </div>
 
 <!-- Settings Modal -->
-<div id="settings-modal" class="modal">
+<div id="settings-modal" class="header-modal">
     <div class="modal-content">
         <div class="modal-header">
             <div class="modal-header-content">
                 <div class="modal-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
                 </div>
                 <div class="modal-title">
                     <h2>Indstillinger</h2>
@@ -217,7 +214,6 @@
                     <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="Gentag din nye adgangskode">
                 </div>
             </div>
-            
             <div class="form-actions">
                 <button type="button" class="btn secondary-btn" id="cancel-settings-btn">Annuller</button>
                 <button type="submit" class="btn primary-btn">Skift adgangskode</button>
@@ -239,16 +235,9 @@
                 @endif
             </ul>
         </nav>
-        
         <div class="mobile-divider integrated"></div>
         <div class="mobile-theme-toggle">
-            <button class="theme-toggle-btn mobile" id="mobile-theme-toggle-btn" aria-label="Toggle dark/light mode">
-                <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
-                <span>Skift tema</span>
-            </button>
         </div>
-        
         @if (Auth::check())
         <div class="mobile-divider integrated"></div>
         <div class="mobile-user-section">

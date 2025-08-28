@@ -286,8 +286,8 @@ if (openMobileBtn && mobileNavOverlay) {
         });
     });
 }
-// Sync dark mode toggle in mobile nav with main toggle
-const themeToggleBtnMobile = document.getElementById('theme-toggle-btn-mobile');
+// Sync dark mode toggle in mobile nav with main toggle (id matches markup)
+const themeToggleBtnMobile = document.getElementById('mobile-theme-toggle-btn');
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 if (themeToggleBtnMobile && themeToggleBtn) {
     themeToggleBtnMobile.addEventListener('click', function(e) {
