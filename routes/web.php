@@ -24,18 +24,16 @@ Route::get('/dashboard', function () {
         $participatedEvents = Event::whereIn('id', $participantEventIds);
         $events = $ownedEvents->union($participatedEvents)->orderBy('startDate', 'desc')->get();
 
-        $ownedEventsCount = $ownedEvents->count();
         $participatedEventsCount = EventParticipant::where('userId', $userId)->count();
-        $totalEventsCount = $ownedEventsCount + $participatedEventsCount;
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
         $previousInviteesCount = MailModel::where('senderId', $userId)->distinct('recipientId')->count('recipientId');
     } else {
         $events = collect();
-        $totalEventsCount = 0;
+        $participatedEventsCount = 0;
         $pendingEventsCount = 0;
         $previousInviteesCount = 0;
     }
-    return view('dashboard', compact('events', 'totalEventsCount', 'pendingEventsCount', 'previousInviteesCount'));
+    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount'));
 });
 
 Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
