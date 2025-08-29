@@ -48,6 +48,12 @@ class EventController extends Controller
         $event->participantLimit = $request->input('participantLimit');
         $event->save();
         
+        $eventParticipant = new EventParticipant();
+        $eventParticipant->eventId = $event->id;
+        $eventParticipant->userId = auth()->user()->id;
+        $eventParticipant->status = 'accepted';
+        $eventParticipant->save();
+
         return redirect('/dashboard')->with('success', 'Event er nu lavet!');
     }
 
