@@ -242,7 +242,6 @@ body {
         minmax(calc(var(--spacing-unit) * 35), 1fr)
     ); 
     gap: calc(var(--spacing-unit) * 4); /* 32px */
-    margin-bottom: calc(var(--spacing-unit) * 6); /* 48px */
 }
 
 .stat-card {
