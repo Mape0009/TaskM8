@@ -34,8 +34,8 @@
             </div>
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-title">Tidligere Inviteret: </span>
-                    <span class="stat-value">0</span>
+                    <span class="stat-title">Tidligere Inviterede: </span>
+                    <span class="stat-value"><?php echo e($previousInviteesCount); ?></span>
                 </div>
                 <div class="stat-icon">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">

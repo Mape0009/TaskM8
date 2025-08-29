@@ -9,7 +9,7 @@
                 <li><a href="/dashboard" class="<?php echo e($currentPage == 'dashboard' ? 'active' : ''); ?>">Forside</a></li>
                 <?php if(Auth::check()): ?>
                 <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
-                <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Grupper</a></li>
+                <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Tidligere Inviterede</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
@@ -257,7 +257,7 @@ unset($__errorArgs, $__bag); ?>
                 <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'dashboard' ? 'is-active' : ''); ?>" href="/dashboard">Forside</a></li>
                 <?php if(Auth::check()): ?>
                 <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'events' ? 'is-active' : ''); ?>" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'friends' ? 'is-active' : ''); ?>" href="/friends">Grupper</a></li>
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'friends' ? 'is-active' : ''); ?>" href="/friends">Tidligere Inviterede</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

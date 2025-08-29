@@ -273,7 +273,7 @@ body {
 }
 
 .stat-info .stat-value {
-    font-size: calc(var(--spacing-unit) * 4.5); /* 36px */
+    font-size: calc(var(--spacing-unit) * 4.3); /* 36px */
     font-weight: 500;
     color: var(--color-text-primary);
 }

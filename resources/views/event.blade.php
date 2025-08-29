@@ -191,7 +191,7 @@
                 const res = await fetch('{{ route('events.invitees', $event->id) }}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
                 if (!res.ok) throw new Error('Failed');
                 const all = await res.json();
-                const items = (all || []).slice(0, 3);
+                const items = all || [];
                 if (!items.length) {
                     inviteesList.innerHTML = '<div class="invitee-item">Ingen tidligere inviterede</div>';
                     return;
