@@ -305,6 +305,8 @@ body {
     padding: 0;
     border-radius: 0;
     box-shadow: none;
+    margin-top: -20px;
+
 }
 
 .upcoming-events h2,
