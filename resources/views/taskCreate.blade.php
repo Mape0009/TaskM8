@@ -18,32 +18,48 @@
     </div>
 
     <div class="edit-card">
-        <form action="{{ route('task.create') }}" method="POST" class="edit-form">
-            @csrf
+<form action="{{ route('task.create') }}" method="POST" class="edit-form">
+    @csrf
 
-            <div class="form-row">
-                <label for="taskName">Name:</label>
-                <input type="text" id="taskName" name="taskName" placeholder="Task Name">
-            </div>
+    <div class="form-row">
+        <label for="taskName">Name:</label>
+        <input type="text" id="taskName" name="taskName" placeholder="Task Name">
+    </div>
 
-            <div class="form-row">
-                <label for="description">Description:</label>
-                <textarea id="description" name="description" placeholder="Task description"></textarea>
-            </div>
+    <div class="form-row">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" placeholder="Task description"></textarea>
+    </div>
 
-            <div class="form-row">
-                <label for="event_id">Event:</label>
-                <select name="event_id" id="event_id" required>
-                    @foreach($events as $event)
-                        <option value="{{ $event->id }}">{{ $event->eventName }}</option>
-                    @endforeach
-                </select>
-            </div>
+    <div class="form-row">
+        <label for="event_id">Event:</label>
+        <select name="event_id" id="event_id" required>
+            @foreach($events as $event)
+                <option value="{{ $event->id }}">{{ $event->eventName }}</option>
+            @endforeach
+        </select>
+    </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn primary-btn">Create Task</button>
-            </div>
-        </form>
+    <div class="form-row">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" placeholder="Task location">
+    </div>
+
+    <div class="form-row">
+        <label for="startDate">Start Date & Time:</label>
+        <input type="datetime-local" id="startDate" name="startDate" required>
+    </div>
+
+    <div class="form-row">
+        <label for="endDate">End Date & Time:</label>
+        <input type="datetime-local" id="endDate" name="endDate" required>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn primary-btn">Create Task</button>
+    </div>
+</form>
+
     </div>
 </div>
 

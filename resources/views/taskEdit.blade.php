@@ -43,6 +43,22 @@
                 </select>
             </div>
 
+            <div class="form-row">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" placeholder="Task location" value="{{ old('location', $tasks->location) }}">
+            </div>
+
+            <div class="form-row">
+                <label for="startDate">Start Date & Time:</label>
+                <input type="datetime-local" id="startDate" name="startDate" required value="{{ old('startDate', \Carbon\Carbon::parse($tasks->start_time)->format('Y-m-d\TH:i')) }}">
+            </div>
+
+            <div class="form-row">
+                <label for="endDate">End Date & Time:</label>
+                <input type="datetime-local" id="endDate" name="endDate" required value="{{ old('endDate', \Carbon\Carbon::parse($tasks->end_time)->format('Y-m-d\TH:i')) }}">
+            </div>
+
+
             <div class="form-actions">
                 <button type="submit" class="btn primary-btn">Update Task</button>
             </div>

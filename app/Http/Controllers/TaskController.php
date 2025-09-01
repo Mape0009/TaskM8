@@ -27,7 +27,11 @@ class TaskController extends Controller
         $tasks = new Task();
         $tasks->taskName = $request->input('taskName');
         $tasks->eventId = $request->input('event_id');
+        $tasks->location = $request->input('location');
         $tasks->description = $request->input('description');
+        $tasks->startDate = $request->input('startDate');
+        $tasks->endDate = $request->input('endDate');
+
         $tasks->save();
 
 

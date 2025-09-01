@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('taskName');
-            $table->string('description');
+            $table->string('taskName')
             $table->unsignedBigInteger('eventId');
-            $table->foreign('eventId')->references('id')->on('events')->onDelete('cascade');
+            $table->foreign('eventId')->references('id')->on('events')->onDelete('cascade');;
+            $table->string('location');
+            $table->string('description');
+            $table->date('startDate');
+            $table->date('endDate');
         });
     }
 
