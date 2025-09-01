@@ -21,8 +21,8 @@
     letter-spacing: -1px;
 }
 .logo-img {
-    height: 2.7rem;
-    max-height: 3.2em;
+    height: 1.4em;
+    max-height: 1.4em;
     width: auto;
     display: block;
     object-fit: contain;
@@ -629,8 +629,8 @@ body.dark-mode .create-event-btn-header:hover {
         display: none !important;
     }
     .logo-img {
-        height: 2rem;
-        max-height: 2.2em;
+        height: 2.6em;
+        max-height: 2.6em;
     }
 }
 
