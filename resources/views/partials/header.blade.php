@@ -1,8 +1,10 @@
 <header class="main-header">
     <div class="header-left">
         <div class="logo">
-            <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8 Logo" class="logo-img logo-img-dark" />
-            <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8 Logo Dark" class="logo-img logo-img-light" />
+            <a href="/dashboard" class="logo-link" aria-label="Gå til forside">
+                <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8 Logo" class="logo-img logo-img-dark" />
+                <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8 Logo Dark" class="logo-img logo-img-light" />
+            </a>
         </div>
         <nav class="navigation" id="main-nav">
             <ul>
@@ -228,8 +230,10 @@
     <aside class="mnav__panel" role="dialog" aria-modal="true" aria-labelledby="mnav-title">
         <header class="mnav__header">
             <div class="mnav__brand" id="mnav-title" aria-label="TaskM8">
-                <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8" class="logo-img logo-img-dark" />
-                <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8" class="logo-img logo-img-light" />
+                <a href="/dashboard" class="logo-link" aria-label="Gå til forside">
+                    <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8" class="logo-img logo-img-dark" />
+                    <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8" class="logo-img logo-img-light" />
+                </a>
             </div>
             <button class="mnav__close" id="mnav-close" aria-label="Luk menu">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
