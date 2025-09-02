@@ -97,6 +97,6 @@ class EventController extends Controller
             abort(403, 'Ikke tilladt.');
         }
         $event->delete();
-        return response()->json(null, 204);
+        return redirect('/events')->with('success', 'Begivenheden er slettet.');
     }
 }

@@ -28,9 +28,26 @@
                 <a href="{{ url('/events') }}" class="back-btn" aria-label="Tilbage til begivenheder">Tilbage</a>
                 @auth
                 @if(isset($event->ownerId) && $event->ownerId === auth()->id())
-                <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">
-                    Inviter til begivenhed
-                </button>
+                <div class="event-actions-details">
+                    <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">
+                        Inviter til begivenhed
+                    </button>
+                    <!-- Delete Button -->
+                    <button type="button" class="bin-button" aria-label="Slet begivenhed" onclick="openDeleteModal()">
+                      <svg class="bin-top" viewBox="0 0 39 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
+                        <line x1="12" y1="1.5" x2="26.0357" y2="1.5" stroke="white" stroke-width="3"></line>
+                      </svg>
+                      <svg class="bin-bottom" viewBox="0 0 33 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <mask id="path-1-inside-1_8_19" fill="white">
+                          <path d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"></path>
+                        </mask>
+                        <path d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z" fill="white" mask="url(#path-1-inside-1_8_19)"></path>
+                        <path d="M12 6L12 29" stroke="white" stroke-width="4"></path>
+                        <path d="M21 6V29" stroke="white" stroke-width="4"></path>
+                      </svg>
+                    </button>
+                </div>
                 @endif
                 @endauth
             </div>
@@ -78,6 +95,31 @@
             @endauth
         </section>
     </main>
+
+    @auth
+    @if(isset($event->ownerId) && $event->ownerId === auth()->id())
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" style="display:none;">
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-body">
+                <svg fill="currentColor" viewBox="0 0 20 20" class="confirm-icon" xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path>
+                </svg>
+                <h2 id="confirm-title" class="confirm-title">Er du sikker?</h2>
+                <p class="confirm-text">Vil du slette denne begivenhed? Dette kan ikke fortrydes.</p>
+            </div>
+            <div class="confirm-actions">
+                <button type="button" class="confirm-btn cancel" onclick="closeDeleteModal()">Annuller</button>
+                <form id="delete-event-form" action="{{ url('/events/delete/'.$event->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="confirm-btn danger">Slet</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endif
+    @endauth
 
     <!-- Invitation Modal -->
     <div id="invite-modal" class="invite-modal">
@@ -130,6 +172,14 @@
     <script>
         let currentEventId = null;
         let addedEmails = [];
+        function openDeleteModal() {
+            var m = document.getElementById('delete-modal');
+            if (m) { m.style.display = 'flex'; }
+        }
+        function closeDeleteModal() {
+            var m = document.getElementById('delete-modal');
+            if (m) { m.style.display = 'none'; }
+        }
 
         function openInviteModal(eventId, eventName) {
             currentEventId = eventId;
@@ -255,6 +305,12 @@
                 closeInviteModal();
             }
         });
+        var deleteModalEl = document.getElementById('delete-modal');
+        if (deleteModalEl) {
+            deleteModalEl.addEventListener('click', function(e) {
+                if (e.target === this) { closeDeleteModal(); }
+            });
+        }
     </script>
 </body>
 </html>
