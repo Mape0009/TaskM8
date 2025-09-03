@@ -55,6 +55,15 @@
         <input type="datetime-local" id="endDate" name="endDate" required>
     </div>
 
+    <div class="form-row">
+        <label for="user_id">asign task:</label>
+        <select name="user_id" id="user_id" required>
+            @foreach($users as $user)
+                <option value="{{ $user->id }}">{{ $user->name }}</option>
+            @endforeach
+        </select>
+    </div>
+
     <div class="form-actions">
         <button type="submit" class="btn primary-btn">Create Task</button>
     </div>

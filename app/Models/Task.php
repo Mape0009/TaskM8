@@ -13,6 +13,7 @@ class Task extends Model
         'description',
         'startDate',
         'endDate',
+        'userId',
     ];
 
 }

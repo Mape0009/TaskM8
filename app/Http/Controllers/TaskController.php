@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\Event;
+use App\Models\User;
+
 
 use Illuminate\Http\Request;
 
@@ -12,7 +14,9 @@ class TaskController extends Controller
     public function showCreateForm()
     {
         $events = Event::all();
-        return view('taskCreate', compact('events'));
+        $users = User::all();
+
+        return view('taskCreate', compact('events', 'users'));
     }
 
     public function index()
@@ -31,6 +35,7 @@ class TaskController extends Controller
         $tasks->description = $request->input('description');
         $tasks->startDate = $request->input('startDate');
         $tasks->endDate = $request->input('endDate');
+        $tasks->userId = $request->input('user_id');
 
         $tasks->save();
 
@@ -52,7 +57,9 @@ class TaskController extends Controller
     {
         $tasks = Task::findOrFail($id);
         $events = Event::all();
-        return view('taskedit', compact('tasks', 'events'));
+        $users = User::all();
+        
+        return view('taskedit', compact('tasks', 'events', 'users'));
     }
 
     public function delete($id)
