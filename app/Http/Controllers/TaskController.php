@@ -35,10 +35,9 @@ class TaskController extends Controller
         $tasks->description = $request->input('description');
         $tasks->startDate = $request->input('startDate');
         $tasks->endDate = $request->input('endDate');
-        $tasks->userId = $request->input('user_id');
-
         $tasks->save();
 
+        $tasks->users()->sync($request->input('user_ids'));
 
         return redirect('/tasks')->with('success', 'Task created successfully!');
     }

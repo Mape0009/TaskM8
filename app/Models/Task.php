@@ -13,7 +13,10 @@ class Task extends Model
         'description',
         'startDate',
         'endDate',
-        'userId',
     ];
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'task_participants', 'taskId', 'userId');
+    }
 }

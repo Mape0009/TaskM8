@@ -56,9 +56,9 @@
     </div>
 
     <div class="form-row">
-        <label for="user_id">asign task:</label>
-        <select name="user_id" id="user_id" required>
-            @foreach($users as $user)
+        <label for="user_ids">Assign Users:</label>
+        <select name="user_ids[]" multiple>
+            @foreach ($users as $user)
                 <option value="{{ $user->id }}">{{ $user->name }}</option>
             @endforeach
         </select>
