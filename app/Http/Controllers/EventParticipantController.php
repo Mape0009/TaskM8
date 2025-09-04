@@ -12,7 +12,9 @@ class EventParticipantController extends Controller
     public function index($eventId)
     {
         $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
-        return view('organizerOverview', compact('participants', 'eventId'));
+        $currentUser = auth()->user();
+        
+        return view('organizerOverview', compact('participants', 'eventId', 'currentUser'));
     }
 
     public function show($id)
