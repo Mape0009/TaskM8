@@ -10,6 +10,7 @@ class EventParticipant extends Model
         'eventId',
         'userId',
         'status',
+        'role',
     ];
 
     public function event()
@@ -21,4 +22,11 @@ class EventParticipant extends Model
     {
         return $this->belongsTo(User::class, 'userId');
     }
+}
+enum Role {
+    case owner;
+    case coOwner;
+    case taskManager;
+    case taskWorker;
+    case participant;
 }
