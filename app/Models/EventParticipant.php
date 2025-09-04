@@ -11,4 +11,14 @@ class EventParticipant extends Model
         'userId',
         'status',
     ];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'eventId');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userId');
+    }
 }

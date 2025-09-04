@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class EventParticipantController extends Controller
 {
-    public function index()
+    public function index($eventId)
     {
-        $participants = EventParticipant::all();
-        return response()->json($participants);
+        $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
+        return view('organizerOverview', compact('participants', 'eventId'));
     }
 
     public function show($id)

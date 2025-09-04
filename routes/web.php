@@ -33,6 +33,8 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount'));
 });
 
+Route::view('organizerOverview', 'organizerOverview');
+
 Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
 
 
@@ -89,3 +91,4 @@ Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'd
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
+Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
