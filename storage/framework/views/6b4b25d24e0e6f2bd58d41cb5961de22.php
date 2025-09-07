@@ -58,17 +58,47 @@
                             <?php if(auth()->guard()->check()): ?>
                                 <?php
                                     $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
-                                    $isParticipant = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+                                    $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
+                                    $rsvpStatus = $myParticipation->status ?? null; // accepted | declined | null
+                                    $isParticipant = $rsvpStatus === 'accepted';
+                                    $hasResponded = in_array($rsvpStatus, ['accepted','declined']);
                                 ?>
                                 <?php if(!$isOwner): ?>
                                     <?php
                                         $isFull = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isParticipant;
                                     ?>
-                                    <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST" class="rsvp-actions rsvp-actions-inline" aria-label="Deltagelsesvalg">
-                                        <?php echo csrf_field(); ?>
-                                        <button type="submit" name="status" value="accepted" class="btn-rsvp accept <?php echo e($isParticipant ? 'active' : ''); ?>" <?php echo e($isFull ? 'disabled' : ''); ?>>Deltag</button>
-                                        <button type="submit" name="status" value="declined" class="btn-rsvp decline <?php echo e(!$isParticipant ? 'active' : ''); ?>">Deltager ikke</button>
-                                    </form>
+                                    <div class="rsvp-status <?php echo e($rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending')); ?>">
+                                        <?php if($rsvpStatus === 'accepted'): ?>
+                                            <span class="status-dot"></span> Deltager
+                                        <?php elseif($rsvpStatus === 'declined'): ?>
+                                            <span class="status-dot"></span> Deltager ikke
+                                        <?php else: ?>
+                                            <span class="status-dot"></span> Afventer svar
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="rsvp-menu" id="rsvp-menu-<?php echo e($event->id); ?>">
+                                        <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-<?php echo e($event->id); ?>')">
+                                            <?php echo e($hasResponded ? 'Skift svar' : 'Svar'); ?>
+
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="caret"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        </button>
+                                        <div class="rsvp-menu-list" role="menu">
+                                            <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST">
+                                                <?php echo csrf_field(); ?>
+                                                <input type="hidden" name="status" value="accepted" />
+                                                <button type="submit" class="rsvp-menu-item accepted" <?php echo e($isFull ? 'disabled' : ''); ?>>
+                                                    <span class="dot"></span> Deltag
+                                                </button>
+                                            </form>
+                                            <form action="<?php echo e(route('events.rsvp', ['eventId' => $event->id])); ?>" method="POST">
+                                                <?php echo csrf_field(); ?>
+                                                <input type="hidden" name="status" value="declined" />
+                                                <button type="submit" class="rsvp-menu-item declined">
+                                                    <span class="dot"></span> Deltager ikke
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </div>
@@ -81,4 +111,20 @@
     </main>
     <script src="<?php echo e(asset('build/assets/app-DNxiirP_.js')); ?>" type="module"></script>
 </body>
-</html> <?php /**PATH C:\Users\Tobia\Documents\GitHub\TaskM8\resources\views/dashboard.blade.php ENDPATH**/ ?>
+</html>
+<script>
+    function toggleRsvpDropdown(id) {
+        var m = document.getElementById(id);
+        if (!m) return;
+        var isOpen = m.classList.contains('open');
+        document.querySelectorAll('.rsvp-menu.open').forEach(function(el){ el.classList.remove('open'); });
+        if (!isOpen) m.classList.add('open');
+    }
+    document.addEventListener('click', function(e){
+        var openMenu = document.querySelector('.rsvp-menu.open');
+        if (!openMenu) return;
+        if (!openMenu.contains(e.target)) {
+            openMenu.classList.remove('open');
+        }
+    });
+</script><?php /**PATH C:\Users\Tobia\Documents\GitHub\TaskM8\resources\views/dashboard.blade.php ENDPATH**/ ?>

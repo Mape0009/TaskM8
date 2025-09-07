@@ -391,7 +391,8 @@ body {
 
 .event-actions {
     display: flex;
-    gap: calc(var(--spacing-unit) * 1.5); /* 12px */
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1.25);
     margin-top: auto; 
 }
 
@@ -409,6 +410,20 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+.change-rsvp-btn {
+    background: transparent;
+    color: var(--color-accent-primary);
+    border: 2px solid var(--color-accent-primary);
+    border-radius: 10px;
+    padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.25);
+    font-weight: 700;
+    cursor: pointer;
+}
+.change-rsvp-btn:hover {
+    background-color: var(--color-background-tertiary);
+    color: var(--color-text-accent);
+    border-color: var(--color-text-accent);
 }
 
 .primary-btn {
@@ -477,6 +492,74 @@ body {
     gap: calc(var(--spacing-unit) * 1);
     margin-left: auto;
 }
+.rsvp-menu { position: relative; display: inline-block; }
+.rsvp-menu-trigger {
+    background: var(--color-accent-primary);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: calc(var(--spacing-unit) * 1.7) calc(var(--spacing-unit) * 1.5);
+    font-weight: 800;
+    font-size: calc(var(--spacing-unit) * 1.625);
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 0.5);
+    cursor: pointer;
+    box-shadow: 0 2px 8px var(--color-shadow-light);
+}
+.rsvp-menu-trigger .caret { transition: transform 0.15s ease; }
+.rsvp-menu.open .rsvp-menu-trigger .caret { transform: rotate(180deg); }
+.rsvp-menu-list {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    min-width: 200px;
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px var(--color-shadow-dark);
+    padding: calc(var(--spacing-unit) * 0.5);
+    display: none;
+    z-index: 20;
+}
+.rsvp-menu.open .rsvp-menu-list { display: block; }
+.rsvp-menu-item {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    font-weight: 700;
+    padding: calc(var(--spacing-unit) * 0.625) calc(var(--spacing-unit) * 0.875);
+    font-size: calc(var(--spacing-unit) * 1.5);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 0.75);
+    cursor: pointer;
+}
+.rsvp-menu-item:hover { background: var(--color-background-tertiary); }
+.rsvp-menu-item .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.rsvp-menu-item.accepted .dot { background: #10b981; }
+.rsvp-menu-item.declined .dot { background: #ef4444; }
+.rsvp-status {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    gap: calc(var(--spacing-unit) * 1);
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 1);
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: calc(var(--spacing-unit) * 1.5);
+}
+.rsvp-status .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.rsvp-status.accepted { background: #ecfdf5; color: #065f46; border: 1px solid #34d399; }
+.rsvp-status.accepted .status-dot { background: #10b981; }
+.rsvp-status.declined { background: #fef2f2; color: #7f1d1d; border: 1px solid #fecaca; }
+.rsvp-status.declined .status-dot { background: #ef4444; }
+.rsvp-status.pending { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+.rsvp-status.pending .status-dot { background: #3b82f6; }
 .btn-rsvp {
     border: none;
     padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2);
@@ -820,6 +903,22 @@ body {
     .btn {
         padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.25); /* 8px 10px */
         font-size: calc(var(--spacing-unit) * 1.375); /* 11px */
+    }
+    /* Added mobile RSVP sizing */
+    .rsvp-menu-trigger {
+        padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1);
+        font-size: calc(var(--spacing-unit) * 1.375);
+        border-radius: 8px;
+    }
+    .rsvp-menu-list { min-width: 170px; }
+    .rsvp-menu-item {
+        padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 0.75);
+        font-size: calc(var(--spacing-unit) * 1.375);
+        border-radius: 8px;
+    }
+    .rsvp-status {
+        padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 0.875);
+        font-size: calc(var(--spacing-unit) * 1.375);
     }
     .secondary-btn .arrow-icon {
         width: calc(var(--spacing-unit) * 1.5); /* 12px */
