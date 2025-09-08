@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EventParticipant;
+use App\Models\EventRole;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,10 +12,10 @@ class EventParticipantController extends Controller
 {
     public function index($eventId)
     {
-        $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
-        $currentUser = auth()->user();
-        
-        return view('organizerOverview', compact('participants', 'eventId', 'currentUser'));
+    $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
+    $currentUser = auth()->user();
+    $eventRole = EventRole::class;
+    return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
     }
 
     public function show($id)
