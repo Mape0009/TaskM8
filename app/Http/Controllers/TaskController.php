@@ -11,10 +11,15 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function showCreateForm()
+    public function showCreateForm(Request $request)
     {
+        $search = $request->query('q');
+
+        $users = User::when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->get();
+
         $events = Event::all();
-        $users = User::all();
 
         return view('taskCreate', compact('events', 'users'));
     }
