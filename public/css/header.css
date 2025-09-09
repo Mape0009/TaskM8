@@ -681,6 +681,21 @@ body.dark-mode .create-event-btn-header:hover {
     overflow-y: auto;
     max-height: calc(90vh - 120px);
 }
+/* Scrollbar styling for modal form */
+.header-modal .modal-form { scrollbar-width: thin; scrollbar-color: #c7d2fe transparent; }
+body.dark-mode .header-modal .modal-form { scrollbar-color: #475569 transparent; }
+/* WebKit */
+.header-modal .modal-form::-webkit-scrollbar { width: 10px; height: 10px; }
+.header-modal .modal-form::-webkit-scrollbar-track { background: transparent; }
+.header-modal .modal-form::-webkit-scrollbar-thumb {
+    background-color: #c7d2fe; 
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+.header-modal .modal-form::-webkit-scrollbar-thumb:hover { background-color: #a5b4fc; }
+body.dark-mode .header-modal .modal-form::-webkit-scrollbar-thumb { background-color: #475569; border-color: transparent; }
+body.dark-mode .header-modal .modal-form::-webkit-scrollbar-thumb:hover { background-color: #64748b; }
 .header-modal .modal-title { flex: 1; }
 .header-modal .modal-title h2 { font-size: 1.5rem; font-weight: 600; margin: 0 0 0.25rem 0; letter-spacing: -0.025em; line-height: 1.3; }
 .header-modal .modal-subtitle { font-size: 0.875rem; color: rgba(255,255,255,0.85); margin: 0; font-weight: 400; }
