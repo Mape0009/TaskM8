@@ -87,6 +87,12 @@
                                     <span class="dot"></span> Deltager ikke
                                 </button>
                             </form>
+                            <form action="<?php echo e(route('events.decline', ['eventId' => $event->id])); ?>" method="POST">
+                                <?php echo csrf_field(); ?>
+                                <button type="submit" class="rsvp-menu-item declined" title="Slet mig fra begivenheden">
+                                    <span class="dot"></span> Slet
+                                </button>
+                            </form>
                         </div>
                     </div>
                 <?php endif; ?>
