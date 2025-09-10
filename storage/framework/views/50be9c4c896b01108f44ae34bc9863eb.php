@@ -33,7 +33,7 @@
                     $isAcceptedTop = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
                     $isFullTop = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isAcceptedTop;
                     $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
-                    $rsvpStatus = $myParticipation->status ?? null; // accepted | declined | null
+                    $rsvpStatus = $myParticipation->status ?? null;
                     $hasResponded = in_array($rsvpStatus, ['accepted','declined']);
                 ?>
                 <?php if($isOwnerTop): ?>
@@ -85,12 +85,6 @@
                                 <input type="hidden" name="status" value="declined" />
                                 <button type="submit" class="rsvp-menu-item declined">
                                     <span class="dot"></span> Deltager ikke
-                                </button>
-                            </form>
-                            <form action="<?php echo e(route('events.decline', ['eventId' => $event->id])); ?>" method="POST">
-                                <?php echo csrf_field(); ?>
-                                <button type="submit" class="rsvp-menu-item declined" title="Slet mig fra begivenheden">
-                                    <span class="dot"></span> Slet
                                 </button>
                             </form>
                         </div>

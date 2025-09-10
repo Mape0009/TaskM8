@@ -57,7 +57,7 @@
                         <div class="event-actions">
                             <a href="/events/<?php echo e($event->id); ?>" class="btn primary-btn">Se detaljer</a>
                             <?php if(auth()->guard()->check()): ?>
-                                <?php
+                                 <?php
                                     $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
                                     $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
                                     $rsvpStatus = $myParticipation->status ?? null; 
@@ -76,8 +76,7 @@
                                         <?php else: ?>
                                             <span class="status-dot"></span> Afventer svar
                                         <?php endif; ?>
-                                    </div>
-                                    
+                                    </div> 
                                     <div class="rsvp-menu" id="rsvp-menu-<?php echo e($event->id); ?>">
                                         <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-<?php echo e($event->id); ?>')">
                                             <?php echo e($hasResponded ? 'Skift svar' : 'Svar'); ?>
@@ -123,7 +122,7 @@
                                                     <path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path>
                                                 </svg>
                                                 <h2 id="leave-confirm-title-<?php echo e($event->id); ?>" class="confirm-title">Er du sikker?</h2>
-                                                <p class="confirm-text">Vil du forlade dette begivenhed? Dette kan ikke fortrydes.</p>
+                                                <p class="confirm-text">Vil du forlade denne begivenhed? Dette kan ikke fortrydes.</p>
                                             </div>
                                             <div class="confirm-actions">
                                                 <button type="button" class="confirm-btn cancel" onclick="document.getElementById('leave-modal-<?php echo e($event->id); ?>').style.display='none'">Annuller</button>
