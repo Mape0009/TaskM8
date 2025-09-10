@@ -147,14 +147,14 @@ body {
     justify-content: center;
     font-weight: 600;
     font-size: calc(var(--spacing-unit) * 2); /* 16px */
-    color: var(--color-background-primary); /* Dark text on accent background */
-    border: 2px solid var(--color-border); /* Subtle border */
+    color: var(--color-background-primary); 
+    border: 2px solid var(--color-border); 
     box-shadow: 0 1px 4px var(--color-shadow-light);
     transition: box-shadow 0.15s ease;
 }
 
 .user-avatar:hover {
-    box-shadow: 0 2px 8px var(--color-shadow-dark); /* More defined shadow on hover */
+    box-shadow: 0 2px 8px var(--color-shadow-dark); 
 }
 
 .user-info-header .user-greeting {
@@ -170,7 +170,7 @@ body {
         145deg,
         var(--color-accent-primary),
         #0056b3
-    ); /* Elegant gradient */
+    ); 
     color: white;
     border: none;
     padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2.5); /* 10px 20px */
@@ -181,8 +181,8 @@ body {
     display: flex;
     align-items: center;
     gap: calc(var(--spacing-unit) * 1); /* 8px */
-    transition: all 0.15s ease-out; /* Smooth transition */
-    box-shadow: 0 2px 8px var(--color-shadow-dark); /* Soft initial shadow */
+    transition: all 0.15s ease-out; 
+    box-shadow: 0 2px 8px var(--color-shadow-dark); 
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -192,8 +192,8 @@ body {
         145deg,
         #0056b3,
         var(--color-accent-primary)
-    ); /* Reverse gradient on hover */
-    box-shadow: 0 4px 12px var(--color-shadow-dark); /* More defined shadow on hover */
+    ); 
+    box-shadow: 0 4px 12px var(--color-shadow-dark); 
 }
 
 .create-event-btn-header .icon {
@@ -207,7 +207,7 @@ body {
     flex-grow: 1;
     padding: calc(var(--spacing-unit) * 6) calc(var(--spacing-unit) * 8); /* 48px 64px */
     background-color: var(--color-background-primary);
-    min-height: calc(100vh - 80px); /* Adjust based on new header height */
+    min-height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing-unit) * 6); /* 48px */
@@ -218,7 +218,7 @@ body {
     flex-direction: column;
     margin-bottom: calc(var(--spacing-unit) * 4); /* 32px */
     padding-bottom: calc(var(--spacing-unit) * 2.5); /* 20px */
-    border-bottom: 1px solid var(--color-border); /* Subtle separator */
+    border-bottom: 1px solid var(--color-border); 
 }
 
 .content-header h1 {
@@ -242,7 +242,6 @@ body {
         minmax(calc(var(--spacing-unit) * 35), 1fr)
     ); 
     gap: calc(var(--spacing-unit) * 4); /* 32px */
-    margin-bottom: calc(var(--spacing-unit) * 6); /* 48px */
 }
 
 .stat-card {
@@ -274,28 +273,28 @@ body {
 }
 
 .stat-info .stat-value {
-    font-size: calc(var(--spacing-unit) * 4.5); /* 36px */
+    font-size: calc(var(--spacing-unit) * 4.3); /* 36px */
     font-weight: 500;
     color: var(--color-text-primary);
 }
 
 .stat-icon {
-    background-color: var(--color-background-primary); /* Icon background */
+    background-color: var(--color-background-primary); 
     width: calc(var(--spacing-unit) * 8); /* 64px */
     height: calc(var(--spacing-unit) * 8); /* 64px */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--color-border); /* Subtle border */
-    box-shadow: inset 0 0 8px var(--color-shadow-light); /* Soft inset shadow */
+    border: 2px solid var(--color-border); 
+    box-shadow: inset 0 0 8px var(--color-shadow-light); 
     flex-shrink: 0;
 }
 
 .stat-icon .icon {
     width: calc(var(--spacing-unit) * 4); /* 32px */
     height: calc(var(--spacing-unit) * 4); /* 32px */
-    color: var(--color-accent-secondary); /* Icon color */
+    color: var(--color-accent-secondary); 
     stroke-width: 2;
 }
 
@@ -306,6 +305,8 @@ body {
     padding: 0;
     border-radius: 0;
     box-shadow: none;
+    margin-top: -20px;
+
 }
 
 .upcoming-events h2,
@@ -325,7 +326,7 @@ body {
     grid-template-columns: repeat(
         auto-fit,
         minmax(calc(var(--spacing-unit) * 45), 1fr)
-    ); /* 360px minimum */
+    ); 
 }
 
 .event-card,
@@ -390,8 +391,9 @@ body {
 
 .event-actions {
     display: flex;
-    gap: calc(var(--spacing-unit) * 1.5); /* 12px */
-    margin-top: auto; /* Push actions to bottom of card */
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1.25);
+    margin-top: auto; 
 }
 
 .btn {
@@ -403,11 +405,25 @@ body {
     transition: all 0.15s ease-out;
     text-align: center;
     white-space: nowrap;
-    box-shadow: 0 2px 8px var(--color-shadow-light); /* Soft initial shadow */
+    box-shadow: 0 2px 8px var(--color-shadow-light); 
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+.change-rsvp-btn {
+    background: transparent;
+    color: var(--color-accent-primary);
+    border: 2px solid var(--color-accent-primary);
+    border-radius: 10px;
+    padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.25);
+    font-weight: 700;
+    cursor: pointer;
+}
+.change-rsvp-btn:hover {
+    background-color: var(--color-background-tertiary);
+    color: var(--color-text-accent);
+    border-color: var(--color-text-accent);
 }
 
 .primary-btn {
@@ -417,8 +433,8 @@ body {
 }
 
 .primary-btn:hover {
-    background-color: #0056b3; /* Slightly darker blue on hover */
-    box-shadow: 0 4px 12px var(--color-shadow-dark); /* More defined shadow on hover */
+    background-color: #0056b3; 
+    box-shadow: 0 4px 12px var(--color-shadow-dark); 
 }
 
 .secondary-btn {
@@ -434,8 +450,8 @@ body {
 .secondary-btn:hover {
     background-color: var(
         --color-background-tertiary
-    ); /* Subtle background change on hover */
-    color: var(--color-text-accent); /* Accent text color on hover */
+    ); 
+    color: var(--color-text-accent); 
     border-color: var(--color-text-accent);
     box-shadow: 0 4px 12px var(--color-shadow-dark);
 }
@@ -446,7 +462,7 @@ body {
     stroke-width: 2;
 }
 
-/* Make primary and invite buttons equal width inside event actions */
+
 .event-actions .primary-btn,
 .event-actions .invite-btn {
     min-width: 170px;
@@ -460,7 +476,7 @@ body {
     background: linear-gradient(90deg, #059669 0%, #047857 100%);
 }
 
-/* Ensure button sizes remain compact, even if a single card spans full width */
+
 .event-actions .btn {
     flex: 0 0 auto;
 }
@@ -470,12 +486,80 @@ body {
     min-width: auto;
 }
 
-/* RSVP action buttons inline on cards */
+
 .rsvp-actions-inline {
     display: inline-flex;
     gap: calc(var(--spacing-unit) * 1);
     margin-left: auto;
 }
+.rsvp-menu { position: relative; display: inline-block; }
+.rsvp-menu-trigger {
+    background: var(--color-accent-primary);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: calc(var(--spacing-unit) * 1.7) calc(var(--spacing-unit) * 1.5);
+    font-weight: 800;
+    font-size: calc(var(--spacing-unit) * 1.625);
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 0.5);
+    cursor: pointer;
+    box-shadow: 0 2px 8px var(--color-shadow-light);
+}
+.rsvp-menu-trigger .caret { transition: transform 0.15s ease; }
+.rsvp-menu.open .rsvp-menu-trigger .caret { transform: rotate(180deg); }
+.rsvp-menu-list {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    min-width: 200px;
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px var(--color-shadow-dark);
+    padding: calc(var(--spacing-unit) * 0.5);
+    display: none;
+    z-index: 20;
+}
+.rsvp-menu.open .rsvp-menu-list { display: block; }
+.rsvp-menu-item {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    font-weight: 700;
+    padding: calc(var(--spacing-unit) * 0.625) calc(var(--spacing-unit) * 0.875);
+    font-size: calc(var(--spacing-unit) * 1.5);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 0.75);
+    cursor: pointer;
+}
+.rsvp-menu-item:hover { background: var(--color-background-tertiary); }
+.rsvp-menu-item .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.rsvp-menu-item.accepted .dot { background: #10b981; }
+.rsvp-menu-item.declined .dot { background: #ef4444; }
+.rsvp-status {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    gap: calc(var(--spacing-unit) * 1);
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 1);
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: calc(var(--spacing-unit) * 1.5);
+}
+.rsvp-status .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.rsvp-status.accepted { background: #ecfdf5; color: #065f46; border: 1px solid #34d399; }
+.rsvp-status.accepted .status-dot { background: #10b981; }
+.rsvp-status.declined { background: #fef2f2; color: #7f1d1d; border: 1px solid #fecaca; }
+.rsvp-status.declined .status-dot { background: #ef4444; }
+.rsvp-status.pending { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+.rsvp-status.pending .status-dot { background: #3b82f6; }
 .btn-rsvp {
     border: none;
     padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2);
@@ -632,7 +716,7 @@ body {
         grid-template-columns: repeat(
             auto-fit,
             minmax(calc(var(--spacing-unit) * 40), 1fr)
-        ); /* 320px minimum */
+        ); 
     }
     .search-bar input {
         width: 92vw;
@@ -819,6 +903,22 @@ body {
     .btn {
         padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.25); /* 8px 10px */
         font-size: calc(var(--spacing-unit) * 1.375); /* 11px */
+    }
+    /* Added mobile RSVP sizing */
+    .rsvp-menu-trigger {
+        padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1);
+        font-size: calc(var(--spacing-unit) * 1.375);
+        border-radius: 8px;
+    }
+    .rsvp-menu-list { min-width: 170px; }
+    .rsvp-menu-item {
+        padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 0.75);
+        font-size: calc(var(--spacing-unit) * 1.375);
+        border-radius: 8px;
+    }
+    .rsvp-status {
+        padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 0.875);
+        font-size: calc(var(--spacing-unit) * 1.375);
     }
     .secondary-btn .arrow-icon {
         width: calc(var(--spacing-unit) * 1.5); /* 12px */

@@ -47,14 +47,14 @@ class EventController extends Controller
         $event->ownerId = auth()->user()->id;
         $event->participantLimit = $request->input('participantLimit');
         $event->save();
-
+        
         $eventParticipant = new EventParticipant();
         $eventParticipant->eventId = $event->id;
         $eventParticipant->userId = auth()->user()->id;
         $eventParticipant->status = 'accepted';
         $eventParticipant->eventRole = 'owner';
         $eventParticipant->save();
-        
+
         return redirect('/dashboard')->with('success', 'Event er nu lavet!');
     }
 
@@ -98,6 +98,6 @@ class EventController extends Controller
             abort(403, 'Ikke tilladt.');
         }
         $event->delete();
-        return response()->json(null, 204);
+        return redirect('/events')->with('success', 'Begivenheden er slettet.');
     }
 }

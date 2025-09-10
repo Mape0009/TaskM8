@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Models\Event;
 use App\Models\EventParticipant;
+use App\Models\Mail as MailModel;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -25,12 +26,14 @@ Route::get('/dashboard', function () {
 
         $participatedEventsCount = EventParticipant::where('userId', $userId)->count();
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
+        $previousInviteesCount = MailModel::where('senderId', $userId)->distinct('recipientId')->count('recipientId');
     } else {
         $events = collect();
         $participatedEventsCount = 0;
         $pendingEventsCount = 0;
+        $previousInviteesCount = 0;
     }
-    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount'));
+    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount'));
 });
 
 Route::view('organizerOverview', 'organizerOverview');
@@ -40,6 +43,8 @@ Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('event
 
 Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
 Route::get('/events/{eventId}/invitees', [MailController::class, 'getPreviousInvitees'])->middleware('auth')->name('events.invitees');
+Route::view('test', 'test');
+Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.invite');
 
 Route::get('/events', [EventController::class, 'index']);
 
@@ -48,7 +53,7 @@ Route::get('/friends', function () {
 })->middleware('auth');
 
 
-Route::get('signup', function(Request $request){
+Route::get('signup', function(\Illuminate\Http\Request $request){
     // If secure token present, decode into request inputs for prefill
     if ($request->filled('token')) {
         $raw = base64_decode($request->query('token'));
@@ -77,7 +82,7 @@ Route::post('/user/change-password', [UserController::class, 'changePassword'])-
 Route::get('/events/{id}', [EventController::class, 'show']);
 Route::post('/events/create', [EventController::class, 'create'])->middleware('auth')->name('events.create');
 Route::put('/events/update/{id}', [EventController::class, 'update']) ->middleware('auth')->name('events.update');
-Route::delete('/events/delete/{id}', [EventController::class, 'delete']);
+Route::delete('/events/delete/{id}', [EventController::class, 'delete'])->middleware('auth');
 
 Route::get('/events/{id}/edit', [EventController::class, 'edit'])
     ->middleware('auth')

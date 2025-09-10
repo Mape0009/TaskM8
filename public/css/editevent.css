@@ -42,6 +42,74 @@
     padding: 0.85rem 1rem;
     font: inherit;
 }
+
+/* Fix for datetime-local inputs on iPhone 16 and newer devices */
+.edit-form input[type="datetime-local"] {
+    max-width: 100%;
+    min-width: 0;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* iPhone 16 specific fixes */
+@media screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) {
+    .edit-form input[type="datetime-local"] {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        font-size: 0.8rem;
+        padding: 0.7rem 0.8rem;
+    }
+}
+
+/* iPhone 16 Plus specific fixes */
+@media screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) {
+    .edit-form input[type="datetime-local"] {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        font-size: 0.8rem;
+        padding: 0.7rem 0.8rem;
+    }
+}
+
+/* General mobile datetime-local input fixes */
+@media (max-width: 600px) {
+    .edit-form input[type="datetime-local"] {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        font-size: 0.8rem;
+        padding: 0.7rem 0.8rem;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+}
+
+/* Additional iPhone 16 Pro and Pro Max fixes */
+@media screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3),
+       screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) {
+    .edit-form input[type="datetime-local"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        font-size: 0.8rem !important;
+        padding: 0.7rem 0.8rem !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* Fallback for all iOS devices */
+@supports (-webkit-touch-callout: none) {
+    .edit-form input[type="datetime-local"] {
+        -webkit-appearance: none;
+        appearance: none;
+        max-width: 100%;
+        min-width: 0;
+    }
+}
 .edit-form textarea {
     resize: vertical;
     min-height: 110px;

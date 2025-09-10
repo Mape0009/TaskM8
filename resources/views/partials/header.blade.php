@@ -1,15 +1,17 @@
 <header class="main-header">
     <div class="header-left">
         <div class="logo">
-            <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8 Logo" class="logo-img logo-img-dark" />
-            <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8 Logo Dark" class="logo-img logo-img-light" />
+            <a href="/dashboard" class="logo-link" aria-label="Gå til forside">
+                <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8 Logo" class="logo-img logo-img-dark" />
+                <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8 Logo Dark" class="logo-img logo-img-light" />
+            </a>
         </div>
         <nav class="navigation" id="main-nav">
             <ul>
                 <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
                 @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
-                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Tidligere Inviteret</a></li>
+                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Grupper</a></li>
                 @endif
             </ul>
         </nav>
@@ -132,7 +134,7 @@
                 <h3 class="section-title">Deltagerbegrænsning (valgfri)</h3>
                 <div class="form-row participant-limit">
                 <label for="participant-limit">Maks antal deltagere</label>
-                <input type="number" id="participant-limit" name="participant-limit" required placeholder="Indtast maks antal deltagere" />
+                <input type="number" id="participant-limit" name="participantLimit" placeholder="Indtast maks antal deltagere" />
             </div>
             </div>
 
@@ -228,8 +230,10 @@
     <aside class="mnav__panel" role="dialog" aria-modal="true" aria-labelledby="mnav-title">
         <header class="mnav__header">
             <div class="mnav__brand" id="mnav-title" aria-label="TaskM8">
-                <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8" class="logo-img logo-img-dark" />
-                <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8" class="logo-img logo-img-light" />
+                <a href="/dashboard" class="logo-link" aria-label="Gå til forside">
+                    <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8" class="logo-img logo-img-dark" />
+                    <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8" class="logo-img logo-img-light" />
+                </a>
             </div>
             <button class="mnav__close" id="mnav-close" aria-label="Luk menu">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -243,7 +247,7 @@
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">Forside</a></li>
                 @if (Auth::check())
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'events' ? 'is-active' : '' }}" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'friends' ? 'is-active' : '' }}" href="/friends">Tidligere Inviteret</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'friends' ? 'is-active' : '' }}" href="/friends">Grupper</a></li>
                 @endif
             </ul>
         </nav>

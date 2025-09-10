@@ -7,7 +7,7 @@
 ## 🌐 Web Platform Features
 
 - **User Authentication**  
-  - Sign up with minimal info: name, email, and optional phone number  
+  - Sign up with minimal info: name, email, pin-code, password and optional phone number  
   - Secure login and session handling
 
 - **User Interaction**  

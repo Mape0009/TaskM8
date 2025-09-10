@@ -12,13 +12,12 @@
     @include('partials.header', ['currentPage' => 'dashboard'])
 
     <main class="main-content-full">
-        <header class="content-header">
-        </header>
+        
         <section class="stats-cards">
             <div class="stat-card">
                 <div class="stat-info">
                     <span class="stat-title">Afventer svar: </span>
-                    <span class="stat-value">{{ $pendingEventsCount }}</span>
+                    <span class="stat-value">{{$pendingEventsCount}}</span>
                 </div>
                 <div class="stat-icon">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
@@ -27,7 +26,7 @@
             <div class="stat-card">
                 <div class="stat-info">
                     <span class="stat-title">Mine Begivenheder: </span>
-                    <span class="stat-value">{{ $participatedEventsCount }}</span>
+                    <span class="stat-value">{{$participatedEventsCount}}</span>
                 </div>
                 <div class="stat-icon">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -35,8 +34,8 @@
             </div>
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-title">Tidligere Inviteret: </span>
-                    <span class="stat-value">0</span>
+                    <span class="stat-title">Tidligere Inviterede: </span>
+                    <span class="stat-value">{{ $previousInviteesCount }}</span>
                 </div>
                 <div class="stat-icon">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -59,17 +58,46 @@
                             @auth
                                 @php
                                     $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
-                                    $isParticipant = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+                                    $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
+                                    $rsvpStatus = $myParticipation->status ?? null; // accepted | declined | null
+                                    $isParticipant = $rsvpStatus === 'accepted';
+                                    $hasResponded = in_array($rsvpStatus, ['accepted','declined']);
                                 @endphp
                                 @if(!$isOwner)
                                     @php
                                         $isFull = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isParticipant;
                                     @endphp
-                                    <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST" class="rsvp-actions rsvp-actions-inline" aria-label="Deltagelsesvalg">
-                                        @csrf
-                                        <button type="submit" name="status" value="accepted" class="btn-rsvp accept {{ $isParticipant ? 'active' : '' }}" {{ $isFull ? 'disabled' : '' }}>Deltag</button>
-                                        <button type="submit" name="status" value="declined" class="btn-rsvp decline {{ !$isParticipant ? 'active' : '' }}">Deltager ikke</button>
-                                    </form>
+                                    <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
+                                        @if($rsvpStatus === 'accepted')
+                                            <span class="status-dot"></span> Deltager
+                                        @elseif($rsvpStatus === 'declined')
+                                            <span class="status-dot"></span> Deltager ikke
+                                        @else
+                                            <span class="status-dot"></span> Afventer svar
+                                        @endif
+                                    </div>
+                                    <div class="rsvp-menu" id="rsvp-menu-{{ $event->id }}">
+                                        <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-{{ $event->id }}')">
+                                            {{ $hasResponded ? 'Skift svar' : 'Svar' }}
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="caret"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        </button>
+                                        <div class="rsvp-menu-list" role="menu">
+                                            <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="status" value="accepted" />
+                                                <button type="submit" class="rsvp-menu-item accepted" {{ $isFull ? 'disabled' : '' }}>
+                                                    <span class="dot"></span> Deltag
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="status" value="declined" />
+                                                <button type="submit" class="rsvp-menu-item declined">
+                                                    <span class="dot"></span> Deltager ikke
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 @endif
                             @endauth
                         </div>
@@ -82,4 +110,20 @@
     </main>
     <script src="{{ asset('build/assets/app-DNxiirP_.js') }}" type="module"></script>
 </body>
-</html> 
+</html>
+<script>
+    function toggleRsvpDropdown(id) {
+        var m = document.getElementById(id);
+        if (!m) return;
+        var isOpen = m.classList.contains('open');
+        document.querySelectorAll('.rsvp-menu.open').forEach(function(el){ el.classList.remove('open'); });
+        if (!isOpen) m.classList.add('open');
+    }
+    document.addEventListener('click', function(e){
+        var openMenu = document.querySelector('.rsvp-menu.open');
+        if (!openMenu) return;
+        if (!openMenu.contains(e.target)) {
+            openMenu.classList.remove('open');
+        }
+    });
+</script>

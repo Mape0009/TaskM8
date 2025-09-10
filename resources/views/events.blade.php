@@ -13,9 +13,7 @@
     @include('partials.header', ['currentPage' => 'events'])
 
     <main class="main-content-full">
-        <header class="content-header">
-            <h1></h1>
-        </header>
+
         <section class="event-listing">
             <h2>Mine begivenheder</h2>
             <div class="event-list">
