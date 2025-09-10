@@ -484,6 +484,7 @@ body {
 .event-actions .primary-btn,
 .event-actions .secondary-btn {
     min-width: auto;
+    padding: 0.55rem 0.9rem;
 }
 
 
@@ -507,6 +508,7 @@ body {
     gap: calc(var(--spacing-unit) * 0.5);
     cursor: pointer;
     box-shadow: 0 2px 8px var(--color-shadow-light);
+    max-height: 3rem;
 }
 .rsvp-menu-trigger .caret { transition: transform 0.15s ease; }
 .rsvp-menu.open .rsvp-menu-trigger .caret { transform: rotate(180deg); }
