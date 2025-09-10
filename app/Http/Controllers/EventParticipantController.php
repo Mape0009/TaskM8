@@ -55,6 +55,17 @@ class EventParticipantController extends Controller
         return redirect()->back()->with('success', 'Du deltager ikke i begivenheden.');
     }
 
+    public function roleUpdate(Request $request, $participantId)
+    {
+        $request->validate([
+            'eventRole' => 'required|in:owner,coOwner,taskManager,taskWorker,participant',
+        ]);
+        $participant = EventParticipant::findOrFail($participantId);
+        $participant->eventRole = $request->input('eventRole');
+        $participant->save();
+        return redirect()->back()->with('success', 'Deltagerrollen er opdateret.');
+    }
+
     public function rsvp(Request $request, $eventId)
     {
         $request->validate([
