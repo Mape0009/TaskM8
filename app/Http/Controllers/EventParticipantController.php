@@ -28,29 +28,29 @@ class EventParticipantController extends Controller
         return response()->json(['message' => 'Participant deleted successfully']);
     }
 
-    // public function join(Request $request, $eventId)
-    // {
-    //     $request->validate([]);
-    //     $userId = Auth::id();
-    //     if (!$userId) {
-    //         return redirect('/signin');
-    //     }
-    //     EventParticipant::firstOrCreate(
-    //         ['eventId' => $eventId, 'userId' => $userId],
-    //         ['status' => 'accepted']
-    //     );
-    //     return redirect()->back()->with('success', 'Du deltager i begivenheden.');
-    // }
+    public function join(Request $request, $eventId)
+    {
+        $request->validate([]);
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
+        }
+        EventParticipant::firstOrCreate(
+            ['eventId' => $eventId, 'userId' => $userId],
+            ['status' => 'accepted']
+        );
+        return redirect()->back();
+    }
 
-    // public function decline(Request $request, $eventId)
-    // {
-    //     $userId = Auth::id();
-    //     if (!$userId) {
-    //         return redirect('/signin');
-    //     }
-    //     EventParticipant::where('eventId', $eventId)->where('userId', $userId)->delete();
-    //     return redirect()->back()->with('success', 'Du deltager ikke i begivenheden.');
-    // }
+    public function decline(Request $request, $eventId)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
+        }
+        EventParticipant::where('eventId', $eventId)->where('userId', $userId)->delete();
+        return redirect()->back();
+    }
 
     public function rsvp(Request $request, $eventId)
     {
@@ -71,7 +71,6 @@ class EventParticipantController extends Controller
             }
         }
         if ($request->input('status') === 'accepted') {
-
             EventParticipant::updateOrCreate(
                 ['eventId' => $eventId, 'userId' => $userId],
                 ['status' => 'accepted']
@@ -82,6 +81,6 @@ class EventParticipantController extends Controller
             ['eventId' => $eventId, 'userId' => $userId],
             ['status' => 'declined']
         );
-        return redirect()->back();
+         return redirect()->back();
     }
 }
