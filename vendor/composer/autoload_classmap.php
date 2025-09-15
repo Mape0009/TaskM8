@@ -17,6 +17,8 @@ return array(
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
     'App\\Http\\Requests\\LoginRequest' => $baseDir . '/app/Http/Requests/LoginRequest.php',
+    'App\\Mail\\EventInvite' => $baseDir . '/app/Mail/EventInvite.php',
+    'App\\Mail\\ExistingUserInvite' => $baseDir . '/app/Mail/ExistingUserInvite.php',
     'App\\Models\\Event' => $baseDir . '/app/Models/Event.php',
     'App\\Models\\EventParticipant' => $baseDir . '/app/Models/EventParticipant.php',
     'App\\Models\\Friends' => $baseDir . '/app/Models/Friends.php',

@@ -11,6 +11,7 @@ use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\Mail as MailModel;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -94,3 +95,15 @@ Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'd
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
+
+// task Routes
+Route::view('task', 'task');
+//Route::view('taskOverview', 'taskOverview');
+//Route::view('taskDetails', 'taskDetails');
+Route::get('/tasks/create', [TaskController::class, 'showCreateForm'])->name('task.create.form');
+Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('task.details');
+Route::get('/tasks', [TaskController::class, 'index']);
+Route::post('/tasks/create', [TaskController::class, 'create'])->name('task.create');
+Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('task.edit');
+Route::delete('/tasks/{id}', [TaskController::class, 'delete'])->name('task.delete');
+Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('task.update');
