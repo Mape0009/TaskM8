@@ -550,8 +550,8 @@ body {
     align-items: center;
     line-height: 1;
     gap: calc(var(--spacing-unit) * 1);
-    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 1);
-    border-radius: 9999px;
+    padding: calc(var(--spacing-unit) * 1.475) calc(var(--spacing-unit) * 1);
+    border-radius: 10px;
     font-weight: 700;
     font-size: calc(var(--spacing-unit) * 1.5);
 }
