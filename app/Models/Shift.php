@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TaskParticipant extends Model
+class Shift extends Model
 {
     protected $fillable = [
         'taskId',
         'userId',
+        'startTime',
+        'endTime',
     ];
 }

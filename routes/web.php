@@ -96,6 +96,8 @@ Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'd
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
+Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
+Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
 
 // task Routes
 Route::view('task', 'task');
@@ -108,5 +110,3 @@ Route::post('/tasks/create', [TaskController::class, 'create'])->name('task.crea
 Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('task.edit');
 Route::delete('/tasks/{id}', [TaskController::class, 'delete'])->name('task.delete');
 Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('task.update');
-Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
-Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
