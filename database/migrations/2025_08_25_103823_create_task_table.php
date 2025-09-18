@@ -18,8 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('eventId');
             $table->foreign('eventId')->references('id')->on('events')->onDelete('cascade');;
             $table->string('description');
-            $table->unsignedBigInteger('userId');
-            $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');;
         });
     }
 

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('shifts', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->dateTime('startTime')->nullable();
             $table->dateTime('endTime')->nullable();
             $table->unsignedBigInteger('taskId');
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_participants');
+        Schema::dropIfExists('shifts');
     }
 };
