@@ -114,7 +114,10 @@
                 </div>
                 <div class="form-row">
                     <label for="event-description">Beskrivelse</label>
-                    <textarea id="event-description" name="description" rows="3" required placeholder="Beskriv begivenheden"></textarea>
+                    <div style="position: relative;">
+                        <textarea id="event-description" name="description" rows="3" required placeholder="Beskriv begivenheden" maxlength="800" style="padding-bottom: 22px;"></textarea>
+                        <span id="event-description-counter" style="position: absolute; bottom: 6px; right: 8px; font-size: 12px; color: var(--text-muted, #6b7280);">0/800</span>
+                    </div>
                 </div>
             </div>
             

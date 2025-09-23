@@ -22,7 +22,7 @@
                         <div class="event-header">
                             <h3>{{ $event->eventName }}</h3>
                         </div>
-                        <p class="event-description">{{ $event->description }}</p>
+                        <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
                         <div class="event-actions">
                             <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
                             @auth

@@ -16,6 +16,7 @@ if (openBtn) {
             startInput.min = local;
         }
         setTimeout(() => { startInput && startInput.focus(); }, 200);
+        wireEventDescriptionCounter();
     });
 }
 if (openBtnMobile) {
@@ -35,6 +36,7 @@ if (openBtnMobile) {
             mobileNavOverlay.classList.remove('open');
             document.body.style.overflow = '';
         }
+        wireEventDescriptionCounter();
     });
 }
 
@@ -78,6 +80,32 @@ if (form) {
         // The success message will be handled by the server redirect
     });
 }
+
+// Live counter for event description (create modal)
+function wireEventDescriptionCounter() {
+    const textarea = document.getElementById('event-description');
+    const counter = document.getElementById('event-description-counter');
+    const MAX = 800;
+    if (!textarea || !counter) return;
+    function updateCounter() {
+        counter.textContent = `${textarea.value.length}/${MAX}`;
+    }
+    if (!textarea.dataset.counterWired) {
+        textarea.addEventListener('input', function() {
+            if (textarea.value.length > MAX) {
+                textarea.value = textarea.value.slice(0, MAX);
+            }
+            updateCounter();
+        });
+        textarea.dataset.counterWired = 'true';
+    }
+    updateCounter();
+}
+
+// Initialize on load as well (for pages where modal is already in DOM)
+document.addEventListener('DOMContentLoaded', function() {
+    wireEventDescriptionCounter();
+});
 
 function showSuccess() {
     modalContent.innerHTML = `

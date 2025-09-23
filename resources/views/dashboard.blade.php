@@ -53,7 +53,7 @@
                         <div class="event-header">
                             <h3>{{ $event->eventName }}</h3>
                         </div>
-                        <p class="event-description">{{ $event->description }}</p>
+                        <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
                         @php
                             \Carbon\Carbon::setLocale('da');
                             $start = $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;

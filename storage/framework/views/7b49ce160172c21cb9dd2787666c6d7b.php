@@ -22,7 +22,7 @@
                         <div class="event-header">
                             <h3><?php echo e($event->eventName); ?></h3>
                         </div>
-                        <p class="event-description"><?php echo e($event->description); ?></p>
+                        <p class="event-description"><?php echo e(Str::limit($event->description, 25)); ?></p>
                         <div class="event-actions">
                             <a href="/events/<?php echo e($event->id); ?>" class="btn primary-btn">Se detaljer</a>
                             <?php if(auth()->guard()->check()): ?>

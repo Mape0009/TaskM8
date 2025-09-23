@@ -53,7 +53,7 @@
                         <div class="event-header">
                             <h3><?php echo e($event->eventName); ?></h3>
                         </div>
-                        <p class="event-description"><?php echo e($event->description); ?></p>
+                        <p class="event-description"><?php echo e(Str::limit($event->description, 25)); ?></p>
                         <?php
                             \Carbon\Carbon::setLocale('da');
                             $start = $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;

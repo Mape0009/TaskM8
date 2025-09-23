@@ -44,7 +44,10 @@
 
                 <div class="form-row">
                     <label for="description">Beskrivelse</label>
-                    <textarea id="description" name="description" rows="4" placeholder="Beskriv begivenheden">{{ old('description', $event->description) }}</textarea>
+                    <div style="position: relative;">
+                        <textarea id="description" name="description" rows="4" placeholder="Beskriv begivenheden" maxlength="800" style="padding-bottom: 22px;">{{ old('description', $event->description) }}</textarea>
+                        <span id="description-counter" style="position: absolute; bottom: 6px; right: 8px; font-size: 12px; color: var(--text-muted, #6b7280);"></span>
+                    </div>
                 </div>
 
                 <div class="form-actions">
@@ -55,6 +58,20 @@
         </div>
     </main>
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var ta = document.getElementById('description');
+    var counter = document.getElementById('description-counter');
+    if (!ta || !counter) return;
+    var MAX = 800;
+    function update() { counter.textContent = (ta.value.length || 0) + '/' + MAX; }
+    ta.addEventListener('input', function() {
+        if (ta.value.length > MAX) { ta.value = ta.value.slice(0, MAX); }
+        update();
+    });
+    update();
+});
+</script>
 </html>
 
 

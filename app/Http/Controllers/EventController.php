@@ -34,7 +34,7 @@ class EventController extends Controller
             'eventName' => 'required|string|max:255',
             'startDate' => 'required|date',
             'endDate' => 'required|date|after_or_equal:startDate',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:800',
             'location' => 'nullable|string|max:255',
             'participantLimit' => 'nullable|integer|min:1',
             'repeat' => 'nullable|string|max:255',
@@ -72,6 +72,14 @@ class EventController extends Controller
         if ($event->ownerId !== auth()->id()) {
             abort(403, 'Ikke tilladt.');
         }
+        $request->validate([
+            'eventName' => 'sometimes|string|max:255',
+            'startDate' => 'sometimes|date',
+            'endDate' => 'sometimes|date|after_or_equal:startDate',
+            'description' => 'nullable|string|max:800',
+            'location' => 'nullable|string|max:255',
+            'repeat' => 'nullable|string|max:255',
+        ]);
         $event->eventName = $request->input('eventName');
         $event->startDate = $request->input('startDate');
         $event->endDate = $request->input('endDate');
