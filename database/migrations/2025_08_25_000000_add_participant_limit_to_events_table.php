@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->unsignedInteger('participantLimit')->nullable()->after('ownerId');
-        });
+        if (!Schema::hasColumn('events', 'participantLimit')) {
+            Schema::table('events', function (Blueprint $table) {
+                $table->unsignedInteger('participantLimit')->nullable()->after('ownerId');
+            });
+        }
     }
 
     /**
@@ -21,9 +23,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('participantLimit');
-        });
+        if (Schema::hasColumn('events', 'participantLimit')) {
+            Schema::table('events', function (Blueprint $table) {
+                $table->dropColumn('participantLimit');
+            });
+        }
     }
 };
 

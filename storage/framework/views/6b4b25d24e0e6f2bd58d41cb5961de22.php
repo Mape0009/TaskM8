@@ -54,6 +54,21 @@
                             <h3><?php echo e($event->eventName); ?></h3>
                         </div>
                         <p class="event-description"><?php echo e($event->description); ?></p>
+                        <?php
+                            \Carbon\Carbon::setLocale('da');
+                            $start = $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
+                            $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
+                        ?>
+                        <div class="event-dates-text">
+                            <p style="margin: 0 0 4px 0; color: var(--color-text-secondary); font-weight: 600;">
+                                Start: <?php echo e($start ? $start->format('j.n.Y') . ' kl ' . $start->format('H:i') : '-'); ?>
+
+                            </p>
+                            <p style="margin: 0 0 20px 0; color: var(--color-text-secondary); font-weight: 600;">
+                                Slut: <?php echo e($end ? $end->format('j.n.Y') . ' kl ' . $end->format('H:i') : '-'); ?>
+
+                            </p>
+                        </div>
                        <div class="event-actions">
     <a href="/events/<?php echo e($event->id); ?>" class="btn primary-btn">Se detaljer</a>
     <?php if(auth()->guard()->check()): ?>

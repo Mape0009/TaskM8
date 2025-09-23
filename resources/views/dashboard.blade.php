@@ -54,6 +54,19 @@
                             <h3>{{ $event->eventName }}</h3>
                         </div>
                         <p class="event-description">{{ $event->description }}</p>
+                        @php
+                            \Carbon\Carbon::setLocale('da');
+                            $start = $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
+                            $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
+                        @endphp
+                        <div class="event-dates-text">
+                            <p style="margin: 0 0 4px 0; color: var(--color-text-secondary); font-weight: 600;">
+                                Start: {{ $start ? $start->format('j.n.Y') . ' kl ' . $start->format('H:i') : '-' }}
+                            </p>
+                            <p style="margin: 0 0 20px 0; color: var(--color-text-secondary); font-weight: 600;">
+                                Slut: {{ $end ? $end->format('j.n.Y') . ' kl ' . $end->format('H:i') : '-' }}
+                            </p>
+                        </div>
                        <div class="event-actions">
     <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
     @auth

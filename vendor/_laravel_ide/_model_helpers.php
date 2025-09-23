@@ -6,6 +6,7 @@ namespace App\Models {
      * App\Models\Event
      *
      * @property int $ownerId
+     * @property string|null $repeat
      * @property int|null $participantLimit
      * @property string|null $location
      * @property string|null $description
@@ -26,6 +27,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereLocation($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereParticipantlimit($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereRepeat($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereOwnerid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newQuery()

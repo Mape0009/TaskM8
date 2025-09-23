@@ -102,6 +102,24 @@
                     <span class="event-details-label">Slut:</span>
                     <span class="event-details-value"><?php echo e($end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-'); ?></span>
                 </li>
+                <?php if(!empty($event->repeat)): ?>
+                <li>
+                    <span class="event-details-label">Gentagelse:</span>
+                    <span class="event-details-value">
+                        <?php
+                            $intervalMap = [
+                                'daily' => 'Dagligt',
+                                'weekly' => 'Ugentligt',
+                                'monthly' => 'Månedligt',
+                                'yearly' => 'Årligt',
+                            ];
+                            $val = $event->repeat;
+                        ?>
+                        <?php echo e($intervalMap[$val] ?? $val); ?>
+
+                    </span>
+                </li>
+                <?php endif; ?>
                 <?php
                     $acceptedCount = \App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count();
                 ?>

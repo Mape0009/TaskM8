@@ -641,6 +641,39 @@ html.dark-mode .metric { background: rgba(255,255,255,0.02); }
     margin-bottom: calc(var(--spacing-unit) * 3.5); /* 28px */
 }
 
+.event-dates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--spacing-unit) * 1);
+    margin: calc(var(--spacing-unit) * 1 * -0.25) 0 calc(var(--spacing-unit) * 3); 
+}
+.event-date {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 0.75);
+    padding: calc(var(--spacing-unit) * 0.875) calc(var(--spacing-unit) * 1.25);
+    background: var(--color-background-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text-primary);
+    font-size: calc(var(--spacing-unit) * 1.5); /* 12px */
+    font-weight: 600;
+    box-shadow: 0 2px 6px var(--color-shadow-light);
+}
+.event-date::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    display: inline-block;
+}
+html.dark-mode .event-date {
+    background: var(--color-background-secondary);
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 0 2px 8px var(--color-shadow-dark);
+}
+
 .event-actions {
     display: flex;
     align-items: center;
