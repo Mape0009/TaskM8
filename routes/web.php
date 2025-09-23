@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\Mail as MailModel;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TaskController;
 
@@ -28,13 +29,17 @@ Route::get('/dashboard', function () {
         $participatedEventsCount = EventParticipant::where('userId', $userId)->count();
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
         $previousInviteesCount = MailModel::where('senderId', $userId)->distinct('recipientId')->count('recipientId');
+        $totalUsers = null;
+        $totalEvents = null;
     } else {
         $events = collect();
         $participatedEventsCount = 0;
         $pendingEventsCount = 0;
         $previousInviteesCount = 0;
+        $totalUsers = User::count();
+        $totalEvents = Event::count();
     }
-    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount'));
+    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount', 'totalUsers', 'totalEvents'));
 });
 
 Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
