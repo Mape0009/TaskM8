@@ -112,6 +112,7 @@
                                 'monthly' => 'Månedligt',
                                 'yearly' => 'Årligt',
                             ];
+                            $val = $event->repeat;
                         @endphp
                         {{ $intervalMap[$val] ?? $val }}
                     </span>
