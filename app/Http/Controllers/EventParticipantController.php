@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EventParticipant;
+use App\Models\EventRole;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 
 class EventParticipantController extends Controller
 {
-    public function index()
+    public function index($eventId)
     {
-        $participants = EventParticipant::all();
-        return response()->json($participants);
+    $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
+    $currentUser = auth()->user();
+    $eventRole = EventRole::class;
+    return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
     }
 
     public function show($id)
@@ -50,6 +53,17 @@ class EventParticipantController extends Controller
         }
         EventParticipant::where('eventId', $eventId)->where('userId', $userId)->delete();
         return redirect()->back();
+    }
+
+    public function roleUpdate(Request $request, $participantId)
+    {
+        $request->validate([
+            'eventRole' => 'required|in:owner,coOwner,taskManager,taskWorker,participant',
+        ]);
+        $participant = EventParticipant::findOrFail($participantId);
+        $participant->eventRole = $request->input('eventRole');
+        $participant->save();
+        return redirect()->back()->with('success', 'Deltagerrollen er opdateret.');
     }
 
     public function rsvp(Request $request, $eventId)

@@ -42,6 +42,7 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount', 'totalUsers', 'totalEvents'));
 });
 
+
 Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
 
 
@@ -57,7 +58,7 @@ Route::get('/friends', function () {
 })->middleware('auth');
 
 
-Route::get('signup', function(\Illuminate\Http\Request $request){
+Route::get('signup', function(Request $request){
     // If secure token present, decode into request inputs for prefill
     if ($request->filled('token')) {
         $raw = base64_decode($request->query('token'));
@@ -100,6 +101,8 @@ Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'd
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
+Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
+Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
 
 // task Routes
 Route::view('task', 'task');
