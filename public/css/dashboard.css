@@ -35,8 +35,8 @@ body.dark-mode {
 html.dark-mode .guest-hero {
     background-color: #000000;
     background-image:
-        radial-gradient(60rem 60rem at 10% 0%, rgba(37, 99, 235, 0.12), transparent 60%),
-        radial-gradient(60rem 60rem at 90% 10%, rgba(16, 185, 129, 0.10), transparent 60%);
+        radial-gradient(60rem 60rem at 10% 0%, rgba(37, 99, 235, 0.35), transparent 60%),
+        radial-gradient(60rem 60rem at 90% 10%, rgba(37, 99, 235, 0.35), transparent 60%);
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 16px 50px rgba(0,0,0,0.6);
 }
@@ -397,8 +397,6 @@ body {
 .features > h2 { font-size: clamp(22px, 3vw, 30px); margin: 0 0 20px 0; font-weight: 900; letter-spacing: -0.4px; }
 .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
 .feature-card { background: var(--color-background-secondary); border: 1px solid var(--color-border); border-radius: 16px; padding: 22px; box-shadow: 0 8px 22px var(--color-shadow-light); position: relative; overflow: hidden; }
-.feature-card::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120px 80px at var(--mx, 50%) var(--my, 0%), rgba(96,165,250,0.18), transparent 60%); opacity: 0; transition: opacity .2s ease; }
-.feature-card:hover::after { opacity: 1; }
 .feature-card__icon .icon { width: 24px; height: 24px; color: #4ea8ff; }
 .feature-card__title { margin: 0 0 6px 0; font-size: 18px; font-weight: 800; letter-spacing: -0.2px; color: var(--color-text-primary); }
 .feature-card__icon { width: 48px; height: 48px; border-radius: 10px; display: grid; place-items: center; background: var(--color-background-primary); border: 1px solid var(--color-border); margin-bottom: 10px; }

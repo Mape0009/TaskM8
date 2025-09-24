@@ -178,7 +178,7 @@
                 <h1 class="guest-hero__title animate-from-top">Saml alle omkring dine begivenheder</h1>
                 <p class="guest-hero__subtitle animate-from-left delay-150">TaskM8 samler invitationer, svar og overblik ét sted – hurtigt, simpelt og gratis.</p>
                 <div class="guest-hero__cta animate-from-right delay-300">
-                    <a href="<?php echo e(route('login')); ?>" class="btn primary-btn guest-hero__cta-btn">Kom i gang</a>
+                    <a href="/signup" class="btn primary-btn guest-hero__cta-btn">Kom i gang</a>
                 </div>
                 <div class="guest-hero__metrics">
                     <div class="metric animate-scale-in"><div class="metric__value"><?php echo e($totalUsers); ?></div><div class="metric__label">Totale Brugere</div></div>
@@ -213,7 +213,7 @@
                 </div>
                 <div class="feature-card animate-fade-up delay-4">
                     <div class="feature-card__icon">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18v14H3z"/><path d="M3 10h18"/></svg>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /> </svg>
                     </div>
                     <h3 class="feature-card__title">Designet til mobil</h3>
                     <p class="feature-card__text">Lynhurtigt, responsivt UI – planlæg og følg med fra enhver enhed.</p>
