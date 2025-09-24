@@ -18,7 +18,7 @@ body {
     width: 100%;
     max-width: 450px;
     text-align: center;
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-blue);
 }
 .auth-container h2 {
     font-size: calc(var(--spacing-unit) * 4);

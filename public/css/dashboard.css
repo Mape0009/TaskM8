@@ -10,6 +10,7 @@
     --color-accent-secondary: #007bff;
     --color-accent-themelight: #ffc30f;
     --color-border: #d1d5db;
+    --color-blue: #00bfff;
     --color-shadow-light: rgba(30, 34, 44, 0.04);
     --color-shadow-dark: rgba(30, 34, 44, 0.1);
     --spacing-unit: 8px;
@@ -27,6 +28,7 @@ body.dark-mode {
     --color-accent-primary: #007bff;
     --color-accent-secondary: #007bff;
     --color-border: #333338;
+    --color-blue: #00bfff;
     --color-shadow-light: rgba(0, 0, 0, 0.2);
     --color-shadow-dark: rgba(0, 0, 0, 0.6);
 }
