@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_participants', function (Blueprint $table) {
+        Schema::create('shifts', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->dateTime('startTime')->nullable();
+            $table->dateTime('endTime')->nullable();
             $table->unsignedBigInteger('taskId');
             $table->unsignedBigInteger('userId');
             $table->foreign('taskId')->references('id')->on('tasks')->onDelete('cascade');
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
-            $table->unique(['taskId', 'userId'], 'task_participant_unique');
+            $table->unique(['taskId', 'userId'], 'shift_unique');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_participants');
+        Schema::dropIfExists('shifts');
     }
 };

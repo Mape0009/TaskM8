@@ -52,6 +52,7 @@ class EventController extends Controller
         $eventParticipant->eventId = $event->id;
         $eventParticipant->userId = auth()->user()->id;
         $eventParticipant->status = 'accepted';
+        $eventParticipant->eventRole = 'owner';
         $eventParticipant->save();
 
         return redirect('/dashboard')->with('success', 'Event er nu lavet!');

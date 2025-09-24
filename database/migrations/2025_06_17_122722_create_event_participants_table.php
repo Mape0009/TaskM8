@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('eventId');
             $table->unsignedBigInteger('userId');
             $table->string('status')->default('pending');
+            $table->enum('eventRole', ['owner', 'coOwner', 'taskManager', 'taskWorker', 'participant'])->default('participant');
             $table->foreign('eventId')->references('id')->on('events')->onDelete('cascade');
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->unique(['eventId', 'userId'], 'event_participant_unique');
