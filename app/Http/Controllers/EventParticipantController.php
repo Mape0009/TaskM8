@@ -7,15 +7,23 @@ use App\Models\EventParticipant;
 use App\Models\EventRole;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
+use App\Http\RolePermissions\Permissions;
 
 class EventParticipantController extends Controller
 {
     public function index($eventId)
     {
-    $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
-    $currentUser = auth()->user();
-    $eventRole = EventRole::class;
-    return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
+        $currentUser = auth()->user();
+        $participant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $participant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'view-participants')) {
+            abort(403, 'You do not have permission to view participants.');
+        }
+        $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
+        $eventRole = EventRole::class;
+        return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
     }
 
     public function show($id)
@@ -26,8 +34,18 @@ class EventParticipantController extends Controller
 
     public function delete($id)
     {
-        $participant = EventParticipant::findOrFail($id);
-        $participant->delete();
+        $currentUser = auth()->user();
+        $participantToDelete = EventParticipant::findOrFail($id);
+        $eventId = $participantToDelete->eventId;
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        // You can change 'delete-participant' to another permission name if you want
+        if (!Permissions::hasPermission($role, 'delete-participant')) {
+            abort(403, 'You do not have permission to delete participants.');
+        }
+        $participantToDelete->delete();
         return response()->json(['message' => 'Participant deleted successfully']);
     }
 

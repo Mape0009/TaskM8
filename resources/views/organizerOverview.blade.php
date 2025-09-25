@@ -36,8 +36,20 @@
                             <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>Participant</option>
                         </select>
                     @endif
-                    <br>
                 </form>
+                @php
+                    // Determine current user's role for this event
+                    $currentParticipant = $participants->firstWhere('userId', $currentUser->id);
+                    $currentRole = $currentParticipant?->eventRole ?? 'participant';
+                @endphp
+                @if (\App\Http\RolePermissions\Permissions::hasPermission($currentRole, 'delete-participant'))
+                    <form action="{{ route('events.deleteParticipant', ['id' => $participant->id]) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                @endif
+                <br>
             </div>
         @endforeach
     </form>

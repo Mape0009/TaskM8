@@ -92,7 +92,7 @@ Route::get('/events/{id}/edit', [EventController::class, 'edit'])
 Route::get('/participants', [EventParticipantController::class, 'index']);
 Route::post('/events/clear-success', [EventController::class, 'clearSuccessMessage']);
 Route::get('/participant/{id}', [EventParticipantController::class, 'show']);
-Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'delete']);
+Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'delete'])->name('events.deleteParticipant');
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
