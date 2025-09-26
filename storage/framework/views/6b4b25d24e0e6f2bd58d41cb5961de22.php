@@ -1,6 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
+    <?php
+        $pageTitle = 'TaskM8 – Planlæg og saml begivenheder';
+        $metaDescription = 'Planlæg, inviter og få overblik over alle dine begivenheder i TaskM8.';
+    ?>
+    <?php echo $__env->make('partials.seo', [
+        'title' => $pageTitle,
+        'description' => $metaDescription,
+        'canonical' => url()->current(),
+        'image' => asset('TaskM8-Logo.png'),
+    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskM8 Forside</title>

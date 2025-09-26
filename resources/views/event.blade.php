@@ -1,9 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
+    @php
+        \Carbon\Carbon::setLocale('da');
+        $start = isset($event->startDate) && $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
+        $end = isset($event->endDate) && $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
+        $pageTitle = ($event->eventName ?? 'Event Details') . ' | TaskM8';
+        $metaDescription = \Illuminate\Support\Str::limit($event->description ?? 'Se detaljer for begivenheden i TaskM8.', 155);
+        $eventJson = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Event',
+            'name' => $event->eventName ?? 'Begivenhed',
+            'startDate' => $start ? $start->toIso8601String() : null,
+            'endDate' => $end ? $end->toIso8601String() : null,
+            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+            'eventStatus' => 'https://schema.org/EventScheduled',
+            'description' => strip_tags($event->description ?? ''),
+            'location' => [
+                '@type' => 'Place',
+                'name' => $event->location ?? 'TBD',
+            ],
+            'image' => asset('TaskM8-Logo.png'),
+            'url' => url()->current(),
+        ];
+        $breadcrumbs = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Forside',
+                    'item' => url('/dashboard')
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'Begivenheder',
+                    'item' => url('/events')
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => $event->eventName ?? 'Begivenhed',
+                    'item' => url()->current()
+                ],
+            ],
+        ];
+        $structuredData = [$eventJson, $breadcrumbs];
+    @endphp
+    @include('partials.seo', [
+        'title' => $pageTitle,
+        'description' => $metaDescription,
+        'canonical' => url()->current(),
+        'image' => asset('TaskM8-Logo.png'),
+        'structuredData' => $structuredData,
+    ])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $event->eventName ?? 'Event Details' }} | TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">

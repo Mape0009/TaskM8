@@ -1,9 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
+    @php
+        $pageTitle = 'Opret konto | TaskM8';
+        $metaDescription = 'Opret en konto på TaskM8 og kom i gang på få minutter.';
+    @endphp
+    @include('partials.seo', [
+        'title' => $pageTitle,
+        'description' => $metaDescription,
+        'canonical' => url()->current(),
+        'image' => asset('TaskM8-Logo.png'),
+        'robots' => 'noindex, nofollow',
+    ])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opret konto - TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

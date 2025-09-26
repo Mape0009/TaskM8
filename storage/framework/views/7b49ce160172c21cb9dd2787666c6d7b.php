@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Begivenheder</title>
-    <link rel="stylesheet" href="<?php echo e(asset('css/header.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('css/dashboard.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('css/event.css')); ?>">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <?php
+        $pageTitle = 'Begivenheder | TaskM8';
+        $metaDescription = 'Se dine begivenheder og få hurtigt overblik i TaskM8.';
+    ?>
+    <?php echo $__env->make('partials.seo', [
+        'title' => $pageTitle,
+        'description' => $metaDescription,
+        'canonical' => url()->current(),
+        'image' => asset('TaskM8-Logo.png'),
+    ], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </head>
 <body>
     <?php echo $__env->make('partials.header', ['currentPage' => 'events'], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>

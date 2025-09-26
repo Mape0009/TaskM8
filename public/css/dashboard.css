@@ -350,6 +350,7 @@ body {
 .guest-hero {
     /* Light mode defaults */
     background: var(--color-background-secondary);
+    background-image: radial-gradient(60rem 60rem at 10% 0%, rgba(173, 216, 255, 0.35), transparent 60%),radial-gradient(60rem 60rem at 90% 10%, rgba(173, 216, 255, 0.35), transparent 60%);
     border: 1px solid var(--color-border);
     border-radius: 24px;
     padding: clamp(28px, 5.5vw, 56px);
@@ -367,9 +368,7 @@ body {
     font-size: clamp(30px, 5vw, 56px);
     font-weight: 900;
     letter-spacing: -0.9px;
-    /* Fallback solid color for browsers without background-clip:text */
     color: #8ec5ff;
-    /* Futuristic blue gradient + glow in ALL themes */
     background-image: linear-gradient(90deg, #3b82f6, #60a5fa 40%, #22d3ee 80%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -469,7 +468,7 @@ html.dark-mode .store-badge:hover {
     .features-grid { grid-template-columns: 1fr; }
 }
 
-/* High-end motion: safe, subtle animations */
+/* Subtle animations */
 @media (prefers-reduced-motion: no-preference) {
 .animate-fade-up { opacity: 0; transform: translateY(14px); animation: fadeUp 1000ms ease forwards; }
     .animate-fade-up.delay-2 { animation-delay: 120ms; }
@@ -478,7 +477,7 @@ html.dark-mode .store-badge:hover {
 .animate-scale-in { opacity: 0; transform: scale(0.96); animation: scaleIn 900ms cubic-bezier(.2,.8,.2,1) forwards; }
     .animate-scale-in.delay-2 { animation-delay: 120ms; }
 
-    /* Futuristic slide-in sequences */
+    /* slide-in sequences */
     .features .feature-card { opacity: 0; }
     .features .feature-card:nth-child(odd) { animation: slideInLeft 620ms cubic-bezier(.2,.8,.2,1) forwards; }
     .features .feature-card:nth-child(even) { animation: slideInRight 620ms cubic-bezier(.2,.8,.2,1) forwards; }
@@ -1294,7 +1293,7 @@ html.dark-mode .event-date {
     .btn {
         padding: calc(var(--spacing-unit) * 0.75)
             calc(var(--spacing-unit) * 1.25); /* 6px 10px */
-        font-size: calc(var(--spacing-unit) * 1.375); /* 11px */
+        font-size: calc(var(--spacing-unit) * 2.375);
     }
     .secondary-btn .arrow-icon {
         width: calc(var(--spacing-unit) * 1.5); /* 12px */

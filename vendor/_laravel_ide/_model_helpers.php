@@ -6,7 +6,6 @@ namespace App\Models {
      * App\Models\Event
      *
      * @property int $ownerId
-     * @property string|null $repeat
      * @property int|null $participantLimit
      * @property string|null $location
      * @property string|null $description
@@ -27,7 +26,6 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereLocation($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereParticipantlimit($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereRepeat($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereOwnerid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newQuery()
@@ -328,6 +326,7 @@ namespace App\Models {
     /**
      * App\Models\EventParticipant
      *
+     * @property mixed $eventRole
      * @property string $status
      * @property int $userId
      * @property int $eventId
@@ -342,6 +341,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereEventid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereUserid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereStatus($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant whereEventrole($value)
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<EventParticipant>|EventParticipant query()
@@ -1878,6 +1878,8 @@ namespace App\Models {
     /**
      * App\Models\Task
      *
+     * @property string|null $end_time
+     * @property string|null $start_time
      * @property int $userId
      * @property string $endDate
      * @property string $startDate
@@ -1900,6 +1902,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereStartdate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereEnddate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereUserid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereStartTime($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereEndTime($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task query()

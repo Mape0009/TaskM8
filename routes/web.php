@@ -13,6 +13,8 @@ use App\Models\Mail as MailModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SitemapController;
+
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -115,3 +117,15 @@ Route::post('/tasks/create', [TaskController::class, 'create'])->name('task.crea
 Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('task.edit');
 Route::delete('/tasks/{id}', [TaskController::class, 'delete'])->name('task.delete');
 Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('task.update');
+
+//Sitemap route
+Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
+Route::get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+    if (!file_exists($path)) {
+        return abort(404);
+    }
+    return response()->file($path, [
+        'Content-Type' => 'application/xml'
+    ]);
+});
