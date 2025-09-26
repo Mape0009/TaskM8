@@ -117,6 +117,11 @@ Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('task.edit
 Route::delete('/tasks/{id}', [TaskController::class, 'delete'])->name('task.delete');
 Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('task.update');
 
+// Event-scoped task routes
+Route::get('/events/{eventId}/tasks', [TaskController::class, 'indexByEvent'])->name('events.tasks.index');
+Route::get('/events/{eventId}/tasks/create', [TaskController::class, 'showCreateFormForEvent'])->name('events.tasks.create.form');
+Route::post('/events/{eventId}/tasks', [TaskController::class, 'createForEvent'])->name('events.tasks.create');
+
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
 Route::get('/sitemap.xml', function () {

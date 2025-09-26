@@ -1,3 +1,22 @@
+/* Kebab (3-dots) dropdown - reuse RSVP styles */
+.event-kebab {
+    position: relative;
+}
+.kebab-btn {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+}
+.kebab-btn:hover {
+    background: transparent;
+}
+
+/* Shift kebab right within event cards */
+.event-card .event-header { display: flex; align-items: center; gap: .5rem; }
+.event-card .event-header .event-kebab { margin-left: auto; }
 .main-header {
     display: flex;
     justify-content: space-between;

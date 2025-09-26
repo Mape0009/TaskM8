@@ -782,7 +782,7 @@ html.dark-mode .event-date {
     color: #fff;
     border: none;
     border-radius: 10px;
-    padding: calc(var(--spacing-unit) * 1.7) calc(var(--spacing-unit) * 1.5);
+    padding: calc(var(--spacing-unit) * 1.1) calc(var(--spacing-unit) * 1.25);
     font-weight: 800;
     font-size: calc(var(--spacing-unit) * 1.625);
     letter-spacing: 0.02em;
@@ -793,6 +793,15 @@ html.dark-mode .event-date {
     box-shadow: 0 2px 8px var(--color-shadow-light);
     max-height: 3rem;
 }
+.rsvp-menu-trigger:hover { background: #0056b3; }
+/* Kebab variant should remain neutral */
+.kebab-btn.rsvp-menu-trigger {
+    background: transparent;
+    color: inherit;
+    box-shadow: none;
+    padding: 6px;
+}
+.kebab-btn.rsvp-menu-trigger:hover { background: transparent; }
 .rsvp-menu-trigger .caret { transition: transform 0.15s ease; }
 .rsvp-menu.open .rsvp-menu-trigger .caret { transform: rotate(180deg); }
 .rsvp-menu-list {

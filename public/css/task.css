@@ -5,13 +5,16 @@
 }
 
 .task-card {
-    background: #fff;
+    background: var(--color-bg-elevated);
     border-radius: 22px;
-    box-shadow: 0 12px 40px 0 rgba(30, 41, 59, 0.16),
-        0 2px 8px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 12px 40px 0 rgba(30, 41, 59, 0.12), 0 2px 8px rgba(99, 102, 241, 0.08);
     padding: 1.5rem;
-    border: 1.5px solid #e0e7ef;
+    border: 1.5px solid var(--color-border);
     transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dark-mode .task-card {
+    box-shadow: 0 12px 40px 0 rgba(0,0,0,0.32), 0 2px 8px rgba(99, 102, 241, 0.12);
 }
 
 .task-actions {
@@ -20,6 +23,13 @@
     align-items: center;
     flex-wrap: wrap; /* Allows stacking on small screens */
 }
+
+.secondary-btn {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+}
+.secondary-btn:hover { opacity: .9; }
 
 .btn {
     display: inline-block;
@@ -49,8 +59,8 @@
 }
 
 .white-btn {
-    background-color: white;
-    color: var(--color-text-primary); /* or just black */
+    background-color: var(--color-bg-elevated);
+    color: var(--color-text-primary);
     border: 1px solid var(--color-border);
     padding: 0.5rem 1rem;
     border-radius: 8px;
@@ -59,9 +69,7 @@
     text-decoration: none;
 }
 
-.white-btn:hover {
-    background-color: #f2f2f2;
-}
+.white-btn:hover { opacity: .9; }
 
 
 /*search bar creation*/
@@ -69,20 +77,16 @@
     position: relative;
 }
 
-/* Updated class name to match your form */
+/* User search bar on create task */
 .form-row.search-bar {
-    position: absolute;
-    bottom: 12.5rem;
-    left: 1.5rem;
-    right: 1.5rem;
-    z-index: 1;
+    position: static;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
-    background: #ffffff;
-    padding: 1rem;
+    gap: 0.75rem;
+    background: var(--color-bg-elevated);
+    padding: 0.75rem 1rem;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--color-border);
 }

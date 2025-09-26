@@ -1579,6 +1579,16 @@ namespace App\Models {
     /**
      * App\Models\Shift
      *
+     * @property int $userId
+     * @property int $taskId
+     * @property string|null $endTime
+     * @property string|null $startTime
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereStarttime($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereEndtime($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereTaskid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereUserid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift query()
@@ -1878,13 +1888,7 @@ namespace App\Models {
     /**
      * App\Models\Task
      *
-     * @property string|null $end_time
-     * @property string|null $start_time
-     * @property int $userId
-     * @property string $endDate
-     * @property string $startDate
      * @property string $description
-     * @property string $location
      * @property int $eventId
      * @property string $taskName
      * @property \Illuminate\Support\Carbon|null $updated_at
@@ -1897,13 +1901,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereTaskname($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereEventid($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereLocation($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereDescription($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereStartdate($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereEnddate($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereUserid($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereStartTime($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereEndTime($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task query()

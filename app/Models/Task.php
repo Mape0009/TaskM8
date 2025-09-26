@@ -10,6 +10,8 @@ class Task extends Model
         'taskName',
         'eventId',
         'description',
+        'start_time',
+        'end_time',
     ];
 
     public function users()
