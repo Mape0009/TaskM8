@@ -28,7 +28,7 @@ Route::get('/dashboard', function () {
         $participatedEvents = Event::whereIn('id', $participantEventIds);
         $events = $ownedEvents->union($participatedEvents)->orderBy('startDate', 'desc')->get();
 
-        $participatedEventsCount = EventParticipant::where('userId', $userId)->count();
+        $participatedEventsCount = $events->count();
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
         $previousInviteesCount = MailModel::where('senderId', $userId)->distinct('recipientId')->count('recipientId');
         $totalUsers = null;
@@ -61,7 +61,6 @@ Route::get('/friends', function () {
 
 
 Route::get('signup', function(Request $request){
-    // If secure token present, decode into request inputs for prefill
     if ($request->filled('token')) {
         $raw = base64_decode($request->query('token'));
         $data = json_decode($raw, true);
