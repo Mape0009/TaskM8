@@ -4,6 +4,20 @@
     gap: 1rem;
 }
 
+/* Responsive grid for tasks on larger screens */
+@media (min-width: 768px) and (max-width: 991px) {
+    .task-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; grid-auto-rows: 1fr; }
+    .task-card { max-width: none; width: 100%; min-width: 0; box-sizing: border-box; }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+    .task-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; align-items: start; grid-auto-rows: 1fr; }
+    .task-card { max-width: none; width: 100%; min-width: 0; box-sizing: border-box; }
+}
+@media (min-width: 1200px) {
+    .task-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; align-items: start; grid-auto-rows: 1fr; }
+    .task-card { max-width: none; width: 100%; min-width: 0; box-sizing: border-box; }
+}
+
 .task-card {
     background: var(--color-bg-elevated);
     border-radius: 22px;
@@ -11,6 +25,8 @@
     padding: 1.5rem;
     border: 1.5px solid var(--color-border);
     transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .dark-mode .task-card {

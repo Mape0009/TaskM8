@@ -66,5 +66,6 @@ document.addEventListener('click', function(e){
     }
 });
 </script>
+    <?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 </html> <?php /**PATH C:\Users\Tobia\Documents\GitHub\TaskM8\resources\views/events.blade.php ENDPATH**/ ?>

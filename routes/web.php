@@ -59,6 +59,11 @@ Route::get('/friends', function () {
     return view('friends');
 })->middleware('auth');
 
+// Legal policy pages
+Route::view('/privatlivspolitik', 'legal.privatlivspolitik');
+Route::view('/cookiepolitik', 'legal.cookiepolitik');
+Route::view('/vilkar', 'legal.vilkar');
+
 
 Route::get('signup', function(Request $request){
     if ($request->filled('token')) {

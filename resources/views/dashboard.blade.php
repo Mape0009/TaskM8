@@ -267,6 +267,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@1.0.0-beta.6/dist/auto-animate.min.js"></script>
     <script src="{{ asset('js/landing.js') }}"></script>
     @endguest
+    @include('partials.footer')
 </body>
 </html>
 <script>

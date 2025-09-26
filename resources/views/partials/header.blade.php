@@ -1,4 +1,4 @@
-<header class="main-header">
+<header class="main-header{{ (!Auth::check() && ($currentPage ?? null) === 'dashboard') ? ' guest-dashboard' : '' }}">
     <div class="header-left">
         <div class="logo">
             <a href="/dashboard" class="logo-link" aria-label="Gå til forside">

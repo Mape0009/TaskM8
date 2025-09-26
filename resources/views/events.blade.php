@@ -66,5 +66,6 @@ document.addEventListener('click', function(e){
     }
 });
 </script>
+    @include('partials.footer')
 </body>
 </html> 

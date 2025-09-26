@@ -1310,6 +1310,11 @@ html.dark-mode .event-date {
     }
 }
 
+/* Mobile-only larger CTA for guest dashboard */
+@media (max-width: 576px) {
+    .guest-hero__cta-btn { font-size: 18px; padding: 16px 22px; border-radius: 14px; }
+}
+
 /* Theme toggle button styles */
 .theme-toggle-btn {
     background: var(--color-background-tertiary);

@@ -270,6 +270,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@1.0.0-beta.6/dist/auto-animate.min.js"></script>
     <script src="<?php echo e(asset('js/landing.js')); ?>"></script>
     <?php endif; ?>
+    <?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 </html>
 <script>

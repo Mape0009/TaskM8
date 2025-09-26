@@ -44,13 +44,7 @@
             </div>
         @endif
 
-        <ul class="event-details-list">
-            <li>
-                <span class="event-details-label">Location:</span>
-                <span class="event-details-value">{{ $task->location ?? 'Not specified' }}</span>
-            </li>
-            <!-- Add more fields here if needed -->
-        </ul>
+   
 
         <div class="event-actions-details" style="display:flex; gap:.75rem; align-items:center; flex-wrap:wrap;">
             <a href="{{ url()->previous() }}" class="btn white-btn">Tilbage</a>

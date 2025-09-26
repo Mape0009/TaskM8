@@ -922,6 +922,10 @@ body.dark-mode .header-modal .custom-interval-input:focus { border-color: #3b82f
     .main-header .create-event-btn-header:not(.mobile) {
         display: none !important;
     }
+    /* On dashboard as guest (mobile), hide burger and show login button */
+    .guest-dashboard .mobile-menu-btn { display: none !important; }
+    .guest-dashboard .login-header { display: block !important; }
+    .guest-dashboard .login-header .login-btn { padding: 0.6rem 1rem; border-radius: 10px; font-weight: 700; }
     .mobile-menu-btn {
         display: inline-flex !important;
     }
