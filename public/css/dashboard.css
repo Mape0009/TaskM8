@@ -1302,7 +1302,7 @@ html.dark-mode .event-date {
     .btn {
         padding: calc(var(--spacing-unit) * 0.75)
             calc(var(--spacing-unit) * 1.25); /* 6px 10px */
-        font-size: calc(var(--spacing-unit) * 2.375);
+        font-size: calc(var(--spacing-unit) * 1.375);
     }
     .secondary-btn .arrow-icon {
         width: calc(var(--spacing-unit) * 1.5); /* 12px */
