@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ asset('js/theme-toggle.js') }}"></script>
 </head>
-<body>
+<body class="signin-page">
     <div class="auth-container">
         <h2>Login</h2>
         <form action="{{ route('loginPost') }}" method="POST">
