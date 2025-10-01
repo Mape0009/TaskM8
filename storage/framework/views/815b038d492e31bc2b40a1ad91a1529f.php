@@ -71,7 +71,7 @@
         </div>
         <?php else: ?>
         <div class="login-header">
-            <a href="<?php echo e(route('login')); ?>" class="btn login-btn">Log ind</a>
+            <a href="<?php echo e(route('login')); ?>" class="btn primary-btn">Log ind</a>
         </div>
         <?php endif; ?>
         <?php if(Auth::check()): ?>

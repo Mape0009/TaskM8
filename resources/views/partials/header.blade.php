@@ -71,7 +71,7 @@
         </div>
         @else
         <div class="login-header">
-            <a href="{{ route('login') }}" class="btn login-btn">Log ind</a>
+            <a href="{{ route('login') }}" class="btn primary-btn">Log ind</a>
         </div>
         @endif
         @if (Auth::check())

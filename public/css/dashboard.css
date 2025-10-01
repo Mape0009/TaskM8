@@ -404,8 +404,6 @@ body {
 .feature-card__title { margin: 0 0 6px 0; font-size: 18px; font-weight: 700; }
 .feature-card__text { margin: 0; color: var(--color-text-secondary); font-size: 14px; }
 
-.testimonial { margin-top: calc(var(--spacing-unit) * 5); }
-/* testimonial removed by request */
 
 .cta-banner { margin-top: clamp(28px, 4.5vw, 48px); display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--color-background-secondary); border: 1px solid var(--color-border); border-radius: 16px; padding: 22px; box-shadow: 0 8px 22px var(--color-shadow-light); }
 .cta-banner__content h3 { margin: 0; font-size: clamp(18px, 2.5vw, 24px); color: var(--color-text-primary); }
