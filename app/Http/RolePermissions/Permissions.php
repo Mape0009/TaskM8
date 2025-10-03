@@ -89,6 +89,3 @@ class Permissions
             return in_array($permission, self::forRole($role));
         }
 }
-
-
-
