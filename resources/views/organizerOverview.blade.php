@@ -42,7 +42,15 @@
                     $currentParticipant = $participants->firstWhere('userId', $currentUser->id);
                     $currentRole = $currentParticipant?->eventRole ?? 'participant';
                 @endphp
-                @if (\App\Http\RolePermissions\Permissions::hasPermission($currentRole, 'delete-participant'))
+                @php
+                    // Do not show delete button next to owners
+                    $isTargetOwner = ($participant->eventRole === $eventRole::owner->name);
+                    // If current user is coOwner, they should not be able to delete another coOwner
+                    $isCurrentCoOwner = ($currentRole === $eventRole::coOwner->name);
+                    $isTargetCoOwner = ($participant->eventRole === $eventRole::coOwner->name);
+                @endphp
+
+                @if (! $isTargetOwner && \App\Http\RolePermissions\Permissions::hasPermission($currentRole, 'delete-participant') && !($isCurrentCoOwner && $isTargetCoOwner))
                     <form action="{{ route('events.deleteParticipant', ['id' => $participant->id]) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')

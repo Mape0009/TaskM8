@@ -23,6 +23,11 @@ class EventParticipantController extends Controller
         }
         $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
         $eventRole = EventRole::class;
+
+        if (! $participant) {
+            abort(403, 'You do not have access to this event.');
+        }
+
         return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
     }
 
@@ -41,9 +46,19 @@ class EventParticipantController extends Controller
             ->where('userId', $currentUser?->id)
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
-        // You can change 'delete-participant' to another permission name if you want
+
         if (!Permissions::hasPermission($role, 'delete-participant')) {
             abort(403, 'You do not have permission to delete participants.');
+        }
+
+        if ($participantToDelete->eventRole === EventRole::owner->name) {
+            abort(403, 'Owners cannot be deleted.');
+        }
+
+        $currentRole = $role;
+        $targetRole = $participantToDelete->eventRole;
+        if ($currentRole === EventRole::coOwner->name && $targetRole === EventRole::coOwner->name) {
+            abort(403, 'Co-Owners cannot delete other Co-Owners.');
         }
         $participantToDelete->delete();
         return response()->json(['message' => 'Participant deleted successfully']);
