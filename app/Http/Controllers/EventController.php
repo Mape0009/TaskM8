@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\EventParticipant;
 use App\Models\Event;
-// use App\Helpers\Permissions;
+use App\Helpers\Permissions;
 use App\Enums\EventRole;
 use Illuminate\Support\Facades\Auth;
 
@@ -85,6 +85,16 @@ class EventController extends Controller
 
     public function edit($id)
     {
+        $currentUser = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+
+        if ($role !== 'owner' && $role !== 'coOwner') {
+            abort(403, 'Ikke tilladt.');
+        }   
+
         $event = Event::findOrFail($id);
         // Enforce ownership
         if ($event->ownerId !== auth()->id()) {
@@ -102,12 +112,9 @@ class EventController extends Controller
         $role = $currentParticipant?->eventRole ?? 'participant';
 
         if ($role !== 'owner') {
-            abort(403, 'You do not have permission to delete events.');
-        }
-        $event = Event::findOrFail($id);
-        if ($event->ownerId !== auth()->id()) {
             abort(403, 'Ikke tilladt.');
         }
+        $event = Event::findOrFail($id);
         $event->delete();
         return redirect('/events')->with('success', 'Begivenheden er slettet.');
     }
