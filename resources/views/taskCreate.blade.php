@@ -24,12 +24,15 @@
 @include('partials.header', ['currentPage' => 'tasks'])
 <div class="edit-container">
     <div class="edit-header" style="display: flex; align-items: center; justify-content: space-between;">
-        <h2 class="edit-title">Lav ny opgave</h2>
-        <a href="{{ url()->previous() }}" class="btn white-btn">← Back</a>
+        <h1 class="edit-title">Lav ny opgave</h1>
+        @if(isset($event))
+        <p class="muted" style="margin-left: 0.5rem;">Til begivenhed: <strong>{{ $event->eventName }}</strong></p>
+        @endif
+        <a href="{{ url()->previous() }}" class="btn white-btn">Tilbage</a>
     </div>
 
     <div class="task-form-wrapper">
-        <form action="{{ isset($event) ? route('events.tasks.create', ['eventId' => $event->id]) : route('task.create') }}" method="POST" class="edit-form">
+        <form action="{{ isset($event) ? route('events.tasks.create', ['eventId' => $event->id]) : route('task.create') }}" method="POST" class="edit-form task-form" novalidate>
             @csrf
 
             <div class="form-row">
@@ -39,7 +42,10 @@
 
             <div class="form-row">
                 <label for="description">Beskrivelse:</label>
-                <textarea id="description" name="description" placeholder="Opgave Beskrivelse"></textarea>
+                <div style="position: relative;">
+                    <textarea id="description" name="description" placeholder="Opgave Beskrivelse" maxlength="500" rows="4"></textarea>
+                    <span id="desc-counter" style="position: absolute; bottom: 6px; right: 8px; font-size: 12px; color: var(--text-muted, #6b7280);">0/500</span>
+                </div>
             </div>
 
             
@@ -71,11 +77,12 @@
             <div class="form-row">
                 <label for="user_search">Tildel Brugere:</label>
                 <div class="assignee-picker" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <input id="user_search" type="text" placeholder="Søg efter brugere..." style="width: 100%;" oninput="filterUsers()">
+                    <input id="user_search" type="text" placeholder="Søg efter brugere..." style="width: 100%;">
                     <div id="user_list" class="checkbox-group" style="max-height: 220px; overflow-y: auto; border: 1.5px solid var(--color-border); border-radius: 8px; padding: 0.5rem; background: var(--color-bg-elevated); display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem;">
                         @forelse ($users as $user)
                             <label class="assignee-item" data-name="{{ Str::lower($user->name) }}" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 500;">
                                 <input type="checkbox" name="user_ids[]" value="{{ $user->id }}" {{ in_array($user->id, old('user_ids', [])) ? 'checked' : '' }} />
+                                <span class="assignee-avatar" style="width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#e5e7eb;">{{ strtoupper(Str::substr($user->name,0,1)) }}</span>
                                 <span>{{ $user->name }}</span>
                             </label>
                         @empty
@@ -91,14 +98,6 @@
         </form>
     </div>
 </div>
-<script>
-function filterUsers(){
-    var q = (document.getElementById('user_search').value || '').toLowerCase();
-    document.querySelectorAll('#user_list .assignee-item').forEach(function(el){
-        var n = el.getAttribute('data-name');
-        el.style.display = (!q || (n && n.indexOf(q) !== -1)) ? 'flex' : 'none';
-    });
-}
-</script>
+<script src="{{ asset('js/task-create.js') }}"></script>
 </body>
 </html>

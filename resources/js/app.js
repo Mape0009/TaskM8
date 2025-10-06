@@ -1,3 +1,5 @@
+// Event page interactions
+import './event';
 import './bootstrap';
 
 function setTheme(isDark) {

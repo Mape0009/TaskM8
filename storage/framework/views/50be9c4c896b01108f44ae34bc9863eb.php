@@ -79,6 +79,7 @@
                 $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
             ?>
         </section>
+        
         <section class="event-details-card">
             <div class="event-card-actions-top">
                 <a href="<?php echo e(url('/events')); ?>" class="back-btn" aria-label="Tilbage til begivenheder">Tilbage</a>
@@ -194,6 +195,29 @@
                 <?php echo e($event->description ?? 'Der er ingen beskrivelse af denne begivenhed.'); ?>
 
             </div>
+            <?php
+                $limit = $event->participantLimit ?? null;
+                $current = $acceptedCount;
+                $pct = ($limit && $limit > 0) ? min(100, max(0, round(($current / max(1,$limit)) * 100))) : null;
+            ?>
+            <div class="event-stats">
+                <div class="stat">
+                    <span class="stat-label">Deltagere</span>
+                    <div class="stat-value"><?php echo e($current); ?><?php if($limit): ?><span class="stat-total">/<?php echo e($limit); ?></span><?php endif; ?></div>
+                    <?php if(!is_null($pct)): ?>
+                    <div class="progress" aria-label="Deltagere fyldt">
+                        <div class="progress-bar" style="width: <?php echo e($pct); ?>%"></div>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="event-links">
+                <a class="link-btn" href="<?php echo e(route('events.tasks.index', ['eventId' => $event->id])); ?>">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    Opgaver for begivenhed
+                </a>
+            </div>
             <?php if(auth()->guard()->check()): ?>
             <?php
                 $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
@@ -278,6 +302,7 @@
         </div>
     </div>
 
+    <script src="<?php echo e(asset('js/event.js')); ?>"></script>
     <script src="<?php echo e(asset('js/invitation.js')); ?>"></script>
 
     <script>
