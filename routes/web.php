@@ -20,10 +20,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     if (auth()->check()) {
         $userId = auth()->id();
-        $ownedEvents = Event::where('ownerId', $userId);
-        $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
-        $participatedEvents = Event::whereIn('id', $participantEventIds);
-        $events = $ownedEvents->union($participatedEvents)->orderBy('startDate', 'desc')->get();
+        // Use EventController helper to fetch events the same way as events.index
+        $controller = app(EventController::class);
+        $events = $controller->getEventsForUser($userId)->sortByDesc('startDate')->values();
 
         $participatedEventsCount = EventParticipant::where('userId', $userId)->count();
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
@@ -34,6 +33,7 @@ Route::get('/dashboard', function () {
         $pendingEventsCount = 0;
         $previousInviteesCount = 0;
     }
+
     return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount'));
 });
 
@@ -46,7 +46,7 @@ Route::get('/events/{eventId}/invitees', [MailController::class, 'getPreviousInv
 Route::view('test', 'test');
 Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.invite');
 
-Route::get('/events', [EventController::class, 'index']);
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
 Route::get('/friends', function () {
     return view('friends');

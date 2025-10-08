@@ -24,6 +24,7 @@ class Permissions
             'manage-taskManagers',
             'manage-coOwners',
             'delete-participant',
+            'transfer-ownership',
         ];
 
         public const CO_OWNER = [
@@ -44,6 +45,7 @@ class Permissions
             'manage-taskWorkers',
             'manage-taskManagers',
             'delete-participant',
+            'respond-event',
         ];
 
         public const TASK_MANAGER = [
@@ -58,6 +60,7 @@ class Permissions
             'view-participants',
             'manage-participants',
             'manage-taskWorkers',
+            'respond-event',
         ];
 
         public const TASK_WORKER = [
@@ -65,11 +68,13 @@ class Permissions
             'view-task',
             'view-shift',
             'view-participants',
+            'respond-event',
         ];
 
         public const PARTICIPANT = [
             'view-event',
             'view-participants',
+            'respond-event',
         ];
 
         public static function forRole(string $role): array

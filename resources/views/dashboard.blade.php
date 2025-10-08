@@ -47,6 +47,7 @@
         <section class="upcoming-events">
             <h2>Kommende Begivenheder</h2>
             <div class="event-list">
+                <form action="{{ route('events.index') }}" method="GET">
                 @forelse($events as $event)
                     <div class="event-card">
                         <div class="event-header">
@@ -57,13 +58,24 @@
                             <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
                             @auth
                                 @php
-                                    $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
-                                    $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
+                                    // Determine current user's participation and role for this event
+                                    $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)
+                                        ->where('userId', auth()->id())
+                                        ->first();
                                     $rsvpStatus = $myParticipation->status ?? null; // accepted | declined | null
                                     $isParticipant = $rsvpStatus === 'accepted';
                                     $hasResponded = in_array($rsvpStatus, ['accepted','declined']);
+                                    $role = $myParticipation?->eventRole ?? 'participant';
+                                    // By default, owners and coOwners should not see RSVP controls. Prefer using Permissions if available.
+                                    $canRespond = true;
+                                    try {
+                                        $canRespond = \App\Http\RolePermissions\Permissions::hasPermission($role, 'respond-event');
+                                    } catch (\Throwable $e) {
+                                        // Fallback: disallow owners/coOwners from responding
+                                        $canRespond = !in_array($role, ['owner', 'coOwner']);
+                                    }
                                 @endphp
-                                @if(!$isOwner)
+                                @if($canRespond)
                                     @php
                                         $isFull = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isParticipant;
                                     @endphp
@@ -105,6 +117,7 @@
                 @empty
                     <p>Ingen begivenheder fundet.</p>
                 @endforelse
+                </form>
             </div>
         </section>
     </main>
