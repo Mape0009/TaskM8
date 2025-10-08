@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\EventParticipant;
+use App\Http\RolePermissions\Permissions;
 
 
 use Illuminate\Http\Request;
@@ -24,15 +26,34 @@ class TaskController extends Controller
         return view('taskCreate', compact('events', 'users'));
     }
 
-    public function index()
+    public function index($id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'view-task')) {
+            abort(403, 'Ikke tilladt.');
+        }
         $tasks = Task::all();
 
         return view('tasks', compact('tasks'));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'create-task')) {
+            abort(403, 'Ikke tilladt.');
+        }
+
         $tasks = new Task();
         $tasks->taskName = $request->input('taskName');
         $tasks->eventId = $request->input('event_id');
@@ -46,6 +67,16 @@ class TaskController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'edit-task')) {
+            abort(403, 'Ikke tilladt.');
+        }
+
         $tasks = Task::findOrFail($id);
         $tasks->taskName = $request->input('taskName');
         $tasks->description = $request->input('description');
@@ -65,6 +96,15 @@ class TaskController extends Controller
 
     public function delete($id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'delete-task')) {
+            abort(403, 'Ikke tilladt.');
+        }
         $tasks = Task::findOrFail($id);
         $tasks->delete();
 

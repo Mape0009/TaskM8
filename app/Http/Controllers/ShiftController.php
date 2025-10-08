@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Shift;
 use Illuminate\Support\Facades\Auth;
+use App\Models\EventParticipant;
+use App\Models\Event;
+use App\Http\RolePermissions\Permissions;
 
 class ShiftController extends Controller
 {
-    public function index()
+    public function index($id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'view-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
         $shifts = Shift::all();
         return response()->json($shifts);
     }
@@ -22,13 +34,32 @@ class ShiftController extends Controller
 
     public function delete($id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'delete-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
         $shift = Shift::findOrFail($id);
         $shift->delete();
         return response()->json(['message' => 'Shift deleted successfully']);
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'create-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
+
         $shift = new Shift();
         $shift->taskId = $request->input('taskId');
         $shift->userId = $request->input('userId');

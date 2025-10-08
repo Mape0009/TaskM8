@@ -112,7 +112,7 @@ class EventController extends Controller
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->save();
-        return response()->json($event);
+        return redirect('/dashboard')->with('success', 'Event opdateret!');
     }
 
     public function edit($id)
