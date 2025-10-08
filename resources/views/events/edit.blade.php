@@ -46,7 +46,7 @@
                     <label for="description">Beskrivelse</label>
                     <div style="position: relative;">
                         <textarea id="description" name="description" rows="4" placeholder="Beskriv begivenheden" maxlength="800" style="padding-bottom: 22px;">{{ old('description', $event->description) }}</textarea>
-                        <span id="description-counter" style="position: absolute; bottom: 6px; right: 8px; font-size: 12px; color: var(--text-muted, #6b7280);"></span>
+                        <span id="description-counter" style="position: absolute; bottom: 8px; right: 8px; font-size: 12px; color: var(--text-muted, #6b7280);"></span>
                     </div>
                 </div>
 

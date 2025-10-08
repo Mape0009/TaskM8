@@ -27,7 +27,7 @@ body.dark-mode {
     --color-text-accent: #00c2ff;
     --color-accent-primary: #007bff;
     --color-accent-secondary: #007bff;
-    --color-border: #333338;
+    --color-border: #222;
     --color-blue: #00bfff;
     --color-shadow-light: rgba(0, 0, 0, 0.2);
     --color-shadow-dark: rgba(0, 0, 0, 0.6);
@@ -581,7 +581,7 @@ html.dark-mode .metric { background: rgba(255,255,255,0.02); }
 .event-card,
 .friend-card {
     background-color: var(--color-background-secondary);
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border);
     border-radius: 16px;
     padding: calc(var(--spacing-unit) * 3.5); /* 28px */
     box-shadow: 0 4px 15px var(--color-shadow-dark);
