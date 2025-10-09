@@ -409,7 +409,7 @@ body.dark-mode .form-row select:focus {
     background: #4b5563;
 }
 body.dark-mode .btn.primary-btn {
-    background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+    background: #007bff;
 }
 body.dark-mode .btn.secondary-btn {
     background: #374151;
