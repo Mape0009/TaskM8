@@ -131,4 +131,33 @@ class EventParticipantController extends Controller
         );
         return redirect()->back()->with('success', 'Din deltagelse er opdateret.');
     }
+
+    public function transferOwnership(Request $request, $participantId)
+    {
+        $currentUser = auth()->user();
+        $newOwnerParticipant = EventParticipant::findOrFail($participantId);
+        $eventId = $newOwnerParticipant->eventId;
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+
+        if (!Permissions::hasPermission($role, 'transfer-ownership')) {
+            abort(403, 'Du har ikke tilladelse til at overføre ejerskab.');
+        }
+
+        if ($newOwnerParticipant->userId === $currentUser->id) {
+            abort(403, 'Du er allerede ejer.');
+        }
+
+        // Demote current owner to coOwner
+        $currentParticipant->eventRole = EventRole::coOwner->name;
+        $currentParticipant->save();
+
+        // Promote new owner
+        $newOwnerParticipant->eventRole = EventRole::owner->name;
+        $newOwnerParticipant->save();
+
+        return redirect()->back()->with('success', 'Ownership has been transferred successfully.');
+    }
 }
