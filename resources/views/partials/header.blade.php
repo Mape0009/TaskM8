@@ -250,7 +250,7 @@
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">Forside</a></li>
                 @if (Auth::check())
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'events' ? 'is-active' : '' }}" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'friends' ? 'is-active' : '' }}" href="/friends">Grupper</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'groups' ? 'is-active' : '' }}" href="/groups">Grupper</a></li>
                 @endif
             </ul>
         </nav>

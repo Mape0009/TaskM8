@@ -13,6 +13,7 @@ use App\Models\Mail as MailModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\SitemapController;
 
 
@@ -55,6 +56,7 @@ Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.i
 
 Route::get('/events', [EventController::class, 'index']);
 
+// friends route 
 Route::get('/friends', function () {
     return view('friends');
 })->middleware('auth');
@@ -126,6 +128,47 @@ Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('task.update'
 Route::get('/events/{eventId}/tasks', [TaskController::class, 'indexByEvent'])->name('events.tasks.index');
 Route::get('/events/{eventId}/tasks/create', [TaskController::class, 'showCreateFormForEvent'])->name('events.tasks.create.form');
 Route::post('/events/{eventId}/tasks', [TaskController::class, 'createForEvent'])->name('events.tasks.create');
+
+// Shift routes
+Route::get('/tasks/{taskId}/shifts', [ShiftController::class, 'index'])->name('tasks.shifts.index');
+Route::get('/tasks/{taskId}/shifts/create', [ShiftController::class, 'create'])->name('tasks.shifts.create');
+Route::post('/tasks/{taskId}/shifts', [ShiftController::class, 'store'])->name('tasks.shifts.store');
+Route::get('/tasks/{taskId}/shifts/{shiftId}/edit', [ShiftController::class, 'edit'])->name('tasks.shifts.edit');
+Route::put('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'update'])->name('tasks.shifts.update');
+Route::delete('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'destroy'])->name('tasks.shifts.destroy');
+Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tasks.join');
+Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
+
+//Sitemap route
+Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
+Route::get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+    if (!file_exists($path)) {
+        return abort(404);
+    }
+    return response()->file($path, [
+        'Content-Type' => 'application/xml'
+    ]);
+});
+Route::post('/tasks/create', [TaskController::class, 'create'])->name('task.create');
+Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('task.edit');
+Route::delete('/tasks/{id}', [TaskController::class, 'delete'])->name('task.delete');
+Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('task.update');
+
+// Event-scoped task routes
+Route::get('/events/{eventId}/tasks', [TaskController::class, 'indexByEvent'])->name('events.tasks.index');
+Route::get('/events/{eventId}/tasks/create', [TaskController::class, 'showCreateFormForEvent'])->name('events.tasks.create.form');
+Route::post('/events/{eventId}/tasks', [TaskController::class, 'createForEvent'])->name('events.tasks.create');
+
+// Shift routes
+Route::get('/tasks/{taskId}/shifts', [ShiftController::class, 'index'])->name('tasks.shifts.index');
+Route::get('/tasks/{taskId}/shifts/create', [ShiftController::class, 'create'])->name('tasks.shifts.create');
+Route::post('/tasks/{taskId}/shifts', [ShiftController::class, 'store'])->name('tasks.shifts.store');
+Route::get('/tasks/{taskId}/shifts/{shiftId}/edit', [ShiftController::class, 'edit'])->name('tasks.shifts.edit');
+Route::put('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'update'])->name('tasks.shifts.update');
+Route::delete('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'destroy'])->name('tasks.shifts.destroy');
+Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tasks.join');
+Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
 
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);

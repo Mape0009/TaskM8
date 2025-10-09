@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -27,31 +28,61 @@
 
 <main class="main-content-full">
     <section class="task-listing">
-        <div class="task-listing-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
-            <h2>{{ isset($event) ? 'Opgaver for ' . $event->eventName : 'Mine opgaver' }}</h2>
-            @if(isset($event))
-                <a href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}" class="btn primary-btn">Opret opgave</a>
-            @else
-                <a href="/tasks/create" class="btn primary-btn">Opret opgave</a>
-            @endif
+        <div class="task-listing-header" style="margin-bottom: 1rem;">
+            <div class="header-content">
+                <h2>{{ isset($event) ? 'Opgaver for ' . $event->eventName : 'Mine opgaver' }}</h2>
+                @if(isset($event))
+                    <p class="header-description">Administrer opgaver og vagter for denne begivenhed</p>
+                @else
+                    <p class="header-description">Se og administrer alle dine opgaver</p>
+                @endif
+            </div>
+            <div class="header-actions" style="gap: 0.75rem;">
+                @if(isset($event))
+                    <a href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}" class="btn primary-btn">
+                        <i class="fas fa-plus"></i>
+                        Opret Opgave
+                    </a>
+                @else
+                    <a href="/tasks/create" class="btn primary-btn">
+                        <i class="fas fa-plus"></i>
+                        Opret Opgave
+                    </a>
+                @endif
+            </div>
         </div>
 
-        <div class="task-list">
+        <div class="task-list" style="margin-top: 1rem; gap: 1.25rem;">
             @foreach($tasks as $task)
                 <div class="task-card">
                     <div class="task-header">
-                        <h3>{{ $task->taskName }}</h3>
-
-                        @if($task->description)
-                            <p>{{ $task->description }}</p>
-                        @endif
-
-
+                        <div class="task-title-section">
+                            <h3>{{ $task->taskName }}</h3>
+                            @if($task->description)
+                                <p class="task-description">{{ $task->description }}</p>
+                            @endif
+                        </div>
+                        <div class="task-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <span>{{ $task->shifts->count() }} vagt{{ $task->shifts->count() !== 1 ? 'er' : '' }}</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="task-actions">
-                        <a href="/tasks/{{ $task->id }}" class="btn primary-btn">Se detaljer</a>
-                        <a href="/tasks/{{ $task->id }}/edit" class="btn secondary-btn">Rediger</a>
+                        <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn primary-btn">
+                            <i class="fas fa-list"></i>
+                            Se Vagter
+                        </a>
+                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn secondary-btn">
+                            <i class="fas fa-plus"></i>
+                            Tilføj Vagt
+                        </a>
+                        <a href="/tasks/{{ $task->id }}/edit" class="btn secondary-btn">
+                            <i class="fas fa-edit"></i>
+                            Rediger Opgave
+                        </a>
                     </div>
                 </div>
             @endforeach

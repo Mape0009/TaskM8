@@ -10,9 +10,17 @@ class Task extends Model
         'taskName',
         'eventId',
         'description',
-        'start_time',
-        'end_time',
     ];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'eventId');
+    }
+
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class, 'taskId');
+    }
 
     public function users()
     {

@@ -264,7 +264,7 @@ unset($__errorArgs, $__bag); ?>
                 <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'dashboard' ? 'is-active' : ''); ?>" href="/dashboard">Forside</a></li>
                 <?php if(Auth::check()): ?>
                 <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'events' ? 'is-active' : ''); ?>" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'friends' ? 'is-active' : ''); ?>" href="/friends">Grupper</a></li>
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'groups' ? 'is-active' : ''); ?>" href="/groups">Grupper</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

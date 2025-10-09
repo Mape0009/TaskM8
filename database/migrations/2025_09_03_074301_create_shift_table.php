@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('userId');
             $table->foreign('taskId')->references('id')->on('tasks')->onDelete('cascade');
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
-            $table->unique(['taskId', 'userId'], 'shift_unique');
+            // Unique per (taskId, userId) removed to allow multiple non-overlapping shifts
         });
     }
 

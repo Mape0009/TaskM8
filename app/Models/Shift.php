@@ -12,4 +12,14 @@ class Shift extends Model
         'startTime',
         'endTime',
     ];
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class, 'taskId');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userId');
+    }
 }

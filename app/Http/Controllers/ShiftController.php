@@ -4,61 +4,183 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Shift;
+use App\Models\Task;
+use App\Models\User;
+use App\Models\EventParticipant;
 use Illuminate\Support\Facades\Auth;
 
 class ShiftController extends Controller
 {
-    public function index()
+    public function index($taskId)
     {
-        $shifts = Shift::all();
-        return response()->json($shifts);
+        $task = Task::with(['shifts.user'])->findOrFail($taskId);
+        return view('shifts.index', compact('task'));
     }
 
-    public function show($id)
+    public function create($taskId)
     {
-        $shift = Shift::findOrFail($id);
-        return response()->json($shift);
+        $task = Task::findOrFail($taskId);
+        $participantUserIds = EventParticipant::where('eventId', $task->eventId)->pluck('userId');
+        $users = User::whereIn('id', $participantUserIds)->get();
+        return view('shifts.create', compact('task', 'users'));
     }
 
-    public function delete($id)
+    public function store(Request $request, $taskId)
     {
-        $shift = Shift::findOrFail($id);
+        $request->validate([
+            'userId' => 'required|exists:users,id',
+            'startTime' => 'required|date',
+            'endTime' => 'required|date|after:startTime',
+        ]);
+
+        $task = Task::findOrFail($taskId);
+
+        // Ensure selected user is a participant of the event for this task
+        $isParticipant = EventParticipant::where('eventId', $task->eventId)
+                                         ->where('userId', $request->userId)
+                                         ->exists();
+        if (!$isParticipant) {
+            return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt begivenheden for denne opgave.'])->withInput();
+        }
+        
+        // Prevent overlapping shifts for the same user and task
+        $hasOverlap = Shift::where('taskId', $taskId)
+                            ->where('userId', $request->userId)
+                            ->where(function ($q) use ($request) {
+                                $q->where('startTime', '<', $request->endTime)
+                                  ->where('endTime', '>', $request->startTime);
+                            })
+                            ->exists();
+
+        if ($hasOverlap) {
+            return back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => '']);
+        }
+
+        try {
+            Shift::create([
+                'taskId' => $taskId,
+                'userId' => $request->userId,
+                'startTime' => $request->startTime,
+                'endTime' => $request->endTime,
+            ]);
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return back()->withErrors(['userId' => 'Kan ikke oprette vagt pga. unik begrænsning. Kør database-migrationerne og prøv igen.'])->withInput();
+        }
+
+        // Return without success popup to keep UI clean
+        return redirect()->route('tasks.shifts.index', $taskId);
+    }
+
+    public function edit($taskId, $shiftId)
+    {
+        $task = Task::findOrFail($taskId);
+        $shift = Shift::with('user')->findOrFail($shiftId);
+        $participantUserIds = EventParticipant::where('eventId', $task->eventId)->pluck('userId');
+        $users = User::whereIn('id', $participantUserIds)->get();
+        
+        return view('shifts.edit', compact('task', 'shift', 'users'));
+    }
+
+    public function update(Request $request, $taskId, $shiftId)
+    {
+        $request->validate([
+            'userId' => 'required|exists:users,id',
+            'startTime' => 'required|date',
+            'endTime' => 'required|date|after:startTime',
+        ]);
+
+        $shift = Shift::findOrFail($shiftId);
+        $task = Task::findOrFail($taskId);
+
+        // Ensure selected user is a participant of the event for this task
+        $isParticipant = EventParticipant::where('eventId', $task->eventId)
+                                         ->where('userId', $request->userId)
+                                         ->exists();
+        if (!$isParticipant) {
+            return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt begivenheden for denne opgave.'])->withInput();
+        }
+        
+        // Prevent overlapping shifts for the same user and task (excluding current shift)
+        $hasOverlap = Shift::where('taskId', $taskId)
+                            ->where('userId', $request->userId)
+                            ->where('id', '!=', $shiftId)
+                            ->where(function ($q) use ($request) {
+                                $q->where('startTime', '<', $request->endTime)
+                                  ->where('endTime', '>', $request->startTime);
+                            })
+                            ->exists();
+
+        if ($hasOverlap) {
+            return back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => '']);
+        }
+
+        $shift->update([
+            'userId' => $request->userId,
+            'startTime' => $request->startTime,
+            'endTime' => $request->endTime,
+        ]);
+
+        return redirect()->route('tasks.shifts.index', $taskId);
+    }
+
+    public function destroy($taskId, $shiftId)
+    {
+        $shift = Shift::findOrFail($shiftId);
         $shift->delete();
-        return response()->json(['message' => 'Shift deleted successfully']);
+
+        return redirect()->route('tasks.shifts.index', $taskId);
     }
 
-    public function create(Request $request)
-    {
-        $shift = new Shift();
-        $shift->taskId = $request->input('taskId');
-        $shift->userId = $request->input('userId');
-        $shift->startTime = $request->input('startTime');
-        $shift->endTime = $request->input('endTime');
-        $shift->save();
-
-        return response()->json(['message' => 'Shift created successfully', 'shift' => $shift]);
-    }
-
-    public function join(Request $request, $taskId)
-    {
-        $request->validate([]);
-        $userId = Auth::id();
-        if (!$userId) {
-            return redirect('/signin');
-        }
-        Shift::firstOrCreate(
-            ['taskId' => $taskId, 'userId' => $userId]
-        );
-        return redirect()->back()->with('success', 'you are participating in the task.');
-    }
-
-    public function decline(Request $request, $taskId)
+    public function join($taskId)
     {
         $userId = Auth::id();
         if (!$userId) {
             return redirect('/signin');
         }
-        Shift::where('taskId', $taskId)->where('userId', $userId)->delete();
-        return redirect()->back()->with('success', 'you are not participating in the task.');
+        
+        $task = Task::findOrFail($taskId);
+        
+        // Prevent overlap with existing shifts when auto-joining a default 1 time unit
+        $proposedStart = now();
+        $proposedEnd = now()->addHours(1);
+
+        $hasOverlap = Shift::where('taskId', $taskId)
+                            ->where('userId', $userId)
+                            ->where(function ($q) use ($proposedStart, $proposedEnd) {
+                                $q->where('startTime', '<', $proposedEnd)
+                                  ->where('endTime', '>', $proposedStart);
+                            })
+                            ->exists();
+
+        if ($hasOverlap) {
+            return redirect()->back();
+        }
+
+        try {
+            Shift::create([
+                'taskId' => $taskId,
+                'userId' => $userId,
+                'startTime' => $proposedStart,
+                'endTime' => $proposedEnd, // Default 1 hour shift
+            ]);
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return redirect()->back();
+        }
+
+        return redirect()->back();
+    }
+
+    public function leave($taskId)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
+        }
+        
+        Shift::where('taskId', $taskId)
+             ->where('userId', $userId)
+             ->delete();
+
+        return redirect()->back();
     }
 }
