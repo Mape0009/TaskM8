@@ -24,6 +24,18 @@
         <h2>Login</h2>
         <form action="{{ route('loginPost') }}" method="POST">
             @csrf
+            @if (session('error'))
+    <div class="error-message">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="error-message">
+        {{ $errors->first() }}
+    </div>
+@endif
+
             <div class="input-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Skriv email" required>

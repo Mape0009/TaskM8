@@ -16,7 +16,7 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         if (!Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
-            return redirect('/signin')->withErrors(['email' => 'Invalid credentials']);
+            return redirect('/signin')->withErrors(['email' => 'Forkert email eller adgangskode.'])->withInput();
         }
 
         $user = Auth::user();

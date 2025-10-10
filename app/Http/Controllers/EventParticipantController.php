@@ -63,7 +63,7 @@ class EventParticipantController extends Controller
         $participant = EventParticipant::findOrFail($participantId);
         $participant->eventRole = $request->input('eventRole');
         $participant->save();
-        return redirect()->back()->with('success', 'Deltagerrollen er opdateret.');
+        return redirect()->back();
     }
 
     public function rsvp(Request $request, $eventId)

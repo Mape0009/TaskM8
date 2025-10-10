@@ -57,7 +57,7 @@ class EventController extends Controller
         $eventParticipant->eventRole = 'owner';
         $eventParticipant->save();
 
-        return redirect('/dashboard')->with('success', 'Event er nu lavet!');
+        return redirect('/dashboard');
     }
 
     public function clearSuccessMessage()
@@ -109,6 +109,6 @@ class EventController extends Controller
             abort(403, 'Ikke tilladt.');
         }
         $event->delete();
-        return redirect('/events')->with('success', 'Begivenheden er slettet.');
+        return redirect('/events');
     }
 }

@@ -38,7 +38,7 @@ class TaskController extends Controller
 
         $tasks->users()->sync($request->input('user_ids'));
 
-        return redirect('/tasks')->with('success', 'Task created successfully!');
+        return redirect('/tasks')->with('success', '');
     }
 
     public function indexByEvent($eventId)
