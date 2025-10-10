@@ -28,11 +28,17 @@
                                 <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('event-menu-<?php echo e($event->id); ?>')" aria-label="Åbn menu">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="17" r="1"></circle></svg>
                                 </button>
-                                <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 180px;">
+                                <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 200px;">
                                     <a class="rsvp-menu-item" href="<?php echo e(route('events.tasks.create.form', ['eventId' => $event->id])); ?>">Opret opgave</a>
                                     <a class="rsvp-menu-item" href="<?php echo e(route('events.tasks.index', ['eventId' => $event->id])); ?>">Opgaver</a>
-                                    <a class="rsvp-menu-item" href="/events/<?php echo e($event->id); ?>/edit">Rediger begivenhed</a>
-
+                                    <?php if(auth()->guard()->check()): ?>
+                                        <?php $isOwnerMenu = isset($event->ownerId) && $event->ownerId === auth()->id(); ?>
+                                        <?php if($isOwnerMenu): ?>
+                                            <a class="rsvp-menu-item" href="/events/<?php echo e($event->id); ?>?open=invite">Inviter</a>
+                                            <a class="rsvp-menu-item" href="/events/<?php echo e($event->id); ?>/edit">Rediger begivenhed</a>
+                                            <a class="rsvp-menu-item" href="/events/<?php echo e($event->id); ?>?open=delete">Slet begivenhed</a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

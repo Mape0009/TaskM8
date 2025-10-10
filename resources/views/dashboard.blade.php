@@ -66,10 +66,17 @@
                                 <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('event-menu-{{ $event->id }}')" aria-label="Åbn menu">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="17" r="1"></circle></svg>
                                 </button>
-                                <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 180px;">
+                                <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 200px;">
                                     <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">Opret opgave</a>
                                     <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">Opgaver</a>
-                                    <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">Rediger begivenhed</a>
+                                    @auth
+                                        @php $isOwnerMenu = isset($event->ownerId) && $event->ownerId === auth()->id(); @endphp
+                                        @if($isOwnerMenu)
+                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=invite">Inviter</a>
+                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">Rediger begivenhed</a>
+                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
+                                        @endif
+                                    @endauth
                                 </div>
                             </div>
                         </div>
@@ -158,7 +165,7 @@
                 @endif
             </div>
 
-            {{-- Leave modal --}}
+            {{-- Leave/Delete modals --}}
             <div id="leave-modal-{{ $event->id }}" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="leave-confirm-title-{{ $event->id }}" style="display:none;">
                 <div class="confirm-modal-content">
                     <div class="confirm-modal-body">
@@ -177,6 +184,28 @@
                     </div>
                 </div>
             </div>
+
+            @auth
+            @if(isset($event->ownerId) && $event->ownerId === auth()->id())
+            <div id="delete-modal-{{ $event->id }}" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title-{{ $event->id }}" style="display:none;">
+                <div class="confirm-modal-content">
+                    <div class="confirm-modal-body">
+                        <svg fill="currentColor" viewBox="0 0 20 20" class="confirm-icon" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path></svg>
+                        <h2 id="delete-confirm-title-{{ $event->id }}" class="confirm-title">Slet begivenhed?</h2>
+                        <p class="confirm-text">Dette vil permanent slette begivenheden.</p>
+                    </div>
+                    <div class="confirm-actions">
+                        <button type="button" class="confirm-btn cancel" onclick="document.getElementById('delete-modal-{{ $event->id }}').style.display='none'">Annuller</button>
+                        <form action="{{ url('/events/delete/'.$event->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="confirm-btn danger">Slet</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endauth
         @endif
     @endauth
 </div>

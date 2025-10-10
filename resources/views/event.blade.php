@@ -462,6 +462,16 @@
                 if (e.target === this) { closeDeleteModal(); }
             });
         }
+
+        // Auto-open based on query parameter (?open=invite|delete)
+        (function(){
+            try {
+                var params = new URLSearchParams(window.location.search);
+                var open = params.get('open');
+                if(open === 'invite') { openInviteModal({{ $event->id }}, '{{ $event->eventName }}'); }
+                if(open === 'delete') { openDeleteModal(); }
+            } catch(_) {}
+        })();
     </script>
     @include('partials.footer')
 </body>

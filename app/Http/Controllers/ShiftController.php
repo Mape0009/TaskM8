@@ -20,7 +20,10 @@ class ShiftController extends Controller
     public function create($taskId)
     {
         $task = Task::findOrFail($taskId);
-        $participantUserIds = EventParticipant::where('eventId', $task->eventId)->pluck('userId');
+        // Only allow assigning shifts to participants who have accepted
+        $participantUserIds = EventParticipant::where('eventId', $task->eventId)
+            ->where('status', 'accepted')
+            ->pluck('userId');
         $users = User::whereIn('id', $participantUserIds)->get();
         return view('shifts.create', compact('task', 'users'));
     }
@@ -31,13 +34,22 @@ class ShiftController extends Controller
             'userId' => 'required|exists:users,id',
             'startTime' => 'required|date',
             'endTime' => 'required|date|after:startTime',
+        ], [
+            'userId.required' => 'Vælg en bruger.',
+            'userId.exists' => 'Den valgte bruger findes ikke.',
+            'startTime.required' => 'Starttidspunkt skal angives.',
+            'startTime.date' => 'Starttidspunkt skal være en gyldig dato.',
+            'endTime.required' => 'Sluttidspunkt skal angives.',
+            'endTime.date' => 'Sluttidspunkt skal være en gyldig dato.',
+            'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
         ]);
 
         $task = Task::findOrFail($taskId);
 
-        // Ensure selected user is a participant of the event for this task
+        // Ensure selected user is an accepted participant of the event for this task
         $isParticipant = EventParticipant::where('eventId', $task->eventId)
                                          ->where('userId', $request->userId)
+                                         ->where('status', 'accepted')
                                          ->exists();
         if (!$isParticipant) {
             return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt begivenheden for denne opgave.'])->withInput();
@@ -75,7 +87,9 @@ class ShiftController extends Controller
     {
         $task = Task::findOrFail($taskId);
         $shift = Shift::with('user')->findOrFail($shiftId);
-        $participantUserIds = EventParticipant::where('eventId', $task->eventId)->pluck('userId');
+        $participantUserIds = EventParticipant::where('eventId', $task->eventId)
+            ->where('status', 'accepted')
+            ->pluck('userId');
         $users = User::whereIn('id', $participantUserIds)->get();
         
         return view('shifts.edit', compact('task', 'shift', 'users'));
@@ -87,14 +101,23 @@ class ShiftController extends Controller
             'userId' => 'required|exists:users,id',
             'startTime' => 'required|date',
             'endTime' => 'required|date|after:startTime',
+        ], [
+            'userId.required' => 'Vælg en bruger.',
+            'userId.exists' => 'Den valgte bruger findes ikke.',
+            'startTime.required' => 'Starttidspunkt skal angives.',
+            'startTime.date' => 'Starttidspunkt skal være en gyldig dato.',
+            'endTime.required' => 'Sluttidspunkt skal angives.',
+            'endTime.date' => 'Sluttidspunkt skal være en gyldig dato.',
+            'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
         ]);
 
         $shift = Shift::findOrFail($shiftId);
         $task = Task::findOrFail($taskId);
 
-        // Ensure selected user is a participant of the event for this task
+        // Ensure selected user is an accepted participant of the event for this task
         $isParticipant = EventParticipant::where('eventId', $task->eventId)
                                          ->where('userId', $request->userId)
+                                         ->where('status', 'accepted')
                                          ->exists();
         if (!$isParticipant) {
             return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt begivenheden for denne opgave.'])->withInput();

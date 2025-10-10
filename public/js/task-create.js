@@ -20,4 +20,48 @@ document.addEventListener('DOMContentLoaded', function(){
   if(search){ search.addEventListener('input', filter); }
 });
 
+// Wizard controls and live review for Task create
+document.addEventListener('DOMContentLoaded', function(){
+  var form=document.getElementById('taskWizard');
+  if(!form) return;
+  var steps=Array.prototype.slice.call(form.querySelectorAll('.form-step'));
+  var current=0;
 
+  function showStep(i){ steps.forEach(function(s,idx){ s.hidden = idx!==i; }); current=i; updateReview(); }
+  function updateReview(){
+    var name=form.querySelector('#taskName');
+    var desc=form.querySelector('#description');
+    var set=function(id, val){ var el=document.getElementById(id); if(el) el.textContent = (val||'').trim()||'-'; };
+    set('reviewTaskName', name?name.value:'');
+    set('reviewDescription', desc?desc.value:'');
+  }
+
+  form.addEventListener('click', function(e){
+    var next=e.target.closest('[data-next]');
+    var prev=e.target.closest('[data-prev]');
+    if(next){
+      var required=steps[current].querySelectorAll('[required]');
+      for(var i=0;i<required.length;i++){ if(!required[i].value){ required[i].focus(); return; } }
+      if(current < steps.length-1) showStep(current+1);
+    }
+    if(prev){ if(current>0) showStep(current-1); }
+  });
+
+  ['input','change'].forEach(function(ev){ form.addEventListener(ev, updateReview); });
+
+  // Press Enter on step 1 to go next instead of submitting
+  form.addEventListener('keydown', function(e){
+    var key=e.key||e.keyCode;
+    if(key==='Enter' || key===13){
+      var active = steps[current];
+      var isTextInput = document.activeElement && ['INPUT','TEXTAREA'].includes(document.activeElement.tagName);
+      if(active && active.getAttribute('data-step')==='1' && isTextInput){
+        e.preventDefault();
+        var required=active.querySelectorAll('[required]');
+        for(var i=0;i<required.length;i++){ if(!required[i].value){ required[i].focus(); return; } }
+        if(current < steps.length-1) showStep(current+1);
+      }
+    }
+  });
+  showStep(0);
+});

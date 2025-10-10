@@ -69,7 +69,7 @@ class TaskController extends Controller
         $task = new Task();
         $task->taskName = $validated['taskName'];
         $task->eventId = $event->id;
-        $task->description = $validated['description'] ?? null;
+        $task->description = $validated['description'] ?? '';
         $task->save();
         return redirect()->route('events.tasks.index', ['eventId' => $event->id]);
     }

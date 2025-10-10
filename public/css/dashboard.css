@@ -807,6 +807,7 @@ html.dark-mode .event-date {
     padding: calc(var(--spacing-unit) * 0.5);
     display: none;
     z-index: 20;
+    backdrop-filter: blur(6px);
 }
 /* --- MENU WRAPPER --- */
 .rsvp-menu {
