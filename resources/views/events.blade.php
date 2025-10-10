@@ -31,17 +31,14 @@
                                 <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 180px;">
                                     <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">Opret opgave</a>
                                     <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">Opgaver</a>
+                                    <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">Rediger begivenhed</a>
+
                                 </div>
                             </div>
                         </div>
                         <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
                         <div class="event-actions">
                             <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
-                            @auth
-                                @if(isset($event->ownerId) && $event->ownerId === auth()->id())
-                                    <a href="/events/{{ $event->id }}/edit" class="btn secondary-btn">Rediger</a>
-                                @endif
-                            @endauth
                         </div>
                     </div>
                 @empty

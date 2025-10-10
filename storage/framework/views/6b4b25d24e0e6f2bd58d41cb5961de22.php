@@ -69,6 +69,7 @@
                                 <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 180px;">
                                     <a class="rsvp-menu-item" href="<?php echo e(route('events.tasks.create.form', ['eventId' => $event->id])); ?>">Opret opgave</a>
                                     <a class="rsvp-menu-item" href="<?php echo e(route('events.tasks.index', ['eventId' => $event->id])); ?>">Opgaver</a>
+                                    <a class="rsvp-menu-item" href="/events/<?php echo e($event->id); ?>/edit">Rediger begivenhed</a>
                                 </div>
                             </div>
                         </div>

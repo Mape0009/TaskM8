@@ -31,17 +31,14 @@
                                 <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 180px;">
                                     <a class="rsvp-menu-item" href="<?php echo e(route('events.tasks.create.form', ['eventId' => $event->id])); ?>">Opret opgave</a>
                                     <a class="rsvp-menu-item" href="<?php echo e(route('events.tasks.index', ['eventId' => $event->id])); ?>">Opgaver</a>
+                                    <a class="rsvp-menu-item" href="/events/<?php echo e($event->id); ?>/edit">Rediger begivenhed</a>
+
                                 </div>
                             </div>
                         </div>
                         <p class="event-description"><?php echo e(Str::limit($event->description, 25)); ?></p>
                         <div class="event-actions">
                             <a href="/events/<?php echo e($event->id); ?>" class="btn primary-btn">Se detaljer</a>
-                            <?php if(auth()->guard()->check()): ?>
-                                <?php if(isset($event->ownerId) && $event->ownerId === auth()->id()): ?>
-                                    <a href="/events/<?php echo e($event->id); ?>/edit" class="btn secondary-btn">Rediger</a>
-                                <?php endif; ?>
-                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

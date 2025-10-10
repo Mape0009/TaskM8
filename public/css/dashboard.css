@@ -20,8 +20,8 @@ html.dark-mode,
 body.dark-mode {
     /* Dark Theme  */
     --color-background-primary: #131317;
-    --color-background-secondary: #1a1a1e;
-    --color-background-tertiary: #2a2a30;
+    --color-background-secondary: #18181c;
+    --color-background-tertiary: #1f1f24;
     --color-text-primary: #f0f0f0;
     --color-text-secondary: #a0a0a0;
     --color-text-accent: #00c2ff;
@@ -230,6 +230,7 @@ body {
         #0056b3,
         var(--color-accent-primary)
     ); 
+    transform: scale(1.03); 
     box-shadow: 0 4px 12px var(--color-shadow-dark); 
 }
 
@@ -293,13 +294,6 @@ body {
     transition: background-color 0.15s ease, box-shadow 0.15s ease; 
     position: relative;
     overflow: hidden;
-}
-
-.stat-card:hover {
-    background-color: var(
-        --color-background-tertiary
-    ); 
-    box-shadow: 0 6px 20px var(--color-shadow-dark); 
 }
 
 .stat-info .stat-title {
@@ -591,8 +585,7 @@ html.dark-mode .metric { background: rgba(255,255,255,0.02); }
     justify-content: space-between;
 }
 
-.event-card:hover,
-.friend-card:hover {
+.event-card:hover {
     background-color: var(--color-background-tertiary);
     box-shadow: 0 6px 20px var(--color-shadow-dark);
 }
@@ -792,7 +785,7 @@ html.dark-mode .event-date {
     max-height: 3rem;
 }
 .rsvp-menu-trigger:hover { background: #0056b3; }
-/* Kebab variant should remain neutral */
+
 .kebab-btn.rsvp-menu-trigger {
     background: transparent;
     color: inherit;
@@ -815,22 +808,131 @@ html.dark-mode .event-date {
     display: none;
     z-index: 20;
 }
-.rsvp-menu.open .rsvp-menu-list { display: block; }
+/* --- MENU WRAPPER --- */
+.rsvp-menu {
+    position: relative;
+    display: inline-block;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.rsvp-menu.open .rsvp-menu-list {
+    display: block;
+    animation: fadeInMenu 0.25s ease-out;
+}
+
+/* --- MENU LIST --- */
+.rsvp-menu-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--color-background-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 18px var(--color-shadow-dark);
+    overflow: hidden;
+    min-width: 220px;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* --- MENU ITEMS --- */
 .rsvp-menu-item {
     width: 100%;
     text-align: left;
     background: transparent;
     border: none;
     color: var(--color-text-primary);
-    font-weight: 700;
-    padding: calc(var(--spacing-unit) * 0.625) calc(var(--spacing-unit) * 0.875);
-    font-size: calc(var(--spacing-unit) * 1.5);
-    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 0;
     display: flex;
     align-items: center;
-    gap: calc(var(--spacing-unit) * 0.75);
+    justify-content: flex-start;
+    gap: 0.75rem;
     cursor: pointer;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        transform 0.1s ease,
+        box-shadow 0.2s ease;
 }
+
+/* --- ICON STYLE (hvis du bruger ikoner) --- */
+.rsvp-menu-item svg {
+    width: 18px;
+    height: 18px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+}
+
+/* --- INTERACTIONS --- */
+.rsvp-menu-item:hover {
+    background: var(--color-shadow-light);
+    color: var(--color-accent-primary);
+    transform: translateX(2px);
+    box-shadow: inset 2px 0 0 var(--color-accent-primary);
+}
+
+.rsvp-menu-item:hover svg {
+    opacity: 1;
+}
+
+.rsvp-menu-item:active {
+    background: var(--color-shadow-dark);
+    transform: scale(0.98);
+}
+
+.rsvp-menu-item:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: -2px;
+}
+
+/* --- ANIMATION --- */
+@keyframes fadeInMenu {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- RESPONSIVE OPTIMIZATION --- */
+@media (max-width: 480px) {
+    .rsvp-menu-list {
+        min-width: 180px;
+        border-radius: 10px;
+    }
+    .rsvp-menu-item {
+        font-size: 0.9rem;
+        padding: 0.65rem 0.9rem;
+    }
+}
+
+/* --- LIGHT/DARK MODE ADJUSTMENTS --- */
+html.dark-mode .rsvp-menu-list,
+body.dark-mode .rsvp-menu-list {
+    background: var(--color-background-tertiary);
+    border-color: var(--color-border);
+    box-shadow: 0 8px 18px var(--color-shadow-dark);
+}
+
+html.dark-mode .rsvp-menu-item,
+body.dark-mode .rsvp-menu-item {
+    color: var(--color-text-primary);
+}
+
+html.dark-mode .rsvp-menu-item:hover,
+body.dark-mode .rsvp-menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-accent-primary);
+    box-shadow: inset 2px 0 0 var(--color-accent-primary);
+}
+
+html.dark-mode .rsvp-menu-item:active,
+body.dark-mode .rsvp-menu-item:active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
 .rsvp-menu-item:hover { background: var(--color-background-tertiary); }
 .rsvp-menu-item .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 .rsvp-menu-item.accepted .dot { background: #10b981; }

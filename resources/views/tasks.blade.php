@@ -73,11 +73,7 @@
                     <div class="task-actions">
                         <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn primary-btn">
                             <i class="fas fa-list"></i>
-                            Se Vagter
-                        </a>
-                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn secondary-btn">
-                            <i class="fas fa-plus"></i>
-                            Tilføj Vagt
+                            Vagter
                         </a>
                         <a href="/tasks/{{ $task->id }}/edit" class="btn secondary-btn">
                             <i class="fas fa-edit"></i>

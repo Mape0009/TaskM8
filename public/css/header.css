@@ -104,6 +104,7 @@ body.dark-mode .logo-img-light {
 }
 .main-header .theme-toggle-btn:hover {
     background: #f1f5f9 !important;
+    transform: scale(1.05) !important;
 }
 .theme-toggle-btn:hover {
     background: #f1f5f9;
@@ -123,7 +124,6 @@ body.dark-mode .logo-img-light {
 .user-avatar {
     width: 2.2rem;
     height: 2.2rem;
-    background: #28e0b9;
     color: #fff;
     border-radius: 50%;
     display: flex;
@@ -165,6 +165,7 @@ body.dark-mode .logo-img-light {
 .user-profile-trigger:hover {
     background: #f1f5f9;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.01) !important;
 }
 
 .dropdown-arrow {
@@ -305,7 +306,7 @@ body.dark-mode .user-profile-trigger {
 }
 
 body.dark-mode .user-profile-trigger:hover {
-    background: #23232a;
+    background: #1d1d22;
     box-shadow: none;
 }
 
@@ -316,7 +317,7 @@ body.dark-mode .main-header .theme-toggle-btn {
 }
 
 body.dark-mode .main-header .theme-toggle-btn:hover {
-    background: #23232a !important;
+    transform: scale(1.05) !important;
 }
 
 body.dark-mode .dropdown-arrow {
@@ -567,15 +568,14 @@ body.dark-mode .navigation a {
 }
 body.dark-mode .navigation a.active,
 body.dark-mode .navigation a:hover {
-    background: #2a2a30;
+    background: #1d1d22;
     color: #00c2ff;
 }
 body.dark-mode .user-profile-header {
     background: #2a2a30;
 }
 body.dark-mode .user-avatar {
-    background: #28e0b9;
-    color: #0a0a0c;
+    color: #ffffff;
     border: 2px solid #333338;
 }
 body.dark-mode .user-greeting {
@@ -719,7 +719,7 @@ body.dark-mode .header-modal .modal-form::-webkit-scrollbar-thumb:hover { backgr
 .header-modal .modal-title h2 { font-size: 1.5rem; font-weight: 600; margin: 0 0 0.25rem 0; letter-spacing: -0.025em; line-height: 1.3; }
 .header-modal .modal-subtitle { font-size: 0.875rem; color: rgba(255,255,255,0.85); margin: 0; font-weight: 400; }
 .header-modal .modal-close-btn { background: rgba(255,255,255,0.1); border: none; border-radius: 8px; width: 36px; height: 36px; color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; flex-shrink: 0; }
-.header-modal .modal-close-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+.header-modal .modal-close-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
 .header-modal .form-section { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1rem; }
 .header-modal .section-title { font-size: 1rem; font-weight: 600; color: #374151; margin: 0 0 0.5rem 0; padding-bottom: 0.5rem; border-bottom: 1px solid #f3f4f6; letter-spacing: -0.025em; }
 .header-modal .form-row { display: flex; flex-direction: column; gap: 0.5rem; position: relative; }
@@ -831,7 +831,7 @@ body.dark-mode .header-modal .modal-form::-webkit-scrollbar-thumb:hover { backgr
 }
 /* Dark mode for header modal */
 body.dark-mode .header-modal .modal-content { background: #1f2937; border-color: #374151; color: #f9fafb; }
-body.dark-mode .header-modal .modal-header { background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%); }
+body.dark-mode .header-modal .modal-header { background: linear-gradient(145deg, #007bff, #00c2ff) }
 body.dark-mode .header-modal .modal-form { background: #1f2937; }
 body.dark-mode .header-modal .section-title { color: #f3f4f6; border-bottom-color: #374151; }
 body.dark-mode .header-modal .form-row label { color: #d1d5db; }
@@ -844,7 +844,7 @@ body.dark-mode .header-modal .form-row select { background: #374151; color: #f9f
 body.dark-mode .header-modal .form-row input:focus,
 body.dark-mode .header-modal .form-row textarea:focus,
 body.dark-mode .header-modal .form-row select:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); background: #4b5563; }
-body.dark-mode .header-modal .btn.primary-btn { background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%); }
+body.dark-mode .header-modal .btn.primary-btn { background: #007bff}
 body.dark-mode .header-modal .btn.secondary-btn { background: #374151; color: #d1d5db; border-color: #4b5563; }
 body.dark-mode .header-modal .btn.secondary-btn:hover { background: #4b5563; border-color: #6b7280; color: #f9fafb; }
 .header-modal .form-actions { display: flex; justify-content: flex-end; gap: 1rem; }
