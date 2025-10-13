@@ -175,8 +175,8 @@ body {
 }
 
 .user-avatar {
-    width: calc(var(--spacing-unit) * 5);
-    height: calc(var(--spacing-unit) * 5);
+    width: calc(var(--spacing-unit) * 3.71);
+    height: calc(var(--spacing-unit) * 3.71);
     border-radius: 50%;
     background-color: var(--color-accent-secondary);
     display: flex;
