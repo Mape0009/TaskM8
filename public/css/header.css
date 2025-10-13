@@ -544,9 +544,9 @@ body.dark-mode .mobile-user-profile.minimal.integrated {
     background: var(--color-accent-primary);
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 0.7rem 1.3rem;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     display: flex;
     align-items: center;
