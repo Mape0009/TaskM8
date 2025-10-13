@@ -42,14 +42,15 @@ class ShiftController extends Controller
         return view('shifts.create', compact('task', 'users'));
     }
 
-    public function store(Request $request, $taskId, $id)
+    public function store(Request $request, $taskId)
     {
         $user = auth()->user();
-        $currentParticipant = EventParticipant::where('eventId', $id)
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
             ->where('userId', $user?->id)
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
-        $event = Event::findOrFail($id);
+        $event = Event::findOrFail($task->eventId);
         if (!Permissions::hasPermission($role, 'create-shift')) {
             abort(403, 'Ikke tilladt.');
         }
@@ -68,7 +69,7 @@ class ShiftController extends Controller
             'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
         ]);
 
-        $task = Task::findOrFail($taskId);
+        // Reuse loaded task
 
         // Ensure selected user is an accepted participant of the event for this task
         $isParticipant = EventParticipant::where('eventId', $task->eventId)
@@ -170,14 +171,15 @@ class ShiftController extends Controller
         return redirect()->route('tasks.shifts.index', $taskId);
     }
 
-    public function destroy($taskId, $shiftId, $id)
+    public function destroy($taskId, $shiftId)
     {
         $user = auth()->user();
-        $currentParticipant = EventParticipant::where('eventId', $id)
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
             ->where('userId', $user?->id)
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
-        $event = Event::findOrFail($id);
+        $event = Event::findOrFail($task->eventId);
         if (!Permissions::hasPermission($role, 'delete-shift')) {
             abort(403, 'Ikke tilladt.');
         }
