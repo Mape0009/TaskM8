@@ -541,7 +541,7 @@ body.dark-mode .mobile-user-profile.minimal.integrated {
     margin: 0 !important;
 }
 .create-event-btn-header {
-    background: #007bff;
+    background: var(--color-accent-primary);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -556,8 +556,8 @@ body.dark-mode .mobile-user-profile.minimal.integrated {
     transition: background 0.2s, box-shadow 0.2s;
 }
 .create-event-btn-header:hover {
-    background: linear-gradient(90deg, #4f46e5 0%, #2563eb 100%);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.13);
+    background-color: #0056b3; 
+    box-shadow: 0 4px 12px var(--color-shadow-dark); 
 }
 body.dark-mode .main-header {
     background: #1a1a1e;
@@ -582,11 +582,11 @@ body.dark-mode .user-avatar {
     border: 2px solid #333338;
 }
 body.dark-mode .create-event-btn-header {
-    background: linear-gradient(145deg, #007bff, #00c2ff);
+    background: var(--color-accent-primary);
     color: #f0f0f0;
 }
 body.dark-mode .create-event-btn-header:hover {
-    background: linear-gradient(145deg, #00c2ff, #007bff);
+    background-color: #0056b3; 
 }
 
 @media (max-width: 992px) {
@@ -686,8 +686,8 @@ body.dark-mode .create-event-btn-header:hover {
     animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .header-modal .modal-header {
-    background: linear-gradient(145deg, #007bff, #00c2ff);
-    color: #ffffff;
+    background: var(--color-accent-primary);
+    color: #fff;
     padding: 1.5rem 2rem;
     display: flex;
     align-items: flex-start;
@@ -1435,7 +1435,7 @@ body.dark-mode .header-modal .custom-interval-input:focus {
         display: block !important;
     }
     .create-event-btn-header.mobile.minimal.premium.integrated:hover {
-        background: linear-gradient(90deg, #4f46e5 0%, #2563eb 100%);
+        background-color: #0056b3; 
     }
     .mobile-navigation.minimal.premium.integrated a,
     .mobile-navigation.minimal.premium.integrated a:visited,
@@ -1921,7 +1921,7 @@ body.dark-mode .header-modal .custom-interval-input:focus {
         background: #23232a;
     }
     body.dark-mode .mnav__action--primary {
-        background: linear-gradient(145deg, #007bff, #00c2ff);
+        background: var(--color-accent-primary);
     }
     body.dark-mode .mnav__action--primary:hover {
         background: linear-gradient(145deg, #00c2ff, #007bff);

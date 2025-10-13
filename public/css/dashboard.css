@@ -190,53 +190,9 @@ body {
     transition: box-shadow 0.15s ease;
 }
 
-/* .user-avatar:hover {
-    box-shadow: 0 2px 8px var(--color-shadow-dark); 
-}
-
-.user-info-header .user-greeting {
-    font-weight: 500;
-    margin: 0;
-    color: var(--color-text-accent);
-    font-size: calc(var(--spacing-unit) * 1.75); 
-    white-space: nowrap;
-} */
-
-.create-event-btn-header {
-    background: linear-gradient(
-        145deg,
-        var(--color-accent-primary),
-        #0056b3
-    ); 
-    color: white;
-    border: none;
-    padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2.5); /* 10px 20px */
-    border-radius: 10px;
-    font-size: calc(var(--spacing-unit) * 1.75); /* 14px */
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: calc(var(--spacing-unit) * 1); /* 8px */
-    transition: all 0.15s ease-out; 
-    box-shadow: 0 2px 8px var(--color-shadow-dark); 
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.create-event-btn-header:hover {
-    background: linear-gradient(
-        145deg,
-        #0056b3,
-        var(--color-accent-primary)
-    ); 
-    transform: scale(1.03); 
-    box-shadow: 0 4px 12px var(--color-shadow-dark); 
-}
-
 .create-event-btn-header .icon {
-    width: calc(var(--spacing-unit) * 2.25); /* 18px */
-    height: calc(var(--spacing-unit) * 2.25); /* 18px */
+    width: calc(var(--spacing-unit) * 2.25); 
+    height: calc(var(--spacing-unit) * 2.25); 
     stroke-width: 2;
 }
 
