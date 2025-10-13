@@ -75,7 +75,7 @@ class EventParticipantController extends Controller
             ['eventId' => $eventId, 'userId' => $userId],
             ['status' => 'accepted']
         );
-        return redirect()->back()->with('success', 'Du deltager i begivenheden.');
+        return redirect()->back();
     }
 
     public function decline(Request $request, $eventId)
@@ -85,7 +85,7 @@ class EventParticipantController extends Controller
             return redirect('/signin');
         }
         EventParticipant::where('eventId', $eventId)->where('userId', $userId)->delete();
-        return redirect()->back()->with('success', 'Du deltager ikke i begivenheden.');
+        return redirect()->back();
     }
 
     public function roleUpdate(Request $request, $participantId)
@@ -129,10 +129,10 @@ class EventParticipantController extends Controller
             abort(403, 'Cannot change the role of the owner here.');
         }
 
-        $participant->eventRole = $newRole;
-        $participant->save();
+    $participant->eventRole = $newRole;
+    $participant->save();
 
-        return redirect()->back()->with('success', 'Deltagerrollen er opdateret.');
+    return redirect()->back()->with('success', 'Deltagerrollen er opdateret.');
     }
 
     public function rsvp(Request $request, $eventId)
@@ -154,18 +154,17 @@ class EventParticipantController extends Controller
             }
         }
         if ($request->input('status') === 'accepted') {
-            // Update existing row (pending/whatever) to accepted, or create if missing
             EventParticipant::updateOrCreate(
                 ['eventId' => $eventId, 'userId' => $userId],
                 ['status' => 'accepted']
             );
-            return redirect()->back()->with('success', 'Din deltagelse er gemt.');
+            return redirect()->back();
         }
         EventParticipant::updateOrCreate(
             ['eventId' => $eventId, 'userId' => $userId],
             ['status' => 'declined']
         );
-        return redirect()->back()->with('success', 'Din deltagelse er opdateret.');
+         return redirect()->back();
     }
 
     public function transferOwnership(Request $request, $participantId)

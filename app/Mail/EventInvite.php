@@ -36,7 +36,7 @@ class EventInvite extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Event Invite',
+            subject: 'Du er inviteret til en begivenhed',
         );
     }
 

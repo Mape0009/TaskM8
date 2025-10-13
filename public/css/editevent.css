@@ -43,7 +43,6 @@
     font: inherit;
 }
 
-/* Fix for datetime-local inputs on iPhone 16 and newer devices */
 .edit-form input[type="datetime-local"] {
     max-width: 100%;
     min-width: 0;
@@ -73,7 +72,6 @@
     }
 }
 
-/* General mobile datetime-local input fixes */
 @media (max-width: 600px) {
     .edit-form input[type="datetime-local"] {
         width: 100%;
@@ -86,7 +84,7 @@
     }
 }
 
-/* Additional iPhone 16 Pro and Pro Max fixes */
+/* iPhone 16 Pro and Pro Max fixes */
 @media screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3),
        screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) {
     .edit-form input[type="datetime-local"] {
@@ -112,7 +110,21 @@
 }
 .edit-form textarea {
     resize: vertical;
-    min-height: 110px;
+    min-height: 120px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.edit-form textarea#description {
+    min-height: 120px;
+}
+
+.edit-form #description-counter {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    pointer-events: none;
 }
 .edit-grid {
     display: grid;
@@ -138,5 +150,23 @@
 @media (max-width: 768px) {
     .edit-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .edit-form textarea#description {
+        min-height: 140px;
+        font-size: 16px;
+        padding-bottom: 22px; 
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .edit-form textarea#description {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
     }
 }

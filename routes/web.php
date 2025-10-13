@@ -10,8 +10,12 @@ use App\Http\Controllers\AuthController;
 use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\Mail as MailModel;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\SitemapController;
+
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -24,14 +28,18 @@ Route::get('/dashboard', function () {
         $controller = app(EventController::class);
         $events = $controller->getEventsForUser($userId)->sortByDesc('startDate')->values();
 
-        $participatedEventsCount = EventParticipant::where('userId', $userId)->count();
+        $participatedEventsCount = $events->count();
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
         $previousInviteesCount = MailModel::where('senderId', $userId)->distinct('recipientId')->count('recipientId');
+        $totalUsers = null;
+        $totalEvents = null;
     } else {
         $events = collect();
         $participatedEventsCount = 0;
         $pendingEventsCount = 0;
         $previousInviteesCount = 0;
+        $totalUsers = User::count();
+        $totalEvents = Event::count();
     }
 
     return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount'));
@@ -48,13 +56,18 @@ Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.i
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
+// friends route 
 Route::get('/friends', function () {
     return view('friends');
 })->middleware('auth');
 
+// Legal policy pages
+Route::view('/privatlivspolitik', 'legal.privatlivspolitik');
+Route::view('/cookiepolitik', 'legal.cookiepolitik');
+Route::view('/vilkar', 'legal.vilkar');
+
 
 Route::get('signup', function(Request $request){
-    // If secure token present, decode into request inputs for prefill
     if ($request->filled('token')) {
         $raw = base64_decode($request->query('token'));
         $data = json_decode($raw, true);
@@ -101,8 +114,6 @@ Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class,
 
 // task Routes
 Route::view('task', 'task');
-//Route::view('taskOverview', 'taskOverview');
-//Route::view('taskDetails', 'taskDetails');
 Route::get('/tasks/create', [TaskController::class, 'showCreateForm'])->name('task.create.form');
 Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('task.details');
 Route::get('/tasks', [TaskController::class, 'index']);
@@ -110,3 +121,61 @@ Route::post('/tasks/create', [TaskController::class, 'create'])->name('task.crea
 Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('task.edit');
 Route::delete('/tasks/{id}', [TaskController::class, 'delete'])->name('task.delete');
 Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('task.update');
+
+// Event-scoped task routes
+Route::get('/events/{eventId}/tasks', [TaskController::class, 'indexByEvent'])->name('events.tasks.index');
+Route::get('/events/{eventId}/tasks/create', [TaskController::class, 'showCreateFormForEvent'])->name('events.tasks.create.form');
+Route::post('/events/{eventId}/tasks', [TaskController::class, 'createForEvent'])->name('events.tasks.create');
+
+// Shift routes
+Route::get('/tasks/{taskId}/shifts', [ShiftController::class, 'index'])->name('tasks.shifts.index');
+Route::get('/tasks/{taskId}/shifts/create', [ShiftController::class, 'create'])->name('tasks.shifts.create');
+Route::post('/tasks/{taskId}/shifts', [ShiftController::class, 'store'])->name('tasks.shifts.store');
+Route::get('/tasks/{taskId}/shifts/{shiftId}/edit', [ShiftController::class, 'edit'])->name('tasks.shifts.edit');
+Route::put('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'update'])->name('tasks.shifts.update');
+Route::delete('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'destroy'])->name('tasks.shifts.destroy');
+Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tasks.join');
+Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
+
+//Sitemap route
+Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
+Route::get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+    if (!file_exists($path)) {
+        return abort(404);
+    }
+    return response()->file($path, [
+        'Content-Type' => 'application/xml'
+    ]);
+});
+Route::post('/tasks/create', [TaskController::class, 'create'])->name('task.create');
+Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('task.edit');
+Route::delete('/tasks/{id}', [TaskController::class, 'delete'])->name('task.delete');
+Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('task.update');
+
+// Event-scoped task routes
+Route::get('/events/{eventId}/tasks', [TaskController::class, 'indexByEvent'])->name('events.tasks.index');
+Route::get('/events/{eventId}/tasks/create', [TaskController::class, 'showCreateFormForEvent'])->name('events.tasks.create.form');
+Route::post('/events/{eventId}/tasks', [TaskController::class, 'createForEvent'])->name('events.tasks.create');
+
+// Shift routes
+Route::get('/tasks/{taskId}/shifts', [ShiftController::class, 'index'])->name('tasks.shifts.index');
+Route::get('/tasks/{taskId}/shifts/create', [ShiftController::class, 'create'])->name('tasks.shifts.create');
+Route::post('/tasks/{taskId}/shifts', [ShiftController::class, 'store'])->name('tasks.shifts.store');
+Route::get('/tasks/{taskId}/shifts/{shiftId}/edit', [ShiftController::class, 'edit'])->name('tasks.shifts.edit');
+Route::put('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'update'])->name('tasks.shifts.update');
+Route::delete('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'destroy'])->name('tasks.shifts.destroy');
+Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tasks.join');
+Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
+
+//Sitemap route
+Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
+Route::get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+    if (!file_exists($path)) {
+        return abort(404);
+    }
+    return response()->file($path, [
+        'Content-Type' => 'application/xml'
+    ]);
+});

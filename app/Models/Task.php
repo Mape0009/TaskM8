@@ -12,6 +12,16 @@ class Task extends Model
         'description',
     ];
 
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'eventId');
+    }
+
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class, 'taskId');
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'shifts', 'taskId', 'userId');

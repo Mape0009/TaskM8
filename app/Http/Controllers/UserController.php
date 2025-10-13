@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Exists;
+use App\Models\PinCode;
+use App\Models\EventParticipant;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -16,10 +19,55 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
+            // Optional invitation fields
+            'pin' => 'nullable|string|size:4',
+            'event_id' => 'nullable|integer',
         ]);
         
         if (User::where('email', $request->input('email'))->exists()) {
             return back()->withErrors(['email' => 'Emailen er allerede i brug.']);
+        }
+
+        // Prepare invitation linkage (optional)
+        $invitePin = trim((string)$request->input('pin', ''));
+        $inviteEventId = $request->input('event_id');
+        $inviteEmail = trim(mb_strtolower((string)$request->input('email', '')));
+        $validatedPinCode = null;
+
+        if (empty($inviteEventId) && !empty($invitePin)) {
+            // If the form didn't carry event_id, derive it from the pin + email
+            $pinRowForEvent = PinCode::where('pincode', $invitePin)
+                ->whereRaw('LOWER(email) = ?', [$inviteEmail])
+                ->orderByDesc('created_at')
+                ->first();
+            if ($pinRowForEvent && !empty($pinRowForEvent->eventId)) {
+                $inviteEventId = $pinRowForEvent->eventId;
+                $validatedPinCode = $pinRowForEvent;
+            }
+        }
+
+        if (!empty($inviteEventId)) {
+            // Try strict match first: pin + email + event
+            if (!empty($invitePin)) {
+                $validatedPinCode = PinCode::where('pincode', $invitePin)
+                    ->whereRaw('LOWER(email) = ?', [$inviteEmail])
+                    ->where('eventId', $inviteEventId)
+                    ->first();
+            }
+
+            // Fallback 1: email + event (if user pasted wrong pin but link is valid)
+            if (!$validatedPinCode) {
+                $validatedPinCode = PinCode::whereRaw('LOWER(email) = ?', [$inviteEmail])
+                    ->where('eventId', $inviteEventId)
+                    ->first();
+            }
+
+            // Fallback 2: pin + event (in case of case variation in email or autofill)
+            if (!$validatedPinCode && !empty($invitePin)) {
+                $validatedPinCode = PinCode::where('pincode', $invitePin)
+                    ->where('eventId', $inviteEventId)
+                    ->first();
+            }
         }
 
         // Create a new user
@@ -30,6 +78,23 @@ class UserController extends Controller
         $user->phonenumber = $request->input('phonenumber', null);
         $user->role = 'user';
         $user->save();
+
+        // If this was an invited signup, attach the user to the event immediately (as pending)
+        if ($inviteEventId) {
+            EventParticipant::updateOrCreate(
+                ['eventId' => $inviteEventId, 'userId' => $user->id],
+                ['status' => 'pending']
+            );
+
+            // Consume any matching pin codes so they can't be reused
+            if ($validatedPinCode) {
+                $validatedPinCode->delete();
+            } else {
+                PinCode::where('eventId', $inviteEventId)
+                    ->whereRaw('LOWER(email) = ?', [$inviteEmail])
+                    ->delete();
+            }
+        }
 
         return redirect('/signin')->with('success', 'Bruger oprettet. Log ind for at begynde.');
     }

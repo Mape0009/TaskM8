@@ -14,5 +14,6 @@ class Event extends Model
         'location',
         'ownerId',
         'participantLimit',
+        'repeat',
     ];
 }

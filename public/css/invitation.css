@@ -95,6 +95,7 @@ body.dark-mode .invite-section {
 }
 
 .email-input {
+    width: 90%;
     flex: 1;
     padding: 0.8rem 1rem;
     border: 1.5px solid #e5e7eb;
@@ -360,7 +361,7 @@ body.dark-mode .invitee-select-btn:hover {
     }
 
     .add-email-btn {
-        width: 100%;
+        width: 200px;
     }
 
     .invitee-item {

@@ -64,9 +64,10 @@ class EventController extends Controller
             'eventName' => 'required|string|max:255',
             'startDate' => 'required|date',
             'endDate' => 'required|date|after_or_equal:startDate',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:800',
             'location' => 'nullable|string|max:255',
             'participantLimit' => 'nullable|integer|min:1',
+            'repeat' => 'nullable|string|max:255',
         ]);
         $event = new Event();
         $event->eventName = $request->input('eventName');
@@ -76,6 +77,7 @@ class EventController extends Controller
         $event->location = $request->input('location');
         $event->ownerId = auth()->user()->id;
         $event->participantLimit = $request->input('participantLimit');
+        $event->repeat = $request->input('repeat') === 'on' ? ($request->input('repeat_interval') === 'custom' ? ($request->input('custom_interval') ?: 'Tilpasset') : $request->input('repeat_interval')) : null;
         $event->save();
         
         $eventParticipant = new EventParticipant();
@@ -85,7 +87,7 @@ class EventController extends Controller
         $eventParticipant->eventRole = 'owner';
         $eventParticipant->save();
 
-        return redirect('/dashboard')->with('success', 'Event er nu lavet!');
+        return redirect('/dashboard');
     }
 
     public function clearSuccessMessage()
@@ -105,12 +107,20 @@ class EventController extends Controller
         if (!Permissions::hasPermission($role, 'edit-event')) {
             abort(403, 'You do not have permission to edit this event.');
         }
-
+        $request->validate([
+            'eventName' => 'sometimes|string|max:255',
+            'startDate' => 'sometimes|date',
+            'endDate' => 'sometimes|date|after_or_equal:startDate',
+            'description' => 'nullable|string|max:800',
+            'location' => 'nullable|string|max:255',
+            'repeat' => 'nullable|string|max:255',
+        ]);
         $event->eventName = $request->input('eventName');
         $event->startDate = $request->input('startDate');
         $event->endDate = $request->input('endDate');
         $event->description = $request->input('description');
         $event->location = $request->input('location');
+        $event->repeat = $request->input('repeat') === 'on' ? ($request->input('repeat_interval') === 'custom' ? ($request->input('custom_interval') ?: 'Tilpasset') : $request->input('repeat_interval')) : null;
         $event->save();
         return redirect('/dashboard')->with('success', 'Event opdateret!');
     }
@@ -146,6 +156,6 @@ class EventController extends Controller
 
         $event = Event::findOrFail($id);
         $event->delete();
-        return redirect('/events')->with('success', 'Begivenheden er slettet.');
+        return redirect('/events');
     }
 }

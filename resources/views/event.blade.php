@@ -1,9 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
+    @php
+        \Carbon\Carbon::setLocale('da');
+        $start = isset($event->startDate) && $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
+        $end = isset($event->endDate) && $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
+        $pageTitle = ($event->eventName ?? 'Event Details') . ' | TaskM8';
+        $metaDescription = \Illuminate\Support\Str::limit($event->description ?? 'Se detaljer for begivenheden i TaskM8.', 155);
+        $eventJson = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Event',
+            'name' => $event->eventName ?? 'Begivenhed',
+            'startDate' => $start ? $start->toIso8601String() : null,
+            'endDate' => $end ? $end->toIso8601String() : null,
+            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+            'eventStatus' => 'https://schema.org/EventScheduled',
+            'description' => strip_tags($event->description ?? ''),
+            'location' => [
+                '@type' => 'Place',
+                'name' => $event->location ?? 'TBD',
+            ],
+            'image' => asset('TaskM8-Logo.png'),
+            'url' => url()->current(),
+        ];
+        $breadcrumbs = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Forside',
+                    'item' => url('/dashboard')
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'Begivenheder',
+                    'item' => url('/events')
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => $event->eventName ?? 'Begivenhed',
+                    'item' => url()->current()
+                ],
+            ],
+        ];
+        $structuredData = [$eventJson, $breadcrumbs];
+    @endphp
+    @include('partials.seo', [
+        'title' => $pageTitle,
+        'description' => $metaDescription,
+        'canonical' => url()->current(),
+        'image' => asset('TaskM8-Logo.png'),
+        'structuredData' => $structuredData,
+    ])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $event->eventName ?? 'Event Details' }} | TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
@@ -18,12 +72,14 @@
                 <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
             </div>
             <h1 class="event-hero-title">{{ $event->eventName ?? 'Event Title' }}</h1>
+            
             @php
                 \Carbon\Carbon::setLocale('da');
                 $start = $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
                 $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
             @endphp
         </section>
+        
         <section class="event-details-card">
             <div class="event-card-actions-top">
                 <a href="{{ url('/events') }}" class="back-btn" aria-label="Tilbage til begivenheder">Tilbage</a>
@@ -33,7 +89,7 @@
                     $isAcceptedTop = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
                     $isFullTop = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isAcceptedTop;
                     $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
-                    $rsvpStatus = $myParticipation->status ?? null; // accepted | declined | null
+                    $rsvpStatus = $myParticipation->status ?? null;
                     $hasResponded = in_array($rsvpStatus, ['accepted','declined']);
                 @endphp
                 @if($isOwnerTop)
@@ -101,6 +157,23 @@
                     <span class="event-details-label">Slut:</span>
                     <span class="event-details-value">{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</span>
                 </li>
+                @if(!empty($event->repeat))
+                <li>
+                    <span class="event-details-label">Gentagelse:</span>
+                    <span class="event-details-value">
+                        @php
+                            $intervalMap = [
+                                'daily' => 'Dagligt',
+                                'weekly' => 'Ugentligt',
+                                'monthly' => 'Månedligt',
+                                'yearly' => 'Årligt',
+                            ];
+                            $val = $event->repeat;
+                        @endphp
+                        {{ $intervalMap[$val] ?? $val }}
+                    </span>
+                </li>
+                @endif
                 @php
                     $acceptedCount = \App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count();
                 @endphp
@@ -116,6 +189,29 @@
             </ul>
             <div class="event-details-description">
                 {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
+            </div>
+            @php
+                $limit = $event->participantLimit ?? null;
+                $current = $acceptedCount;
+                $pct = ($limit && $limit > 0) ? min(100, max(0, round(($current / max(1,$limit)) * 100))) : null;
+            @endphp
+            <div class="event-stats">
+                <div class="stat">
+                    <span class="stat-label">Deltagere</span>
+                    <div class="stat-value">{{ $current }}@if($limit)<span class="stat-total">/{{ $limit }}</span>@endif</div>
+                    @if(!is_null($pct))
+                    <div class="progress" aria-label="Deltagere fyldt">
+                        <div class="progress-bar" style="width: {{ $pct }}%"></div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="event-links">
+                <a class="link-btn" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    Opgaver for begivenhed
+                </a>
             </div>
             @auth
             @php
@@ -201,6 +297,7 @@
         </div>
     </div>
 
+    <script src="{{ asset('js/event.js') }}"></script>
     <script src="{{ asset('js/invitation.js') }}"></script>
 
     <script>
@@ -365,6 +462,17 @@
                 if (e.target === this) { closeDeleteModal(); }
             });
         }
+
+        // Auto-open based on query parameter (?open=invite|delete)
+        (function(){
+            try {
+                var params = new URLSearchParams(window.location.search);
+                var open = params.get('open');
+                if(open === 'invite') { openInviteModal({{ $event->id }}, '{{ $event->eventName }}'); }
+                if(open === 'delete') { openDeleteModal(); }
+            } catch(_) {}
+        })();
     </script>
+    @include('partials.footer')
 </body>
 </html>

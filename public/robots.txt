@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Disallow: /signin
+Disallow: /signup
+
+Sitemap: https://www.taskm8.dk/sitemap.xml

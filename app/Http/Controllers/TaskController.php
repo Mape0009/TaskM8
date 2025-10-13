@@ -21,9 +21,7 @@ class TaskController extends Controller
             return $query->where('name', 'like', '%' . $search . '%');
         })->get();
 
-        $events = Event::all();
-
-        return view('taskCreate', compact('events', 'users'));
+        return view('taskCreate', compact('users'));
     }
 
     public function index($id)
@@ -56,13 +54,45 @@ class TaskController extends Controller
 
         $tasks = new Task();
         $tasks->taskName = $request->input('taskName');
-        $tasks->eventId = $request->input('event_id');
         $tasks->description = $request->input('description');
         $tasks->save();
 
         $tasks->users()->sync($request->input('user_ids'));
 
-        return redirect('/tasks')->with('success', 'Task created successfully!');
+        return redirect('/tasks')->with('success', '');
+    }
+
+    public function indexByEvent($eventId)
+    {
+        $tasks = Task::where('eventId', $eventId)->get();
+        $event = Event::findOrFail($eventId);
+        return view('tasks', compact('tasks', 'event'));
+    }
+
+    public function showCreateFormForEvent(Request $request, $eventId)
+    {
+        $event = Event::findOrFail($eventId);
+        $search = $request->query('q');
+        $users = User::when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->get();
+        return view('taskCreate', compact('users', 'event'));
+    }
+
+    public function createForEvent(Request $request, $eventId)
+    {
+        $event = Event::findOrFail($eventId);
+        $validated = $request->validate([
+            'taskName' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $task = new Task();
+        $task->taskName = $validated['taskName'];
+        $task->eventId = $event->id;
+        $task->description = $validated['description'] ?? '';
+        $task->save();
+        return redirect()->route('events.tasks.index', ['eventId' => $event->id]);
     }
 
     public function update(Request $request, $id)
@@ -76,22 +106,26 @@ class TaskController extends Controller
         if (!Permissions::hasPermission($role, 'edit-task')) {
             abort(403, 'Ikke tilladt.');
         }
+        $task = Task::findOrFail($id);
+        $validated = $request->validate([
+            'taskName' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-        $tasks = Task::findOrFail($id);
-        $tasks->taskName = $request->input('taskName');
-        $tasks->description = $request->input('description');
-        $tasks->save();
 
-        return redirect('tasks/' . $id)->with('success', 'Task updated successfully!');
+        $task->taskName = $validated['taskName'];
+        $task->description = $validated['description'] ?? null;
+        $task->save();
+
+        return redirect()->route('events.tasks.index', ['eventId' => $task->eventId]);
     }
 
     public function edit($id)
     {
         $tasks = Task::findOrFail($id);
-        $events = Event::all();
         $users = User::all();
-        
-        return view('taskedit', compact('tasks', 'events', 'users'));
+        $event = Event::find($tasks->eventId);
+        return view('taskedit', compact('tasks', 'users', 'event'));
     }
 
     public function delete($id)
@@ -107,8 +141,7 @@ class TaskController extends Controller
         }
         $tasks = Task::findOrFail($id);
         $tasks->delete();
-
-        return redirect('/tasks')->with('success', 'Task deleted successfully!');
+        return redirect('/tasks');
     }
 
     public function show($id)

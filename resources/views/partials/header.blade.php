@@ -1,4 +1,4 @@
-<header class="main-header">
+<header class="main-header{{ (!Auth::check() && ($currentPage ?? null) === 'dashboard') ? ' guest-dashboard' : '' }}">
     <div class="header-left">
         <div class="logo">
             <a href="/dashboard" class="logo-link" aria-label="Gå til forside">
@@ -71,7 +71,7 @@
         </div>
         @else
         <div class="login-header">
-            <a href="{{ route('login') }}" class="btn login-btn">Log ind</a>
+            <a href="{{ route('login') }}" class="btn primary-btn">Log ind</a>
         </div>
         @endif
         @if (Auth::check())
@@ -114,7 +114,10 @@
                 </div>
                 <div class="form-row">
                     <label for="event-description">Beskrivelse</label>
-                    <textarea id="event-description" name="description" rows="3" required placeholder="Beskriv begivenheden"></textarea>
+                    <div style="position: relative;">
+                        <textarea id="event-description" name="description" rows="3" required placeholder="Beskriv begivenheden" maxlength="800" style="padding-bottom: 22px;"></textarea>
+                        <span id="event-description-counter" style="position: absolute; bottom: 6px; right: 8px; font-size: 12px; color: var(--text-muted, #6b7280);">0/800</span>
+                    </div>
                 </div>
             </div>
             
@@ -247,7 +250,7 @@
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">Forside</a></li>
                 @if (Auth::check())
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'events' ? 'is-active' : '' }}" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'friends' ? 'is-active' : '' }}" href="/friends">Grupper</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'groups' ? 'is-active' : '' }}" href="/groups">Grupper</a></li>
                 @endif
             </ul>
         </nav>

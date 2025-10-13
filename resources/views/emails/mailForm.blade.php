@@ -71,7 +71,7 @@
           </tr>
           <tr>
             <td style="background:#f9fafa; padding:24px; font-size:13px; color:#888; text-align:center; border-top:1px solid #e0e0e0; border-radius:0 0 16px 16px;">
-              TaskM8 · taskm8.socdata.dk
+              TaskM8 · taskm8.dk
             </td>
           </tr>
         </table>
