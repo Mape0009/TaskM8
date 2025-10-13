@@ -7,6 +7,7 @@ namespace App\Models {
      *
      * @property int $ownerId
      * @property int|null $participantLimit
+     * @property string $description
      * @property string $endDate
      * @property string $startDate
      * @property string $eventName
@@ -21,6 +22,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEventname($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereStartdate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEnddate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereParticipantlimit($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereOwnerid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newModelQuery()

@@ -37,7 +37,6 @@ class EventController extends Controller
             'description' => 'nullable|string|max:800',
             'location' => 'nullable|string|max:255',
             'participantLimit' => 'nullable|integer|min:1',
-            'repeat' => 'nullable|string|max:255',
         ]);
         $event = new Event();
         $event->eventName = $request->input('eventName');
@@ -47,7 +46,6 @@ class EventController extends Controller
         $event->location = $request->input('location');
         $event->ownerId = auth()->user()->id;
         $event->participantLimit = $request->input('participantLimit');
-        $event->repeat = $request->input('repeat') === 'on' ? ($request->input('repeat_interval') === 'custom' ? ($request->input('custom_interval') ?: 'Tilpasset') : $request->input('repeat_interval')) : null;
         $event->save();
         
         $eventParticipant = new EventParticipant();
@@ -79,14 +77,12 @@ class EventController extends Controller
             'endDate' => 'sometimes|date|after_or_equal:startDate',
             'description' => 'nullable|string|max:800',
             'location' => 'nullable|string|max:255',
-            'repeat' => 'nullable|string|max:255',
         ]);
         $event->eventName = $request->input('eventName');
         $event->startDate = $request->input('startDate');
         $event->endDate = $request->input('endDate');
         $event->description = $request->input('description');
         $event->location = $request->input('location');
-        $event->repeat = $request->input('repeat') === 'on' ? ($request->input('repeat_interval') === 'custom' ? ($request->input('custom_interval') ?: 'Tilpasset') : $request->input('repeat_interval')) : null;
         $event->save();
         return response()->json($event);
     }
