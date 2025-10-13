@@ -53,7 +53,6 @@
         </section>
         <section class="upcoming-events">
             <h2>Kommende Begivenheder</h2>
-            <form action="{{ route('events.index') }}" method="GET">
             <div class="event-list">
                 @forelse($events as $event)
                     <div class="event-card">
@@ -211,7 +210,6 @@
                     <p>Ingen begivenheder fundet.</p>
                 @endforelse
             </div>
-        </form>
         </section>
         @endauth
 
