@@ -90,12 +90,48 @@ class EventParticipantController extends Controller
 
     public function roleUpdate(Request $request, $participantId)
     {
+        // Owner role cannot be assigned through this endpoint (use transferOwnership)
         $request->validate([
-            'eventRole' => 'required|in:owner,coOwner,taskManager,taskWorker,participant',
+            'eventRole' => 'required|in:coOwner,taskManager,taskWorker,participant',
         ]);
+
         $participant = EventParticipant::findOrFail($participantId);
-        $participant->eventRole = $request->input('eventRole');
+
+        $currentUser = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $participant->eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $currentRole = $currentParticipant?->eventRole ?? 'participant';
+
+        // Prevent users from changing their own role via this endpoint
+        if ($participant->userId === $currentUser?->id) {
+            abort(403, 'You cannot change your own role here.');
+        }
+
+        $newRole = $request->input('eventRole');
+
+        // Map the target role to the required permission
+        $permissionMap = [
+            'coOwner' => 'manage-coOwners',
+            'taskManager' => 'manage-taskManagers',
+            'taskWorker' => 'manage-taskWorkers',
+            'participant' => 'manage-participants',
+        ];
+
+        $requiredPermission = $permissionMap[$newRole] ?? null;
+
+        if (!$requiredPermission || !Permissions::hasPermission($currentRole, $requiredPermission)) {
+            abort(403, 'You do not have permission to assign this role.');
+        }
+
+        // Do not allow changing the owner through this endpoint
+        if ($participant->eventRole === EventRole::owner->name) {
+            abort(403, 'Cannot change the role of the owner here.');
+        }
+
+        $participant->eventRole = $newRole;
         $participant->save();
+
         return redirect()->back()->with('success', 'Deltagerrollen er opdateret.');
     }
 

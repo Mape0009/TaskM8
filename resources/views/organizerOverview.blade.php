@@ -13,7 +13,7 @@
         @php
             $isOwner = false;
             foreach ($participants as $p) {
-                if ($p->userId === $currentUser->id && $p->eventRole === $eventRole::owner->name) {
+                if ($p->userId === $currentUser->id && $p->eventRole === $eventRole::owner->name || $p->eventRole === $eventRole::coOwner->name || $p->eventRole === $eventRole::taskManager->name) {
                     $isOwner = true;
                     break;
                 }
@@ -27,14 +27,45 @@
                 <form action="{{ route('events.roleUpdate', ['participantId' => $participant->id]) }}" method="POST">
                     @csrf
                     @if ($isOwner)
+                        @php
+                            // Determine current user's role for this event
+                            $currentParticipant = $participants->firstWhere('userId', $currentUser->id);
+                            $currentRole = $currentParticipant?->eventRole ?? 'participant';
+
+                            // Helper to check if current user can assign a given role
+                            $canAssignRole = function($currentRole, $targetRole) use ($eventRole) {
+                                $map = [
+                                    'coOwner' => 'manage-coOwners',
+                                    'taskManager' => 'manage-taskManagers',
+                                    'taskWorker' => 'manage-taskWorkers',
+                                    'participant' => 'manage-participants',
+                                ];
+                                if (!isset($map[$targetRole])) return false;
+                                return \App\Http\RolePermissions\Permissions::hasPermission($currentRole, $map[$targetRole]);
+                            };
+                        @endphp
+
                         <select name="eventRole">
                             <option value="" disabled selected>{{$participant->eventRole}}</option>
-                            <option value="owner" {{ $participant->eventRole === $eventRole::owner->name ? 'selected' : '' }}>Owner</option>
-                            <option value="coOwner" {{ $participant->eventRole === $eventRole::coOwner->name ? 'selected' : '' }}>Co-Owner</option>
-                            <option value="taskManager" {{ $participant->eventRole === $eventRole::taskManager->name ? 'selected' : '' }}>Task Manager</option>
-                            <option value="taskWorker" {{ $participant->eventRole === $eventRole::taskWorker->name ? 'selected' : '' }}>Task Worker</option>
-                            <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>Participant</option>
+                            {{-- Owner cannot be assigned via this form --}}
+                            @if ($participant->eventRole === $eventRole::owner->name)
+                                <option value="owner" selected>Owner</option>
+                            @endif
+
+                            @if ($canAssignRole($currentRole, 'coOwner'))
+                                <option value="coOwner" {{ $participant->eventRole === $eventRole::coOwner->name ? 'selected' : '' }}>Co-Owner</option>
+                            @endif
+                            @if ($canAssignRole($currentRole, 'taskManager'))
+                                <option value="taskManager" {{ $participant->eventRole === $eventRole::taskManager->name ? 'selected' : '' }}>Task Manager</option>
+                            @endif
+                            @if ($canAssignRole($currentRole, 'taskWorker'))
+                                <option value="taskWorker" {{ $participant->eventRole === $eventRole::taskWorker->name ? 'selected' : '' }}>Task Worker</option>
+                            @endif
+                            @if ($canAssignRole($currentRole, 'participant'))
+                                <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>Participant</option>
+                            @endif
                         </select>
+                        <button type="submit">Update role</button>
                     @endif
                 </form>
                 @php
