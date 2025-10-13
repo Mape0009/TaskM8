@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('end_time')->nullable();
             $table->string('taskName');
             $table->unsignedBigInteger('eventId');
             $table->foreign('eventId')->references('id')->on('events')->onDelete('cascade');;

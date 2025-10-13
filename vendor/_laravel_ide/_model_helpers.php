@@ -5,16 +5,12 @@ namespace App\Models {
     /**
      * App\Models\Event
      *
-     * @property int|null $template_from_group_id
-     * @property int|null $template_from_event_id
-     * @property bool $is_template
      * @property int $ownerId
-     * @property string|null $repeat
      * @property int|null $participantLimit
-     * @property string|null $location
-     * @property string|null $description
+     * @property string $description
      * @property string $endDate
      * @property string $startDate
+     * @property string $location
      * @property string $eventName
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
@@ -25,16 +21,12 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEventname($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereLocation($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereStartdate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEnddate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereDescription($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereLocation($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereParticipantlimit($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereRepeat($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereOwnerid($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereIsTemplate($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereTemplateFromEventId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereTemplateFromGroupId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event query()
@@ -1587,22 +1579,22 @@ namespace App\Models {
     /**
      * App\Models\Shift
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
      * @property int $userId
      * @property int $taskId
      * @property string|null $endTime
      * @property string|null $startTime
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
      * @property int $id
      * @property-read \App\Models\Task $task
      * @property-read \App\Models\User $user
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereStarttime($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereEndtime($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereTaskid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereUserid($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Shift>|Shift query()
@@ -1905,6 +1897,8 @@ namespace App\Models {
      * @property string $description
      * @property int $eventId
      * @property string $taskName
+     * @property string|null $end_time
+     * @property string|null $start_time
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property int $id
@@ -1916,6 +1910,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereUpdatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereStartTime($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereEndTime($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereTaskname($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereEventid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Task>|Task whereDescription($value)
