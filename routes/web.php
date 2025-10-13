@@ -114,8 +114,6 @@ Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class,
 
 // task Routes
 Route::view('task', 'task');
-//Route::view('taskOverview', 'taskOverview');
-//Route::view('taskDetails', 'taskDetails');
 Route::get('/tasks/create', [TaskController::class, 'showCreateForm'])->name('task.create.form');
 Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('task.details');
 Route::get('/tasks', [TaskController::class, 'index']);

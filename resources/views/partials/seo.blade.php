@@ -26,12 +26,6 @@
 <meta property="og:image" content="{{ $defaultImage }}">
 <meta property="og:image:alt" content="{{ $appName }}">
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ $defaultTitle }}">
-<meta name="twitter:description" content="{{ $defaultDescription }}">
-<meta name="twitter:image" content="{{ $defaultImage }}">
-
 <!-- Resource Hints -->
 <link rel="dns-prefetch" href="//fonts.googleapis.com">
 <link rel="dns-prefetch" href="//fonts.gstatic.com">

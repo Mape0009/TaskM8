@@ -190,7 +190,7 @@ body {
     transition: box-shadow 0.15s ease;
 }
 
-.user-avatar:hover {
+/* .user-avatar:hover {
     box-shadow: 0 2px 8px var(--color-shadow-dark); 
 }
 
@@ -198,9 +198,9 @@ body {
     font-weight: 500;
     margin: 0;
     color: var(--color-text-accent);
-    font-size: calc(var(--spacing-unit) * 1.75); /* 14px */
+    font-size: calc(var(--spacing-unit) * 1.75); 
     white-space: nowrap;
-}
+} */
 
 .create-event-btn-header {
     background: linear-gradient(
