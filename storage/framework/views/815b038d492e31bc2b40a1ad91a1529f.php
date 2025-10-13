@@ -141,31 +141,6 @@
             </div>
             </div>
 
-            <div class="form-section">
-                <h3 class="section-title">Gentagelse</h3>
-                <div class="repeat-section">
-                    <div class="repeat-toggle">
-                        <input type="checkbox" id="event-repeat" name="repeat">
-                        <label for="event-repeat">Aktiver gentagelse</label>
-                    </div>
-                    <div id="repeat-options" class="repeat-options" style="display: none;">
-                        <div class="repeat-field">
-                            <label for="repeat-interval">Hvor ofte?</label>
-                            <select id="repeat-interval" name="repeat_interval" class="repeat-select">
-                                <option value="daily">Dagligt</option>
-                                <option value="weekly">Ugentligt</option>
-                                <option value="monthly">Månedligt</option>
-                                <option value="yearly">Årligt</option>
-                                <option value="custom">Tilpasset</option>
-                            </select>
-                        </div>
-                        <div class="repeat-field" id="custom-interval-field" style="display: none;">
-                            <label for="custom-interval">Tilpasset interval</label>
-                            <input type="text" id="custom-interval" name="custom_interval" placeholder="F.eks. hver 2. uge, hver 3. dag" class="custom-interval-input">
-                        </div>
-                    </div>
-                </div>
-            </div>
             
             <div class="form-actions">
                 <button type="button" class="btn secondary-btn" id="cancel-btn">Annuller</button>

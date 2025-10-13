@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('eventName');
             $table->dateTime('startDate');
             $table->dateTime('endDate');
-            $table->string('description')->nullable();
-            $table->string('location')->nullable();
+            $table->text('description')->nullable()->change();
             $table->integer('participantLimit')->nullable();
             $table->unsignedBigInteger('ownerId');
             $table->foreign('ownerId')->references('id')->on('users')->onDelete('cascade');
