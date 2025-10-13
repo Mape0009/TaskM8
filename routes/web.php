@@ -42,7 +42,7 @@ Route::get('/dashboard', function () {
         $totalEvents = Event::count();
     }
 
-    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount'));
+    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount', 'totalUsers', 'totalEvents'));
 });
 
 
