@@ -21,37 +21,17 @@ class TaskController extends Controller
             return $query->where('name', 'like', '%' . $search . '%');
         })->get();
 
-        return view('taskCreate', compact('users'));
+        return view('tasks.create', compact('users'));
     }
 
-    public function index($id)
+    public function index()
     {
-        $user = auth()->user();
-        $currentParticipant = EventParticipant::where('eventId', $id)
-            ->where('userId', $user?->id)
-            ->first();
-        $role = $currentParticipant?->eventRole ?? 'participant';
-        $event = Event::findOrFail($id);
-        if (!Permissions::hasPermission($role, 'view-task')) {
-            abort(403, 'Ikke tilladt.');
-        }
         $tasks = Task::all();
-
-        return view('tasks', compact('tasks'));
+        return view('tasks.index', compact('tasks'));
     }
 
-    public function create(Request $request, $id)
+    public function create(Request $request)
     {
-        $user = auth()->user();
-        $currentParticipant = EventParticipant::where('eventId', $id)
-            ->where('userId', $user?->id)
-            ->first();
-        $role = $currentParticipant?->eventRole ?? 'participant';
-        $event = Event::findOrFail($id);
-        if (!Permissions::hasPermission($role, 'create-task')) {
-            abort(403, 'Ikke tilladt.');
-        }
-
         $tasks = new Task();
         $tasks->taskName = $request->input('taskName');
         $tasks->description = $request->input('description');
@@ -66,7 +46,7 @@ class TaskController extends Controller
     {
         $tasks = Task::where('eventId', $eventId)->get();
         $event = Event::findOrFail($eventId);
-        return view('tasks', compact('tasks', 'event'));
+        return view('tasks.index', compact('tasks', 'event'));
     }
 
     public function showCreateFormForEvent(Request $request, $eventId)
@@ -76,7 +56,7 @@ class TaskController extends Controller
         $users = User::when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%');
         })->get();
-        return view('taskCreate', compact('users', 'event'));
+        return view('tasks.create', compact('users', 'event'));
     }
 
     public function createForEvent(Request $request, $eventId)
@@ -91,22 +71,25 @@ class TaskController extends Controller
         $task->taskName = $validated['taskName'];
         $task->eventId = $event->id;
         $task->description = $validated['description'] ?? '';
+        // Default task window inherits event window
+        $task->start_time = $event->startDate;
+        $task->end_time = $event->endDate;
         $task->save();
         return redirect()->route('events.tasks.index', ['eventId' => $event->id]);
     }
 
     public function update(Request $request, $id)
     {
+        $task = Task::findOrFail($id);
+        $eventId = $task->eventId;
         $user = auth()->user();
-        $currentParticipant = EventParticipant::where('eventId', $id)
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
             ->where('userId', $user?->id)
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
-        $event = Event::findOrFail($id);
         if (!Permissions::hasPermission($role, 'edit-task')) {
             abort(403, 'Ikke tilladt.');
         }
-        $task = Task::findOrFail($id);
         $validated = $request->validate([
             'taskName' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -117,7 +100,7 @@ class TaskController extends Controller
         $task->description = $validated['description'] ?? null;
         $task->save();
 
-        return redirect()->route('events.tasks.index', ['eventId' => $task->eventId]);
+        return redirect()->route('events.tasks.index', ['eventId' => $eventId]);
     }
 
     public function edit($id)
@@ -125,28 +108,31 @@ class TaskController extends Controller
         $tasks = Task::findOrFail($id);
         $users = User::all();
         $event = Event::find($tasks->eventId);
-        return view('taskedit', compact('tasks', 'users', 'event'));
+        return view('tasks.edit', compact('tasks', 'users', 'event'));
     }
 
     public function delete($id)
     {
+        $task = Task::findOrFail($id);
+        $eventId = $task->eventId;
         $user = auth()->user();
-        $currentParticipant = EventParticipant::where('eventId', $id)
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
             ->where('userId', $user?->id)
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
-        $event = Event::findOrFail($id);
         if (!Permissions::hasPermission($role, 'delete-task')) {
             abort(403, 'Ikke tilladt.');
         }
-        $tasks = Task::findOrFail($id);
-        $tasks->delete();
+        $task->delete();
+        if ($eventId) {
+            return redirect()->route('events.tasks.index', ['eventId' => $eventId]);
+        }
         return redirect('/tasks');
     }
 
     public function show($id)
     {
         $task = Task::findOrFail($id);
-        return view('taskDetails', compact('task'));
+        return view('tasks.details', compact('task'));
     }
 }

@@ -21,7 +21,7 @@ class EventController extends Controller
         $userId = $user->id;
         $events = $this->getEventsForUser($userId);
 
-        return view('events', ['events' => $events]);
+        return view('events.index', ['events' => $events]);
     }
 
     /**
@@ -55,7 +55,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return view('event', compact('event'));
+        return view('events.show', compact('event'));
     }
 
     public function create(Request $request)
