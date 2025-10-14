@@ -20,11 +20,17 @@ class ShiftController extends Controller
     public function create($taskId)
     {
         $task = Task::findOrFail($taskId);
-        // Only allow assigning shifts to participants who have accepted
-        $participantUserIds = EventParticipant::where('eventId', $task->eventId)
-            ->where('status', 'accepted')
-            ->pluck('userId');
-        $users = User::whereIn('id', $participantUserIds)->get();
+        // Allow assigning shifts to any participants of the event (regardless of status)
+        if ($task->eventId) {
+            $participantUserIds = EventParticipant::where('eventId', $task->eventId)
+                ->pluck('userId');
+            $users = $participantUserIds->isEmpty()
+                ? User::all()
+                : User::whereIn('id', $participantUserIds)->get();
+        } else {
+            // Fallback for tasks without event linkage
+            $users = User::all();
+        }
         return view('shifts.create', compact('task', 'users'));
     }
 
@@ -46,13 +52,15 @@ class ShiftController extends Controller
 
         $task = Task::findOrFail($taskId);
 
-        // Ensure selected user is an accepted participant of the event for this task
-        $isParticipant = EventParticipant::where('eventId', $task->eventId)
-                                         ->where('userId', $request->userId)
-                                         ->where('status', 'accepted')
-                                         ->exists();
+        // Ensure selected user is eligible for assignment in this event
+        $participant = EventParticipant::where('eventId', $task->eventId)
+                                       ->where('userId', $request->userId)
+                                       ->first();
+        $roleOk = in_array($participant?->eventRole, ['owner','coOwner','taskManager','taskWorker'], true);
+        $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
+                         || ($event && (int)$event->ownerId === (int)$request->userId);
         if (!$isParticipant) {
-            return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt begivenheden for denne opgave.'])->withInput();
+            return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.']).withInput();
         }
         
         // Prevent overlapping shifts for the same user and task
@@ -87,10 +95,15 @@ class ShiftController extends Controller
     {
         $task = Task::findOrFail($taskId);
         $shift = Shift::with('user')->findOrFail($shiftId);
-        $participantUserIds = EventParticipant::where('eventId', $task->eventId)
-            ->where('status', 'accepted')
-            ->pluck('userId');
-        $users = User::whereIn('id', $participantUserIds)->get();
+        if ($task->eventId) {
+            $participantUserIds = EventParticipant::where('eventId', $task->eventId)
+                ->pluck('userId');
+            $users = $participantUserIds->isEmpty()
+                ? User::all()
+                : User::whereIn('id', $participantUserIds)->get();
+        } else {
+            $users = User::all();
+        }
         
         return view('shifts.edit', compact('task', 'shift', 'users'));
     }
@@ -114,13 +127,16 @@ class ShiftController extends Controller
         $shift = Shift::findOrFail($shiftId);
         $task = Task::findOrFail($taskId);
 
-        // Ensure selected user is an accepted participant of the event for this task
-        $isParticipant = EventParticipant::where('eventId', $task->eventId)
-                                         ->where('userId', $request->userId)
-                                         ->where('status', 'accepted')
-                                         ->exists();
+        // Ensure selected user is eligible for assignment in this event
+        $participant = EventParticipant::where('eventId', $task->eventId)
+                                       ->where('userId', $request->userId)
+                                       ->first();
+        $event = Event::find($task->eventId);
+        $roleOk = in_array($participant?->eventRole, ['owner','coOwner','taskManager','taskWorker'], true);
+        $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
+                         || ($event && (int)$event->ownerId === (int)$request->userId);
         if (!$isParticipant) {
-            return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt begivenheden for denne opgave.'])->withInput();
+            return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.']).withInput();
         }
         
         // Prevent overlapping shifts for the same user and task (excluding current shift)

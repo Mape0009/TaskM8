@@ -12,10 +12,35 @@ class EventParticipantController extends Controller
 {
     public function index($eventId)
     {
+<<<<<<< Updated upstream
     $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
     $currentUser = auth()->user();
     $eventRole = EventRole::class;
     return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
+=======
+        $currentUser = auth()->user();
+        $participant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $participant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'view-participants')) {
+            abort(403, 'You do not have permission to view participants.');
+        }
+        $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
+        $eventRole = EventRole::class;
+
+        if (! $participant) {
+            abort(403, 'You do not have access to this event.');
+        }
+
+        return view('events.organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     }
 
     public function show($id)

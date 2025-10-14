@@ -43,8 +43,6 @@
                 <textarea name="description" placeholder="Opgave Beskrivelse">{{ $tasks->description }}</textarea>
             </div>
 
-            
-
             <div class="form-row">
                 <label for="startDate">Start Tidspunkt:</label>
                 <input type="datetime-local" id="startDate" name="startDate" required 
@@ -71,7 +69,6 @@
                 >
             </div>
 
-
             <div class="form-actions">
                 <button type="submit" class="btn primary-btn">Opdater Opgave</button>
             </div>
@@ -81,3 +78,4 @@
 
 </body>
 </html>
+

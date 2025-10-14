@@ -79,7 +79,6 @@
                             <i class="fas fa-edit"></i>
                             Rediger Opgave
                         </a>
-                        <!-- ✅ Ret: send taskId med -->
                         <button type="button" class="bin-button" aria-label="Slet Opgave" onclick="openDeleteModal({{ $task->id }})">
                             <svg class="bin-top" viewBox="0 0 39 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
@@ -102,7 +101,6 @@
 </main>
 
 @auth
-<!-- ✅ Modal til sletning af opgave -->
 <div id="delete-modal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" style="display:none;">
     <div class="confirm-modal-content">
         <div class="confirm-modal-body">
@@ -128,3 +126,4 @@
 @include('partials.footer')
 </body>
 </html>
+

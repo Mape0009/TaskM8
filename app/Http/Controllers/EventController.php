@@ -14,6 +14,26 @@ class EventController extends Controller
 
         $ownedEvents = Event::where('ownerId', $userId);
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+        return view('events.index', ['events' => $events]);
+    }
+
+    /**
+     * Return events visible to a given user (used by events.index and dashboard).
+     *
+     * @param int $userId
+     * @return \Illuminate\Support\Collection
+     */
+    public function getEventsForUser(int $userId)
+    {
+>>>>>>> Stashed changes
         $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
         $participatedEvents = Event::whereIn('id', $participantEventIds);
 
@@ -25,7 +45,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return view('event', compact('event'));
+        return view('events.show', compact('event'));
     }
 
     public function create(Request $request)

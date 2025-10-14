@@ -44,8 +44,6 @@
             </div>
         @endif
 
-   
-
         <div class="event-actions-details" style="display:flex; gap:.75rem; align-items:center; flex-wrap:wrap;">
             <a href="{{ url()->previous() }}" class="btn white-btn">Tilbage</a>
             <a href="/tasks/{{ $task->id }}/edit" class="btn primary-btn">Rediger</a>
@@ -89,3 +87,4 @@
 
 </body>
 </html>
+

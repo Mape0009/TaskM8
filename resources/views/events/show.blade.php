@@ -224,8 +224,6 @@
         </section>
     </main>
 
-    
-
     @auth
     @if(isset($event->ownerId) && $event->ownerId === auth()->id())
     <!-- Delete Confirmation Modal -->
@@ -349,7 +347,8 @@
         function addEmail() {
             const emailInput = document.getElementById('email-input');
             const email = emailInput.value.trim();
-            if (email && isValidEmail(email) && !addedEmails.includes(email)) {
+            if (email && isValidEmail(email) && !addedEmails.includes(email))
+            {
                 addedEmails.push(email);
                 emailInput.value = '';
                 updateEmailList();
@@ -476,3 +475,4 @@
     @include('partials.footer')
 </body>
 </html>
+

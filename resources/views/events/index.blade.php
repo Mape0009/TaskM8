@@ -39,7 +39,7 @@
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
                                         @endif
                                     @endauth
-                                </div>
+                                </div> 
                             </div>
                         </div>
                         <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
@@ -72,3 +72,4 @@ document.addEventListener('click', function(e){
     @include('partials.footer')
 </body>
 </html> 
+
