@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\RolePermissions\Permissions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -15,14 +16,35 @@ use App\Models\Mail as MailModel;
 
 class MailController extends Controller
 {
-    public static function sendNewUserMail($recipientEmail, $eventData)
+    public static function sendNewUserMail($recipientEmail, $eventData, $id = null)
     {
+        $user = auth()->user();
+        $eventId = $id ?? ($eventData['id'] ?? null);
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = $eventId ? Event::findOrFail($eventId) : null;
+        if (!Permissions::hasPermission($role, 'manage-invites')) {
+            abort(403, 'Ikke tilladt.');
+        }
         Mail::to($recipientEmail)->send(new EventInvite($eventData));
     }
 
-    public static function sendExistingUserMail($recipientEmail, $eventData)
+    public static function sendExistingUserMail($recipientEmail, $eventData, $id = null)
     {
-        Mail::to($recipientEmail)->send(new EventInvite($eventData));
+        $user = auth()->user();
+        $eventId = $id ?? ($eventData['id'] ?? null);
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = $eventId ? Event::findOrFail($eventId) : null;
+        if (!Permissions::hasPermission($role, 'manage-invites')) {
+            abort(403, 'Ikke tilladt.');
+        }
+        // For existing users we should send the ExistingUserInvite mailable
+        Mail::to($recipientEmail)->send(new ExistingUserInvite($eventData));
     }
 
     public function sendEventInvites(Request $request)

@@ -5,24 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\EventParticipant;
 use App\Models\Event;
+use App\Http\RolePermissions\Permissions;
+use App\Enums\EventRole;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
     public function index()
     {
-        $userId = auth()->user()->id;
+        if (!auth()->check()) {
+            return redirect('/login');
+        }
 
-        $ownedEvents = Event::where('ownerId', $userId);
+        $user = auth()->user();
+        $userId = $user->id;
+        $events = $this->getEventsForUser($userId);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-        return view('events.index', ['events' => $events]);
+        return view('events', ['events' => $events]);
     }
 
     /**
@@ -33,19 +32,30 @@ class EventController extends Controller
      */
     public function getEventsForUser(int $userId)
     {
->>>>>>> Stashed changes
         $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
-        $participatedEvents = Event::whereIn('id', $participantEventIds);
+        $events = Event::whereIn('id', $participantEventIds)->get();
 
-        $events = $ownedEvents->union($participatedEvents)->get();
+        // Preload the user's EventParticipant records for these events to avoid N+1 queries
+        $eventIds = $events->pluck('id')->all();
+        $participantMap = EventParticipant::whereIn('eventId', $eventIds)
+            ->where('userId', $userId)
+            ->get()
+            ->keyBy('eventId');
 
-        return view('events', compact('events'));
+        // Filter events by per-event permission
+        $filtered = $events->filter(function ($event) use ($participantMap) {
+            $participant = $participantMap->get($event->id);
+            $role = $participant?->eventRole ?? 'participant';
+            return Permissions::hasPermission($role, 'view-event');
+        })->values();
+
+        return $filtered;
     }
 
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return view('events.show', compact('event'));
+        return view('event', compact('event'));
     }
 
     public function create(Request $request)
@@ -86,10 +96,14 @@ class EventController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
         $event = Event::findOrFail($id);
-        // Enforce ownership
-        if ($event->ownerId !== auth()->id()) {
-            abort(403, 'Ikke tilladt.');
+        if (!Permissions::hasPermission($role, 'edit-event')) {
+            abort(403, 'You do not have permission to edit this event.');
         }
         $request->validate([
             'eventName' => 'sometimes|string|max:255',
@@ -104,26 +118,39 @@ class EventController extends Controller
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->save();
-        return response()->json($event);
+        return redirect('/dashboard')->with('success', 'Event opdateret!');
     }
 
     public function edit($id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
         $event = Event::findOrFail($id);
         // Enforce ownership
-        if ($event->ownerId !== auth()->id()) {
+        if (!Permissions::hasPermission($role, 'edit-event')) {
             abort(403, 'Ikke tilladt.');
-        }
+        }  
+
+        $event = Event::findOrFail($id);
         return view('events.edit', compact('event'));
     }
 
     public function delete($id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
         $event = Event::findOrFail($id);
-        // Enforce ownership
-        if ($event->ownerId !== auth()->id()) {
+        if (!Permissions::hasPermission($role, 'delete-event')) {
             abort(403, 'Ikke tilladt.');
-        }
+        }  
+
+        $event = Event::findOrFail($id);
         $event->delete();
         return redirect('/events');
     }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\EventParticipant;
+use App\Http\RolePermissions\Permissions;
 
 
 use Illuminate\Http\Request;
@@ -19,17 +21,37 @@ class TaskController extends Controller
             return $query->where('name', 'like', '%' . $search . '%');
         })->get();
 
-        return view('tasks.create', compact('users'));
+        return view('taskCreate', compact('users'));
     }
 
-    public function index()
+    public function index($id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'view-task')) {
+            abort(403, 'Ikke tilladt.');
+        }
         $tasks = Task::all();
-        return view('tasks.index', compact('tasks'));
+
+        return view('tasks', compact('tasks'));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $id)
     {
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $id)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
+        if (!Permissions::hasPermission($role, 'create-task')) {
+            abort(403, 'Ikke tilladt.');
+        }
+
         $tasks = new Task();
         $tasks->taskName = $request->input('taskName');
         $tasks->description = $request->input('description');
@@ -44,7 +66,7 @@ class TaskController extends Controller
     {
         $tasks = Task::where('eventId', $eventId)->get();
         $event = Event::findOrFail($eventId);
-        return view('tasks.index', compact('tasks', 'event'));
+        return view('tasks', compact('tasks', 'event'));
     }
 
     public function showCreateFormForEvent(Request $request, $eventId)
@@ -54,7 +76,7 @@ class TaskController extends Controller
         $users = User::when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%');
         })->get();
-        return view('tasks.create', compact('users', 'event'));
+        return view('taskCreate', compact('users', 'event'));
     }
 
     public function createForEvent(Request $request, $eventId)
@@ -69,52 +91,33 @@ class TaskController extends Controller
         $task->taskName = $validated['taskName'];
         $task->eventId = $event->id;
         $task->description = $validated['description'] ?? '';
-        // Inherit event time window by default
-        $task->start_time = $event->startDate;
-        $task->end_time = $event->endDate;
         $task->save();
         return redirect()->route('events.tasks.index', ['eventId' => $event->id]);
     }
 
     public function update(Request $request, $id)
     {
-        $task = Task::findOrFail($id);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-        $eventId = $task->eventId;
-
         $user = auth()->user();
-        $currentParticipant = EventParticipant::where('eventId', $eventId)
+        $currentParticipant = EventParticipant::where('eventId', $id)
             ->where('userId', $user?->id)
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
         if (!Permissions::hasPermission($role, 'edit-task')) {
             abort(403, 'Ikke tilladt.');
         }
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+        $task = Task::findOrFail($id);
         $validated = $request->validate([
             'taskName' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
+
         $task->taskName = $validated['taskName'];
         $task->description = $validated['description'] ?? null;
         $task->save();
 
-        return redirect()->route('events.tasks.index', ['eventId' => $eventId]);
+        return redirect()->route('events.tasks.index', ['eventId' => $task->eventId]);
     }
 
     public function edit($id)
@@ -122,51 +125,28 @@ class TaskController extends Controller
         $tasks = Task::findOrFail($id);
         $users = User::all();
         $event = Event::find($tasks->eventId);
-        return view('tasks.edit', compact('tasks', 'users', 'event'));
+        return view('taskedit', compact('tasks', 'users', 'event'));
     }
 
     public function delete($id)
     {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        $tasks = Task::findOrFail($id);
-        $tasks->delete();
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-        $task = Task::findOrFail($id);
-        $eventId = $task->eventId;
-
         $user = auth()->user();
-        $currentParticipant = EventParticipant::where('eventId', $eventId)
+        $currentParticipant = EventParticipant::where('eventId', $id)
             ->where('userId', $user?->id)
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($id);
         if (!Permissions::hasPermission($role, 'delete-task')) {
             abort(403, 'Ikke tilladt.');
         }
-
-        $task->delete();
-
-        if ($eventId) {
-            return redirect()->route('events.tasks.index', ['eventId' => $eventId]);
-        }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+        $tasks = Task::findOrFail($id);
+        $tasks->delete();
         return redirect('/tasks');
     }
 
     public function show($id)
     {
         $task = Task::findOrFail($id);
-        return view('tasks.details', compact('task'));
+        return view('taskDetails', compact('task'));
     }
 }

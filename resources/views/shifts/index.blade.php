@@ -115,7 +115,6 @@
                                 <div class="shift-details">
                                     <div class="time-info">
                                         <div class="time-item">
-                                            <i class="fas fa-play time-icon start"></i>
                                             <div>
                                                 <span class="time-label">Start</span>
                                                 <span class="time-value">{{ \Carbon\Carbon::parse($shift->startTime)->format('j.n.Y H:i') }}</span>
@@ -123,7 +122,6 @@
                                         </div>
                                         <div class="time-separator">til</div>
                                         <div class="time-item">
-                                            <i class="fas fa-stop time-icon end"></i>
                                             <div>
                                                 <span class="time-label">Slut</span>
                                                 <span class="time-value">{{ \Carbon\Carbon::parse($shift->endTime)->format('j.n.Y H:i') }}</span>

@@ -7,17 +7,12 @@ use App\Models\EventParticipant;
 use App\Models\EventRole;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
+use App\Http\RolePermissions\Permissions;
 
 class EventParticipantController extends Controller
 {
     public function index($eventId)
     {
-<<<<<<< Updated upstream
-    $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
-    $currentUser = auth()->user();
-    $eventRole = EventRole::class;
-    return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
-=======
         $currentUser = auth()->user();
         $participant = EventParticipant::where('eventId', $eventId)
             ->where('userId', $currentUser?->id)
@@ -33,14 +28,7 @@ class EventParticipantController extends Controller
             abort(403, 'You do not have access to this event.');
         }
 
-        return view('events.organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+        return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
     }
 
     public function show($id)
@@ -51,8 +39,28 @@ class EventParticipantController extends Controller
 
     public function delete($id)
     {
-        $participant = EventParticipant::findOrFail($id);
-        $participant->delete();
+        $currentUser = auth()->user();
+        $participantToDelete = EventParticipant::findOrFail($id);
+        $eventId = $participantToDelete->eventId;
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+
+        if (!Permissions::hasPermission($role, 'delete-participant')) {
+            abort(403, 'You do not have permission to delete participants.');
+        }
+
+        if ($participantToDelete->eventRole === EventRole::owner->name) {
+            abort(403, 'Owners cannot be deleted.');
+        }
+
+        $currentRole = $role;
+        $targetRole = $participantToDelete->eventRole;
+        if ($currentRole === EventRole::coOwner->name && $targetRole === EventRole::coOwner->name) {
+            abort(403, 'Co-Owners cannot delete other Co-Owners.');
+        }
+        $participantToDelete->delete();
         return response()->json(['message' => 'Participant deleted successfully']);
     }
 
@@ -82,13 +90,49 @@ class EventParticipantController extends Controller
 
     public function roleUpdate(Request $request, $participantId)
     {
+        // Owner role cannot be assigned through this endpoint (use transferOwnership)
         $request->validate([
-            'eventRole' => 'required|in:owner,coOwner,taskManager,taskWorker,participant',
+            'eventRole' => 'required|in:coOwner,taskManager,taskWorker,participant',
         ]);
+
         $participant = EventParticipant::findOrFail($participantId);
-        $participant->eventRole = $request->input('eventRole');
-        $participant->save();
-        return redirect()->back();
+
+        $currentUser = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $participant->eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $currentRole = $currentParticipant?->eventRole ?? 'participant';
+
+        // Prevent users from changing their own role via this endpoint
+        if ($participant->userId === $currentUser?->id) {
+            abort(403, 'You cannot change your own role here.');
+        }
+
+        $newRole = $request->input('eventRole');
+
+        // Map the target role to the required permission
+        $permissionMap = [
+            'coOwner' => 'manage-coOwners',
+            'taskManager' => 'manage-taskManagers',
+            'taskWorker' => 'manage-taskWorkers',
+            'participant' => 'manage-participants',
+        ];
+
+        $requiredPermission = $permissionMap[$newRole] ?? null;
+
+        if (!$requiredPermission || !Permissions::hasPermission($currentRole, $requiredPermission)) {
+            abort(403, 'You do not have permission to assign this role.');
+        }
+
+        // Do not allow changing the owner through this endpoint
+        if ($participant->eventRole === EventRole::owner->name) {
+            abort(403, 'Cannot change the role of the owner here.');
+        }
+
+    $participant->eventRole = $newRole;
+    $participant->save();
+
+    return redirect()->back()->with('success', 'Deltagerrollen er opdateret.');
     }
 
     public function rsvp(Request $request, $eventId)
@@ -121,5 +165,34 @@ class EventParticipantController extends Controller
             ['status' => 'declined']
         );
          return redirect()->back();
+    }
+
+    public function transferOwnership(Request $request, $participantId)
+    {
+        $currentUser = auth()->user();
+        $newOwnerParticipant = EventParticipant::findOrFail($participantId);
+        $eventId = $newOwnerParticipant->eventId;
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+
+        if (!Permissions::hasPermission($role, 'transfer-ownership')) {
+            abort(403, 'Du har ikke tilladelse til at overføre ejerskab.');
+        }
+
+        if ($newOwnerParticipant->userId === $currentUser->id) {
+            abort(403, 'Du er allerede ejer.');
+        }
+
+        // Demote current owner to coOwner
+        $currentParticipant->eventRole = EventRole::coOwner->name;
+        $currentParticipant->save();
+
+        // Promote new owner
+        $newOwnerParticipant->eventRole = EventRole::owner->name;
+        $newOwnerParticipant->save();
+
+        return redirect()->back()->with('success', 'Ownership has been transferred successfully.');
     }
 }

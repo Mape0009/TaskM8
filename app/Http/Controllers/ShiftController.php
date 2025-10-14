@@ -6,14 +6,28 @@ use Illuminate\Http\Request;
 use App\Models\Shift;
 use App\Models\Task;
 use App\Models\User;
-use App\Models\EventParticipant;
 use Illuminate\Support\Facades\Auth;
+use App\Models\EventParticipant;
+use App\Models\Event;
+use App\Http\RolePermissions\Permissions;
 
 class ShiftController extends Controller
 {
     public function index($taskId)
     {
+        // Load task first so we can check event-level permissions
         $task = Task::with(['shifts.user'])->findOrFail($taskId);
+
+        $user = auth()->user();
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($task->eventId);
+        if (!Permissions::hasPermission($role, 'view-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
+
         return view('shifts.index', compact('task'));
     }
 
@@ -36,6 +50,17 @@ class ShiftController extends Controller
 
     public function store(Request $request, $taskId)
     {
+        $user = auth()->user();
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($task->eventId);
+        if (!Permissions::hasPermission($role, 'create-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
+        
         $request->validate([
             'userId' => 'required|exists:users,id',
             'startTime' => 'required|date',
@@ -50,7 +75,7 @@ class ShiftController extends Controller
             'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
         ]);
 
-        $task = Task::findOrFail($taskId);
+        // Reuse loaded task
 
         // Ensure selected user is eligible for assignment in this event
         $participant = EventParticipant::where('eventId', $task->eventId)
@@ -164,13 +189,36 @@ class ShiftController extends Controller
 
     public function destroy($taskId, $shiftId)
     {
+        $user = auth()->user();
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        $event = Event::findOrFail($task->eventId);
+        if (!Permissions::hasPermission($role, 'delete-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
         $shift = Shift::findOrFail($shiftId);
         $shift->delete();
 
         return redirect()->route('tasks.shifts.index', $taskId);
     }
 
-    public function join($taskId)
+    public function join(Request $request, $taskId)
+    {
+        $request->validate([]);
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
+        }
+        Shift::firstOrCreate(
+            ['taskId' => $taskId, 'userId' => $userId]
+        );
+        return redirect()->back()->with('success', 'you are participating in the task.');
+    }
+
+    public function decline(Request $request, $taskId)
     {
         $userId = Auth::id();
         if (!$userId) {

@@ -24,10 +24,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     if (auth()->check()) {
         $userId = auth()->id();
-        $ownedEvents = Event::where('ownerId', $userId);
-        $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
-        $participatedEvents = Event::whereIn('id', $participantEventIds);
-        $events = $ownedEvents->union($participatedEvents)->orderBy('startDate', 'desc')->get();
+        // Use EventController helper to fetch events the same way as events.index
+        $controller = app(EventController::class);
+        $events = $controller->getEventsForUser($userId)->sortByDesc('startDate')->values();
 
         $participatedEventsCount = $events->count();
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
@@ -42,6 +41,7 @@ Route::get('/dashboard', function () {
         $totalUsers = User::count();
         $totalEvents = Event::count();
     }
+
     return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount', 'totalUsers', 'totalEvents'));
 });
 
@@ -54,7 +54,7 @@ Route::get('/events/{eventId}/invitees', [MailController::class, 'getPreviousInv
 Route::view('test', 'test');
 Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.invite');
 
-Route::get('/events', [EventController::class, 'index']);
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
 // friends route 
 Route::get('/friends', function () {
@@ -105,7 +105,7 @@ Route::get('/events/{id}/edit', [EventController::class, 'edit'])
 Route::get('/participants', [EventParticipantController::class, 'index']);
 Route::post('/events/clear-success', [EventController::class, 'clearSuccessMessage']);
 Route::get('/participant/{id}', [EventParticipantController::class, 'show']);
-Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'delete']);
+Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'delete'])->name('events.deleteParticipant');
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');

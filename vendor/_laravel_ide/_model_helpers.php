@@ -10,6 +10,7 @@ namespace App\Models {
      * @property string $description
      * @property string $endDate
      * @property string $startDate
+     * @property string $location
      * @property string $eventName
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
@@ -20,6 +21,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEventname($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereLocation($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereStartdate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereEnddate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Event>|Event whereDescription($value)
