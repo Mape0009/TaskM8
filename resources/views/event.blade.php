@@ -227,7 +227,16 @@
     
 
     @auth
-    @if(isset($event->ownerId) && $event->ownerId === auth()->id())
+    @php
+    $isOwnerMenu = false; 
+    foreach ($participant as $p) {
+        if ($p->userId === auth()->id() && $event->id === $p->eventId && $p->eventRole === 'owner') {
+            $isOwnerMenu = true;
+            break;
+        }
+    }
+    @endphp
+    @if($isOwnerMenu)
     <!-- Delete Confirmation Modal -->
     <div id="delete-modal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" style="display:none;">
         <div class="confirm-modal-content">

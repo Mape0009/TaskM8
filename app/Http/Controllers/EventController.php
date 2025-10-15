@@ -14,14 +14,18 @@ class EventController extends Controller
     public function index()
     {
         if (!auth()->check()) {
-            return redirect('/login');
+            return redirect('/signin');
         }
 
         $user = auth()->user();
         $userId = $user->id;
-        $events = $this->getEventsForUser($userId);
+        // reuse helper to get events visible to this user
+        $events = $this->getEventsForUser($userId)->sortByDesc('startDate')->values();
 
-        return view('events', ['events' => $events]);
+        // load the current user's EventParticipant records so the view can determine roles
+        $participant = EventParticipant::where('userId', $userId)->get();
+
+        return view('events', compact('events', 'participant'));
     }
 
     /**

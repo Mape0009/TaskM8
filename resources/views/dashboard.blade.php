@@ -66,7 +66,15 @@
                                     <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">Opret opgave</a>
                                     <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">Opgaver</a>
                                     @auth
-                                        @php $isOwnerMenu = isset($event->ownerId) && $event->ownerId === auth()->id(); @endphp
+                                        @php
+                                        $isOwnerMenu = false; 
+                                        foreach ($participant as $p) {
+                                            if ($p->userId === auth()->id() && $event->id === $p->eventId && $p->eventRole === 'owner') {
+                                                $isOwnerMenu = true;
+                                                break;
+                                            }
+                                        }
+                                        @endphp
                                         @if($isOwnerMenu)
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=invite">Inviter</a>
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">Rediger begivenhed</a>
@@ -94,7 +102,13 @@
     <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
     @auth
         @php
-            $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
+            $isOwner = false; 
+            foreach ($participant as $p) {
+                if ($p->userId === auth()->id() && $event->id === $p->eventId && $p->eventRole === 'owner') {
+                    $isOwner = true;
+                    break;
+                }
+            }
             $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
             $rsvpStatus = $myParticipation->status ?? null; 
             $isParticipant = $rsvpStatus === 'accepted';
