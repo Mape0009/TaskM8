@@ -19,10 +19,7 @@ class EventController extends Controller
 
         $user = auth()->user();
         $userId = $user->id;
-        // reuse helper to get events visible to this user
         $events = $this->getEventsForUser($userId)->sortByDesc('startDate')->values();
-
-        // load the current user's EventParticipant records so the view can determine roles
         $participant = EventParticipant::where('userId', $userId)->get();
 
         return view('events', compact('events', 'participant'));
