@@ -378,9 +378,6 @@ body.dark-mode .modal-content {
     border-color: #374151;
     color: #f9fafb;
 }
-body.dark-mode .modal-header {
-    background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
-}
 body.dark-mode .modal-form {
     background: #1f2937;
 }
