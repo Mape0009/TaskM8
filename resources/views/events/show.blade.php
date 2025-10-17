@@ -157,23 +157,6 @@
                     <span class="event-details-label">Slut:</span>
                     <span class="event-details-value">{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</span>
                 </li>
-                @if(!empty($event->repeat))
-                <li>
-                    <span class="event-details-label">Gentagelse:</span>
-                    <span class="event-details-value">
-                        @php
-                            $intervalMap = [
-                                'daily' => 'Dagligt',
-                                'weekly' => 'Ugentligt',
-                                'monthly' => 'Månedligt',
-                                'yearly' => 'Årligt',
-                            ];
-                            $val = $event->repeat;
-                        @endphp
-                        {{ $intervalMap[$val] ?? $val }}
-                    </span>
-                </li>
-                @endif
                 @php
                     $acceptedCount = \App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count();
                 @endphp
@@ -195,24 +178,6 @@
                 $current = $acceptedCount;
                 $pct = ($limit && $limit > 0) ? min(100, max(0, round(($current / max(1,$limit)) * 100))) : null;
             @endphp
-            <div class="event-stats">
-                <div class="stat">
-                    <span class="stat-label">Deltagere</span>
-                    <div class="stat-value">{{ $current }}@if($limit)<span class="stat-total">/{{ $limit }}</span>@endif</div>
-                    @if(!is_null($pct))
-                    <div class="progress" aria-label="Deltagere fyldt">
-                        <div class="progress-bar" style="width: {{ $pct }}%"></div>
-                    </div>
-                    @endif
-                </div>
-            </div>
-
-            <div class="event-links">
-                <a class="link-btn" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                    Opgaver for begivenhed
-                </a>
-            </div>
             @auth
             @php
                 $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
