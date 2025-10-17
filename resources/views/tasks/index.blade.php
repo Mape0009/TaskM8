@@ -37,7 +37,7 @@
                     <p class="header-description">Se og administrer alle dine opgaver</p>
                 @endif
             </div>
-            <div class="header-actions" style="gap: 0.75rem;">
+            <div class="header-actions" style="margin-bottom: 3rem;">
                 @if(isset($event))
                     <a href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}" class="btn primary-btn">
                         <i class="fas fa-plus"></i>
@@ -62,8 +62,8 @@
                                 <p class="task-description">{{ $task->description }}</p>
                             @endif
                         </div>
-                        <div class="task-stats">
-                            <div class="stat-item">
+                        <div class="task-stats" style="margin-bottom: 1rem;">
+                            <div class="stat-item" >
                                 <i class="fas fa-users"></i>
                                 <span>{{ $task->shifts->count() }} vagt{{ $task->shifts->count() !== 1 ? 'er' : '' }}</span>
                             </div>
