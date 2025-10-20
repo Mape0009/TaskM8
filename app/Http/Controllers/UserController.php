@@ -76,7 +76,7 @@ class UserController extends Controller
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
         $user->phonenumber = $request->input('phonenumber', null);
-        $user->role = 'user';
+        $user->role = 'Participant';
         $user->save();
 
         // If this was an invited signup, attach the user to the event immediately (as pending)
