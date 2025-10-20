@@ -82,19 +82,8 @@
         
         <section class="event-details-card">
             <div class="event-card-actions-top">
-        <a href="#" 
-            onclick="
-            const prev = document.referrer;
-            const host = window.location.host;
-        if (prev.includes(host)) {
-            history.back();
-        } else {
-            window.location.href = '/';
-        }
-            return false;
-    "
-   class="back-btn" 
-   aria-label="Gå tilbage">Tilbage</a>
+                <a href="/" class="back-btn">Tilbage</a>
+
                 @auth
                 @php
                     $isOwnerTop = isset($event->ownerId) && $event->ownerId === auth()->id();

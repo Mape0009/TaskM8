@@ -50,6 +50,7 @@ class Permissions
 
         public const TASK_MANAGER = [
             'view-event',
+            'create-task',
             'edit-task',
             'assign-task',
             'view-task',
@@ -58,8 +59,6 @@ class Permissions
             'delete-shift',
             'view-shift',
             'view-participants',
-            'manage-participants',
-            'manage-taskWorkers',
             'respond-event',
         ];
 

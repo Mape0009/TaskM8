@@ -69,9 +69,17 @@
                                         }
                                     }
                                 }
-                                $canCreateTask = \App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-task');
-                                $canViewTask = \App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'view-task');
-                                $hasMenu = $canCreateTask || $canViewTask || $isOwnerMenu;
+                                $roleForPerms = $currentUserRole ?? 'participant';
+                                $canCreateTask = \App\Http\RolePermissions\Permissions::hasPermission($roleForPerms, 'create-task');
+                                $canViewTask = \App\Http\RolePermissions\Permissions::hasPermission($roleForPerms, 'view-task');
+                                $canInvite = \App\Http\RolePermissions\Permissions::hasPermission($roleForPerms, 'manage-invites');
+                                $canManageAnyRole =
+                                    \App\Http\RolePermissions\Permissions::hasPermission($roleForPerms, 'manage-participants') ||
+                                    \App\Http\RolePermissions\Permissions::hasPermission($roleForPerms, 'manage-taskManagers') ||
+                                    \App\Http\RolePermissions\Permissions::hasPermission($roleForPerms, 'manage-taskWorkers') ||
+                                    \App\Http\RolePermissions\Permissions::hasPermission($roleForPerms, 'manage-coOwners');
+                                $canEditEvent = \App\Http\RolePermissions\Permissions::hasPermission($roleForPerms, 'edit-event');
+                                $hasMenu = $canCreateTask || $canViewTask || $canInvite || $canManageAnyRole || $canEditEvent || $isOwnerMenu;
                             @endphp
                             @if($hasMenu)
                             <div class="event-kebab rsvp-menu" id="event-menu-{{ $event->id }}">
@@ -86,10 +94,16 @@
                                         @if($canViewTask)
                                             <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">Opgaver</a>
                                         @endif
-                                        @if($isOwnerMenu)
+                                        @if($canInvite)
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=invite">Inviter</a>
+                                        @endif
+                                        @if($canManageAnyRole)
                                             <a class="rsvp-menu-item" href="{{ route('events.participants', ['eventId' => $event->id]) }}">Uddel roller</a>
+                                        @endif
+                                        @if($canEditEvent)
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">Rediger begivenhed</a>
+                                        @endif
+                                        @if($isOwnerMenu)
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
                                         @endif
                                     @endauth

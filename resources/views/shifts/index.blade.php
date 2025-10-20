@@ -34,10 +34,22 @@
             <div class="edit-header">
                 <h1 class="edit-title">Vagter for {{ $task->taskName }}</h1>
                 <div class="header-actions">
+                    @php
+                        $currentUser = auth()->user();
+                        $currentUserRole = null;
+                        if ($currentUser) {
+                            $p = \App\Models\EventParticipant::where('eventId', $task->eventId)
+                                ->where('userId', $currentUser->id)
+                                ->first();
+                            $currentUserRole = $p?->eventRole;
+                        }
+                    @endphp
+                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
                     <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">
                         <i class="fas fa-plus"></i>
                         Opret Vagt
                     </a>
+                    @endif
                     <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-btn">
                         <i class="fas fa-arrow-left"></i>
                         Tilbage til Opgaver
@@ -81,14 +93,28 @@
                     </div>
                 </div>
 
-                <!-- Shifts List -->
+                <!-- Filter and Shifts List -->
+                @php
+                    $currentUser = auth()->user();
+                    $filter = request()->query('filter', 'all');
+                    $isMine = $filter === 'mine';
+                    $displayShifts = $task->shifts;
+                    if ($isMine && $currentUser) {
+                        $displayShifts = $displayShifts->where('userId', $currentUser->id);
+                    }
+                @endphp
+                <div class="shifts-filter" style="display:flex; gap:8px; align-items:center; margin: 1rem 0;">
+                    <span style="font-weight:600;">Vis:</span>
+                    <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn {{ $isMine ? 'secondary-btn' : 'primary-btn' }}">Alle vagter</a>
+                    <a href="{{ route('tasks.shifts.index', $task->id) }}?filter=mine" class="btn {{ $isMine ? 'primary-btn' : 'secondary-btn' }}">Mine vagter</a>
+                </div>
                 <div class="shifts-section">
                     <h2 class="shifts-title">
                         <i class="fas fa-list"></i>
                         Alle Vagter
                     </h2>
                     <div class="shifts-list">
-                        @foreach($task->shifts as $shift)
+                        @forelse($displayShifts as $shift)
                             <div class="shift-card">
                                 <div class="shift-header">
                                     <div class="shift-user">
@@ -101,14 +127,18 @@
                                         </div>
                                     </div>
                                     <div class="shift-actions">
+                                        @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-shift'))
                                         <a href="{{ route('tasks.shifts.edit', [$task->id, $shift->id]) }}" class="btn primary-btn">
                                             <i class="fas fa-edit"></i>
                                             Rediger
                                         </a>
+                                        @endif
+                                        @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'delete-shift'))
                                         <button type="button" class="btn danger-btn" aria-label="Slet vagt" onclick="openDeleteShiftModal({{ $shift->id }})">
                                             <i class="fas fa-trash"></i>
                                             Slet
                                         </button>
+                                        @endif
                                     </div>
                                 </div>
                                 
@@ -152,7 +182,11 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="empty-state" style="padding: 1rem; color: var(--color-text-secondary);">
+                                Ingen vagter fundet.
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             @else

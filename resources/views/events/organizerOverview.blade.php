@@ -54,6 +54,7 @@
                     $isOwnerTarget = ($participant->eventRole === $eventRole::owner->name);
                     $isTargetCoOwner = ($participant->eventRole === $eventRole::coOwner->name);
                     $isCurrentCoOwner = ($currentRole === $eventRole::coOwner->name);
+                    $isSelf = ($participant->userId === $currentUser->id);
                 @endphp
                 <div class="participant-card" data-name="{{ strtolower($participant->user->name ?? '') }}" data-email="{{ strtolower($participant->user->email ?? '') }}">
                     <div class="participant-info">
@@ -74,25 +75,39 @@
                         <form action="{{ route('events.roleUpdate') }}" method="POST" class="role-form" style="display:flex; gap:8px; align-items:center;">
                             @csrf
                             <input type="hidden" name="participantId" value="{{ $participant->id }}">
-                            <select class="role-select" name="eventRole" @disabled($isOwnerTarget)>
+                            <select class="role-select" name="eventRole" @disabled($isOwnerTarget || $isSelf)>
                                 @if($isOwnerTarget)
                                     <option value="owner" selected>Ejer</option>
                                 @else
-                                    @if($canManage('coOwner'))
+                                    @php
+                                        $canOrSelf = function($key) use ($canManage, $participant, $eventRole, $isSelf) {
+                                            $currentIsKey = match($key){
+                                                'coOwner' => $participant->eventRole === $eventRole::coOwner->name,
+                                                'taskManager' => $participant->eventRole === $eventRole::taskManager->name,
+                                                'taskWorker' => $participant->eventRole === $eventRole::taskWorker->name,
+                                                'participant' => $participant->eventRole === $eventRole::participant->name,
+                                                default => false,
+                                            };
+                                            return ($isSelf && $currentIsKey) || $canManage($key);
+                                        };
+                                    @endphp
+                                    @if($canOrSelf('coOwner'))
                                         <option value="coOwner" {{ $participant->eventRole === $eventRole::coOwner->name ? 'selected' : '' }}>Med-ejer</option>
                                     @endif
-                                    @if($canManage('taskManager'))
+                                    @if($canOrSelf('taskManager'))
                                         <option value="taskManager" {{ $participant->eventRole === $eventRole::taskManager->name ? 'selected' : '' }}>Opgaveansvarlig</option>
                                     @endif
-                                    @if($canManage('taskWorker'))
+                                    @if($canOrSelf('taskWorker'))
                                         <option value="taskWorker" {{ $participant->eventRole === $eventRole::taskWorker->name ? 'selected' : '' }}>Opgavemedlem</option>
                                     @endif
-                                    @if($canManage('participant'))
+                                    @if($canOrSelf('participant'))
                                         <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>Deltager</option>
                                     @endif
                                 @endif
                             </select>
-                            <button type="submit" class="btn primary" @disabled($isOwnerTarget)>Gem</button>
+                            @if(!($isOwnerTarget || $isSelf))
+                            <button type="submit" class="btn primary">Gem</button>
+                            @endif
                         </form>
                     </div>
                 </div>
