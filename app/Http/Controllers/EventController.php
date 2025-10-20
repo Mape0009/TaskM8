@@ -14,14 +14,15 @@ class EventController extends Controller
     public function index()
     {
         if (!auth()->check()) {
-            return redirect('/login');
+            return redirect('/signin');
         }
 
         $user = auth()->user();
         $userId = $user->id;
-        $events = $this->getEventsForUser($userId);
+        $events = $this->getEventsForUser($userId)->sortByDesc('startDate')->values();
+        $participant = EventParticipant::where('userId', $userId)->get();
 
-        return view('events.index', ['events' => $events]);
+        return view('events', compact('events', 'participant'));
     }
 
     /**
@@ -55,7 +56,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return view('events.show', compact('event'));
+        return view('event', compact('event'));
     }
 
     public function create(Request $request)

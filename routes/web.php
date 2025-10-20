@@ -27,6 +27,7 @@ Route::get('/dashboard', function () {
         // Use EventController helper to fetch events the same way as events.index
         $controller = app(EventController::class);
         $events = $controller->getEventsForUser($userId)->sortByDesc('startDate')->values();
+        $participant = EventParticipant::where('userId', $userId)->get();
 
         $participatedEventsCount = $events->count();
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
@@ -38,11 +39,13 @@ Route::get('/dashboard', function () {
         $participatedEventsCount = 0;
         $pendingEventsCount = 0;
         $previousInviteesCount = 0;
+        // Ensure $participant is always defined for the dashboard view
+        $participant = collect();
         $totalUsers = User::count();
         $totalEvents = Event::count();
     }
 
-    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount', 'totalUsers', 'totalEvents'));
+    return view('dashboard', compact('events', 'participatedEventsCount', 'pendingEventsCount', 'previousInviteesCount', 'totalUsers', 'totalEvents', 'participant'));
 });
 
 
