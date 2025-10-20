@@ -123,7 +123,6 @@ class MailController extends Controller
             $eventData['invite_url'] = url('/signup') . '?token=' . urlencode($payload);
 
             self::sendNewUserMail($email, $eventData);
-            // New user doesn't have a recipientId yet; skip recording here
         }
 
         return redirect()->back();
@@ -135,7 +134,6 @@ class MailController extends Controller
         if (!$user) {
             return response()->json([], 401);
         }
-        // Get distinct users previously invited by current user (any event), prefer most recent
         $rows = MailModel::where('senderId', $user->id)
             ->orderBy('sentAt', 'desc')
             ->with('recipient')

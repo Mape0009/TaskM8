@@ -13,9 +13,6 @@
     ])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <title>Uddel roller</title>
     <link rel="stylesheet" href="{{ asset('css/organizerOverview.css') }}">
 </head>
@@ -69,7 +66,7 @@
                     <div class="actions">
                         @php $roleLabelMap = [
                             $eventRole::owner->name => 'Ejer',
-                            $eventRole::coOwner->name => 'Med-ejer',
+                            $eventRole::coOwner->name => 'Medejer',
                             $eventRole::taskManager->name => 'Opgaveansvarlig',
                             $eventRole::taskWorker->name => 'Opgavemedlem',
                             $eventRole::participant->name => 'Deltager',
@@ -110,8 +107,8 @@
                 <svg fill="currentColor" viewBox="0 0 24 24" class="confirm-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M12 1.75c-.41 0-.82.1-1.19.3L4.5 5.1a2.25 2.25 0 0 0-1.19 1.98v4.92c0 5.16 3.55 9.94 8.46 11.25.16.04.33.04.47 0 4.91-1.31 8.46-6.09 8.46-11.25V7.08c0-.82-.45-1.58-1.19-1.98l-6.31-3.05c-.37-.2-.78-.3-1.2-.3Zm0 6.25a.75.75 0 0 1 .75.75v3.44l2.3 2.3a.75.75 0 0 1-1.06 1.06l-2.53-2.53a.75.75 0 0 1-.22-.53V8.75c0-.41.34-.75.76-.75Z"/>
                 </svg>
-                <h2 id="coowner-confirm-title" class="confirm-title">Bekræft Med-ejer</h2>
-                <p class="confirm-text">Du er ved at give Med-ejer-rollen. Med-ejere har udvidede rettigheder på begivenheden. Vil du fortsætte?</p>
+                <h2 id="coowner-confirm-title" class="confirm-title">Bekræft Medejer</h2>
+                <p class="confirm-text">Du er ved at give Medejer-rollen. Medejere har udvidede rettigheder på begivenheden. Vil du fortsætte?</p>
             </div>
             <div class="confirm-actions">
                 <button type="button" class="confirm-btn cancel" id="coowner-cancel-btn">Annuller</button>

@@ -156,7 +156,19 @@ body {
     gap: 8px;
 }
 
-/* Organizer overview confirm modal customizations */
-.confirm-modal.coowner-confirm .confirm-icon { color: var(--color-accent-primary); }
-.confirm-modal.coowner-confirm .confirm-btn.success { background: #22c55e; color: #fff; border-color: #16a34a; }
-.confirm-modal.coowner-confirm .confirm-btn.success:hover { background: #16a34a; }
+.confirm-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--color-accent-primary);
+    margin-bottom: 16px;
+}
+
+.confirm-btn {
+    padding: 10px 16px;
+    background: var(--color-accent-primary);
+    color: #fff;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+}

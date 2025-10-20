@@ -36,7 +36,6 @@
 .invite-btn:hover {
     background: linear-gradient(90deg, #059669 0%, #047857 100%);
     box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
-    transform: translateY(-1px);
 }
 
 .invite-btn .icon {
@@ -46,13 +45,13 @@
 
 /* Dark mode for invite button */
 body.dark-mode .invite-btn {
-    background: linear-gradient(90deg, #00c2ff 0%, #007bff 100%);
+    background: var(--color-accent-primary);
     box-shadow: 0 2px 8px rgba(0, 194, 255, 0.15);
 }
 
 body.dark-mode .invite-btn:hover {
-    background: linear-gradient(90deg, #007bff 0%, #0056cc 100%);
-    box-shadow: 0 4px 16px rgba(0, 194, 255, 0.25);
+    background-color: #0056b3; 
+    box-shadow: 0 4px 12px var(--color-shadow-dark); 
 }
 
 /* Invitation Modal Specific Styles */
@@ -375,7 +374,7 @@ body.dark-mode .invitee-select-btn:hover {
     }
 }
 
-.invite-modal .invite-btn,
+/* .invite-modal .invite-btn,
 .invite-modal .add-email-btn {
     background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;
     color: #fff;
@@ -383,13 +382,8 @@ body.dark-mode .invitee-select-btn:hover {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
     transition: all 0.2s ease;
-}
-.invite-modal .invite-btn:hover,
-.invite-modal .add-email-btn:hover {
-    background: linear-gradient(90deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
-    transform: translateY(-1px);
-}
+} */
+
 body.dark-mode .invite-modal .invite-btn,
 body.dark-mode .invite-modal .add-email-btn {
     background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;

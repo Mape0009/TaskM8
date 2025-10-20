@@ -663,7 +663,6 @@ body.dark-mode .link-btn:hover { background: #333338; }
 }
 .event-actions-details .invite-btn,
 .event-card-actions-top .invite-btn {
-    background: linear-gradient(90deg, #00c2ff 0%, #007bff 100%);
     color: #fff;
     border: none;
     border-radius: 10px;
@@ -678,10 +677,10 @@ body.dark-mode .link-btn:hover { background: #333338; }
     gap: 0.5rem;
     letter-spacing: 0.02em;
 }
-.event-actions-details .invite-btn:hover,
+/* .event-actions-details .invite-btn:hover,
 .event-card-actions-top .invite-btn:hover {
     background: linear-gradient(90deg, #4f46e5 0%, #2563eb 100%);
-}
+} */
 .event-actions-details .invite-btn .icon,
 .event-card-actions-top .invite-btn .icon { width: 16px; height: 16px; }
 .event-actions-details .btn {
