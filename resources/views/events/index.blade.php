@@ -24,31 +24,44 @@
                     <div class="event-card">
                         <div class="event-header">
                             <h3>{{ $event->eventName }}</h3>
+                            @php
+                                $currentUserRole = null;
+                                $isOwnerMenu = false;
+                                if (auth()->check()) {
+                                    foreach ($participant as $p) {
+                                        if ($p->userId === auth()->id() && $event->id === $p->eventId) {
+                                            $currentUserRole = $p->eventRole;
+                                            if ($p->eventRole === 'owner') { $isOwnerMenu = true; }
+                                        }
+                                    }
+                                }
+                                $canCreateTask = \App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-task');
+                                $canViewTask = \App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'view-task');
+                                $hasMenu = $canCreateTask || $canViewTask || $isOwnerMenu;
+                            @endphp
+                            @if($hasMenu)
                             <div class="event-kebab rsvp-menu" id="event-menu-{{ $event->id }}">
                                 <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('event-menu-{{ $event->id }}')" aria-label="Åbn menu">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="17" r="1"></circle></svg>
                                 </button>
                                 <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 200px;">
-                                    <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">Opret opgave</a>
-                                    <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">Opgaver</a>
                                     @auth
-                                        @php
-                                        $isOwnerMenu = false; 
-                                        foreach ($participant as $p) {
-                                            if ($p->userId === auth()->id() && $event->id === $p->eventId && $p->eventRole === 'owner') {
-                                                $isOwnerMenu = true;
-                                                break;
-                                            }
-                                        }
-                                        @endphp
+                                        @if($canCreateTask)
+                                            <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">Opret opgave</a>
+                                        @endif
+                                        @if($canViewTask)
+                                            <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">Opgaver</a>
+                                        @endif
                                         @if($isOwnerMenu)
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=invite">Inviter</a>
+                                            <a class="rsvp-menu-item" href="{{ route('events.participants', ['eventId' => $event->id]) }}">Uddel roller</a>
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">Rediger begivenhed</a>
                                             <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
                                         @endif
                                     @endauth
                                 </div> 
                             </div>
+                            @endif
                         </div>
                         <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
                         <div class="event-actions">

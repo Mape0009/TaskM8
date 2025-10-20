@@ -28,7 +28,7 @@ class EventParticipantController extends Controller
             abort(403, 'You do not have access to this event.');
         }
 
-        return view('organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
+        return view('events.organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
     }
 
     public function show($id)
@@ -88,13 +88,15 @@ class EventParticipantController extends Controller
         return redirect()->back();
     }
 
-    public function roleUpdate(Request $request, $participantId)
+    public function roleUpdate(Request $request)
     {
         // Owner role cannot be assigned through this endpoint (use transferOwnership)
         $request->validate([
             'eventRole' => 'required|in:coOwner,taskManager,taskWorker,participant',
+            'participantId' => 'required|integer',
         ]);
 
+        $participantId = (int) $request->input('participantId');
         $participant = EventParticipant::findOrFail($participantId);
 
         $currentUser = auth()->user();
@@ -132,7 +134,7 @@ class EventParticipantController extends Controller
     $participant->eventRole = $newRole;
     $participant->save();
 
-    return redirect()->back()->with('success', 'Deltagerrollen er opdateret.');
+    return redirect()->back();
     }
 
     public function rsvp(Request $request, $eventId)

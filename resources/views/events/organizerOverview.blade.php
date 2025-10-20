@@ -1,115 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
+    @php
+        $pageTitle = 'Uddel roller | TaskM8';
+        $metaDescription = 'Administrer deltagere og tildel roller for begivenheden.';
+    @endphp
+    @include('partials.seo', [
+        'title' => $pageTitle,
+        'description' => $metaDescription,
+        'canonical' => url()->current(),
+        'image' => asset('TaskM8-Logo.png'),
+    ])
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Test Email</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <title>Uddel roller</title>
+    <link rel="stylesheet" href="{{ asset('css/organizerOverview.css') }}">
 </head>
 <body>
-    <h1>This is an overview of participants</h1>
-    <form action="{{ route('events.participants', ['eventId' => $eventId]) }}" method="GET">
-        @csrf
+    @include('partials.header', ['currentPage' => 'events'])
+    <main class="roles-wrapper">
+        <div class="roles-header">
+            <h1 class="roles-title">Uddel roller</h1>
+            <div class="search">
+                <input id="participant-search" type="text" placeholder="Søg efter deltager (navn eller email)">
+            </div>
+            <div class="page-actions">
+                <a href="/events/{{ $eventId }}" class="btn ghost">Tilbage til begivenhed</a>
+            </div>
+        </div>
 
         @php
-            $isOwner = false;
-            foreach ($participants as $p) {
-<<<<<<< Updated upstream
-                if ($p->userId === $currentUser->id && $p->eventRole === $eventRole::owner->name) {
-=======
-                if ($p->userId === $currentUser->id && $p->eventRole === $eventRole::owner->name || $p->eventRole === $eventRole::coOwner->name || $p->eventRole === $eventRole::taskManager->name) {
->>>>>>> Stashed changes
-                    $isOwner = true;
-                    break;
-                }
-            }
+            $currentParticipant = $participants->firstWhere('userId', $currentUser->id);
+            $currentRole = $currentParticipant?->eventRole ?? 'participant';
+            $canDelete = \App\Http\RolePermissions\Permissions::hasPermission($currentRole, 'delete-participant');
+            $canManage = function($targetRole) use ($currentRole) {
+                $map = [
+                    'coOwner' => 'manage-coOwners',
+                    'taskManager' => 'manage-taskManagers',
+                    'taskWorker' => 'manage-taskWorkers',
+                    'participant' => 'manage-participants',
+                ];
+                return isset($map[$targetRole]) && \App\Http\RolePermissions\Permissions::hasPermission($currentRole, $map[$targetRole]);
+            };
         @endphp
 
-        @foreach ($participants as $participant)
-            <h2>{{$participant->event->eventName}}</h2>
-            <div>
-                <p>Name: {{ $participant->user->name }} | Email: {{ $participant->user->email }}</p>
-                <form action="{{ route('events.roleUpdate', ['participantId' => $participant->id]) }}" method="POST">
-                    @csrf
-                    @if ($isOwner)
-<<<<<<< Updated upstream
-                        <select name="eventRole">
-                            <option value="" disabled selected>{{$participant->eventRole}}</option>
-                            <option value="owner" {{ $participant->eventRole === $eventRole::owner->name ? 'selected' : '' }}>Owner</option>
-                            <option value="coOwner" {{ $participant->eventRole === $eventRole::coOwner->name ? 'selected' : '' }}>Co-Owner</option>
-                            <option value="taskManager" {{ $participant->eventRole === $eventRole::taskManager->name ? 'selected' : '' }}>Task Manager</option>
-                            <option value="taskWorker" {{ $participant->eventRole === $eventRole::taskWorker->name ? 'selected' : '' }}>Task Worker</option>
-                            <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>Participant</option>
-                        </select>
-                    @endif
-                    <br>
-                </form>
-=======
-                        @php
-                            // Determine current user's role for this event
-                            $currentParticipant = $participants->firstWhere('userId', $currentUser->id);
-                            $currentRole = $currentParticipant?->eventRole ?? 'participant';
-
-                            // Helper to check if current user can assign a given role
-                            $canAssignRole = function($currentRole, $targetRole) use ($eventRole) {
-                                $map = [
-                                    'coOwner' => 'manage-coOwners',
-                                    'taskManager' => 'manage-taskManagers',
-                                    'taskWorker' => 'manage-taskWorkers',
-                                    'participant' => 'manage-participants',
-                                ];
-                                if (!isset($map[$targetRole])) return false;
-                                return \App\Http\RolePermissions\Permissions::hasPermission($currentRole, $map[$targetRole]);
-                            };
-                        @endphp
-
-                        <select name="eventRole">
-                            <option value="" disabled selected>{{$participant->eventRole}}</option>
-                            {{-- Owner cannot be assigned via this form --}}
-                            @if ($participant->eventRole === $eventRole::owner->name)
-                                <option value="owner" selected>Owner</option>
-                            @endif
-
-                            @if ($canAssignRole($currentRole, 'coOwner'))
-                                <option value="coOwner" {{ $participant->eventRole === $eventRole::coOwner->name ? 'selected' : '' }}>Co-Owner</option>
-                            @endif
-                            @if ($canAssignRole($currentRole, 'taskManager'))
-                                <option value="taskManager" {{ $participant->eventRole === $eventRole::taskManager->name ? 'selected' : '' }}>Task Manager</option>
-                            @endif
-                            @if ($canAssignRole($currentRole, 'taskWorker'))
-                                <option value="taskWorker" {{ $participant->eventRole === $eventRole::taskWorker->name ? 'selected' : '' }}>Task Worker</option>
-                            @endif
-                            @if ($canAssignRole($currentRole, 'participant'))
-                                <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>Participant</option>
-                            @endif
-                        </select>
-                        <button type="submit">Update role</button>
-                    @endif
-                </form>
+        @php
+            $visibleParticipants = $participants->filter(function($p){ return in_array($p->status, ['accepted','pending']); });
+        @endphp
+        <section class="participants-list" id="participants">
+            @forelse ($visibleParticipants as $participant)
                 @php
-                    // Determine current user's role for this event
-                    $currentParticipant = $participants->firstWhere('userId', $currentUser->id);
-                    $currentRole = $currentParticipant?->eventRole ?? 'participant';
-                @endphp
-                @php
-                    // Do not show delete button next to owners
-                    $isTargetOwner = ($participant->eventRole === $eventRole::owner->name);
-                    // If current user is coOwner, they should not be able to delete another coOwner
-                    $isCurrentCoOwner = ($currentRole === $eventRole::coOwner->name);
+                    $initials = strtoupper(substr($participant->user->name ?? $participant->user->email, 0, 1));
+                    $isOwnerTarget = ($participant->eventRole === $eventRole::owner->name);
                     $isTargetCoOwner = ($participant->eventRole === $eventRole::coOwner->name);
+                    $isCurrentCoOwner = ($currentRole === $eventRole::coOwner->name);
                 @endphp
-
-                @if (! $isTargetOwner && \App\Http\RolePermissions\Permissions::hasPermission($currentRole, 'delete-participant') && !($isCurrentCoOwner && $isTargetCoOwner))
-                    <form action="{{ route('events.deleteParticipant', ['id' => $participant->id]) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                @endif
-                <br>
->>>>>>> Stashed changes
+                <div class="participant-card" data-name="{{ strtolower($participant->user->name ?? '') }}" data-email="{{ strtolower($participant->user->email ?? '') }}">
+                    <div class="participant-info">
+                        <div class="avatar">{{ $initials }}</div>
+                        <div class="name-email">
+                            <div class="name">{{ $participant->user->name ?? 'Ukendt' }}</div>
+                            <div class="email">{{ $participant->user->email }}</div>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        @php $roleLabelMap = [
+                            $eventRole::owner->name => 'Ejer',
+                            $eventRole::coOwner->name => 'Med-ejer',
+                            $eventRole::taskManager->name => 'Opgaveansvarlig',
+                            $eventRole::taskWorker->name => 'Opgavemedlem',
+                            $eventRole::participant->name => 'Deltager',
+                        ]; @endphp
+                        <form action="{{ route('events.roleUpdate') }}" method="POST" class="role-form" style="display:flex; gap:8px; align-items:center;">
+                            @csrf
+                            <input type="hidden" name="participantId" value="{{ $participant->id }}">
+                            <select class="role-select" name="eventRole" @disabled($isOwnerTarget)>
+                                @if($isOwnerTarget)
+                                    <option value="owner" selected>Ejer</option>
+                                @else
+                                    @if($canManage('coOwner'))
+                                        <option value="coOwner" {{ $participant->eventRole === $eventRole::coOwner->name ? 'selected' : '' }}>Med-ejer</option>
+                                    @endif
+                                    @if($canManage('taskManager'))
+                                        <option value="taskManager" {{ $participant->eventRole === $eventRole::taskManager->name ? 'selected' : '' }}>Opgaveansvarlig</option>
+                                    @endif
+                                    @if($canManage('taskWorker'))
+                                        <option value="taskWorker" {{ $participant->eventRole === $eventRole::taskWorker->name ? 'selected' : '' }}>Opgavemedlem</option>
+                                    @endif
+                                    @if($canManage('participant'))
+                                        <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>Deltager</option>
+                                    @endif
+                                @endif
+                            </select>
+                            <button type="submit" class="btn primary" @disabled($isOwnerTarget)>Gem</button>
+                        </form>
+                    </div>
+                </div>
+            @empty
+                <p>Ingen deltagere fundet.</p>
+            @endforelse
+        </section>
+    </main>
+    <div id="coowner-confirm-modal" class="confirm-modal coowner-confirm" role="dialog" aria-modal="true" aria-labelledby="coowner-confirm-title" style="display:none;">
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-body">
+                <svg fill="currentColor" viewBox="0 0 24 24" class="confirm-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 1.75c-.41 0-.82.1-1.19.3L4.5 5.1a2.25 2.25 0 0 0-1.19 1.98v4.92c0 5.16 3.55 9.94 8.46 11.25.16.04.33.04.47 0 4.91-1.31 8.46-6.09 8.46-11.25V7.08c0-.82-.45-1.58-1.19-1.98l-6.31-3.05c-.37-.2-.78-.3-1.2-.3Zm0 6.25a.75.75 0 0 1 .75.75v3.44l2.3 2.3a.75.75 0 0 1-1.06 1.06l-2.53-2.53a.75.75 0 0 1-.22-.53V8.75c0-.41.34-.75.76-.75Z"/>
+                </svg>
+                <h2 id="coowner-confirm-title" class="confirm-title">Bekræft Med-ejer</h2>
+                <p class="confirm-text">Du er ved at give Med-ejer-rollen. Med-ejere har udvidede rettigheder på begivenheden. Vil du fortsætte?</p>
             </div>
-        @endforeach
-    </form>
+            <div class="confirm-actions">
+                <button type="button" class="confirm-btn cancel" id="coowner-cancel-btn">Annuller</button>
+                <button type="button" class="confirm-btn success" id="coowner-confirm-btn">Bekræft</button>
+            </div>
+        </div>
+    </div>
+    @include('partials.footer')
+    <script src="{{ asset('js/organizerOverview.js') }}"></script>
 </body>
 </html>
 

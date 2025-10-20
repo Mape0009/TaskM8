@@ -203,13 +203,7 @@
 
     @auth
     @php
-    $isOwnerMenu = false; 
-    foreach ($participant as $p) {
-        if ($p->userId === auth()->id() && $event->id === $p->eventId && $p->eventRole === 'owner') {
-            $isOwnerMenu = true;
-            break;
-        }
-    }
+        $isOwnerMenu = isset($event->ownerId) && $event->ownerId === auth()->id();
     @endphp
     @if($isOwnerMenu)
     <!-- Delete Confirmation Modal -->

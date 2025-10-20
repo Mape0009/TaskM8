@@ -1,0 +1,162 @@
+html,
+body {
+    height: 100%;
+    background: var(--color-background-primary);
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: var(--color-text-primary);
+}
+.roles-wrapper {
+    max-width: 980px;
+    margin: 32px auto;
+    padding: 0 16px;
+    width: 100%;
+    flex: 1;
+}
+.roles-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.roles-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text-primary);
+}
+.search {
+    flex: 1 1 260px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.search input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+}
+.participants-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+.participant-card {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 6px 20px var(--color-shadow-light);
+}
+.participant-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.name-email {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.name {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.email {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.role-select {
+    min-width: 240px;
+    padding: 10px 36px 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: linear-gradient(
+            45deg,
+            transparent 50%,
+            var(--color-text-secondary) 50%
+        ),
+        linear-gradient(
+            135deg,
+            var(--color-text-secondary) 50%,
+            transparent 50%
+        );
+    background-position: calc(100% - 18px) calc(50% - 3px),
+        calc(100% - 12px) calc(50% - 3px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    color-scheme: light dark;
+}
+.role-select:focus {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 1px;
+    border-color: var(--color-accent-primary);
+}
+.role-select option,
+.role-select optgroup {
+    background-color: inherit;
+    color: inherit;
+}
+.btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+.btn.primary {
+    background: var(--color-accent-primary);
+    color: #fff;
+}
+.btn.ghost {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+.page-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Organizer overview confirm modal customizations */
+.confirm-modal.coowner-confirm .confirm-icon { color: var(--color-accent-primary); }
+.confirm-modal.coowner-confirm .confirm-btn.success { background: #22c55e; color: #fff; border-color: #16a34a; }
+.confirm-modal.coowner-confirm .confirm-btn.success:hover { background: #16a34a; }

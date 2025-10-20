@@ -126,7 +126,7 @@ class MailController extends Controller
             // New user doesn't have a recipientId yet; skip recording here
         }
 
-        return redirect()->back()->with('success', 'Invitationen er sendt.');
+        return redirect()->back();
     }
 
     public function getPreviousInvitees(Request $request, $eventId)
