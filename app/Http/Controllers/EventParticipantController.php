@@ -197,4 +197,30 @@ class EventParticipantController extends Controller
 
         return redirect()->back()->with('success', 'Ownership has been transferred successfully.');
     }
+
+    public function getParticipantsList($eventId)
+    {
+        $currentUser = auth()->user();
+        $participant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        
+        if (!$participant) {
+            return response()->json(['error' => 'You do not have access to this event.'], 403);
+        }
+
+        $participants = EventParticipant::where('eventId', $eventId)
+            ->with(['user'])
+            ->get()
+            ->map(function($p) {
+                return [
+                    'id' => $p->id,
+                    'name' => $p->user->name ?? 'Ukendt',
+                    'status' => $p->status,
+                    'eventRole' => $p->eventRole
+                ];
+            });
+
+        return response()->json($participants);
+    }
 }

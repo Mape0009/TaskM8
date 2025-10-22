@@ -114,6 +114,7 @@ Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'de
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
 Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
 Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
+Route::get('/events/{eventId}/participants-list', [EventParticipantController::class, 'getParticipantsList'])->middleware('auth')->name('events.participants-list');
 
 // task Routes
 Route::view('task', 'task');
