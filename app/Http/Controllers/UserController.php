@@ -17,7 +17,7 @@ class UserController extends Controller
         // Validate the request data
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => ['required', 'regex:/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i', 'unique:users,email'],
             'password' => 'required|string|min:6|confirmed',
             // Optional invitation fields
             'pin' => 'nullable|string|size:4',
@@ -115,7 +115,7 @@ class UserController extends Controller
         // Validate the request data
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
+            'email' => ['sometimes','required','regex:/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i','unique:users,email,' . $user->id],
             'password' => 'sometimes|required|string|min:8|confirmed',
         ]);
 

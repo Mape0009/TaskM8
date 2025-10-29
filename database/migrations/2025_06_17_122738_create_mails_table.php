@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('subject');
-            $table->string('body');
+            $table->text('body');
             $table->unsignedBigInteger('senderId');
             $table->unsignedBigInteger('recipientId');
             $table->dateTime('sentAt');

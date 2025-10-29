@@ -50,6 +50,12 @@ class MailController extends Controller
     public function sendEventInvites(Request $request)
     {
         Log::info('MailController@sendEventInvites was called');
+        // Validate incoming emails array with regex
+        $request->validate([
+            'emailsInvite' => 'required|array|min:1',
+            'emailsInvite.*' => ['required','regex:/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i'],
+        ]);
+
         $emails = $request->input('emailsInvite', []);
         $eventId = $request->input('eventIdInvite');
 

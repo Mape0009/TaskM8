@@ -955,7 +955,7 @@ namespace App\Models {
      * @property string $sentAt
      * @property int $recipientId
      * @property int $senderId
-     * @property string $body
+     * @property string|null $body
      * @property string $subject
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at

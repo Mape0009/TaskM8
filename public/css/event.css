@@ -58,6 +58,7 @@
     color: #334155;
     font-size: 1.08rem;
     margin-bottom: 1.5rem;
+    white-space: pre-line;
 }
 .back-btn {
     display: inline-block;
@@ -616,6 +617,7 @@ body.dark-mode .event-details-value {
     font-weight: 500;
     transition: background 0.2s, color 0.2s;
     border: 1px solid #e0e7ef;
+    white-space: pre-line;
 }
 body.dark-mode .event-details-description {
     background: #18181c;
