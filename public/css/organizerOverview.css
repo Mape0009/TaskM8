@@ -58,6 +58,7 @@ body {
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 6px 20px var(--color-shadow-light);
+    flex-wrap: wrap;
 }
 .participant-info {
     display: flex;
@@ -101,7 +102,7 @@ body {
     gap: 8px;
 }
 .role-select {
-    min-width: 240px;
+    min-width: 200px;
     padding: 10px 36px 10px 12px;
     border-radius: 10px;
     border: 1px solid var(--color-border);
@@ -171,4 +172,17 @@ body {
     border: 1px solid transparent;
     cursor: pointer;
     font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .participants-list { gap: 10px; }
+  .participant-card { padding: 12px; }
+  .actions { width: 100%; justify-content: stretch; gap: 10px; }
+  .role-select { width: 100%; min-width: 0; font-size: 16px; }
+  .btn.primary { width: 100%; justify-content: center; }
+  .page-actions { width: 100%; flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  .roles-wrapper { margin: 24px auto; padding: 0 12px; }
 }
