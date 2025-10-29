@@ -34,16 +34,47 @@ class EventController extends Controller
     public function getEventsForUser(int $userId)
     {
         $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
-        $events = Event::whereIn('id', $participantEventIds)->get();
+        $events = Event::whereIn('id', $participantEventIds)
+            ->whereNull('archived_at')
+            ->where('endDate', '>=', now())
+            ->get();
 
-        // Preload the user's EventParticipant records for these events to avoid N+1 queries
         $eventIds = $events->pluck('id')->all();
         $participantMap = EventParticipant::whereIn('eventId', $eventIds)
             ->where('userId', $userId)
             ->get()
             ->keyBy('eventId');
 
-        // Filter events by per-event permission
+        $filtered = $events->filter(function ($event) use ($participantMap) {
+            $participant = $participantMap->get($event->id);
+            $role = $participant?->eventRole ?? 'participant';
+            return Permissions::hasPermission($role, 'view-event');
+        })->values();
+
+        return $filtered;
+    }
+
+    /**
+     * Return previous (ended) events visible to a given user.
+     *
+     * @param int $userId
+     * @return \Illuminate\Support\Collection
+     */
+    public function getPreviousEventsForUser(int $userId)
+    {
+        $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
+        $events = Event::whereIn('id', $participantEventIds)
+            ->where(function($q){
+                $q->whereNotNull('archived_at')->orWhere('endDate', '<', now());
+            })
+            ->get();
+
+        $eventIds = $events->pluck('id')->all();
+        $participantMap = EventParticipant::whereIn('eventId', $eventIds)
+            ->where('userId', $userId)
+            ->get()
+            ->keyBy('eventId');
+
         $filtered = $events->filter(function ($event) use ($participantMap) {
             $participant = $participantMap->get($event->id);
             $role = $participant?->eventRole ?? 'participant';
@@ -57,6 +88,27 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         return view('events.show', compact('event'));
+    }
+
+    public function json($id)
+    {
+        if (!auth()->check()) { abort(403); }
+        $userId = auth()->id();
+        $participant = EventParticipant::where('eventId', $id)->where('userId', $userId)->first();
+        $role = $participant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'view-event')) {
+            abort(403);
+        }
+        $event = Event::findOrFail($id);
+        return response()->json([
+            'id' => $event->id,
+            'eventName' => $event->eventName,
+            'location' => $event->location,
+            'description' => $event->description,
+            'startDate' => $event->startDate,
+            'endDate' => $event->endDate,
+            'participantLimit' => $event->participantLimit,
+        ]);
     }
 
     public function create(Request $request)

@@ -216,6 +216,7 @@ class EventParticipantController extends Controller
                 return [
                     'id' => $p->id,
                     'name' => $p->user->name ?? 'Ukendt',
+                    'email' => $p->user->email ?? null,
                     'status' => $p->status,
                     'eventRole' => $p->eventRole
                 ];

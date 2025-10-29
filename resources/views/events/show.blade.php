@@ -303,6 +303,20 @@
             currentEventId = eventId;
             document.getElementById('invite-modal').style.display = 'flex';
             loadPreviousInvitees();
+            // If user chose to keep members from a template, prefill emails once
+            try {
+                const payloadRaw = localStorage.getItem('template_keep_members_payload');
+                if (payloadRaw) {
+                    const payload = JSON.parse(payloadRaw);
+                    if (payload && payload.eventId) {
+                        (payload.emails || []).forEach(e => { if (!addedEmails.includes(e)) addedEmails.push(e); });
+                        updateEmailList();
+                        // Clear after first use
+                        localStorage.removeItem('template_keep_members_payload');
+                        localStorage.removeItem('template_keep_members_event_id');
+                    }
+                }
+            } catch(_) {}
         }
 
         function closeInviteModal() {

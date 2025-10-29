@@ -17,6 +17,7 @@ if (openBtn) {
         }
         setTimeout(() => { startInput && startInput.focus(); }, 200);
         wireEventDescriptionCounter();
+        prefillFromTemplate();
     });
 }
 if (openBtnMobile) {
@@ -37,6 +38,7 @@ if (openBtnMobile) {
             document.body.style.overflow = '';
         }
         wireEventDescriptionCounter();
+        prefillFromTemplate();
     });
 }
 
@@ -76,8 +78,7 @@ if (form) {
         submitBtn.textContent = 'Opretter...';
         submitBtn.disabled = true;
         
-        // Allow the form to actually submit to the server
-        // The success message will be handled by the server redirect
+      
     });
 }
 
@@ -102,9 +103,59 @@ function wireEventDescriptionCounter() {
     updateCounter();
 }
 
+// Prefill create modal fields from a template event id in query
+function prefillFromTemplate() {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const templateEventId = params.get('templateEventId');
+        if (!templateEventId) return;
+        fetch(`/events/${templateEventId}.json`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                const title = document.getElementById('event-title');
+                const location = document.getElementById('event-location');
+                const description = document.getElementById('event-description');
+                const start = document.getElementById('event-start');
+                const end = document.getElementById('event-end');
+                const limit = document.getElementById('participant-limit');
+                if (title) title.value = data.eventName || '';
+                if (location) location.value = data.location || '';
+                if (description) { description.value = data.description || ''; }
+                if (limit) limit.value = data.participantLimit || '';
+                if (start) start.value = '';
+                if (end) end.value = '';
+                wireEventDescriptionCounter();
+            }).catch(() => {});
+    } catch(_) {}
+}
+
 // Initialize on load as well (for pages where modal is already in DOM)
 document.addEventListener('DOMContentLoaded', function() {
     wireEventDescriptionCounter();
+    try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('open') === 'create') {
+            const btn = document.querySelector('.create-event-btn-header');
+            if (btn) btn.click();
+        }
+    } catch(_) {}
+    // If template is selected, fetch event data and store for invite prefill
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const templateEventId = params.get('templateEventId');
+        if (templateEventId) {
+            const keepKey = localStorage.getItem('template_keep_members_event_id');
+            if (keepKey && keepKey === templateEventId) {
+                fetch(`/events/${templateEventId}/participants-list`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(r => r.ok ? r.json() : [])
+                    .then(list => {
+                        const emails = (list || []).map(p => p.email).filter(Boolean);
+                        localStorage.setItem('template_keep_members_payload', JSON.stringify({ eventId: templateEventId, emails }));
+                    }).catch(() => {});
+            }
+        }
+    } catch(_) {}
 });
 
 function showSuccess() {
@@ -132,21 +183,6 @@ function resetModal() {
         form.reset();
     }
     
-    // Reset repeat options
-    if (repeatCheckbox) {
-        repeatCheckbox.checked = false;
-    }
-    if (repeatOptions) {
-        repeatOptions.style.display = 'none';
-        repeatOptions.classList.remove('show');
-    }
-    if (customIntervalField) {
-        customIntervalField.style.display = 'none';
-        customIntervalField.classList.remove('show');
-    }
-    if (customInterval) {
-        customInterval.value = '';
-    }
     
     // Reset datetime inputs
     const startInput = document.getElementById('event-start');
@@ -204,7 +240,6 @@ if (openMobileBtn && mobileNavOverlay) {
         } else {
             mobileNavOverlay.classList.add('open');
             document.body.style.overflow = 'hidden';
-            // Ensure viewport does not shift due to scrollbar removal on mobile
             document.body.style.position = 'relative';
         }
     });

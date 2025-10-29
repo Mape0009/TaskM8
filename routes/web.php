@@ -39,7 +39,6 @@ Route::get('/dashboard', function () {
         $participatedEventsCount = 0;
         $pendingEventsCount = 0;
         $previousInviteesCount = 0;
-        // Ensure $participant is always defined for the dashboard view
         $participant = collect();
         $totalUsers = User::count();
         $totalEvents = Event::count();
@@ -61,7 +60,12 @@ Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
 // friends route 
 Route::get('/friends', function () {
-    return view('friends');
+    if (!auth()->check()) { return redirect('/signin'); }
+    $userId = auth()->id();
+    $controller = app(EventController::class);
+    $previousEvents = $controller->getPreviousEventsForUser($userId)->sortByDesc('endDate')->values();
+    $participant = App\Models\EventParticipant::where('userId', $userId)->get();
+    return view('friends', compact('previousEvents', 'participant'));
 })->middleware('auth');
 
 // Legal policy pages
@@ -95,6 +99,7 @@ Route::get('/user/{id}', [UserController::class, 'show']);
 Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('user.change-password')->middleware('auth');
 
 // Event Routes
+Route::get('/events/{id}.json', [EventController::class, 'json'])->middleware('auth');
 Route::get('/events/{id}', [EventController::class, 'show']);
 Route::post('/events/create', [EventController::class, 'create'])->middleware('auth')->name('events.create');
 Route::put('/events/update/{id}', [EventController::class, 'update']) ->middleware('auth')->name('events.update');
