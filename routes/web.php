@@ -31,7 +31,10 @@ Route::get('/dashboard', function () {
 
         $participatedEventsCount = $events->count();
         $pendingEventsCount = EventParticipant::where('userId', $userId)->where('status', 'pending')->count();
-        $previousInviteesCount = MailModel::where('senderId', $userId)->distinct('recipientId')->count('recipientId');
+        $previousInviteesCount = MailModel::where('senderId', $userId)
+            ->where('recipientId', '!=', $userId)
+            ->distinct('recipientId')
+            ->count('recipientId');
         $totalUsers = null;
         $totalEvents = null;
     } else {

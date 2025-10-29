@@ -40,7 +40,6 @@
                   </p>
                   <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Lokation:</strong> {{ $event['location'] ?? '' }}</p>
                   <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>
-                  <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Inviteret af:</strong> {{ $event['inviter_email'] ?? '' }}</p>
                 </td></tr>
               </table>
               <h2 style="font-size:20px; margin-bottom:12px; color:#1a73e8;">Bekræft din deltagelse</h2>

@@ -8,10 +8,10 @@
         </div>
         <nav class="navigation" id="main-nav">
             <ul>
-                <li><a href="/dashboard" class="<?php echo e($currentPage == 'dashboard' ? 'active' : ''); ?>">Forside</a></li>
+                <li><a href="/dashboard" class="<?php echo e($currentPage == 'dashboard' ? 'active' : ''); ?>">Oversigt</a></li>
                 <?php if(Auth::check()): ?>
                 <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
-                <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Grupper</a></li>
+                <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Afsluttede</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
@@ -236,10 +236,10 @@ unset($__errorArgs, $__bag); ?>
         </header>
         <nav class="mnav__nav" aria-label="Primær">
             <ul class="mnav__list">
-                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'dashboard' ? 'is-active' : ''); ?>" href="/dashboard">Forside</a></li>
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'dashboard' ? 'is-active' : ''); ?>" href="/dashboard">Oversigt</a></li>
                 <?php if(Auth::check()): ?>
                 <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'events' ? 'is-active' : ''); ?>" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'groups' ? 'is-active' : ''); ?>" href="/groups">Grupper</a></li>
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'groups' ? 'is-active' : ''); ?>" href="/groups">Afsluttede</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

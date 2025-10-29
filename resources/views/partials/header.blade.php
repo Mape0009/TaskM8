@@ -8,10 +8,10 @@
         </div>
         <nav class="navigation" id="main-nav">
             <ul>
-                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Forside</a></li>
+                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Oversigt</a></li>
                 @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
-                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Grupper</a></li>
+                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Afsluttede</a></li>
                 @endif
             </ul>
         </nav>
@@ -222,10 +222,10 @@
         </header>
         <nav class="mnav__nav" aria-label="Primær">
             <ul class="mnav__list">
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">Forside</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">Oversigt</a></li>
                 @if (Auth::check())
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'events' ? 'is-active' : '' }}" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'groups' ? 'is-active' : '' }}" href="/groups">Grupper</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'groups' ? 'is-active' : '' }}" href="/groups">Afsluttede</a></li>
                 @endif
             </ul>
         </nav>

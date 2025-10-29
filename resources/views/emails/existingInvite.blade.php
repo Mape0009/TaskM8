@@ -38,7 +38,6 @@
                   </p>
                   <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Lokation:</strong> {{ $event['location'] ?? '' }}</p>
                   <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>
-                  <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Inviteret af:</strong> {{ $event['inviter_email'] ?? '' }}</p>
                 </td></tr>
               </table>
               <p style="margin-bottom:16px;">Du er allerede oprettet i TaskM8, og er blevet tilføjet til begivenheden.<br>Du kan se og opdatere din deltagelse her:</p>
