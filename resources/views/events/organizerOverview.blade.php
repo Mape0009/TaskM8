@@ -72,7 +72,7 @@
                             $eventRole::taskWorker->name => 'Opgavemedlem',
                             $eventRole::participant->name => 'Deltager',
                         ]; @endphp
-                        <form action="{{ route('events.roleUpdate') }}" method="POST" class="role-form" style="display:flex; gap:8px; align-items:center;">
+                        <form action="{{ route('events.roleUpdate') }}" method="POST" class="role-form">
                             @csrf
                             <input type="hidden" name="participantId" value="{{ $participant->id }}">
                             <select class="role-select" name="eventRole" @disabled($isOwnerTarget || $isSelf)>
