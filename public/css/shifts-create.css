@@ -143,7 +143,7 @@ html.dark-mode {
     box-shadow: var(--shadow-lg);
     padding: var(--spacing-3xl);
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* allow inputs/menus to render fully on small screens */
     animation: slideInUp 0.6s ease-out;
 }
 
@@ -274,13 +274,13 @@ html.dark-mode {
 
 /* Form Styles */
 .task-form-wrapper {
-    background: var(--color-background-primary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-2xl);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0; /* let steps use the full available width */
     position: relative;
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    overflow: visible;
+    box-shadow: none;
 }
 
 
@@ -291,7 +291,8 @@ html.dark-mode {
 }
 
 /* Step Wizard */
-.form-step { background: var(--color-background-primary); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-xl); box-shadow: var(--shadow-sm); }
+.form-step { background: var(--color-background-primary); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-md); box-shadow: var(--shadow-sm); }
+.form-step { width: 100%; }
 .form-step:hover { box-shadow: var(--shadow-md); }
 .step-header { display: flex; align-items: center; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 2px solid var(--color-border); }
 .step-number { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--color-accent-primary); color: #fff; font-weight: 800; box-shadow: 0 4px 12px var(--color-shadow-dark); }
@@ -302,7 +303,7 @@ html.dark-mode {
 .review-card { background: var(--color-background-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--spacing-xl); }
 .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg); }
 .review-label { font-weight: 700; color: var(--color-text-secondary); font-size: 0.9rem; }
-.review-value { font-weight: 800; color: var(--color-text-primary); }
+.review-value { font-weight: 800; color: var(--color-text-primary); word-break: break-word; overflow-wrap: anywhere; }
 
 /* Form Actions Layout Helpers */
 .form-actions-end { justify-content: flex-end; }
@@ -317,9 +318,12 @@ html.dark-mode {
 
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--spacing-xl);
 }
+
+.form-row > .form-group { min-width: 0; }
+.form-group { min-width: 0; }
 
 .form-label {
     font-size: 0.875rem;
@@ -338,7 +342,8 @@ html.dark-mode {
 }
 
 .form-input,
-.form-select {
+.form-select,
+input[type="datetime-local"] {
     padding: var(--spacing-md) var(--spacing-lg);
     border: 2px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -347,8 +352,11 @@ html.dark-mode {
     color: var(--color-text-primary);
     transition: var(--transition-normal);
     width: 100%;
+    max-width: 100%;
     min-height: 44px;
 }
+
+input[type="datetime-local"] { -webkit-appearance: none; appearance: none; }
 
 .form-input:focus,
 .form-select:focus {
@@ -510,12 +518,23 @@ html.dark-mode {
         font-size: 1.5rem;
     }
     
+    .form-input,
+    .form-select {
+        font-size: 16px; /* Prevent iOS zoom and layout shifts */
+    }
+
     .form-row { grid-template-columns: 1fr; gap: var(--spacing-lg); }
     .step-header { flex-direction: column; align-items: flex-start; }
+    .review-grid { grid-template-columns: 1fr; }
     
     .form-actions {
         flex-direction: column;
         gap: var(--spacing-md);
+    }
+
+    .form-actions-inline {
+        flex-direction: column;
+        width: 100%;
     }
     
     .btn {

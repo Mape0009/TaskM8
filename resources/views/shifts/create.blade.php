@@ -48,11 +48,11 @@
                     @csrf
 
                     <div class="form-step" data-step="1">
-                        <div class="step-header" style="display:flex;align-items:center;gap:1rem;border-bottom:2px solid var(--color-border);padding-bottom:1rem;margin-bottom:1rem;">
-                            <div class="step-number" style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--color-accent-primary);color:#fff;font-weight:800;">1</div>
+                        <div class="step-header">
+                            <div class="step-number">1</div>
                             <div class="step-content">
-                                <h3 style="margin:0;font-weight:800;color:var(--color-text-primary)">Vælg person</h3>
-                                <p style="margin:2px 0 0 0;color:var(--color-text-secondary)">Tildel vagten til en deltager</p>
+                                <h3>Vælg person</h3>
+                                <p>Tildel vagten til en deltager</p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -71,12 +71,12 @@
                         </div>
                     </div>
 
-                    <div class="form-step" data-step="2" hidden>
-                        <div class="step-header" style="display:flex;align-items:center;gap:1rem;border-bottom:2px solid var(--color-border);padding-bottom:1rem;margin-bottom:1rem;">
-                            <div class="step-number" style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--color-accent-primary);color:#fff;font-weight:800;">2</div>
+                        <div class="form-step" data-step="2" hidden>
+                        <div class="step-header">
+                            <div class="step-number">2</div>
                             <div class="step-content">
-                                <h3 style="margin:0;font-weight:800;color:var(--color-text-primary)">Tidsrum</h3>
-                                <p style="margin:2px 0 0 0;color:var(--color-text-secondary)">Vælg start- og sluttid</p>
+                                <h3>Tidsrum</h3>
+                                <p>Vælg start- og sluttid</p>
                             </div>
                         </div>
                         <div class="form-row">
@@ -95,44 +95,40 @@
                                        @if($task->event && $task->event->endDate) max="{{ \Carbon\Carbon::parse($task->event->endDate)->format('Y-m-d\TH:i') }}" @endif>
                             </div>
                         </div>
-                        <div class="form-actions" style="display:flex;justify-content:space-between;gap:12px">
+                        <div class="form-actions form-actions-split">
                             <button type="button" class="btn secondary-btn" data-prev>Tilbage</button>
                             <button type="button" class="btn primary-btn" data-next>Fortsæt</button>
                         </div>
                     </div>
 
                     <div class="form-step" data-step="3" hidden>
-                        <div class="step-header" style="display:flex;align-items:center;gap:1rem;border-bottom:2px solid var(--color-border);padding-bottom:1rem;margin-bottom:1rem;">
-                            <div class="step-number" style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--color-accent-primary);color:#fff;font-weight:800;">3</div>
+                        <div class="step-header">
+                            <div class="step-number">3</div>
                             <div class="step-content">
-                                <h3 style="margin:0;font-weight:800;color:var(--color-text-primary)">Bekræft</h3>
-                                <p style="margin:2px 0 0 0;color:var(--color-text-secondary)">Tjek oplysningerne og opret vagten</p>
+                                <h3>Bekræft</h3>
+                                <p>Tjek oplysningerne og opret vagten</p>
                             </div>
                         </div>
-                        <div class="form-group" style="background:var(--color-background-secondary);border:1px solid var(--color-border);border-radius:12px;padding:16px;">
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div class="form-group review-card">
+                            <div class="review-grid">
                                 <div>
-                                    <div style="font-weight:700;color:var(--color-text-secondary);font-size:0.9rem;">Person</div>
-                                    <div id="reviewUser" style="font-weight:800;color:var(--color-text-primary);"></div>
+                                    <div class="review-label">Person</div>
+                                    <div id="reviewUser" class="review-value"></div>
                                 </div>
                                 <div>
-                                    <div style="font-weight:700;color:var(--color-text-secondary);font-size:0.9rem;">Start</div>
-                                    <div id="reviewStart" style="font-weight:800;color:var(--color-text-primary);"></div>
+                                    <div class="review-label">Start</div>
+                                    <div id="reviewStart" class="review-value"></div>
                                 </div>
                                 <div>
-                                    <div style="font-weight:700;color:var(--color-text-secondary);font-size:0.9rem;">Slut</div>
-                                    <div id="reviewEnd" style="font-weight:800;color:var(--color-text-primary);"></div>
+                                    <div class="review-label">Slut</div>
+                                    <div id="reviewEnd" class="review-value"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-actions" style="display:flex;justify-content:space-between;gap:12px">
-                            <button type="button" class="btn secondary-btn" data-prev>Tilbage</button>
-                            <div style="display:flex;gap:12px;">
+                        <div class="form-actions form-actions-split">
+                            <div class="form-actions-inline">
                                 <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn secondary-btn">Annuller</a>
-                                <button type="submit" class="btn primary-btn">
-                                    <i class="fas fa-plus"></i>
-                                    Opret Vagt
-                                </button>
+                                <button type="submit" class="btn primary-btn"><i class="fas fa-plus"></i>Opret Vagt</button>
                             </div>
                         </div>
                     </div>
