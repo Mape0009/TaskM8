@@ -54,7 +54,7 @@
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td align="center">
-                    <a href="{{ $event['invite_url'] ?? (url('/signup') . '?email=' . urlencode($event['invite_email'] ?? '') . '&pin=' . urlencode($event['pin_code'] ?? '') . '&event=' . urlencode($event['id'] ?? '')) }}" style="display:inline-block; background:linear-gradient(to right,#1a73e8,#3b82f6); color:#fff !important; padding:14px 32px; border-radius:8px; font-weight:600; text-decoration:none; font-size:16px; box-shadow:0 3px 10px rgba(26,115,232,0.3); transition:background 0.2s ease, transform 0.2s ease;">➡️ Opret konto og deltag</a>
+                    <a href="{{ $event['invite_url'] ?? (url('/signup') . '?email=' . urlencode($event['invite_email'] ?? '') . '&pin=' . urlencode($event['pin_code'] ?? '') . '&event=' . urlencode($event['id'] ?? '')) }}" style="display:inline-block; background:linear-gradient(to right,#1a73e8,#3b82f6); padding:14px 32px; border-radius:8px; font-weight:600; text-decoration:none; font-size:16px; box-shadow:0 3px 10px rgba(26,115,232,0.3); transition:background 0.2s ease, transform 0.2s ease;">➡️ Opret konto og deltag</a>
                   </td>
                 </tr>
               </table>
