@@ -1268,8 +1268,7 @@ body.dark-mode .rsvp-menu-item:active {
         border-radius: 8px;
     }
     .rsvp-status {
-        padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 0.875);
-        font-size: calc(var(--spacing-unit) * 1.375);
+        display: none;
     }
     .secondary-btn .arrow-icon {
         width: calc(var(--spacing-unit) * 1.5); /* 12px */
@@ -1366,6 +1365,7 @@ body.dark-mode .rsvp-menu-item:active {
         height: calc(var(--spacing-unit) * 1.5); /* 12px */
     }
 }
+
 
 /* Mobile-only larger CTA for guest dashboard */
 @media (max-width: 576px) {
