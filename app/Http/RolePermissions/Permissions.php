@@ -74,6 +74,8 @@ class Permissions
             'view-event',
             'view-participants',
             'respond-event',
+            'view-task',
+            'view-shift',
         ];
 
         public static function forRole(string $role): array
