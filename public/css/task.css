@@ -135,6 +135,10 @@ body.dark-mode .assignee-avatar { background: #2a2a30; }
     position: relative;
 }
 
+form-row {
+    margin-bottom: 16px;
+}
+
 /* User search bar on create task */
 .form-row.search-bar {
     position: static;

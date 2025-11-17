@@ -76,6 +76,32 @@
     </div>
 </div>
 
+<style>
+    @media (max-width: 2400px) {
+    .form-row {
+        margin-bottom: 16px;
+    }
+
+    .edit-container {
+        display: block;
+        padding: 4rem 8rem;
+    }
+    .btn.primary-btn {
+        padding: 1rem 1.5rem;
+    }
+}
+    @media (max-width: 430px) {
+    .edit-container {
+        padding: 2rem 1rem;
+    }
+    .form-row {
+        margin-bottom: 2rem;
+    }
+
+}
+</style>
+
 </body>
 </html>
+
 

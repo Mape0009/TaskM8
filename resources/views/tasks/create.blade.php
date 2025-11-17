@@ -112,7 +112,6 @@
     /* Form Steps */
     .form-step {
         background: var(--color-background-primary);
-        border: 1px solid var(--color-border);
         border-radius: var(--radius-lg);
         padding: calc(var(--spacing-unit) * 4);
         margin-bottom: calc(var(--spacing-unit) * 3);

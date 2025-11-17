@@ -187,7 +187,7 @@ ol {
     background: var(--color-accent-primary);
 }
 .btn.primary-btn:hover {
-    background: var(--color-accent-primary-700);
+    background-color: #0056b3; 
 }
 .btn.secondary-btn {
     color: var(--color-accent-primary);
@@ -195,8 +195,7 @@ ol {
     border-color: var(--color-accent-primary);
 }
 .btn.secondary-btn:hover {
-    color: var(--color-text-accent);
-    border-color: var(--color-text-accent);
+    background-color: #0056b3; 
     background: var(--color-background-tertiary);
 }
 .btn.danger-btn {
@@ -960,7 +959,8 @@ body {
 
 /* 25) DARK MODE ENHANCEMENTS */
 html.dark-mode .btn.secondary-btn:hover {
-    background: rgba(255, 255, 255, 0.04);
+        background-color: #0056b3; 
+    background: var(--color-background-tertiary);
 }
 html.dark-mode .time-item {
     background: rgba(255, 255, 255, 0.03);
