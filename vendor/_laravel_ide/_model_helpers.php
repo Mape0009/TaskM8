@@ -952,6 +952,18 @@ namespace App\Models {
     /**
      * App\Models\Group
      *
+     * @property bool $private
+     * @property string|null $description
+     * @property string $groupName
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereUpdatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereGroupname($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group wherePrivate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group query()
@@ -1251,6 +1263,18 @@ namespace App\Models {
     /**
      * App\Models\GroupMember
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int $userId
+     * @property int $groupId
+     * @property int $id
+     * @property-read \App\Models\Group $group
+     * @property-read \App\Models\User $user
+     * @method static \Illuminate\Database\Eloquent\Builder<GroupMember>|GroupMember whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GroupMember>|GroupMember whereGroupid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GroupMember>|GroupMember whereUserid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GroupMember>|GroupMember whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GroupMember>|GroupMember whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<GroupMember>|GroupMember newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<GroupMember>|GroupMember newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<GroupMember>|GroupMember query()
