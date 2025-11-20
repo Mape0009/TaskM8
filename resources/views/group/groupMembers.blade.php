@@ -6,7 +6,7 @@
     <title>Group Overview</title>
 </head>
 <body>
-    <h1>Group Overview</h1>
+    <h1>Group Member Overview</h1>
     @foreach ($groupMembers as $groupMember)
         <div>
             <h2>{{ $groupMember->userId }}</h2>
