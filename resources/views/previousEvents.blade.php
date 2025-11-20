@@ -19,11 +19,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    @include('partials.header', ['currentPage' => 'friends'])
+    @include('partials.header', ['currentPage' => 'previousEvents'])
 
     <main class="main-content-full">
         
-        <section class="friends-listing">
+        <section class="previous-events-listing">
             <h2>Tidligere begivenheder</h2>
             <div class="event-list">
                 @php \Carbon\Carbon::setLocale('da'); @endphp

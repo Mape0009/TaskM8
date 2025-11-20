@@ -11,7 +11,7 @@
                 <li><a href="/dashboard" class="<?php echo e($currentPage == 'dashboard' ? 'active' : ''); ?>">Oversigt</a></li>
                 <?php if(Auth::check()): ?>
                 <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
-                <li><a href="/friends" class="<?php echo e($currentPage == 'friends' ? 'active' : ''); ?>">Afsluttede</a></li>
+                <li><a href="/previousEvents" class="<?php echo e($currentPage == 'previousEvents' ? 'active' : ''); ?>">Afsluttede</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

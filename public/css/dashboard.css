@@ -288,7 +288,7 @@ body {
 
 .upcoming-events,
 .event-listing,
-.friends-listing {
+.previous-events-listing {
     background-color: transparent;
     padding: 0;
     border-radius: 0;
@@ -511,7 +511,7 @@ html.dark-mode .metric { background: rgba(255,255,255,0.02); }
 
 .upcoming-events h2,
 .event-listing h2,
-.friends-listing h2 {
+.previous-events-listing h2 {
     font-size: calc(var(--spacing-unit) * 4); /* 32px */
     color: var(--color-text-primary);
     margin-bottom: calc(var(--spacing-unit) * 3.5); /* 28px */
@@ -1140,15 +1140,15 @@ body.dark-mode .rsvp-menu-item:active {
     }
     .upcoming-events h2,
     .event-listing h2,
-    .friends-listing h2 {
+    .previous-events-listing h2 {
         font-size: calc(var(--spacing-unit) * 3.5); /* 28px */
     }
     .event-list,
-    .friend-list {
+    .previous-events-list {
         grid-template-columns: 1fr;
     }
     .event-card,
-    .friend-card {
+    .previous-events-card {
         padding: calc(var(--spacing-unit) * 2.5); /* 20px */
     }
     .event-card h3 {
@@ -1231,11 +1231,11 @@ body.dark-mode .rsvp-menu-item:active {
     }
     .upcoming-events h2,
     .event-listing h2,
-    .friends-listing h2 {
+    .previous-events-listing h2 {
         font-size: calc(var(--spacing-unit) * 2.75); /* 22px */
     }
     .event-card,
-    .friend-card {
+    .previous-events-card {
         padding: calc(var(--spacing-unit) * 1.75); /* 14px */
     }
     .event-card h3 {
@@ -1335,7 +1335,7 @@ body.dark-mode .rsvp-menu-item:active {
     }
     .upcoming-events h2,
     .event-listing h2,
-    .friends-listing h2 {
+    .previous-events-listing h2 {
         font-size: calc(var(--spacing-unit) * 2.75); /* 22px */
     }
     .event-card,

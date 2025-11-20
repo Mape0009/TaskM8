@@ -11,7 +11,7 @@
                 <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Oversigt</a></li>
                 @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
-                <li><a href="/friends" class="{{ $currentPage == 'friends' ? 'active' : '' }}">Afsluttede</a></li>
+                <li><a href="/previousEvents" class="{{ $currentPage == 'previousEvents' ? 'active' : '' }}">Afsluttede</a></li>
                 @endif
             </ul>
         </nav>

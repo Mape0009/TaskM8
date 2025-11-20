@@ -61,14 +61,14 @@ Route::post('test', [MailController::class, 'sendEventInvites'])->name('events.i
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
-// friends route 
-Route::get('/friends', function () {
+// previousEvents route 
+Route::get('/previousEvents', function () {
     if (!auth()->check()) { return redirect('/signin'); }
     $userId = auth()->id();
     $controller = app(EventController::class);
     $previousEvents = $controller->getPreviousEventsForUser($userId)->sortByDesc('endDate')->values();
     $participant = App\Models\EventParticipant::where('userId', $userId)->get();
-    return view('friends', compact('previousEvents', 'participant'));
+    return view('previousEvents', compact('previousEvents', 'participant'));
 })->middleware('auth');
 
 // Legal policy pages
