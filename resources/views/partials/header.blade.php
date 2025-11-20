@@ -12,6 +12,8 @@
                 @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
                 <li><a href="/previousEvents" class="{{ $currentPage == 'previousEvents' ? 'active' : '' }}">Afsluttede</a></li>
+                <li><a href="/groups/overview" class="{{ $currentPage == 'groups' ? 'active' : '' }}">Grupper</a></li>
+
                 @endif
             </ul>
         </nav>
