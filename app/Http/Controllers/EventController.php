@@ -35,7 +35,6 @@ class EventController extends Controller
     {
         $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
         $events = Event::whereIn('id', $participantEventIds)
-            ->whereNull('archived_at')
             ->where('endDate', '>=', now())
             ->get();
 
@@ -65,7 +64,7 @@ class EventController extends Controller
         $participantEventIds = EventParticipant::where('userId', $userId)->pluck('eventId');
         $events = Event::whereIn('id', $participantEventIds)
             ->where(function($q){
-                $q->whereNotNull('archived_at')->orWhere('endDate', '<', now());
+                $q->where('endDate', '<', now());
             })
             ->get();
 
