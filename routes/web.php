@@ -52,8 +52,7 @@ Route::get('/dashboard', function () {
 });
 
 
-Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
-Route::view('groups/create', 'group.groupCreation');
+Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');   
 
 
 Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
@@ -184,7 +183,11 @@ Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tas
 Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
 
 // Group routes
-Route::post('/groups/create', [GroupController::class, 'create'])->name('groups.create');
+Route::view('groups/create', 'group.groupCreation');
+Route::view('groups/overview', 'group.groupOverview');
+Route::post('groups/create', [GroupController::class, 'create'])->name('groups.create');
+Route::get('groups/overview', [GroupController::class, 'index'])->name('groups.overview');
+Route::delete('groups/delete/{id}', [GroupController::class, 'delete'])->name('groups.delete');
 
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);

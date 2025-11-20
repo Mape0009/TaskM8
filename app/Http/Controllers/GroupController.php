@@ -10,7 +10,7 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all()->where('private', false);
-        return response()->json($groups);
+        return view('group.groupOverview', ['groups' => $groups]);
     }
 
     public function create(Request $request)
@@ -21,7 +21,7 @@ class GroupController extends Controller
         $group->private = $request->boolean('private');
         $group->save();
 
-        return response()->json($group, 201);
+        return redirect()->route('groups.overview');
     }
 
     public function show($id)
@@ -53,6 +53,6 @@ class GroupController extends Controller
             return response()->json(['message' => 'Group not found'], 404);
         }
         $group->delete();
-        return response()->json(['message' => 'Group deleted successfully']);
+        return redirect()->route('groups.overview');
     }
 }
