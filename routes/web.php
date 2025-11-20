@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\GroupController;
 
 
 Route::get('/', function () {
@@ -52,6 +53,7 @@ Route::get('/dashboard', function () {
 
 
 Route::view('/events/{id}/edit', 'events.edit')->middleware('auth')->name('events.edit');
+Route::view('groups/create', 'group.groupCreation');
 
 
 Route::post('/events/{eventId}/invite', [MailController::class, 'sendEventInvites'])->name('events.invite');
@@ -180,6 +182,9 @@ Route::put('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'update'
 Route::delete('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'destroy'])->name('tasks.shifts.destroy');
 Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tasks.join');
 Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
+
+// Group routes
+Route::post('/groups/create', [GroupController::class, 'create'])->name('groups.create');
 
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
