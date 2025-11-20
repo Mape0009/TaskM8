@@ -121,12 +121,9 @@ Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
 Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
-<<<<<<< Updated upstream
-Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
 Route::get('/events/{eventId}/participants-list', [EventParticipantController::class, 'getParticipantsList'])->middleware('auth')->name('events.participants-list');
-=======
 Route::post('/organizerOverview/roleUpdate/{participantId}', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
->>>>>>> Stashed changes
+
 
 // task Routes
 Route::view('task', 'task');
