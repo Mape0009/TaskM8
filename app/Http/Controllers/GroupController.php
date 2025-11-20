@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\GroupMember;
 
 class GroupController extends Controller
 {
@@ -20,6 +21,11 @@ class GroupController extends Controller
         $group->description = $request->input('description');
         $group->private = $request->boolean('private');
         $group->save();
+
+        $groupMember = new GroupMember();
+        $groupMember->groupId = $group->id;
+        $groupMember->userId = auth()->id();
+        $groupMember->save();
 
         return redirect()->route('groups.overview');
     }

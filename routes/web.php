@@ -16,6 +16,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\GroupMemberController;
 
 
 Route::get('/', function () {
@@ -188,6 +189,12 @@ Route::view('groups/overview', 'group.groupOverview');
 Route::post('groups/create', [GroupController::class, 'create'])->name('groups.create');
 Route::get('groups/overview', [GroupController::class, 'index'])->name('groups.overview');
 Route::delete('groups/delete/{id}', [GroupController::class, 'delete'])->name('groups.delete');
+
+
+// Group Member routes
+Route::view('groups/members/{groupId}', 'group.groupMembers');
+Route::get('groups/members/{groupId}', [GroupMemberController::class, 'index'])->name('groupMember.index');
+Route::delete('groupMember/delete/{id}', [GroupMemberController::class, 'delete'])->name('groupMember.delete');
 
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
