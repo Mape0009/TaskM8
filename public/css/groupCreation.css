@@ -1,40 +1,48 @@
-.edit-container {
+.group-container {
     max-width: 880px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
-.edit-card {
+.group-card {
     background: var(--color-background-secondary);
     border: 1px solid var(--color-border);
     border-radius: 16px;
     box-shadow: 0 10px 30px var(--color-shadow-light);
     padding: 2rem;
 }
-.edit-header {
+.group-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1.5rem;
 }
-.edit-title {
+.group-title {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.2px;
     color: var(--color-text-primary);
 }
-.edit-form .form-row {
+.group-form .group-row {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
-.edit-form label {
+
+.group-name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.group-form label {
     font-weight: 600;
     color: var(--color-text-primary);
 }
-.edit-form input[type="text"],
-.edit-form input[type="datetime-local"],
-.edit-form textarea {
+.group-form input[type="text"],
+.group-form input[type="datetime-local"],
+.group-form textarea {
     border: 2.2px solid var(--color-border);
     background: var(--color-label-background-primary);
     color: var(--color-text-primary);
@@ -43,7 +51,7 @@
     font: inherit;
 }
 
-.edit-form input[type="datetime-local"] {
+.group-form input[type="datetime-local"] {
     max-width: 100%;
     min-width: 0;
     -webkit-appearance: none;
@@ -52,7 +60,7 @@
 
 /* iPhone 16 specific fixes */
 @media screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) {
-    .edit-form input[type="datetime-local"] {
+    .group-form input[type="datetime-local"] {
         width: 100%;
         max-width: 100%;
         min-width: 0;
@@ -63,7 +71,7 @@
 
 /* iPhone 16 Plus specific fixes */
 @media screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) {
-    .edit-form input[type="datetime-local"] {
+    .group-form input[type="datetime-local"] {
         width: 100%;
         max-width: 100%;
         min-width: 0;
@@ -73,7 +81,7 @@
 }
 
 @media (max-width: 600px) {
-    .edit-form input[type="datetime-local"] {
+    .group-form input[type="datetime-local"] {
         width: 100%;
         max-width: 100%;
         min-width: 0;
@@ -87,7 +95,7 @@
 /* iPhone 16 Pro and Pro Max fixes */
 @media screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3),
        screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) {
-    .edit-form input[type="datetime-local"] {
+    .group-form input[type="datetime-local"] {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
@@ -101,24 +109,24 @@
 
 /* Fallback for all iOS devices */
 @supports (-webkit-touch-callout: none) {
-    .edit-form input[type="datetime-local"] {
+    .group-form input[type="datetime-local"] {
         -webkit-appearance: none;
         appearance: none;
         max-width: 100%;
         min-width: 0;
     }
 }
-.edit-form textarea {
+.group-form textarea {
     resize: vertical;
     min-height: 120px;
     width: 100%;
     box-sizing: border-box;
 }
-.edit-form textarea#description {
+.group-form textarea#description {
     min-height: 120px;
 }
 
-.edit-form #description-counter {
+.group-form #description-counter {
     position: absolute;
     bottom: 6px;
     right: 8px;
@@ -126,7 +134,7 @@
     color: var(--color-text-secondary);
     pointer-events: none;
 }
-.edit-grid {
+.group-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
@@ -148,13 +156,13 @@
 
 
 @media (max-width: 768px) {
-    .edit-grid {
+    .group-grid {
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 600px) {
-    .edit-form textarea#description {
+    .group-form textarea#description {
         min-height: 140px;
         font-size: 16px;
         padding-bottom: 22px; 
@@ -164,7 +172,7 @@
 }
 
 @media (max-width: 768px) {
-    .edit-form textarea#description {
+    .group-form textarea#description {
         width: 100%;
         max-width: 100%;
         min-width: 0;
