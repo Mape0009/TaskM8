@@ -34,11 +34,11 @@
                 <div class="edit-grid">
                     <div class="form-row">
                         <label for="startDate">Start tidspunkt</label>
-                        <input type="datetime-local" id="startDate" name="startDate" value="{{ old('startDate', \Carbon\Carbon::parse($event->startDate)->format('Y-m-d\TH:i')) }}" required />
+                        <input type="datetime-local" class="date-input" id="startDate" name="startDate" value="{{ old('startDate', \Carbon\Carbon::parse($event->startDate)->format('Y-m-d\TH:i')) }}" required />
                     </div>
                     <div class="form-row">
                         <label for="endDate">Slut tidspunkt</label>
-                        <input type="datetime-local" id="endDate" name="endDate" value="{{ old('endDate', \Carbon\Carbon::parse($event->endDate)->format('Y-m-d\TH:i')) }}" required />
+                        <input type="datetime-local" class="date-input" id="endDate" name="endDate" value="{{ old('endDate', \Carbon\Carbon::parse($event->endDate)->format('Y-m-d\TH:i')) }}" required />
                     </div>
                 </div>
 

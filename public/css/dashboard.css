@@ -1,6 +1,7 @@
 :root {
     /* Light Theme Colors */
-    --color-background-primary: #f4f5f7;
+    --color-background-primary: #F9FAFB;
+    --color-label-background-primary: #FFFFFF;
     --color-background-secondary: #f9fafb;
     --color-background-tertiary: #e9ecef;
     --color-text-primary: #23272f;
@@ -19,7 +20,8 @@
 html.dark-mode,
 body.dark-mode {
     /* Dark Theme  */
-    --color-background-primary: #131317;
+    --color-background-primary: #09090B;
+    --color-label-background-primary: #353541;
     --color-background-secondary: #18181c;
     --color-background-tertiary: #1f1f24;
     --color-text-primary: #f0f0f0;
