@@ -13,7 +13,10 @@
     @include('partials.header', ['currentPage' => 'dashboard'])
 
     <main class="overview-container">
-        <h1 class="overview-title">Gruppeoversigt</h1>
+        <div class="overview-header">
+            <h1 class="overview-title">Gruppeoversigt</h1>
+            <a href="{{ url('groups/create') }}" class="btn create-btn">Opret gruppe</a>
+        </div>
 
         @if($groups->isEmpty())
             <p class="no-groups">Ingen grupper oprettet endnu.</p>
@@ -23,7 +26,9 @@
                     <div class="group-card">
                         <div class="group-card-header">
                             <h2>{{ $group->groupName }}</h2>
-                            <span class="group-private">{{ $group->private ? 'Privat' : 'Offentlig' }}</span>
+                            <span class="group-private {{ $group->private ? 'private' : 'public' }}">
+                                {{ $group->private ? 'Privat' : 'Offentlig' }}
+                            </span>
                         </div>
                         <p class="group-description">{{ $group->description }}</p>
                         <form action="{{ route('groups.delete', ['id' => $group->id]) }}" method="POST" class="delete-form">

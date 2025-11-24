@@ -39,7 +39,10 @@
 
         <div class="form-actions">
         <button type="submit" class="btn primary-btn">Opret gruppe</button>
+        <a href="{{ url('/groups/overview') }}" class="btn secondary-btn">Annuller</a>
+
         </div>
+        
                    </div>
             </form>
         </div>

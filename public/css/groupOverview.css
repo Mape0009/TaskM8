@@ -1,16 +1,37 @@
 .overview-container {
-    max-width: 1000px;
+    max-width: 1500px;
     margin: 2rem auto;
     padding: 0 1rem;
     font-family: 'Inter', sans-serif;
+}
+
+.overview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
 }
 
 .overview-title {
     font-size: 2rem;
     font-weight: 700;
     color: var(--color-text-primary, #111);
-    margin-bottom: 2rem;
-    text-align: center;
+    margin: 0;
+}
+
+.btn.create-btn {
+    background-color: var(--color-accent-primary, #4cc9f0);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.btn.create-btn:hover {
+    background-color: var(--color-accent-primary);
 }
 
 .no-groups {
@@ -21,7 +42,7 @@
 
 .groups-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
 }
 
@@ -30,16 +51,9 @@
     border: 1px solid var(--color-border, #ddd);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.group-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
 .group-card-header {
@@ -60,9 +74,17 @@
     font-size: 0.85rem;
     font-weight: 600;
     color: #fff;
-    background-color: #4cc9f0;
-    padding: 0.2rem 0.6rem;
+    padding: 0.25rem 0.6rem;
     border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.group-private.private {
+    background-color: #ff4c4c; 
+}
+
+.group-private.public {
+    background-color: var(--color-accent-primary); 
 }
 
 .group-description {
@@ -92,6 +114,12 @@
 }
 
 @media (max-width: 600px) {
+    .overview-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
     .group-card-header h2 {
         font-size: 1.1rem;
     }
