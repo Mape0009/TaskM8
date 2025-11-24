@@ -3,26 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group Overview | TaskM8</title>
+    <title>Gruppeoversigt | TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/groupoverview.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-     @include('partials.header', ['currentPage' => 'dashboard'])
+    @include('partials.header', ['currentPage' => 'dashboard'])
 
-    <h1>Group Overview</h1>
-    @foreach ($groups as $group)
-        <div>
-            <h2>{{ $group->groupName }}</h2>
-            <p>{{ $group->description }}</p>
-            <p>Private: {{ $group->private ? 'Yes' : 'No' }}</p>
-            <form action="{{ route('groups.delete', ['id' => $group->id]) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Delete</button>
-            </form>
-        </div>   
-    @endforeach
+    <main class="overview-container">
+        <h1 class="overview-title">Gruppeoversigt</h1>
+
+        @if($groups->isEmpty())
+            <p class="no-groups">Ingen grupper oprettet endnu.</p>
+        @else
+            <div class="groups-grid">
+                @foreach ($groups as $group)
+                    <div class="group-card">
+                        <div class="group-card-header">
+                            <h2>{{ $group->groupName }}</h2>
+                            <span class="group-private">{{ $group->private ? 'Privat' : 'Offentlig' }}</span>
+                        </div>
+                        <p class="group-description">{{ $group->description }}</p>
+                        <form action="{{ route('groups.delete', ['id' => $group->id]) }}" method="POST" class="delete-form">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn delete-btn">Slet</button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </main>
 </body>
 </html>

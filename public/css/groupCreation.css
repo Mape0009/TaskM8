@@ -3,6 +3,7 @@
     margin: 2rem auto;
     padding: 0 1rem;
 }
+
 .group-card {
     background: var(--color-background-secondary);
     border: 1px solid var(--color-border);
@@ -10,23 +11,25 @@
     box-shadow: 0 10px 30px var(--color-shadow-light);
     padding: 2rem;
 }
+
 .group-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1.5rem;
 }
+
 .group-title {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.2px;
     color: var(--color-text-primary);
 }
+
 .group-form .group-row {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: 1.5rem;
 }
 
 .group-name {
@@ -40,6 +43,7 @@
     font-weight: 600;
     color: var(--color-text-primary);
 }
+
 .group-form input[type="text"],
 .group-form input[type="datetime-local"],
 .group-form textarea {
@@ -116,12 +120,14 @@
         min-width: 0;
     }
 }
+
 .group-form textarea {
     resize: vertical;
     min-height: 120px;
     width: 100%;
     box-sizing: border-box;
 }
+
 .group-form textarea#description {
     min-height: 120px;
 }
@@ -134,17 +140,20 @@
     color: var(--color-text-secondary);
     pointer-events: none;
 }
+
 .group-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
+
 .form-actions {
     display: flex;
     gap: 0.75rem;
     justify-content: flex-end;
     margin-top: 1.5rem;
 }
+
 .helper {
     color: var(--color-text-secondary);
     font-size: 0.9rem;
@@ -153,7 +162,6 @@
 .btn.primary-btn {
     min-height: 40px;
 }
-
 
 @media (max-width: 768px) {
     .group-grid {
@@ -177,4 +185,93 @@
         max-width: 100%;
         min-width: 0;
     }
+}
+
+/* ------------------------------- */
+/*            JA/NEJ SWITCH        */
+/* ------------------------------- */
+
+.group-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 4em;
+  height: 2em;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 30px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.6em;
+  width: 1.6em;
+  border-radius: 20px;
+  left: 0.2em;
+  bottom: 0.2em;
+  background-color: white;
+  transition: 0.4s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slider:after {
+  content: "NEJ";
+  color: white;
+  position: absolute;
+  right: 0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+  transition: opacity 0.4s;
+  opacity: 1;
+}
+
+.switch input:checked + .slider {
+  background-color: var(--color-accent-primary);
+}
+
+.switch input:focus + .slider {
+  box-shadow: 0 0 1px var(--color-accent-primary);
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(2em);
+  background-color: #4cc9f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.switch input:checked + .slider:after {
+  content: "JA";
+  left: 0.5em;
+  opacity: 1;
+  right: auto;
+}
+
+.group-row label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

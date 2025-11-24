@@ -29,10 +29,14 @@
         <label for="description">Beskrivelse:</label>
         <textarea id="description" name="description"></textarea><br><br>
         </div>
-        <div class="group-row">
-        <label for="private">Privat gruppe:</label>
-        <input type="checkbox" id="private" name="private"><br><br>
-        </div>
+<div class="group-row">
+    <label for="private">Privat gruppe:</label>
+    <label class="switch">
+        <input type="checkbox" id="private" name="private">
+        <span class="slider"></span>
+    </label>
+</div>
+
         <div class="form-actions">
         <button type="submit" class="btn primary-btn">Opret gruppe</button>
         </div>

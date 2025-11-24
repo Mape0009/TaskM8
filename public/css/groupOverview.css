@@ -1,0 +1,102 @@
+.overview-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.overview-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #111);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.no-groups {
+    font-size: 1rem;
+    color: var(--color-text-secondary, #666);
+    text-align: center;
+}
+
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.group-card {
+    background: var(--color-background-secondary, #fff);
+    border: 1px solid var(--color-border, #ddd);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.group-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.group-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.group-card-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #111);
+    margin: 0;
+}
+
+.group-private {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #4cc9f0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+}
+
+.group-description {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary, #555);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.delete-form {
+    text-align: right;
+}
+
+.btn.delete-btn {
+    background-color: #ff4c4c;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn.delete-btn:hover {
+    background-color: #e03b3b;
+}
+
+@media (max-width: 600px) {
+    .group-card-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .group-private {
+        font-size: 0.75rem;
+    }
+}
