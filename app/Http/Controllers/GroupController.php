@@ -14,6 +14,15 @@ class GroupController extends Controller
         return view('group.groupOverview', ['groups' => $groups]);
     }
 
+    public function myGroups()
+    {
+        $userId = auth()->user()->id;
+        $groupMembers = GroupMember::where('userId', $userId)->get();
+        $groupIds = $groupMembers->pluck('groupId');
+        $groups = Group::whereIn('id', $groupIds)->get();
+        return view('group.myGroups', ['groups' => $groups]);
+    }
+
     public function create(Request $request)
     {
         $group = new Group();

@@ -115,16 +115,15 @@ Route::get('/events/{id}/edit', [EventController::class, 'edit'])
     ->name('events.edit');
 
 // Event Participant Routes
-Route::get('/participants', [EventParticipantController::class, 'index']);
+Route::get('/organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
 Route::post('/events/clear-success', [EventController::class, 'clearSuccessMessage']);
 Route::get('/participant/{id}', [EventParticipantController::class, 'show']);
 Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'delete'])->name('events.deleteParticipant');
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
-Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
 Route::get('/events/{eventId}/participants-list', [EventParticipantController::class, 'getParticipantsList'])->middleware('auth')->name('events.participants-list');
-Route::post('/organizerOverview/roleUpdate/{participantId}', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
+Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
 
 
 // task Routes

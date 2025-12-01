@@ -52,4 +52,18 @@ class GroupMemberController extends Controller
         $groupMember->delete();
         return redirect()->back();
     }
+
+    public function leaveGroup($groupId)
+    {
+        $userId = auth()->user()->id;
+        $groupMember = GroupMember::where('groupId', $groupId)
+            ->where('userId', $userId)
+            ->first();
+        if (!$groupMember) {
+            return response()->json(['message' => 'Group member not found'], 404);
+        }
+
+        $groupMember->delete();
+        return redirect()->back();
+    }
 }
