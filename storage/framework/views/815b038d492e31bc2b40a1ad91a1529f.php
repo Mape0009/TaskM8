@@ -12,8 +12,7 @@
                 <?php if(Auth::check()): ?>
                 <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
                 <li><a href="/previousEvents" class="<?php echo e($currentPage == 'previousEvents' ? 'active' : ''); ?>">Afsluttede</a></li>
-                <li><a href="/groups/overview" class="<?php echo e($currentPage == 'groups' ? 'active' : ''); ?>">Grupper</a></li>
-
+                <li><a href="/groups/overview" class="<?php echo e($currentPage == 'groups/overview' ? 'active' : ''); ?>">Grupper</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
@@ -241,7 +240,9 @@ unset($__errorArgs, $__bag); ?>
                 <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'dashboard' ? 'is-active' : ''); ?>" href="/dashboard">Oversigt</a></li>
                 <?php if(Auth::check()): ?>
                 <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'events' ? 'is-active' : ''); ?>" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'groups' ? 'is-active' : ''); ?>" href="/groups">Afsluttede</a></li>
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'previousEvents' ? 'is-active' : ''); ?>" href="/previousEvents">Afsluttede</a></li>
+                <li class="mnav__item"><a class="mnav__link <?php echo e($currentPage == 'groups/overview' ? 'is-active' : ''); ?>" href="/groups/overview">Grupper</a></li>
+
                 <?php endif; ?>
             </ul>
         </nav>
