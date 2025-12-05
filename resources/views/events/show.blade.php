@@ -240,22 +240,54 @@
                     @csrf
                     <input type="hidden" name="eventIdInvite" value="{{ $event->id }}">
                     <div class="invite-section">
-                        <h3>Inviter via email</h3>
+                        <div class="section-heading">
+                            <div>
+                                <h3>Nye emails</h3>
+                                <p class="invite-section-subtitle">Tilføj nye personer med det samme – ét eller flere adresser ad gangen.</p>
+                            </div>
+                            <span class="pill soft">Ny</span>
+                        </div>
                         <div class="email-input-container">
                             <div class="email-input-group">
-                                <input type="email" id="email-input" placeholder="Indtast email adresse" class="email-input">
+                                <input type="email" id="email-input" placeholder="Søg/indtast email adresse" class="email-input">
                                 <button type="button" onclick="addEmail()" class="add-email-btn">Tilføj</button>
                             </div>
                         </div>
                         <div id="email-list" class="email-list"></div>
                     </div>
-                    
+
                     <div class="invite-section">
-                        <h3>Tidligere inviterede</h3>
+                        <div class="section-heading">
+                            <div>
+                                <h3>Tidligere inviterede</h3>
+                                <p class="invite-section-subtitle">Find og geninviter personer du allerede har kontaktet.</p>
+                            </div>
+                            <span class="pill neutral">Historik</span>
+                        </div>
                         <div class="search-container">
-                            <input type="text" id="search-invitees" placeholder="Søg efter tidligere inviterede..." class="search-input">
+                            <div class="search-input-wrapper">
+                                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="search-invitees" placeholder="Søg efter tidligere inviterede..." class="search-input">
+                            </div>
                         </div>
                         <div id="invitees-list" class="invitees-list"></div>
+                    </div>
+
+                    <div class="invite-section">
+                        <div class="section-heading">
+                            <div>
+                                <h3>Grupper</h3>
+                                <p class="invite-section-subtitle">Inviter et helt hold på én gang (viser kun frontend – ingen backend endnu).</p>
+                            </div>
+                            <span class="pill accent">Hold</span>
+                        </div>
+                        <div class="search-container group-search-container">
+                            <div class="search-input-wrapper">
+                                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="search-groups" placeholder="Søg efter en gruppe..." class="search-input">
+                            </div>
+                        </div>
+                        <div id="groups-list" class="groups-list grid"></div>
                     </div>
                     
                     <button type="button" onclick="sendInvitations()" class="btn primary-btn">Send invitationer</button>
@@ -275,6 +307,8 @@
         }
         let currentEventId = null;
         let addedEmails = [];
+        let previousInvitees = [];
+        const groupsData = @json($groups ?? []);
         function openDeleteModal() {
             var m = document.getElementById('delete-modal');
             if (m) { m.style.display = 'flex'; }
@@ -367,39 +401,83 @@
             return emailRegex.test(email);
         }
 
+        function renderGroups(filter = '') {
+            const groupsList = document.getElementById('groups-list');
+            if (!groupsList) return;
+            groupsList.innerHTML = '';
+            const normalized = filter.trim().toLowerCase();
+            const matches = groupsData
+                .filter(g => (g.name || '').toLowerCase().includes(normalized))
+                .slice(0, 3);
+            if (!matches.length) {
+                groupsList.innerHTML = '<div class="group-card empty">Ingen grupper matcher din søgning.</div>';
+                return;
+            }
+            matches.forEach(group => {
+                const card = document.createElement('div');
+                card.className = 'group-card';
+                card.innerHTML = `
+                    <div class="group-avatar" style="background:${stringToColor(group.name)}">${group.name.charAt(0)}</div>
+                    <div class="group-meta">
+                        <div class="group-name">${group.name}</div>
+                        <div class="group-sub">${group.members ?? 0} medlemmer</div>
+                    </div>
+                    <button type="button" class="group-action" title="Tilføj gruppe (kun frontend)">Tilføj</button>
+                `;
+                groupsList.appendChild(card);
+            });
+        }
+
+        function stringToColor(str = '') {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const h = hash % 360;
+            return `hsl(${h}, 70%, 60%)`;
+        }
+
         async function loadPreviousInvitees() {
             const inviteesList = document.getElementById('invitees-list');
             inviteesList.innerHTML = '<div class="invitee-item">Henter inviterede...</div>';
             try {
                 const res = await fetch('{{ route('events.invitees', $event->id) }}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
                 if (!res.ok) throw new Error('Failed');
-                const all = await res.json();
-                const items = all || [];
-                if (!items.length) {
-                    inviteesList.innerHTML = '<div class="invitee-item">Ingen tidligere inviterede</div>';
-                    return;
-                }
-                inviteesList.innerHTML = '';
-                items.forEach(i => {
-                    const initials = (i.name || i.email || '?').trim().charAt(0).toUpperCase();
-                    const item = document.createElement('div');
-                    item.className = 'invitee-item';
-                    item.innerHTML = `
-                        <div class="invitee-info">
-                            <div class="invitee-avatar">${initials}</div>
-                            <div class="invitee-details">
-                                <span class="invitee-name">${i.name || 'Ukendt'}</span>
-                                <span class="invitee-email">${i.email}</span>
-                            </div>
-                        </div>
-                        <button type="button" class="invitee-select-btn">Vælg</button>
-                    `;
-                    item.querySelector('.invitee-select-btn').addEventListener('click', () => selectInvitee(i.email));
-                    inviteesList.appendChild(item);
-                });
+                previousInvitees = await res.json() || [];
+                renderInvitees();
             } catch (e) {
                 inviteesList.innerHTML = '<div class="invitee-item">Kunne ikke hente inviterede.</div>';
             }
+        }
+
+        function renderInvitees(filter = '') {
+            const inviteesList = document.getElementById('invitees-list');
+            const normalized = filter.trim().toLowerCase();
+            const items = (previousInvitees || [])
+                .filter(i => ((i.name || '').toLowerCase().includes(normalized) || (i.email || '').toLowerCase().includes(normalized)))
+                .slice(0, 3);
+            if (!items.length) {
+                    inviteesList.innerHTML = '<div class="invitee-item">Ingen tidligere inviterede</div>';
+                    return;
+                }
+            inviteesList.innerHTML = '';
+            items.forEach(i => {
+                const initials = (i.name || i.email || '?').trim().charAt(0).toUpperCase();
+                const item = document.createElement('div');
+                item.className = 'invitee-item';
+                item.innerHTML = `
+                    <div class="invitee-info">
+                        <div class="invitee-avatar">${initials}</div>
+                        <div class="invitee-details">
+                            <span class="invitee-name">${i.name || 'Ukendt'}</span>
+                            <span class="invitee-email">${i.email}</span>
+                        </div>
+                    </div>
+                    <button type="button" class="invitee-select-btn">Vælg</button>
+                `;
+                item.querySelector('.invitee-select-btn').addEventListener('click', () => selectInvitee(i.email));
+                inviteesList.appendChild(item);
+            });
         }
 
         function selectInvitee(email) {
@@ -423,6 +501,9 @@
                 form.appendChild(hiddenInput);
             });
 
+            // Undgå at modalen åbnes igen efter redirect
+            try { localStorage.setItem('skip_invite_modal_once', '1'); } catch (_) {}
+            closeInviteModal();
             form.submit();
         }
 
@@ -431,6 +512,14 @@
                 e.preventDefault();
                 addEmail();
             }
+        });
+
+        document.getElementById('search-groups').addEventListener('input', function(e) {
+            renderGroups(e.target.value || '');
+        });
+
+        document.getElementById('search-invitees').addEventListener('input', function(e) {
+            renderInvitees(e.target.value || '');
         });
 
         document.getElementById('invite-modal').addEventListener('click', function(e) {
@@ -450,10 +539,23 @@
             try {
                 var params = new URLSearchParams(window.location.search);
                 var open = params.get('open');
-                if(open === 'invite') { openInviteModal({{ $event->id }}, '{{ $event->eventName }}'); }
+                var skip = localStorage.getItem('skip_invite_modal_once') === '1';
+                if (skip) { localStorage.removeItem('skip_invite_modal_once'); }
+                if(open === 'invite' && !skip) { openInviteModal({{ $event->id }}, '{{ $event->eventName }}'); }
                 if(open === 'delete') { openDeleteModal(); }
+
+                // Fjern open-parameteren fra URL for at undgå re-open
+                if (open) {
+                    params.delete('open');
+                    var newQuery = params.toString();
+                    var newUrl = window.location.pathname + (newQuery ? ('?' + newQuery) : '') + window.location.hash;
+                    window.history.replaceState({}, '', newUrl);
+                }
             } catch(_) {}
         })();
+
+        // Initial render for mock group list so it is visible when modal åbnes via query param
+        renderGroups();
     </script>
     @include('partials.footer')
 </body>

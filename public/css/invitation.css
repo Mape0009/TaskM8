@@ -73,9 +73,70 @@ body.dark-mode .invite-btn:hover {
     margin: 0 0 1rem 0;
     letter-spacing: -0.3px;
 }
+.invite-section-subtitle {
+    margin: -0.2rem 0 0.9rem 0;
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+.section-heading h3 {
+    margin: 0 0 0.2rem 0;
+}
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+}
+.pill.soft {
+    background: #ecfeff;
+    color: #0ea5e9;
+    border-color: #bae6fd;
+}
+.pill.neutral {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+.pill.accent {
+    background: #eef2ff;
+    color: #4f46e5;
+    border-color: #c7d2fe;
+}
 
 body.dark-mode .invite-section h3 {
     color: #f0f0f0;
+}
+body.dark-mode .invite-section-subtitle {
+    color: #9ca3af;
+}
+body.dark-mode .pill.soft {
+    background: rgba(14,165,233,0.12);
+    color: #38bdf8;
+    border-color: rgba(56,189,248,0.35);
+}
+body.dark-mode .pill.neutral {
+    background: #111827;
+    color: #cbd5e1;
+    border-color: #1f2937;
+}
+body.dark-mode .pill.accent {
+    background: rgba(79,70,229,0.14);
+    color: #a5b4fc;
+    border-color: rgba(167,139,250,0.35);
 }
 
 body.dark-mode .invite-section {
@@ -240,6 +301,119 @@ body.dark-mode .search-input:focus {
     border: 1.5px solid #00c2ff;
     box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.1);
     background: #23232a;
+}
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.search-input-wrapper .search-input {
+    padding-left: 2.5rem;
+}
+.search-icon {
+    position: absolute;
+    left: 0.9rem;
+    color: #94a3b8;
+    pointer-events: none;
+}
+.group-search-container {
+    margin-bottom: 1rem;
+}
+
+.groups-list.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 0.75rem;
+}
+.group-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+.group-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    border-color: #dbeafe;
+}
+.group-card.empty {
+    grid-column: 1 / -1;
+    justify-content: center;
+    color: #94a3b8;
+    background: #f8fafc;
+    border-style: dashed;
+}
+.group-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    flex-shrink: 0;
+}
+.group-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+    flex: 1;
+    min-width: 0;
+}
+.group-name {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 0.98rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.group-sub {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+.group-action {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: none;
+    border-radius: 8px;
+    padding: 0.55rem 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+.group-action:hover {
+    background: #dbeafe;
+    transform: translateY(-1px);
+}
+.group-action:active {
+    transform: translateY(0);
+}
+
+body.dark-mode .group-card {
+    background: #1f2937;
+    border-color: #333338;
+    box-shadow: none;
+}
+body.dark-mode .group-card:hover {
+    box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+    border-color: #334155;
+}
+body.dark-mode .group-name { color: #e2e8f0; }
+body.dark-mode .group-sub { color: #9ca3af; }
+body.dark-mode .group-card.empty { background: #111827; color: #6b7280; }
+body.dark-mode .group-action {
+    background: #0ea5e9;
+    color: #e0f2fe;
+}
+body.dark-mode .group-action:hover {
+    background: #0284c7;
 }
 
 /* Invitees List Styles */

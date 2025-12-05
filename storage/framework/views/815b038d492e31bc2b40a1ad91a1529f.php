@@ -12,7 +12,7 @@
                 <?php if(Auth::check()): ?>
                 <li><a href="/events" class="<?php echo e($currentPage == 'events' ? 'active' : ''); ?>">Begivenheder</a></li>
                 <li><a href="/previousEvents" class="<?php echo e($currentPage == 'previousEvents' ? 'active' : ''); ?>">Afsluttede</a></li>
-                <li><a href="/groups/overview" class="<?php echo e($currentPage == 'groups' ? 'active' : ''); ?>">Grupper</a></li>
+                <li><a href="/groups/overview" class="<?php echo e($currentPage == 'groups/overview' ? 'active' : ''); ?>">Grupper</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

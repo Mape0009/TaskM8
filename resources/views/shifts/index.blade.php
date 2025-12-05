@@ -16,11 +16,11 @@
     <title>Vagter for {{ $task->taskName }} | TaskM8</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link rel="stylesheet" href="{{ asset('css/shifts-index.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
     <script src="https://unpkg.com/@formkit/auto-animate@latest/index.js"></script>
     <script>
-        // Dark mode detection
         if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark-mode');
         }
@@ -30,34 +30,43 @@
     @include('partials.header', ['currentPage' => 'tasks'])
 
     <main class="main-content-full">
-        <div class="edit-container">
-            <div class="edit-header">
-                <h1 class="edit-title">Vagter for {{ $task->taskName }}</h1>
-                <div class="header-actions">
-                    @php
-                        $currentUser = auth()->user();
-                        $currentUserRole = null;
-                        if ($currentUser) {
-                            $p = \App\Models\EventParticipant::where('eventId', $task->eventId)
-                                ->where('userId', $currentUser->id)
-                                ->first();
-                            $currentUserRole = $p?->eventRole;
-                        }
-                    @endphp
-                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
-                    <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">
-                        <i class="fas fa-plus"></i>
-                        Opret Vagt
-                    </a>
-                    @endif
-                    <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-btn">
-                        <i class="fas fa-arrow-left"></i>
-                        Tilbage til Opgaver
-                    </a>
+        @php
+            $currentUser = auth()->user();
+            $currentUserRole = null;
+            if ($currentUser) {
+                $p = \App\Models\EventParticipant::where('eventId', $task->eventId)
+                    ->where('userId', $currentUser->id)
+                    ->first();
+                $currentUserRole = $p?->eventRole;
+            }
+            $shiftsCount = $task->shifts->count();
+            $uniqueUsers = $task->shifts->pluck('userId')->unique()->count();
+        @endphp
+        <div class="overview-shell">
+            <section class="overview-hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Vagter</p>
+                    <h1>Planlæg vagter for {{ $task->taskName }}</h1>
+                    <p class="lede">
+                        Se bemandingen, redigér tider og opret nye vagter for opgaven. Brug genvejene til hurtigt at vende tilbage til opgaverne.
+                    </p>
+                    <div class="hero-meta">
+                        <span class="pill">Vagter: {{ $shiftsCount }}</span>
+                        <span class="pill">Personer: {{ $uniqueUsers }}</span>
+                        <span class="pill">Opgave: {{ $task->taskName }}</span>
+                    </div>
                 </div>
-            </div>
+                <div class="hero-actions">
+                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
+                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn create-btn">Opret vagt</a>
+                    @endif
+                    <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-ghost">Tilbage til opgaver</a>
+                </div>
+            </section>
 
-            {{-- Success flash removed intentionally to avoid popup --}}
+            <div class="edit-container">
+
+
 
             @if(session('error'))
                 <div class="alert alert-error">
@@ -203,6 +212,7 @@
                     </a>
                 </div>
             @endif
+        </div>
         </div>
     </main>
 

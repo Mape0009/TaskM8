@@ -698,7 +698,7 @@ html.dark-mode .stat-card {
 /* 16) INDEX TEMPLATE MAPPING */
 .edit-container {
     max-width: 1280px;
-    margin: 0 auto;
+    margin: calc(var(--spacing-unit) * 4) auto 0;
     width: 100%;
 }
 .edit-header {

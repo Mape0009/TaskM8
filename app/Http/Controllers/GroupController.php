@@ -4,13 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\GroupMember;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::all()->where('private', false);
-        return view('group.groupOverview', ['groups' => $groups]);
+        $publicGroups = Group::where('private', false)->get();
+
+        $myGroups = collect();
+        if (Auth::check()) {
+            $userId = Auth::id();
+            $myGroupIds = GroupMember::where('userId', $userId)->pluck('groupId');
+
+            $myGroups = Group::whereIn('id', $myGroupIds)->get();
+        }
+
+        $visibleGroups = $publicGroups
+            ->merge($myGroups)
+            ->unique('id')
+            ->values();
+
+        return view('group.groupOverview', [
+            'allGroups' => $visibleGroups,
+            'myGroups' => $myGroups,
+            'isAuthenticated' => Auth::check(),
+        ]);
     }
 
     public function create(Request $request)
@@ -20,6 +40,13 @@ class GroupController extends Controller
         $group->description = $request->input('description');
         $group->private = $request->boolean('private');
         $group->save();
+
+        if (Auth::check()) {
+            GroupMember::firstOrCreate([
+                'groupId' => $group->id,
+                'userId' => Auth::id(),
+            ]);
+        }
 
         return redirect()->route('groups.overview');
     }
