@@ -20,7 +20,7 @@
         <section class="legal-hero">
             <h1 class="legal-title">Cookiepolitik</h1>
             <p class="legal-updated">Senest opdateret: {{ now()->format('d.m.Y') }}</p>
-            <p class="legal-sub">Her beskriver vi, hvilke cookies vi bruger, og hvad de gør – kort og forståeligt.</p>
+            <p class="legal-sub">Her beskriver vi, hvilke cookies vi bruger, og hvad de gør – i et let forståeligt sprog.</p>
         </section>
 
         <section class="legal-section">
@@ -55,7 +55,7 @@
         .legal-title{margin:0 0 6px 0}
         .legal-updated{color:#9ca3af;margin:0 0 8px 0}
         .legal-sub{color:#cbd5e1;margin:0 0 10px 0}
-        .legal-section{background:rgba(17,24,39,0.4);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+        .legal-section{background:#1e232e;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px 18px;margin-bottom:14px}
         .legal-section h2{margin:0 0 8px 0}
         .legal-list{margin:0 0 8px 16px}
         @media (prefers-color-scheme: light){
