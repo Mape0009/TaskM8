@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GroupMember;
+use App\Models\User;
 
 class GroupMemberController extends Controller
 {
@@ -12,7 +13,7 @@ class GroupMemberController extends Controller
      */
     public function index($groupId)
     {
-        $groupMembers = GroupMember::all()->where('groupId', '=', $groupId);
+        $groupMembers = GroupMember::where('groupId', $groupId)->get();
         return view('group.groupMembers', ['groupMembers' => $groupMembers]);
     }
 
@@ -21,15 +22,41 @@ class GroupMemberController extends Controller
      */
     public function invite(Request $request)
     {
-        //
+        $request->validate([
+            'userId' => 'required|array|min:1',
+            'userId.*' => 'exists:users,id',
+            'groupId' => 'required|exists:groups,id',
+        ]);
+
+        $userId = $request->input('userId', []);
+        $groupId = $request->input('groupId');
+
+        foreach ($userId as $id) {
+            $existingMember = GroupMember::where('groupId', $groupId)
+                ->where('userId', $id)
+                ->first();
+            if (!$existingMember) {
+                $groupMember = new GroupMember();
+                $groupMember->groupId = $groupId;
+                $groupMember->userId = $id;
+                $groupMember->save();
+            }
+        }
+        return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function showUsers(string $id)
     {
-        //
+        $users = User::whereNotIn('id', function ($query) use ($id) {
+            $query->select('userId')
+                ->from('group_members')
+                ->where('groupId', $id);
+        })->get();
+
+        return view('group.groupInvite', ['users' => $users, 'groupId' => $id]);
     }
 
     /**

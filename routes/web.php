@@ -193,6 +193,8 @@ Route::delete('groups/delete/{id}', [GroupController::class, 'delete'])->name('g
 // Group Member routes
 Route::view('groups/members/{groupId}', 'group.groupMembers');
 Route::get('groups/members/{groupId}', [GroupMemberController::class, 'index'])->name('groupMember.index');
+Route::get('groups/{id}/invite', [GroupMemberController::class, 'showUsers'])->name('groupMember.invite');
+Route::post('groups/{groupId}/invite', [GroupMemberController::class, 'invite'])->name('groupMember.invite.post');
 Route::delete('groupMember/delete/{id}', [GroupMemberController::class, 'delete'])->name('groupMember.delete');
 
 //Sitemap route
