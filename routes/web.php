@@ -123,7 +123,7 @@ Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'de
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
 Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
 Route::get('/events/{eventId}/participants-list', [EventParticipantController::class, 'getParticipantsList'])->middleware('auth')->name('events.participants-list');
-Route::post('/organizerOverview/roleUpdate/{participantId}', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
+Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
 
 
 // task Routes
