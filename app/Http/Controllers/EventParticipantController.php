@@ -286,7 +286,7 @@ class EventParticipantController extends Controller
             abort(403, 'Only volunteers can be promoted using this endpoint.');
         }
 
-        $participantToPromote->eventRole = EventRole::participant->name;
+        $participantToPromote->eventRole = EventRole::taskWorker->name;
         $participantToPromote->save();
 
         return redirect()->back()->with('success', 'Participant promoted from volunteer successfully.');
