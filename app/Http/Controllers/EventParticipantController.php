@@ -267,4 +267,28 @@ class EventParticipantController extends Controller
         
         return redirect()->back()->with('success', 'You are now a volunteer.');
     }
+
+    public function promoteFromVolunteer(Request $request, $participantId)
+    {
+        $currentUser = auth()->user();
+        $participantToPromote = EventParticipant::findOrFail($participantId);
+        $eventId = $participantToPromote->eventId;
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+
+        if (!Permissions::hasPermission($role, 'manage-participants')) {
+            abort(403, 'You do not have permission to promote participants.');
+        }
+
+        if ($participantToPromote->eventRole !== EventRole::volunteer->name) {
+            abort(403, 'Only volunteers can be promoted using this endpoint.');
+        }
+
+        $participantToPromote->eventRole = EventRole::participant->name;
+        $participantToPromote->save();
+
+        return redirect()->back()->with('success', 'Participant promoted from volunteer successfully.');
+    }
 }
