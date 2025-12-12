@@ -28,5 +28,6 @@ enum EventRole {
     case coOwner;
     case taskManager;
     case taskWorker;
+    case volunteer;
     case participant;
 }

@@ -224,4 +224,47 @@ class EventParticipantController extends Controller
 
         return response()->json($participants);
     }
+
+    public function getVolunteer($eventId)
+    {
+        $volunteers = EventParticipant::where('eventId', $eventId)
+        ->where('eventRole', EventRole::volunteer->name)
+        ->get();
+        return response()->json($volunteers);
+    }
+
+    public function becomeVolunteer(Request $request, $eventId)
+    {
+        $currentUser = auth()->user();
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
+        }
+
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+
+        if (!Permissions::hasPermission($role, 'volunteer')) {
+            abort(403, 'You do not have permission to volunteer.');
+        }
+        
+        $participant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $userId)
+            ->first();
+        
+        if (!$participant) {
+            abort(403, 'You do not have access to this event.');
+        }
+        
+        if ($participant->eventRole === EventRole::volunteer->name) {
+            abort(403, 'You are already a volunteer.');
+        }
+        
+        $participant->eventRole = EventRole::volunteer->name;
+        $participant->save();
+        
+        return redirect()->back()->with('success', 'You are now a volunteer.');
+    }
 }

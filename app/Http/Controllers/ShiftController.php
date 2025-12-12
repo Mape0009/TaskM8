@@ -85,7 +85,7 @@ class ShiftController extends Controller
         $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
                          || ($event && (int)$event->ownerId === (int)$request->userId);
         if (!$isParticipant) {
-            return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.']).withInput();
+            return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
         }
         
         // Prevent overlapping shifts for the same user and task
@@ -109,7 +109,7 @@ class ShiftController extends Controller
                 'endTime' => $request->endTime,
             ]);
         } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
-            return back()->withErrors(['userId' => 'Kan ikke oprette vagt pga. unik begrænsning. Kør database-migrationerne og prøv igen.'])->withInput();
+            return redirect()->back()->withErrors(['userId' => 'Kan ikke oprette vagt pga. unik begrænsning. Kør database-migrationerne og prøv igen.'])->withInput();
         }
 
         // Return without success popup to keep UI clean
@@ -161,7 +161,7 @@ class ShiftController extends Controller
         $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
                          || ($event && (int)$event->ownerId === (int)$request->userId);
         if (!$isParticipant) {
-            return back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.']).withInput();
+            return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
         }
         
         // Prevent overlapping shifts for the same user and task (excluding current shift)
@@ -175,7 +175,7 @@ class ShiftController extends Controller
                             ->exists();
 
         if ($hasOverlap) {
-            return back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => '']);
+            return redirect()->back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => ''])->withInput();
         }
 
         $shift->update([

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime('startTime')->nullable();
             $table->dateTime('endTime')->nullable();
             $table->unsignedBigInteger('taskId');
-            $table->unsignedBigInteger('userId');
+            $table->unsignedBigInteger('userId')->nullable();
             $table->foreign('taskId')->references('id')->on('tasks')->onDelete('cascade');
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             // Unique per (taskId, userId) removed to allow multiple non-overlapping shifts
