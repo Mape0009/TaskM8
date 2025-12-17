@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group Creation | TaskM8</title>
+    <title>Opret gruppe | TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/groupCreation.css') }}">
@@ -30,7 +30,7 @@
                 <div class="form-row">
                     <label for="groupName">Gruppenavn</label>
                     <p class="helper">Et klart navn gør det let at finde gruppen senere.</p>
-                    <input type="text" id="groupName" name="groupName" placeholder="Fx 'Vagtplan Team Nord'" required>
+                    <input type="text" id="groupName" name="groupName" placeholder="Fx 'Arbejdskollegaer'" required>
                 </div>
 
                 <div class="form-row">
