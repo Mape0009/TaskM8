@@ -48,7 +48,8 @@
                         <p class="helper">Privat skjuler gruppen for andre end inviterede medlemmer.</p>
                     </div>
                     <label class="toggle">
-                        <input type="checkbox" id="private" name="private">
+                        <input type="hidden" name="private" value="0">
+                        <input type="checkbox" id="private" name="private" value="1">
                         <span class="toggle-track">
                             <span class="toggle-thumb"></span>
                         </span>

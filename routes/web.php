@@ -183,11 +183,18 @@ Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tas
 Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
 
 // Group routes
-Route::view('groups/create', 'group.groupCreation');
-Route::view('groups/overview', 'group.groupOverview');
-Route::post('groups/create', [GroupController::class, 'create'])->name('groups.create');
+Route::middleware('auth')->group(function () {
+    Route::view('groups/create', 'group.groupCreation');
+    Route::post('groups/create', [GroupController::class, 'create'])->name('groups.create');
+    Route::get('groups/members/{id}', [GroupController::class, 'members'])->name('groups.members');
+    Route::get('groups/{id}/manage', [GroupController::class, 'manage'])->name('groups.manage');
+    Route::post('groups/{id}/members', [GroupController::class, 'addMember'])->name('groups.members.add');
+    Route::delete('groups/{groupId}/members/{memberId}', [GroupController::class, 'removeMember'])->name('groups.members.remove');
+    Route::delete('groups/delete/{id}', [GroupController::class, 'delete'])->name('groups.delete');
+    Route::post('groups/{id}/leave', [GroupController::class, 'leave'])->name('groups.leave');
+    Route::post('groups/{id}/join', [GroupController::class, 'join'])->name('groups.join');
+});
 Route::get('groups/overview', [GroupController::class, 'index'])->name('groups.overview');
-Route::delete('groups/delete/{id}', [GroupController::class, 'delete'])->name('groups.delete');
 
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);

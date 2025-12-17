@@ -222,16 +222,21 @@
     <div id="invite-modal" class="invite-modal">
         <div class="invite-modal-content">
             <div class="invite-modal-header">
-                <span class="modal-icon">
-                    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="8.5" cy="7" r="4"></circle>
-                        <line x1="20" y1="8" x2="20" y2="14"></line>
-                        <line x1="23" y1="11" x2="17" y2="11"></line>
-                    </svg>
-                </span>
-                <h2>Inviter til begivenhed</h2>
-                <button class="modal-close-btn" onclick="closeInviteModal()" aria-label="Close">
+                <div class="modal-header-content">
+                    <span class="modal-icon">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                    </span>
+                    <div class="modal-title">
+                        <h2>Inviter til begivenhed</h2>
+                        <p class="modal-subtitle">Vælg hvordan du vil tilføje modtagere: nye e‑mails, tidligere inviterede eller hele grupper.</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="closeInviteModal()" aria-label="Luk">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
@@ -239,7 +244,21 @@
                 <form action="{{ route('events.invite', $event->id) }}" method="POST">
                     @csrf
                     <input type="hidden" name="eventIdInvite" value="{{ $event->id }}">
-                    <div class="invite-section">
+                    <div class="invite-category-tabs">
+                        <div class="invite-category-list" role="tablist" aria-label="Vælg modtager-type">
+                            <button type="button" class="invite-category-btn is-active" data-target="new" role="tab" aria-selected="true">
+                                Nye e-mails
+                            </button>
+                            <button type="button" class="invite-category-btn" data-target="previous" role="tab" aria-selected="false">
+                                Tidligere inviterede
+                            </button>
+                            <button type="button" class="invite-category-btn" data-target="groups" role="tab" aria-selected="false">
+                                Grupper
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="invite-section is-active" data-section="new">
                         <div class="section-heading">
                             <div>
                                 <h3>Nye emails</h3>
@@ -256,7 +275,7 @@
                         <div id="email-list" class="email-list"></div>
                     </div>
 
-                    <div class="invite-section">
+                    <div class="invite-section" data-section="previous">
                         <div class="section-heading">
                             <div>
                                 <h3>Tidligere inviterede</h3>
@@ -273,11 +292,11 @@
                         <div id="invitees-list" class="invitees-list"></div>
                     </div>
 
-                    <div class="invite-section">
+                    <div class="invite-section" data-section="groups">
                         <div class="section-heading">
                             <div>
                                 <h3>Grupper</h3>
-                                <p class="invite-section-subtitle">Inviter et helt hold på én gang (viser kun frontend – ingen backend endnu).</p>
+                                <p class="invite-section-subtitle">Inviter et helt hold på én gang. Vi tilføjer alle medlemmers e-mails til listen.</p>
                             </div>
                             <span class="pill accent">Hold</span>
                         </div>
@@ -290,7 +309,10 @@
                         <div id="groups-list" class="groups-list grid"></div>
                     </div>
                     
-                    <button type="button" onclick="sendInvitations()" class="btn primary-btn">Send invitationer</button>
+                    <div class="invite-footer">
+                        <span class="invite-count" id="invite-count-label">Ingen modtagere valgt endnu.</span>
+                        <button type="button" onclick="sendInvitations()" class="btn primary-btn" id="send-invitations-btn" disabled>Send invitationer</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -337,6 +359,12 @@
             currentEventId = eventId;
             document.getElementById('invite-modal').style.display = 'flex';
             loadPreviousInvitees();
+            try {
+                const defaultTab = document.querySelector('.invite-category-btn[data-target="new"]');
+                if (defaultTab) {
+                    switchInviteCategory(defaultTab);
+                }
+            } catch (_) {}
             // If user chose to keep members from a template, prefill emails once
             try {
                 const payloadRaw = localStorage.getItem('template_keep_members_payload');
@@ -394,6 +422,20 @@
                 `;
                 emailList.appendChild(emailTag);
             });
+
+            const countLabel = document.getElementById('invite-count-label');
+            const sendBtn = document.getElementById('send-invitations-btn');
+            const count = addedEmails.length;
+            if (count === 0) {
+                if (countLabel) countLabel.textContent = 'Ingen modtagere valgt endnu.';
+            } else if (count === 1) {
+                if (countLabel) countLabel.textContent = '1 modtager klar til invitation.';
+            } else {
+                if (countLabel) countLabel.textContent = count + ' modtagere klar til invitation.';
+            }
+            if (sendBtn) {
+                sendBtn.disabled = count === 0;
+            }
         }
 
         function isValidEmail(email) {
@@ -422,9 +464,50 @@
                         <div class="group-name">${group.name}</div>
                         <div class="group-sub">${group.members ?? 0} medlemmer</div>
                     </div>
-                    <button type="button" class="group-action" title="Tilføj gruppe (kun frontend)">Tilføj</button>
+                    <button type="button" class="group-action" title="Tilføj alle medlemmer fra denne gruppe">Tilføj</button>
                 `;
+                card.querySelector('.group-action').addEventListener('click', () => addGroupToInvites(group));
                 groupsList.appendChild(card);
+            });
+        }
+
+        async function addGroupToInvites(group) {
+            try {
+                const response = await fetch(`/groups/members/${group.id}`, {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    console.error('Kunne ikke hente gruppemedlemmer', await response.text());
+                    return;
+                }
+                const members = await response.json();
+                (members || []).forEach(m => {
+                    if (m.email && !addedEmails.includes(m.email)) {
+                        addedEmails.push(m.email);
+                    }
+                });
+                updateEmailList();
+            } catch (e) {
+                console.error('Fejl ved tilføjelse af gruppe til invitationer', e);
+            }
+        }
+
+        function switchInviteCategory(button) {
+            const target = button.dataset.target;
+            const buttons = Array.from(document.querySelectorAll('.invite-category-btn'));
+            const sections = Array.from(document.querySelectorAll('.invite-section'));
+
+            buttons.forEach(b => {
+                const isActive = b === button;
+                b.classList.toggle('is-active', isActive);
+                b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+
+            sections.forEach(section => {
+                const sectionKey = section.dataset.section;
+                section.classList.toggle('is-active', sectionKey === target);
             });
         }
 
@@ -503,7 +586,12 @@
 
             // Undgå at modalen åbnes igen efter redirect
             try { localStorage.setItem('skip_invite_modal_once', '1'); } catch (_) {}
-            closeInviteModal();
+            const sendBtn = document.getElementById('send-invitations-btn');
+            if (sendBtn) {
+                sendBtn.disabled = true;
+                sendBtn.textContent = 'Sender...';
+            }
+
             form.submit();
         }
 
@@ -520,6 +608,12 @@
 
         document.getElementById('search-invitees').addEventListener('input', function(e) {
             renderInvitees(e.target.value || '');
+        });
+
+        document.querySelectorAll('.invite-category-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                switchInviteCategory(this);
+            });
         });
 
         document.getElementById('invite-modal').addEventListener('click', function(e) {
