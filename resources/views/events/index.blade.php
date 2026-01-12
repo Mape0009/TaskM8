@@ -43,7 +43,7 @@
                 </div>
                 <div class="hero-actions">
                     <a href="{{ url('/dashboard?open=create') }}" class="btn create-btn">Opret begivenhed</a>
-                    <a href="{{ url('/previousEvents') }}" class="btn secondary-ghost">Se tidligere</a>
+                    <a href="{{ url('/previousEvents') }}" class="btn secondary-ghost">Se afsluttede</a>
                 </div>
             </section>
 
@@ -205,4 +205,3 @@ document.addEventListener('click', function(e){
     @include('partials.footer')
 </body>
 </html> 
-

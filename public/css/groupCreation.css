@@ -185,13 +185,13 @@
 }
 
 .btn.primary-btn {
-    min-height: 44px;
+    min-height: 34px;
     padding: 0.8rem 1.2rem;
 }
 
 .btn.secondary-btn {
-    min-height: 44px;
-    padding: 0.8rem 1.1rem;
+    min-height: 34px;
+    padding: 0.8rem 1.2rem;
 }
 
 /* Dark mode adjustments */
@@ -260,7 +260,6 @@ html.dark-mode .toggle-thumb {
     }
 
     .form-actions .btn {
-        width: 100%;
         text-align: center;
     }
 }

@@ -33,15 +33,13 @@
             @endphp
             <section class="overview-hero">
                 <div class="hero-copy">
-                    <p class="eyebrow">Tidligere begivenheder</p>
-                    <h1>Se tilbage og genbrug dine bedste events</h1>
+                    <p class="eyebrow">Afsluttede begivenheder</p>
+                    <h1>Se og genbrug dine bedste begivenheder</h1>
                     <p class="lede">
                         Brug afsluttede begivenheder som skabeloner, invitér de samme deltagere igen, eller ryd op i arkivet. Du kan altid hoppe ind og se detaljer.
                     </p>
                     <div class="hero-meta">
-                        <span class="pill">Afsluttede begivenheder: {{ $pastEventsCount }}</span>
                         @auth
-                            <span class="pill">Jeg deltog i: {{ $myPastEventsCount }}</span>
                         @else
                             <span class="pill pill-muted">Log ind for at se dine afsluttede events</span>
                         @endauth

@@ -280,7 +280,7 @@ body.dark-mode .event-participant-item {
     padding-bottom: 2.5rem;
 }
 body.dark-mode .event-hero-bg {
-    background: linear-gradient(135deg, #18181c 0%, #23232a 100%);
+    background: var(--color-background-primary);
 }
 .event-hero-section {
     display: flex;
