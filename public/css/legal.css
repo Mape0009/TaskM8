@@ -7,8 +7,6 @@
 .legal-list{margin:0 0 8px 16px}
 
 /* Light mode override when not in dark-mode */
-html:not(.dark-mode) .legal-updated{color:#4b5563}
+html:not(.dark-mode) .legal-updated{color:#4b5563} 
 html:not(.dark-mode) .legal-sub{color:#4b5563}
 html:not(.dark-mode) .legal-section{background:#ffffff;border:1px solid rgba(0,0,0,0.08);box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-
-

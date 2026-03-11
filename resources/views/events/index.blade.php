@@ -35,7 +35,6 @@
                     <div class="hero-meta">
                         <span class="pill">Aktive begivenheder: {{ $activeEventsCount }}</span>
                         @auth
-                            <span class="pill">Jeg deltager i: {{ $myEventsCount }}</span>
                         @else
                             <span class="pill pill-muted">Log ind for at se dine begivenheder</span>
                         @endauth

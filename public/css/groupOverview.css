@@ -1,7 +1,6 @@
 .overview-shell {
-    max-width: 1200px;
     margin: 2.5rem auto 3rem;
-    padding: 0 1.25rem;
+    padding:  calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
     font-family: 'Inter', sans-serif;
 }
 

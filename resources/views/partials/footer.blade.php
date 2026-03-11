@@ -1,7 +1,7 @@
 <footer class="site-footer" role="contentinfo">
     <div class="footer-container">
         <div class="footer-left">
-            <span>© Mercantec 2025</span>
+            <span>© Mercantec 2026</span>
         </div>
         <nav class="footer-nav" aria-label="Footer">
             <a href="{{ url('/privatlivspolitik') }}">Privatlivspolitik</a>

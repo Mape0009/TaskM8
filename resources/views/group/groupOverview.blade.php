@@ -18,11 +18,9 @@
                 <p class="eyebrow">Grupper</p>
                 <h1>Få overblik over dine fællesskaber</h1>
                 <p class="lede">
-                    Saml teams, frivillige og samarbejdspartnere ét sted. Skift mellem alle åbne grupper og dem du allerede er med i.
+                    Saml teams, frivillige og samarbejdspartnere ét sted. Skift mellem alle grupper og dine egne grupper. 
                 </p>
                 <div class="hero-meta">
-                    <span class="pill">Alle grupper: {{ $allGroups->count() }}</span>
-                    <span class="pill">Mine grupper: {{ $myGroups->count() }}</span>
                     @unless($isAuthenticated)
                         <span class="pill pill-muted">Log ind for at se dine grupper</span>
                     @endunless
