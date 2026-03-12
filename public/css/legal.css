@@ -296,20 +296,301 @@ body.dark-mode .legal-table-row {
 
 	.legal-hero {
 		padding: 22px 18px;
+		margin-bottom: 18px;
 		border-radius: 22px;
+		gap: 14px;
+	}
+
+	.legal-title {
+		font-size: clamp(1.5rem, 5vw, 2.4rem);
+	}
+
+	.legal-sub {
+		font-size: 0.95rem;
+		line-height: 1.6;
 	}
 
 	.legal-facts {
 		grid-template-columns: 1fr;
+		gap: 10px;
+	}
+
+	.legal-fact-card {
+		padding: 14px 16px;
 	}
 
 	.legal-section {
 		padding: 18px;
 		border-radius: 18px;
+		margin-bottom: 10px;
 	}
 
 	.legal-table-row {
 		grid-template-columns: 1fr;
 		gap: 6px;
+		padding: 12px 14px;
+	}
+
+	.legal-toc {
+		padding: 14px 16px;
+		margin-bottom: 18px;
+		border-radius: 18px;
+	}
+
+	.legal-toc h2 {
+		font-size: 0.9rem;
+	}
+
+	.legal-toc-links a {
+		padding: 8px 10px;
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 520px) {
+	.legal-shell {
+		padding: 20px 12px 32px;
+		width: min(100%, calc(100vw - 24px));
+	}
+
+	.legal-hero {
+		padding: 18px 14px;
+		margin-bottom: 14px;
+		gap: 12px;
+		border-radius: 18px;
+	}
+
+	.legal-hero::before {
+		width: 180px;
+		height: 180px;
+		top: -60px;
+		right: -50px;
+		filter: blur(18px);
+	}
+
+	.legal-hero::after {
+		width: 160px;
+		height: 160px;
+		bottom: -80px;
+		left: -60px;
+		filter: blur(18px);
+	}
+
+	.legal-eyebrow {
+		padding: 6px 10px;
+		font-size: 11px;
+	}
+
+	.legal-hero-head {
+		gap: 8px;
+	}
+
+	.legal-title {
+		font-size: clamp(1.3rem, 6vw, 2rem);
+		letter-spacing: -0.02em;
+	}
+
+	.legal-updated {
+		font-size: 0.9rem;
+	}
+
+	.legal-sub {
+		font-size: 0.9rem;
+		line-height: 1.5;
+		max-width: 55ch;
+	}
+
+	.legal-facts {
+		gap: 8px;
+	}
+
+	.legal-fact-card {
+		padding: 12px 14px;
+		border-radius: 14px;
+	}
+
+	.legal-fact-card span {
+		margin-bottom: 4px;
+		font-size: 0.75rem;
+	}
+
+	.legal-fact-card strong {
+		font-size: 0.95rem;
+	}
+
+	.legal-layout {
+		gap: 14px;
+	}
+
+	.legal-content {
+		gap: 12px;
+	}
+
+	.legal-section {
+		padding: 16px 12px;
+		border-radius: 16px;
+		margin-bottom: 8px;
+	}
+
+	.legal-section h2 {
+		margin-bottom: 10px;
+		font-size: 1.1rem;
+	}
+
+	.legal-section p {
+		font-size: 0.95rem;
+	}
+
+	.legal-list {
+		gap: 8px;
+	}
+
+	.legal-list li {
+		padding-left: 16px;
+		font-size: 0.95rem;
+	}
+
+	.legal-list li::before {
+		width: 6px;
+		height: 6px;
+		top: 9px;
+	}
+
+	.legal-note {
+		padding: 12px 14px;
+		border-radius: 14px;
+		font-size: 0.95rem;
+	}
+
+	.legal-table-row {
+		padding: 12px 12px;
+		gap: 8px;
+		border-radius: 14px;
+	}
+
+	.legal-table-row strong {
+		font-size: 0.95rem;
+	}
+
+	.legal-table-row span {
+		font-size: 0.93rem;
+	}
+
+	.legal-toc {
+		padding: 12px 14px;
+		margin-bottom: 14px;
+		border-radius: 16px;
+	}
+
+	.legal-toc h2 {
+		font-size: 0.85rem;
+		margin-bottom: 8px;
+	}
+
+	.legal-toc-links {
+		gap: 6px;
+	}
+
+	.legal-toc-links a {
+		padding: 7px 9px;
+		font-size: 0.85rem;
+		border-radius: 10px;
+	}
+}
+
+@media (max-width: 430px) {
+	.legal-shell {
+		padding: 16px 10px 28px;
+	}
+
+	.legal-hero {
+		padding: 16px 12px;
+		gap: 10px;
+		border-radius: 16px;
+		margin-bottom: 12px;
+	}
+
+	.legal-title {
+		font-size: clamp(1.15rem, 7vw, 1.75rem);
+	}
+
+	.legal-updated {
+		font-size: 0.85rem;
+	}
+
+	.legal-sub {
+		font-size: 0.85rem;
+	}
+
+	.legal-facts {
+		gap: 6px;
+	}
+
+	.legal-fact-card {
+		padding: 10px 12px;
+		border-radius: 12px;
+	}
+
+	.legal-fact-card span {
+		font-size: 0.7rem;
+		margin-bottom: 3px;
+	}
+
+	.legal-fact-card strong {
+		font-size: 0.9rem;
+		line-height: 1.4;
+	}
+
+	.legal-section {
+		padding: 14px 11px;
+		border-radius: 14px;
+		margin-bottom: 6px;
+	}
+
+	.legal-section h2 {
+		font-size: 1rem;
+		margin-bottom: 8px;
+	}
+
+	.legal-section p {
+		font-size: 0.9rem;
+	}
+
+	.legal-list li {
+		padding-left: 14px;
+		font-size: 0.9rem;
+	}
+
+	.legal-note {
+		padding: 10px 12px;
+		font-size: 0.9rem;
+		border-radius: 12px;
+	}
+
+	.legal-table-row {
+		padding: 10px 11px;
+		gap: 6px;
+		border-radius: 12px;
+	}
+
+	.legal-toc {
+		padding: 10px 12px;
+		border-radius: 14px;
+		margin-bottom: 12px;
+	}
+
+	.legal-toc h2 {
+		font-size: 0.8rem;
+		margin-bottom: 6px;
+	}
+
+	.legal-toc-links {
+		gap: 4px;
+	}
+
+	.legal-toc-links a {
+		padding: 6px 8px;
+		font-size: 0.8rem;
+		border-radius: 10px;
 	}
 }
