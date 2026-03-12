@@ -404,7 +404,6 @@ body.dark-mode .dropdown-logout .dropdown-item-icon {
 
 .mobile-settings-btn:hover {
     background: var(--color-background-tertiary, #f1f5f9);
-    transform: translateY(-1px);
 }
 
 .mobile-settings-icon {
@@ -920,7 +919,6 @@ body.dark-mode .header-modal .modal-form::-webkit-scrollbar-thumb:hover {
 .header-modal .btn.primary-btn:hover {
     background: #0056b3;
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
-    transform: translateY(-1px);
 }
 .header-modal .btn.secondary-btn {
     background: #ffffff;
@@ -1388,7 +1386,6 @@ body.dark-mode .header-modal .custom-interval-input:focus {
 
     .theme-toggle-btn.mobile:hover {
         background: var(--color-background-tertiary);
-        transform: translateY(-1px);
     }
 
     .theme-toggle-btn.mobile .icon {

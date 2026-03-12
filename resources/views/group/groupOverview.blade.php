@@ -6,13 +6,15 @@
     <title>Gruppeoversigt | TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/groupoverview.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/groupOverview.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     @include('partials.header', ['currentPage' => 'groups/overview'])
 
-    <main class="overview-shell">
+    <main class="main-content-full">
+    <div class="overview-shell">
         <section class="overview-hero">
             <div class="hero-copy">
                 <p class="eyebrow">Grupper</p>
@@ -161,7 +163,10 @@
                 @endif
             </div>
         </section>
+    </div>
     </main>
+
+    @include('partials.footer')
 
     {{-- Bekræftelsesmodal til slet/forlad gruppe --}}
     <div id="group-confirm-modal" class="confirm-modal" style="display:none;">
@@ -175,7 +180,7 @@
             </div>
             <div class="confirm-actions">
                 <button type="button" class="confirm-btn cancel" onclick="closeGroupConfirmModal()">Annuller</button>
-                <form id="group-confirm-form" method="POST" style="display:inline;">
+                <form id="group-confirm-form" method="POST" class="confirm-btn-form">
                     @csrf
                     <input type="hidden" name="_method" id="group-confirm-method" value="POST">
                     <button type="submit" class="confirm-btn danger">Bekræft</button>

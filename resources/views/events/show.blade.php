@@ -7,6 +7,7 @@
         $end = isset($event->endDate) && $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
         $pageTitle = ($event->eventName ?? 'Event Details') . ' | TaskM8';
         $metaDescription = \Illuminate\Support\Str::limit($event->description ?? 'Se detaljer for begivenheden i TaskM8.', 155);
+        $heroLead = \Illuminate\Support\Str::limit(trim(strip_tags($event->description ?? 'Planlagt begivenhed i TaskM8.')), 180);
         $eventJson = [
             '@context' => 'https://schema.org',
             '@type' => 'Event',
@@ -56,63 +57,136 @@
         'image' => asset('TaskM8-Logo.png'),
         'structuredData' => $structuredData,
     ])
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/event.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
     <link rel="stylesheet" href="{{ asset('css/invitation.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/event-show.css') }}?v={{ filemtime(public_path('css/event-show.css')) }}">
 </head>
-<body>
+<body class="event-show-page">
     @include('partials.header', ['currentPage' => 'events'])
-    <main class="event-hero-bg">
-        <section class="event-hero-section">
-            <div class="event-hero-icon">
-                <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            </div>
-            <h1 class="event-hero-title">{{ $event->eventName ?? 'Event Title' }}</h1>
-            
-            @php
-                \Carbon\Carbon::setLocale('da');
-                $start = $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
-                $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
-            @endphp
-        </section>
-        
-        <section class="event-details-card">
-            <div class="event-card-actions-top">
-                <a href="/" class="back-btn">Tilbage</a>
+    @php
+        $acceptedCount = \App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count();
+        $isOwnerTop = auth()->check() && isset($event->ownerId) && $event->ownerId === auth()->id();
+        $isAcceptedTop = auth()->check() && \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
+        $isFullTop = !empty($event->participantLimit) && ($acceptedCount >= $event->participantLimit) && !$isAcceptedTop;
+        $myParticipation = auth()->check() ? \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first() : null;
+        $rsvpStatus = $myParticipation->status ?? null;
+        $hasResponded = in_array($rsvpStatus, ['accepted', 'declined']);
+        $participantLimit = !empty($event->participantLimit) ? (int) $event->participantLimit : null;
+        $spotsLeft = $participantLimit ? max($participantLimit - $acceptedCount, 0) : null;
+        $attendancePercent = $participantLimit ? min(100, (int) round(($acceptedCount / max($participantLimit, 1)) * 100)) : null;
+        $durationLabel = '-';
+        if ($start && $end && $end->greaterThan($start)) {
+            $durationMinutes = $start->diffInMinutes($end);
+            $durationHours = intdiv($durationMinutes, 60);
+            $remainingMinutes = $durationMinutes % 60;
+
+            if ($durationHours > 0 && $remainingMinutes > 0) {
+                $durationLabel = $durationHours . ' t ' . $remainingMinutes . ' min';
+            } elseif ($durationHours > 0) {
+                $durationLabel = $durationHours . ' t';
+            } else {
+                $durationLabel = $remainingMinutes . ' min';
+            }
+        }
+    @endphp
+    <main class="main-content-full event-page-shell">
+        <section class="event-page-grid">
+            <article class="event-surface event-surface--content">
+                <header class="event-content-top">
+                    <span class="event-content-kicker">Begivenhed</span>
+                    <h1 class="event-content-title">{{ $event->eventName ?? 'Begivenhed' }}</h1>
+                    <p class="event-content-summary">{{ $heroLead }}</p>
+                </header>
+
+                <div class="event-overview-grid">
+                    <div class="event-overview-item">
+                        <span class="event-overview-item__label">Lokation</span>
+                        <strong class="event-overview-item__value">{{ $event->location ?? 'Ukendt lokation' }}</strong>
+                    </div>
+                    <div class="event-overview-item">
+                        <span class="event-overview-item__label">Start</span>
+                        <strong class="event-overview-item__value">{{ $start ? $start->translatedFormat('D d. M Y') . ' kl. ' . $start->format('H:i') : '-' }}</strong>
+                    </div>
+                    <div class="event-overview-item">
+                        <span class="event-overview-item__label">Varighed</span>
+                        <strong class="event-overview-item__value">{{ $durationLabel }}</strong>
+                    </div>
+                    <div class="event-overview-item">
+                        <span class="event-overview-item__label">Deltagere</span>
+                        <strong class="event-overview-item__value">{{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@endif</strong>
+                    </div>
+                </div>
+
+                <section class="event-section-header">
+                    <h2>Beskrivelse</h2>
+                </section>
+
+                <div class="event-description-block">
+                    {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
+                </div>
+
+                <section class="event-section-header event-section-header--compact">
+                    <h2>Praktisk info</h2>
+                </section>
+
+                <dl class="event-facts-list">
+                    <div class="event-fact-row">
+                        <dt>Start</dt>
+                        <dd>{{ $start ? $start->translatedFormat('l d. F Y') . ' kl. ' . $start->format('H:i') : '-' }}</dd>
+                    </div>
+                    <div class="event-fact-row">
+                        <dt>Slut</dt>
+                        <dd>{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</dd>
+                    </div>
+                    <div class="event-fact-row">
+                        <dt>Status</dt>
+                        <dd>{{ $isFullTop ? 'Fyldt op' : 'Åben for deltagere' }}</dd>
+                    </div>
+                    <div class="event-fact-row">
+                        <dt>Ledige pladser</dt>
+                        <dd>{{ $spotsLeft ?? 'Fri kapacitet' }}</dd>
+                    </div>
+                </dl>
 
                 @auth
-                @php
-                    $isOwnerTop = isset($event->ownerId) && $event->ownerId === auth()->id();
-                    $isAcceptedTop = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->where('status', 'accepted')->exists();
-                    $isFullTop = !empty($event->participantLimit) && (\App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit) && !$isAcceptedTop;
-                    $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
-                    $rsvpStatus = $myParticipation->status ?? null;
-                    $hasResponded = in_array($rsvpStatus, ['accepted','declined']);
-                @endphp
+                @if(!$isOwnerTop && session('success'))
+                    <div class="rsvp-flash">{{ session('success') }}</div>
+                @endif
+                @endauth
+            </article>
+
+            <aside class="event-surface event-surface--actions">
+                <h2 class="event-actions-title">Handlinger</h2>
+
+                <a href="/events" class="back-btn">Tilbage til begivenheder</a>
+
+                <div class="event-attendance-card">
+                    <div class="event-attendance-card__top">
+                        <span class="event-attendance-card__label">Belægning</span>
+                        <strong>
+                            {{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@endif
+                        </strong>
+                    </div>
+                    @if(!is_null($attendancePercent))
+                        <div class="event-attendance-progress" aria-hidden="true">
+                            <span style="width: {{ $attendancePercent }}%"></span>
+                        </div>
+                        <p class="event-attendance-card__meta">{{ $spotsLeft }} pladser tilbage</p>
+                    @else
+                        <p class="event-attendance-card__meta">Ingen øvre deltagergrænse på denne begivenhed.</p>
+                    @endif
+                </div>
+
+                @auth
                 @if($isOwnerTop)
-                    <div class="event-actions-details">
-                        <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">Inviter</button>
-                        <button type="button" class="bin-button" aria-label="Slet begivenhed" onclick="openDeleteModal()">
-                            <svg class="bin-top" viewBox="0 0 39 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
-                                <line x1="12" y1="1.5" x2="26.0357" y2="1.5" stroke="white" stroke-width="3"></line>
-                            </svg>
-                            <svg class="bin-bottom" viewBox="0 0 33 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <mask id="path-1-inside-1_8_19" fill="white">
-                                    <path d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"></path>
-                                </mask>
-                                <path d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z" fill="white" mask="url(#path-1-inside-1_8_19)"></path>
-                                <path d="M12 6L12 29" stroke="white" stroke-width="4"></path>
-                                <path d="M21 6V29" stroke="white" stroke-width="4"></path>
-                            </svg>
-                        </button>
+                    <div class="event-actions-details event-actions-details--column">
+                        <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">Inviter deltagere</button>
+                        <button type="button" class="btn event-danger-btn" onclick="openDeleteModal()">Slet begivenhed</button>
                     </div>
                 @else
-                    <div class="event-actions-details" aria-label="Deltagelsesstatus">
+                    <div class="event-actions-details event-actions-details--column" aria-label="Deltagelsesstatus">
                         <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
                             @if($rsvpStatus === 'accepted')
                                 <span class="status-dot"></span> Deltager
@@ -122,71 +196,33 @@
                                 <span class="status-dot"></span> Afventer svar
                             @endif
                         </div>
-                    </div>
-                    <div class="rsvp-menu" id="rsvp-menu-event">
-                        <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-event')">
-                            {{ $hasResponded ? 'Skift svar' : 'Svar' }}
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="caret"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                        <div class="rsvp-menu-list" role="menu">
-                            <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="status" value="accepted" />
-                                <button type="submit" class="rsvp-menu-item accepted" {{ $isFullTop ? 'disabled' : '' }}>
-                                    <span class="dot"></span> Deltag
-                                </button>
-                            </form>
-                            <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="status" value="declined" />
-                                <button type="submit" class="rsvp-menu-item declined">
-                                    <span class="dot"></span> Deltager ikke
-                                </button>
-                            </form>
+
+                        <div class="rsvp-menu" id="rsvp-menu-event">
+                            <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-event')">
+                                {{ $hasResponded ? 'Skift svar' : 'Svar' }}
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="caret"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                            <div class="rsvp-menu-list" role="menu">
+                                <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="status" value="accepted" />
+                                    <button type="submit" class="rsvp-menu-item accepted" {{ $isFullTop ? 'disabled' : '' }}>
+                                        <span class="dot"></span> Deltag
+                                    </button>
+                                </form>
+                                <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="status" value="declined" />
+                                    <button type="submit" class="rsvp-menu-item declined">
+                                        <span class="dot"></span> Deltager ikke
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 @endif
                 @endauth
-            </div>
-            <ul class="event-details-list">
-                <li><span class="event-details-label">Lokation:</span> <span class="event-details-value">{{ $event->location ?? '-' }}</span></li>
-                <li>
-                    <span class="event-details-label">Start:</span>
-                    <span class="event-details-value">{{ $start ? $start->translatedFormat('l d. F Y') . ' kl. ' . $start->format('H:i') : '-' }}</span>
-                </li>
-                <li>
-                    <span class="event-details-label">Slut:</span>
-                    <span class="event-details-value">{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</span>
-                </li>
-                @php
-                    $acceptedCount = \App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count();
-                @endphp
-                <li>
-                    <span class="event-details-label">Deltagere:</span>
-                    <span class="event-details-value">
-                        {{ $acceptedCount }}
-                        @if(!empty($event->participantLimit))
-                            / {{ $event->participantLimit }}
-                        @endif
-                    </span>
-                </li>
-            </ul>
-            <div class="event-details-description">
-                {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
-            </div>
-            @php
-                $limit = $event->participantLimit ?? null;
-                $current = $acceptedCount;
-                $pct = ($limit && $limit > 0) ? min(100, max(0, round(($current / max(1,$limit)) * 100))) : null;
-            @endphp
-            @auth
-            @php
-                $isOwner = isset($event->ownerId) && $event->ownerId === auth()->id();
-            @endphp
-            @if(!$isOwner && session('success'))
-                <div class="rsvp-flash">{{ session('success') }}</div>
-            @endif
-            @endauth
+            </aside>
         </section>
     </main>
 

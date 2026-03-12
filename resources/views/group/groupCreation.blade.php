@@ -7,14 +7,15 @@
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/groupCreation.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     @include('partials.header', ['currentPage' => 'groups/overview'])
 
-    <main class="group-create-shell">
-        <section class="form-card">
+    <main class="main-content-full">
+        <section class="group-create-shell form-card">
             <header class="form-header">
                 <div>
                     <p class="eyebrow">Ny gruppe</p>
@@ -64,6 +65,8 @@
             </form>
         </section>
     </main>
+
+    @include('partials.footer')
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

@@ -4,6 +4,240 @@
     gap: 1rem;
 }
 
+/* Task pages - modernized layout polish */
+.overview-shell .task-listing {
+    display: grid;
+    gap: 1rem;
+}
+
+.task-listing-header {
+    margin-bottom: 0.25rem;
+    padding: 0.5rem 0;
+}
+
+.task-listing-header h2 {
+    margin: 0;
+    font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+}
+
+.task-listing-header .header-description {
+    margin: 0.35rem 0 0;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.task-list {
+    margin-top: 0.75rem;
+    gap: 1rem;
+}
+
+.task-card {
+    border-radius: 18px;
+    border: 1px solid var(--color-border);
+    background: var(--color-background-secondary);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--color-accent-primary) 30%, var(--color-border));
+    box-shadow: 0 20px 38px rgba(15, 23, 42, 0.12);
+}
+
+.task-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.task-title-section h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.25;
+}
+
+.task-description {
+    margin: 0.6rem 0 0;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+}
+
+.task-stats {
+    margin-bottom: 0;
+}
+
+.task-stats .stat-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    padding: 0.4rem 0.8rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--color-background-primary) 55%, transparent);
+}
+
+.task-actions {
+    justify-content: flex-start;
+    gap: 0.6rem;
+}
+
+.task-actions .btn {
+    border-radius: 10px;
+}
+
+.task-empty-state {
+    text-align: center;
+    border: 1px dashed var(--color-border);
+    border-radius: 16px;
+    padding: 2rem 1.25rem;
+    background: color-mix(in srgb, var(--color-background-secondary) 85%, transparent);
+}
+
+.task-empty-state h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--color-text-primary);
+}
+
+.task-empty-state p {
+    margin: 0.5rem auto 1rem;
+    max-width: 62ch;
+    color: var(--color-text-secondary);
+}
+
+main.main-content-full .edit-container {
+    width: min(980px, 100%);
+    margin: 0 auto;
+}
+
+.edit-card,
+.task-form-wrapper {
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    background: var(--color-background-secondary);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.edit-form .form-row label {
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+main.main-content-full .event-details-card {
+    width: min(920px, 100%);
+    margin: 0 auto;
+    border-radius: 18px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
+    background: var(--color-background-secondary);
+}
+
+@media (max-width: 840px) {
+    .task-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .task-actions {
+        width: 100%;
+    }
+
+    .task-actions .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+}
+
+.task-edit-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.9fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.task-edit-main,
+.task-edit-aside {
+    padding: 1.25rem;
+}
+
+.task-edit-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.task-datetime-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.task-edit-aside h3 {
+    margin: 0;
+    font-size: 1.12rem;
+}
+
+.task-edit-aside p {
+    margin: 0.4rem 0 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.task-edit-meta-item {
+    display: grid;
+    gap: 0.3rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 0.7rem 0.8rem;
+    background: color-mix(in srgb, var(--color-background-primary) 60%, transparent);
+    margin-top: 0.6rem;
+}
+
+.task-edit-meta-item span {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    font-weight: 700;
+}
+
+.task-edit-meta-item strong {
+    font-size: 0.94rem;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+}
+
+.task-edit-actions {
+    justify-content: space-between;
+}
+
+@media (max-width: 1000px) {
+    .task-edit-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .task-datetime-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .task-edit-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .task-edit-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 /* Responsive grid for tasks on larger screens */
 @media (min-width: 768px) and (max-width: 991px) {
     .task-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; grid-auto-rows: 1fr; }
@@ -151,4 +385,135 @@ form-row {
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
     border: 1px solid var(--color-border);
+}
+
+/* Final scoped overrides for Task Edit page */
+body.task-edit-page .task-edit-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.85fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+body.task-edit-page .task-edit-main,
+body.task-edit-page .task-edit-aside {
+    border-radius: 20px;
+    border: 1px solid var(--color-border);
+    background: var(--color-background-secondary);
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
+    padding: 1.2rem;
+}
+
+body.task-edit-page .task-edit-form {
+    display: grid;
+    gap: 1rem;
+}
+
+body.task-edit-page .task-edit-form .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 0;
+}
+
+body.task-edit-page .task-edit-form label {
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+body.task-edit-page .task-edit-form input,
+body.task-edit-page .task-edit-form textarea {
+    border: 1.6px solid var(--color-border);
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    border-radius: 12px;
+    padding: 0.75rem 0.9rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.task-edit-page .task-edit-form input:focus,
+body.task-edit-page .task-edit-form textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16);
+}
+
+body.task-edit-page .task-datetime-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+body.task-edit-page .field-error {
+    margin: 0;
+    color: #ef4444;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+body.task-edit-page .task-edit-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem;
+}
+
+body.task-edit-page .task-edit-actions .btn {
+    min-height: 42px;
+}
+
+body.task-edit-page .task-edit-aside h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+body.task-edit-page .task-edit-aside p {
+    margin: 0.45rem 0 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+body.task-edit-page .task-edit-meta-item {
+    display: grid;
+    gap: 0.3rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 0.65rem 0.8rem;
+    margin-top: 0.55rem;
+    background: color-mix(in srgb, var(--color-background-primary) 65%, transparent);
+}
+
+body.task-edit-page .task-edit-meta-item span {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    font-weight: 700;
+}
+
+body.task-edit-page .task-edit-meta-item strong {
+    font-size: 0.94rem;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+}
+
+@media (max-width: 1024px) {
+    body.task-edit-page .task-edit-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    body.task-edit-page .task-datetime-grid {
+        grid-template-columns: 1fr;
+    }
+
+    body.task-edit-page .task-edit-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    body.task-edit-page .task-edit-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

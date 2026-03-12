@@ -55,6 +55,7 @@
 <link rel="preload" as="style" href="{{ asset('css/header.css') }}">
 <link rel="preload" as="style" href="{{ asset('css/dashboard.css') }}">
 <link rel="preload" as="style" href="{{ asset('css/event.css') }}">
+<link rel="preload" as="style" href="{{ asset('css/design-system.css') }}">
 <link rel="preload" as="image" href="{{ asset('TaskM8-Logo.png') }}">
 <link rel="preload" as="image" href="{{ asset('TaskM8-Logo-Dark.png') }}">
 
@@ -62,5 +63,6 @@
 <link rel="stylesheet" href="{{ asset('css/header.css') }}">
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('css/event.css') }}">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
 

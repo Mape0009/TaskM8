@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
     <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -69,7 +70,7 @@
         </section>
 
         <section class="task-listing">
-            <div class="task-listing-header" style="margin-bottom: 1rem;">
+            <div class="task-listing-header">
                 <div class="header-content">
                     <h2>{{ isset($event) ? 'Opgaver for ' . $event->eventName : 'Mine opgaver' }}</h2>
                     @if(isset($event))
@@ -80,8 +81,8 @@
                 </div>
             </div>
 
-            <div class="task-list" style="margin-top: 1rem; gap: 1.25rem;">
-                @foreach($tasks as $task)
+            <div class="task-list">
+                @forelse($tasks as $task)
                     <div class="task-card">
                         <div class="task-header">
                             <div class="task-title-section">
@@ -140,7 +141,15 @@
                             @endif
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="task-empty-state">
+                        <h3>Ingen opgaver endnu</h3>
+                        <p>Start med at oprette den første opgave, så du kan planlaegge vagter og fordele ansvar.</p>
+                        @if(isset($event) && \App\Http\RolePermissions\Permissions::hasPermission($currentUserRoleForEvent ?? 'participant', 'create-task'))
+                            <a href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}" class="btn primary-btn">Opret opgave</a>
+                        @endif
+                    </div>
+                @endforelse
             </div>
         </section>
     </div>

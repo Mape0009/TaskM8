@@ -423,7 +423,6 @@ body.dark-mode .rsvp-flash {
     cursor: not-allowed;
 }
 .btn-rsvp:hover:not(:disabled) {
-    transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(30,41,59,0.18);
 }
 body.dark-mode .btn-rsvp.decline {
@@ -518,7 +517,7 @@ body.dark-mode .rsvp-note { color: #9ca3af; }
 .confirm-btn.cancel { background: #374151; color: #d1d5db; border-color: #4b5563; }
 .confirm-btn.cancel:hover { background: #1f2937; border-color: #374151; color: #e5e7eb; }
 .confirm-btn.danger { background: #ef4444; color: #fff; border-color: #ef4444; }
-.confirm-btn.danger:hover { background: transparent; color: #ef4444; }
+.confirm-btn.danger:hover { background: #dc2626; border-color: #dc2626; }
 
 /* Light theme overrides */
 body:not(.dark-mode) .confirm-modal-content { background: #fff; border-color: #e5e7eb; }
