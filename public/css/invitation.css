@@ -448,7 +448,7 @@ body.dark-mode .group-action:hover {
 }
 
 body.dark-mode .invitees-list {
-    border: 1px solid #333338;
+    border: 1px solid #1f2937;
     background: #2a2a30;
 }
 
@@ -471,6 +471,7 @@ body.dark-mode .invitees-list {
 
 body.dark-mode .invitee-item {
     border-bottom: 1px solid #333338;
+    background: #1f2937;
 }
 
 body.dark-mode .invitee-item:hover {

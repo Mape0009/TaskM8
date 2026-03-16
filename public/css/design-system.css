@@ -1,7 +1,9 @@
-/* Global design system override for a unified, modern TaskM8 look */
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
+
+/* Global design system override */
 :root {
-    --ds-font-body: "Plus Jakarta Sans", "Inter", "Segoe UI", sans-serif;
-    --ds-font-heading: "Sora", "Plus Jakarta Sans", "Inter", sans-serif;
+    --ds-font-body: "Inter Tight", "Inter", "Segoe UI", sans-serif;
+    --ds-font-heading: "Sora", "Inter Tight", "Inter", sans-serif;
 
     --ds-bg: #f5f7fb;
     --ds-bg-soft: #edf2f7;
@@ -12,17 +14,17 @@
     --ds-text-muted: #475569;
     --ds-border: rgba(15, 23, 42, 0.11);
 
-    --ds-accent: #0ea5a4;
+    --ds-accent: #5082EF;
     --ds-accent-2: #2563eb;
     --ds-danger: #dc2626;
 
-    /* Shadow scale - from subtle to prominent */
+    /* Shadow scale */
     --ds-shadow-sm: 0 10px 20px rgba(15, 23, 42, 0.08);
     --ds-shadow-md: 0 18px 40px rgba(15, 23, 42, 0.12);
     --ds-shadow-lg: 0 25px 50px rgba(15, 23, 42, 0.15);
     --ds-shadow-xl: 0 30px 70px rgba(15, 23, 42, 0.2);
 
-    /* Border radius scale - consistent sizing */
+    /* Border radius scale */
     --ds-radius-xs: 6px;
     --ds-radius-sm: 12px;
     --ds-radius-md: 18px;
@@ -30,7 +32,7 @@
     --ds-radius-xl: 32px;
     --ds-radius-full: 999px;
 
-    /* Z-index scale - organized hierarchy */
+    /* Z-index scale */
     --ds-z-base: 0;
     --ds-z-content: 1;
     --ds-z-dropdown: 100;
@@ -42,12 +44,12 @@
     --ds-z-notification: 700;
     --ds-z-debug: 999;
 
-    /* Transition timing - consistent motion */
+    /* Transition timing */
     --ds-transition-fast: 0.15s ease;
     --ds-transition-base: 0.2s ease;
     --ds-transition-slow: 0.3s ease;
 
-    /* Responsive breakpoints - five-point scale */
+    /* Responsive breakpoints */
     --ds-mobile-max: 480px;
     --ds-tablet-min: 481px;
     --ds-tablet-max: 900px;
@@ -92,7 +94,8 @@ h6,
 .event-details-title,
 .overview-hero h1 {
     font-family: var(--ds-font-heading);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
 }
 
 .main-header {
@@ -125,13 +128,11 @@ h6,
 .task-card,
 .group-card,
 .event-details-container,
-.overview-hero,
 .legal-section,
 .form-card,
 .edit-card,
 .cta-banner,
 .feature-card,
-.metric,
 .cookie-card,
 .participants-modal-content,
 .confirm-modal-content,
@@ -162,8 +163,8 @@ h6,
 .legal-section,
 .form-card,
 .edit-card,
-.feature-card,
-.metric {
+.feature-card
+ {
     background: var(--ds-card-surface);
     border-color: var(--color-border, var(--ds-border));
     box-shadow: var(--ds-shadow-md);
@@ -330,7 +331,7 @@ textarea::placeholder {
 }
 
 /* ============================================================================ */
-/* ANIMATIONS & TRANSITIONS - Luxury smooth interactions */
+/* ANIMATIONS & TRANSITIONS */
 /* ============================================================================ */
 
 /* Smooth transitions for all interactive elements */
@@ -359,7 +360,7 @@ select,
     transition: opacity var(--transition-base);
 }
 
-/* Hover lift effect for cards - subtle depth change, no movement */
+/* Hover lift effect for cards */
 .stat-card,
 .event-card,
 .task-card,
@@ -377,7 +378,6 @@ select,
 .group-card:hover,
 .feature-card:hover {
     box-shadow: var(--ds-shadow-lg);
-    border-color: rgba(14, 165, 164, 0.3);
 }
 
 /* Smooth animations for modals */
@@ -422,7 +422,7 @@ select,
     }
 }
 
-/* Smooth pulse animation for attention-grabbing */
+/* Smooth pulse animation */
 @keyframes pulse {
     0%, 100% {
         opacity: 1;

@@ -164,7 +164,7 @@
 
                 <div class="event-attendance-card">
                     <div class="event-attendance-card__top">
-                        <span class="event-attendance-card__label">Belægning</span>
+                        <span class="event-attendance-card__label">Begrænsning</span>
                         <strong>
                             {{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@endif
                         </strong>
@@ -175,7 +175,7 @@
                         </div>
                         <p class="event-attendance-card__meta">{{ $spotsLeft }} pladser tilbage</p>
                     @else
-                        <p class="event-attendance-card__meta">Ingen øvre deltagergrænse på denne begivenhed.</p>
+                        <p class="event-attendance-card__meta">Ingen deltagergrænse på denne begivenhed.</p>
                     @endif
                 </div>
 

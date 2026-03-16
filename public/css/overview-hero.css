@@ -1,6 +1,6 @@
 .overview-shell {
     padding: 0 1.25rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter Tight', 'Inter', sans-serif;
 }
 
 .overview-hero {
@@ -13,6 +13,7 @@
     justify-content: space-between;
     gap: 2rem;
     box-shadow: 0 12px 30px rgba(17, 24, 39, 0.06);
+    margin-bottom: 55px;
 }
 
 .hero-copy h1 {

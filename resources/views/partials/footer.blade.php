@@ -1,45 +1,119 @@
 <footer class="site-footer" role="contentinfo">
     <div class="footer-container">
-        <div class="footer-left">
-            <span>© Mercantec 2026</span>
+        <div class="footer-content">
+            <nav class="footer-nav" aria-label="Footer Navigation">
+                <a href="{{ url('/privatlivspolitik') }}" class="footer-link">Privatlivspolitik</a>
+                <span class="footer-divider">·</span>
+                <a href="{{ url('/cookiepolitik') }}" class="footer-link">Cookiepolitik</a>
+                <span class="footer-divider">·</span>
+                <a href="{{ url('/vilkar') }}" class="footer-link">Vilkår</a>
+            </nav>
+            <p class="footer-credit">© Mercantec 2026</p>
         </div>
-        <nav class="footer-nav" aria-label="Footer">
-            <a href="{{ url('/privatlivspolitik') }}">Privatlivspolitik</a>
-            <a href="{{ url('/cookiepolitik') }}">Cookiepolitik</a>
-            <a href="{{ url('/vilkar') }}">Vilkår</a>
-        </nav>
     </div>
-    <style>
-        .site-footer {
-            border-top: 1px solid rgba(255,255,255,0.08);
-            background: var(--color-bg, #0b1220);
-            color: var(--color-text, #e5e7eb);
-            padding: 20px 24px;
-            margin-top: 40px;
-            transition: padding-bottom .25s ease;
-        }
-        .footer-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-        .footer-nav a {
-            color: var(--color-text-secondary, #9ca3af);
-            text-decoration: none;
-            margin-left: 16px;
-            transition: color .2s ease;
-        }
-        .footer-nav a:hover { color: var(--color-text, #e5e7eb); }
-        @media (max-width:640px){
-            .footer-container { flex-direction: column; align-items: flex-start; }
-            .footer-nav a { margin: 8px 12px 0 0; }
-        }
-        .cookie-open .site-footer { padding-bottom: 84px; }
-    </style>
 </footer>
+
+<style>
+    .site-footer {
+        border-top: 1px solid var(--footer-border, rgba(148,163,184,0.14));
+        background: var(--footer-bg, rgba(15,23,42,0.3));
+        padding: 16px 0;
+        margin-top: 40px;
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 32px;
+    }
+
+    .footer-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .footer-nav {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .footer-link {
+        color: var(--footer-link, rgba(226,232,240,0.78));
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+        color: var(--footer-link-hover, rgba(226,232,240,1));
+    }
+
+    .footer-divider {
+        color: rgba(148,163,184,0.4);
+        font-size: 12px;
+    }
+
+    .footer-credit {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(148,163,184,0.7);
+        font-weight: 500;
+    }
+
+    /* Light Mode */
+    body:not(.dark-mode),
+    html:not(.dark-mode) {
+        --footer-bg: rgba(245,247,251,0.5);
+        --footer-border: rgba(15,23,42,0.08);
+        --footer-link: rgba(15,23,42,0.72);
+        --footer-link-hover: rgba(15,23,42,0.95);
+    }
+
+    body:not(.dark-mode) .footer-credit,
+    html:not(.dark-mode) .footer-credit {
+        color: rgba(15,23,42,0.56);
+    }
+
+    body:not(.dark-mode) .footer-divider,
+    html:not(.dark-mode) .footer-divider {
+        color: rgba(15,23,42,0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .footer-container {
+            padding: 0 16px;
+        }
+
+        .footer-content {
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-nav {
+            gap: 8px;
+        }
+
+        .footer-link {
+            font-size: 12px;
+        }
+
+        .footer-credit {
+            font-size: 12px;
+        }
+    }
+
+    .cookie-open .site-footer {
+        padding-bottom: 20px;
+    }
+</style>
+
+
 
 <!-- Cookie Consent Popup -->
 <div id="cookie-consent" class="cookie-consent" aria-live="polite" aria-hidden="true" style="display:none;">

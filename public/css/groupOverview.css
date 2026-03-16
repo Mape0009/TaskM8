@@ -1,7 +1,5 @@
 .overview-shell {
-    margin: 2.5rem auto 3rem;
-    padding:  calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter Tight', 'Inter', sans-serif;
 }
 
 .overview-hero {
@@ -183,13 +181,13 @@
 }
 
 .group-private.private {
-    color: #fca5a5;
+    color: #a14343;
     background-color: rgba(239, 68, 68, 0.1);
     border-color: rgba(239, 68, 68, 0.25);
 }
 
 .group-private.public {
-    color: #86efac;
+    color: #1fa34f;
     background-color: rgba(34, 197, 94, 0.1);
     border-color: rgba(34, 197, 94, 0.25);
 }
@@ -500,7 +498,7 @@ html.dark-mode .group-private.private {
 }
 
 html.dark-mode .group-private.public {
-    color: #86efac;
+    color: #1fa34f;
     background-color: rgba(34, 197, 94, 0.18);
     border-color: rgba(34, 197, 94, 0.3);
 }
