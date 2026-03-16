@@ -115,13 +115,15 @@ Route::get('/events/{id}/edit', [EventController::class, 'edit'])
     ->name('events.edit');
 
 // Event Participant Routes
-Route::get('/organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
+Route::get('/participants', [EventParticipantController::class, 'index']);
 Route::post('/events/clear-success', [EventController::class, 'clearSuccessMessage']);
 Route::get('/participant/{id}', [EventParticipantController::class, 'show']);
 Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'delete'])->name('events.deleteParticipant');
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
+Route::post('/events/{eventId}/volunteer', [EventParticipantController::class, 'becomeVolunteer'])->middleware('auth')->name('events.volunteer');
+Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
 Route::get('/events/{eventId}/participants-list', [EventParticipantController::class, 'getParticipantsList'])->middleware('auth')->name('events.participants-list');
 Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
 
@@ -183,9 +185,17 @@ Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tas
 Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
 
 // Group routes
-Route::view('groups/create', 'group.groupCreation');
-Route::view('groups/overview', 'group.groupOverview');
-Route::post('groups/create', [GroupController::class, 'create'])->name('groups.create');
+Route::middleware('auth')->group(function () {
+    Route::view('groups/create', 'group.groupCreation');
+    Route::post('groups/create', [GroupController::class, 'create'])->name('groups.create');
+    Route::get('groups/members/{id}', [GroupController::class, 'members'])->name('groups.members');
+    Route::get('groups/{id}/manage', [GroupController::class, 'manage'])->name('groups.manage');
+    Route::post('groups/{id}/members', [GroupController::class, 'addMember'])->name('groups.members.add');
+    Route::delete('groups/{groupId}/members/{memberId}', [GroupController::class, 'removeMember'])->name('groups.members.remove');
+    Route::delete('groups/delete/{id}', [GroupController::class, 'delete'])->name('groups.delete');
+    Route::post('groups/{id}/leave', [GroupController::class, 'leave'])->name('groups.leave');
+    Route::post('groups/{id}/join', [GroupController::class, 'join'])->name('groups.join');
+});
 Route::get('groups/overview', [GroupController::class, 'index'])->name('groups.overview');
 Route::delete('groups/delete/{id}', [GroupController::class, 'delete'])->name('groups.delete');
 

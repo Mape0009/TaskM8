@@ -92,6 +92,7 @@ class Permissions
                 'coOwner' => self::CO_OWNER,
                 'taskManager' => self::TASK_MANAGER,
                 'taskWorker' => self::TASK_WORKER,
+                'volunteer' => self::VOLUNTEER,
                 'participant' => self::PARTICIPANT,
                 default => [],
             };
