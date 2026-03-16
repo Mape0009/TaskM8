@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/editevent.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     @include('partials.header', ['currentPage' => 'events'])
-    <main class="edit-container">
-        <div class="edit-card">
-            <div class="edit-header">
-                <h1 class="edit-title">Rediger begivenhed</h1>
-            </div>
+    <main class="main-content-full">
+        <div class="edit-container">
+            <div class="edit-card">
+                <div class="edit-header">
+                    <h1 class="edit-title">Rediger begivenhed</h1>
+                </div>
 
-            <form class="edit-form" method="POST" action="{{ route('events.update', ['id' => $event->id]) }}">
-             @csrf
-             @method('PUT')
+                <form class="edit-form" method="POST" action="{{ route('events.update', ['id' => $event->id]) }}">
+                 @csrf
+                 @method('PUT')
 
                 <div class="form-row">
                     <label for="eventName">Titel</label>
@@ -50,13 +52,15 @@
                     </div>
                 </div>
 
-                <div class="form-actions">
-                    <button type="submit" class="btn primary-btn">Gem ændringer</button>
-                    <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a>
-                </div>
-            </form>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary-btn">Gem ændringer</button>
+                        <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </main>
+    @include('partials.footer')
 </body>
 <script>
 document.addEventListener('DOMContentLoaded', function() {

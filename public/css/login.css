@@ -28,6 +28,45 @@ body {
     text-align: center;
     border: 2px solid var(--color-blue);
 }
+
+/* Dedicated signup layout: wider card and clearer information hierarchy */
+body.signup-page {
+    background-image:
+        radial-gradient(circle at 12% 10%, rgba(0, 123, 255, 0.12), transparent 38%),
+        radial-gradient(circle at 85% 85%, rgba(0, 123, 255, 0.08), transparent 42%);
+}
+
+body.signup-page .auth-container {
+    width: min(920px, 100%);
+    max-width: 920px;
+    text-align: left;
+    padding: calc(var(--spacing-unit) * 5) calc(var(--spacing-unit) * 6);
+}
+
+body.signup-page .auth-container h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 3.5);
+}
+
+body.signup-page .auth-container form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: calc(var(--spacing-unit) * 2.25) calc(var(--spacing-unit) * 2.5);
+    align-items: end;
+}
+
+body.signup-page .input-group {
+    margin-bottom: 0;
+}
+
+body.signup-page .form-submit {
+    grid-column: 1 / -1;
+    margin-top: calc(var(--spacing-unit) * 2);
+}
+
+body.signup-page .auth-container p {
+    text-align: center;
+}
 .auth-container h2 {
     font-size: calc(var(--spacing-unit) * 4);
     color: var(--color-text-primary);
@@ -112,12 +151,31 @@ body {
         padding: calc(var(--spacing-unit) * 3);
         overflow: hidden;
     }
+    body.signup-page {
+        align-items: flex-start;
+        justify-content: center;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
     .auth-container {
         padding: calc(var(--spacing-unit) * 4);
         margin-top: calc(var(--spacing-unit) * 2);
     }
     body.signin-page .auth-container {
         margin-top: 0;
+    }
+    body.signup-page .auth-container {
+        width: 100%;
+        max-width: 560px;
+        padding: calc(var(--spacing-unit) * 4);
+        margin-top: 0;
+    }
+    body.signup-page .auth-container form {
+        grid-template-columns: 1fr;
+        gap: calc(var(--spacing-unit) * 2);
+    }
+    body.signup-page .form-submit {
+        margin-top: calc(var(--spacing-unit) * 1.25);
     }
     .auth-container h2 {
         font-size: calc(var(--spacing-unit) * 3.5);
@@ -148,6 +206,12 @@ body {
 .auth-container .btn + p,
 .auth-container form + p {
     margin-top: calc(var(--spacing-unit) * 3);
+}
+
+@media (min-width: 577px) and (max-width: 920px) {
+    body.signup-page .auth-container {
+        max-width: 760px;
+    }
 }
 /* Theme toggle button styles for auth pages */
 .auth-theme-toggle {

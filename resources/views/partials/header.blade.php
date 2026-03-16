@@ -12,8 +12,7 @@
                 @if (Auth::check())
                 <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
                 <li><a href="/previousEvents" class="{{ $currentPage == 'previousEvents' ? 'active' : '' }}">Afsluttede</a></li>
-                <li><a href="/groups/overview" class="{{ $currentPage == 'groups' ? 'active' : '' }}">Grupper</a></li>
-
+                <li><a href="/groups/overview" class="{{ $currentPage == 'groups/overview' ? 'active' : '' }}">Grupper</a></li>
                 @endif
             </ul>
         </nav>
@@ -227,7 +226,9 @@
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">Oversigt</a></li>
                 @if (Auth::check())
                 <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'events' ? 'is-active' : '' }}" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'groups' ? 'is-active' : '' }}" href="/groups">Afsluttede</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'previousEvents' ? 'is-active' : '' }}" href="/previousEvents">Afsluttede</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'groups/overview' ? 'is-active' : '' }}" href="/groups/overview">Grupper</a></li>
+
                 @endif
             </ul>
         </nav>

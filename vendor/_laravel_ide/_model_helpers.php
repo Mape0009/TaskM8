@@ -952,13 +952,16 @@ namespace App\Models {
     /**
      * App\Models\Group
      *
-     * @property bool $private
+     * @property boolean $private
      * @property string|null $description
      * @property string $groupName
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
+     * @property int|null $ownerId
      * @property int $id
+     * @property-read \App\Models\User $owner
      * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereOwnerid($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Group>|Group whereGroupname($value)

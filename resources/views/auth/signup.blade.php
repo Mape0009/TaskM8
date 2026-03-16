@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ asset('js/theme-toggle.js') }}"></script>
 </head>
-<body>
+<body class="signup-page">
     <div class="auth-container">
         <h2>Opret Konto</h2>
         <form action="{{ route('user.create') }}" method="POST">
@@ -33,11 +33,6 @@
                 <input type="email" id="email" name="email" placeholder="Skriv din email" value="{{ request('email') }}" required>
             </div>
             <div class="input-group">
-                <label for="pin">Invitationskode (PIN)</label>
-                <input type="text" id="pin" name="pin" placeholder="4-cifret kode" value="{{ request('pin') }}" maxlength="4">
-            </div>
-            <input type="hidden" name="event_id" value="{{ request('event') }}">
-            <div class="input-group">
                 <label for="password">Adgangskode</label>
                 <input type="password" id="password" name="password" placeholder="Lav adgangskode" required>
             </div>
@@ -46,10 +41,15 @@
                 <input type="password" id="confirm-password" name="password_confirmation" placeholder="Bekræft adgangskode" required>
             </div>
             <div class="input-group">
+                <label for="pin">Invitationskode (PIN)</label>
+                <input type="text" id="pin" name="pin" placeholder="4-cifret kode" value="{{ request('pin') }}" maxlength="4">
+            </div>
+            <div class="input-group">
                 <label for="phone">Telefon-Nummer (Valgfrit)</label>
                 <input type="tel" id="phone" name="phonenumber" placeholder="Skriv dit telefon-nummer">
             </div>
-            <button type="submit" class="btn primary-btn">Opret Konto</button>
+            <input type="hidden" name="event_id" value="{{ request('event') }}">
+            <button type="submit" class="btn primary-btn form-submit">Opret Konto</button>
         </form>
         <p>Har du allerede en konto? <a href="/signin">Login</a></p>
     </div>

@@ -18,22 +18,24 @@
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 @include('partials.header', ['currentPage' => 'tasks'])
-<div class="edit-container">
-    <div class="edit-header" style="display: flex; align-items: center; justify-content: space-between;">
-        <h1 class="edit-title">Lav ny opgave</h1>
-        @if(isset($event))
-        <p class="muted" style="margin-left: 0.5rem;">Til begivenhed: <strong>{{ $event->eventName }}</strong></p>
-        @endif
-        <a href="{{ url()->previous() }}" class="btn white-btn">Tilbage</a>
-    </div>
+<main class="main-content-full">
+    <div class="edit-container">
+        <div class="edit-header" style="display: flex; align-items: center; justify-content: space-between;">
+            <h1 class="edit-title">Lav ny opgave</h1>
+            @if(isset($event))
+            <p class="muted" style="margin-left: 0.5rem;">Til begivenhed: <strong>{{ $event->eventName }}</strong></p>
+            @endif
+            <a href="{{ url()->previous() }}" class="btn white-btn">Tilbage</a>
+        </div>
 
-    <div class="task-form-wrapper">
-        <form action="{{ isset($event) ? route('events.tasks.create', ['eventId' => $event->id]) : route('task.create') }}" method="POST" class="edit-form task-form" id="taskWizard" novalidate>
-            @csrf
+        <div class="task-form-wrapper">
+            <form action="{{ isset($event) ? route('events.tasks.create', ['eventId' => $event->id]) : route('task.create') }}" method="POST" class="edit-form task-form" id="taskWizard" novalidate>
+                @csrf
 
             <!-- Trin 1: Opgave Navn -->
             <div class="form-step" data-step="1">
@@ -103,9 +105,12 @@
                     <button type="submit" class="btn primary-btn">Lav Opgave</button>
                 </div>
             </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
+</main>
+
+@include('partials.footer')
 <script src="{{ asset('js/task-create.js') }}"></script>
 
 <style>

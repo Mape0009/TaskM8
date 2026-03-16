@@ -18,12 +18,26 @@
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>  
 @include('partials.header', ['currentPage' => 'tasks'])
-<main class="event-hero-bg">
-    <div class="event-details-card">
+<main class="main-content-full">
+    <div class="overview-shell">
+        <section class="overview-hero">
+            <div class="hero-copy">
+                <p class="eyebrow">Opgavedetaljer</p>
+                <h1>{{ $task->taskName }}</h1>
+                <p class="lede">Få overblik over tidsrum, beskrivelse og handlinger for denne opgave.</p>
+            </div>
+            <div class="hero-actions">
+                <a href="{{ url()->previous() }}" class="btn secondary-ghost">Tilbage</a>
+            </div>
+        </section>
+
+        <div class="event-details-card">
         <div class="event-details-header">
             <div class="event-details-icon">
                 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -82,8 +96,11 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 </main>
+
+@include('partials.footer')
 
 </body>
 </html>

@@ -14,56 +14,92 @@
     ])
     <link rel="stylesheet" href="{{ asset('css/legal.css') }}">
 </head>
-<body>
+<body class="legal-page">
     @include('partials.header', ['currentPage' => null])
-    <main class="main-content-full" style="max-width:900px;margin:40px auto;padding:0 16px">
+    <main class="legal-shell">
         <section class="legal-hero">
-            <h1 class="legal-title">Cookiepolitik</h1>
-            <p class="legal-updated">Senest opdateret: {{ now()->format('d.m.Y') }}</p>
-            <p class="legal-sub">Her beskriver vi, hvilke cookies vi bruger, og hvad de gør – kort og forståeligt.</p>
+            <span class="legal-eyebrow">Juridisk</span>
+            <div class="legal-hero-head">
+                <h1 class="legal-title">Cookiepolitik</h1>
+                <p class="legal-updated">Senest opdateret: {{ now()->format('d.m.Y') }}</p>
+                <p class="legal-sub">Denne side forklarer enkelt hvilke cookies vi bruger, hvorfor vi bruger dem, og hvad du selv kan styre. Ingen lange forklaringer, kun det du faktisk har brug for at vide.</p>
+            </div>
+            <div class="legal-facts">
+                <div class="legal-fact-card">
+                    <span>Type</span>
+                    <strong>Vi bruger primært nødvendige cookies for at få TaskM8 til at fungere korrekt.</strong>
+                </div>
+                <div class="legal-fact-card">
+                    <span>Formål</span>
+                    <strong>Cookies hjælper blandt andet med login, sikkerhed og lagring af samtykke.</strong>
+                </div>
+                <div class="legal-fact-card">
+                    <span>Kontrol</span>
+                    <strong>Du kan altid slette eller blokere cookies i din browser.</strong>
+                </div>
+            </div>
         </section>
 
-        <section class="legal-section">
-            <h2>Hvad er cookies?</h2>
-            <p>Cookies er små filer, der gemmes på din enhed. De hjælper med at få siden til at fungere korrekt og gøre oplevelsen bedre.</p>
-        </section>
+        <div class="legal-layout">
+            <aside class="legal-toc" aria-label="Indholdsfortegnelse">
+                <h2>På denne side</h2>
+                <nav class="legal-toc-links">
+                    <a href="#hvad-er-cookies">Hvad er cookies?</a>
+                    <a href="#hvilke-cookies">Hvilke cookies bruger vi?</a>
+                    <a href="#samtykke">Samtykke</a>
+                    <a href="#opbevaring">Hvor længe gemmes de?</a>
+                    <a href="#styring">Sådan styrer du cookies</a>
+                    <a href="#kontakt">Kontakt</a>
+                </nav>
+            </aside>
 
-        <section class="legal-section">
-            <h2>Hvilke cookies bruger vi?</h2>
-            <ul class="legal-list">
-                <li><strong>Nødvendige cookies</strong> – gør siden mulig at bruge (fx login, sikkerhed og samtykke). Siden kan ikke fungere uden dem.</li>
-            </ul>
-        </section>
+            <div class="legal-content">
+                <section class="legal-section" id="hvad-er-cookies">
+                    <h2>Hvad er cookies?</h2>
+                    <p>Cookies er små tekstfiler, der gemmes på din enhed, når du besøger en hjemmeside. De bruges typisk til at huske indstillinger, holde dig logget ind og sikre at siden fungerer som forventet.</p>
+                </section>
 
-        <section class="legal-section">
-            <h2>Samtykke</h2>
-            <p>Når du klikker <strong>Accepter</strong> i vores cookie-popup, gemmer vi et samtykke. Du kan altid slette cookies i din browser.</p>
-        </section>
+                <section class="legal-section" id="hvilke-cookies">
+                    <h2>Hvilke cookies bruger vi?</h2>
+                    <div class="legal-table">
+                        <div class="legal-table-row">
+                            <strong>Nødvendige cookies</strong>
+                            <span>Bruges til grundlæggende funktioner som login, sessionshåndtering, sikkerhed og lagring af cookievalg. Siden fungerer ikke ordentligt uden dem.</span>
+                        </div>
+                        <div class="legal-table-row">
+                            <strong>Samtykke-cookie</strong>
+                            <span>Gemmer om du har accepteret cookie-beskeden, så du ikke bliver spurgt igen ved hvert besøg.</span>
+                        </div>
+                    </div>
+                </section>
 
-        <section class="legal-section">
-            <h2>Hvor længe gemmes cookies?</h2>
-            <p>Samtykke-cookien gemmes typisk i op til 24 måneder, medmindre du sletter den tidligere.</p>
-        </section>
+                <section class="legal-section" id="samtykke">
+                    <h2>Samtykke</h2>
+                    <p>Når du klikker på accepter i vores cookie-besked, gemmer vi dit valg. Du kan altid fjerne cookies igen i din browser, hvis du vil nulstille dit samtykke.</p>
+                    <div class="legal-note">Hvis du blokerer nødvendige cookies, kan dele af TaskM8 stoppe med at fungere korrekt.</div>
+                </section>
 
-        <section class="legal-section">
-            <h2>Kontakt</h2>
-            <p>Har du spørgsmål, så kontakt Mercantec via oplysningerne på hjemmesiden.</p>
-        </section>
+                <section class="legal-section" id="opbevaring">
+                    <h2>Hvor længe gemmes cookies?</h2>
+                    <p>Det afhænger af formålet. Samtykke-cookien gemmes normalt i op til 24 måneder, medmindre du sletter den tidligere.</p>
+                </section>
+
+                <section class="legal-section" id="styring">
+                    <h2>Sådan styrer du cookies</h2>
+                    <ul class="legal-list">
+                        <li>Du kan slette cookies manuelt i din browser.</li>
+                        <li>Du kan blokere cookies helt eller delvist via browserindstillinger.</li>
+                        <li>Du kan også vælge at rydde eksisterende cookies, hvis du vil starte forfra.</li>
+                    </ul>
+                </section>
+
+                <section class="legal-section" id="kontakt">
+                    <h2>Kontakt</h2>
+                    <p>Hvis du har spørgsmål til vores brug af cookies, kan du kontakte Mercantec via oplysningerne på hjemmesiden.</p>
+                </section>
+            </div>
+        </div>
     </main>
-    <style>
-        .legal-hero{margin-bottom:22px}
-        .legal-title{margin:0 0 6px 0}
-        .legal-updated{color:#9ca3af;margin:0 0 8px 0}
-        .legal-sub{color:#cbd5e1;margin:0 0 10px 0}
-        .legal-section{background:rgba(17,24,39,0.4);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px 18px;margin-bottom:14px}
-        .legal-section h2{margin:0 0 8px 0}
-        .legal-list{margin:0 0 8px 16px}
-        @media (prefers-color-scheme: light){
-            .legal-updated{color:#4b5563}
-            .legal-sub{color:#4b5563}
-            .legal-section{background:#ffffff;border:1px solid rgba(0,0,0,0.08);box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-        }
-    </style>
     @include('partials.footer')
 </body>
 </html>

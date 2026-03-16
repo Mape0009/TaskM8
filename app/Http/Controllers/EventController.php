@@ -8,6 +8,8 @@ use App\Models\Event;
 use App\Http\RolePermissions\Permissions;
 use App\Enums\EventRole;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Group;
+use App\Models\GroupMember;
 
 class EventController extends Controller
 {
@@ -86,7 +88,32 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return view('events.show', compact('event'));
+        $groups = [];
+
+        if (auth()->check()) {
+            $userId = auth()->id();
+            $groupIds = GroupMember::where('userId', $userId)->pluck('groupId');
+            if ($groupIds->isNotEmpty()) {
+                $memberCounts = GroupMember::whereIn('groupId', $groupIds)
+                    ->selectRaw('groupId, COUNT(*) as members')
+                    ->groupBy('groupId')
+                    ->pluck('members', 'groupId');
+
+                $groups = Group::whereIn('id', $groupIds)
+                    ->get()
+                    ->map(function ($group) use ($memberCounts) {
+                        return [
+                            'id' => $group->id,
+                            'name' => $group->groupName,
+                            'members' => $memberCounts[$group->id] ?? 0,
+                            'description' => $group->description,
+                        ];
+                    })
+                    ->values();
+            }
+        }
+
+        return view('events.show', compact('event', 'groups'));
     }
 
     public function json($id)

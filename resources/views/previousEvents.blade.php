@@ -15,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link rel="stylesheet" href="{{ asset('css/participants-modal.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -22,53 +23,80 @@
     @include('partials.header', ['currentPage' => 'previousEvents'])
 
     <main class="main-content-full">
-        
-        <section class="previous-events-listing">
-            <h2>Tidligere begivenheder</h2>
-            <div class="event-list">
-                @php \Carbon\Carbon::setLocale('da'); @endphp
-                @forelse($previousEvents ?? [] as $event)
-                    <div class="event-card">
-                        <div class="event-header">
-                            <h3>{{ $event->eventName }}</h3>
-                            @php
-                                $currentUserRole = null;
-                                $isOwnerMenu = false;
-                                if (auth()->check()) {
-                                    foreach ($participant as $p) {
-                                        if ($p->userId === auth()->id() && $event->id === $p->eventId) {
-                                            $currentUserRole = $p->eventRole;
-                                            if ($p->eventRole === 'owner') { $isOwnerMenu = true; }
+        <div class="overview-shell">
+            @php
+                \Carbon\Carbon::setLocale('da');
+                $pastEventsCount = ($previousEvents ?? collect())->count();
+                $myPastEventsCount = (auth()->check() && isset($participant))
+                    ? collect($participant)->where('userId', auth()->id())->unique('eventId')->count()
+                    : 0;
+            @endphp
+            <section class="overview-hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Afsluttede begivenheder</p>
+                    <h1>Se og genbrug dine bedste begivenheder</h1>
+                    <p class="lede">
+                        Brug afsluttede begivenheder som skabeloner, invitér de samme deltagere igen, eller ryd op i arkivet. Du kan altid hoppe ind og se detaljer.
+                    </p>
+                    <div class="hero-meta">
+                        @auth
+                        @else
+                            <span class="pill pill-muted">Log ind for at se dine afsluttede events</span>
+                        @endauth
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="{{ url('/dashboard?open=create') }}" class="btn create-btn">Planlæg ny begivenhed</a>
+                    <a href="{{ url('/events') }}" class="btn secondary-ghost">Tilbage til aktive</a>
+                </div>
+            </section>
+
+            <section class="previous-events-listing">
+                <h2>Tidligere begivenheder</h2>
+                <div class="event-list">
+                    @forelse($previousEvents ?? [] as $event)
+                        <div class="event-card">
+                            <div class="event-header">
+                                <h3>{{ $event->eventName }}</h3>
+                                @php
+                                    $currentUserRole = null;
+                                    $isOwnerMenu = false;
+                                    if (auth()->check()) {
+                                        foreach ($participant as $p) {
+                                            if ($p->userId === auth()->id() && $event->id === $p->eventId) {
+                                                $currentUserRole = $p->eventRole;
+                                                if ($p->eventRole === 'owner') { $isOwnerMenu = true; }
+                                            }
                                         }
                                     }
-                                }
-                            @endphp
-                            @if($isOwnerMenu)
-                            <div class="event-kebab rsvp-menu" id="prev-event-menu-{{ $event->id }}">
-                                <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('prev-event-menu-{{ $event->id }}')" aria-label="Åbn menu">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="17" r="1"></circle></svg>
-                                </button>
-                                <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 200px;">
-                                    <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
+                                @endphp
+                                @if($isOwnerMenu)
+                                <div class="event-kebab rsvp-menu" id="prev-event-menu-{{ $event->id }}">
+                                    <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('prev-event-menu-{{ $event->id }}')" aria-label="Åbn menu">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="17" r="1"></circle></svg>
+                                    </button>
+                                    <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 200px;">
+                                        <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
+                                    </div>
                                 </div>
+                                @endif
                             </div>
-                            @endif
+                            @php
+                                $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
+                            @endphp
+                            <p class="event-description">Sluttede: {{ $end ? $end->format('j.n.Y') . ' kl ' . $end->format('H:i') : '-' }}</p>
+                            <div class="event-actions">
+                                <button type="button" class="btn secondary-btn" onclick="openTemplateModal({{ $event->id }}, '{{ addslashes($event->eventName) }}')">Brug som skabelon</button>
+                                <button type="button" class="btn secondary-btn" onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">Deltagere</button>
+                                <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
+                            </div>
                         </div>
-                        @php
-                            $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
-                        @endphp
-                        <p class="event-description">Sluttede: {{ $end ? $end->format('j.n.Y') . ' kl ' . $end->format('H:i') : '-' }}</p>
-                        <div class="event-actions">
-                            <button type="button" class="btn secondary-btn" onclick="openTemplateModal({{ $event->id }}, '{{ addslashes($event->eventName) }}')">Brug som skabelon</button>
-                            <button type="button" class="btn secondary-btn" onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">Deltagere</button>
-                            <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
-                        </div>
-                    </div>
-                @empty
-                    <p>Ingen tidligere begivenheder.</p>
-                @endforelse
-            </div>
-        </section>
+                    @empty
+                        <p>Ingen tidligere begivenheder.</p>
+                    @endforelse
+                </div>
+            </section>
+        </div>
     </main>
     @include('partials.footer')
     <script src="{{ asset('js/participants-modal.js') }}"></script>

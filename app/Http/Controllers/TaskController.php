@@ -117,11 +117,19 @@ class TaskController extends Controller
         $validated = $request->validate([
             'taskName' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'startDate' => 'nullable|date',
+            'endDate' => 'nullable|date|after:startDate',
         ]);
 
 
         $task->taskName = $validated['taskName'];
         $task->description = $validated['description'] ?? null;
+        if (!empty($validated['startDate'])) {
+            $task->start_time = $validated['startDate'];
+        }
+        if (!empty($validated['endDate'])) {
+            $task->end_time = $validated['endDate'];
+        }
         $task->save();
 
         return redirect()->route('events.tasks.index', ['eventId' => $eventId]);

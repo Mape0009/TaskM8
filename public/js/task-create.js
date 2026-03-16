@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function(){
   if(search){ search.addEventListener('input', filter); }
 });
 
-// Wizard controls and live review for Task create
 document.addEventListener('DOMContentLoaded', function(){
   var form=document.getElementById('taskWizard');
   if(!form) return;
@@ -49,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
   ['input','change'].forEach(function(ev){ form.addEventListener(ev, updateReview); });
 
-  // Press Enter on step 1 to go next instead of submitting
   form.addEventListener('keydown', function(e){
     var key=e.key||e.keyCode;
     if(key==='Enter' || key===13){

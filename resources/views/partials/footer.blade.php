@@ -1,7 +1,7 @@
 <footer class="site-footer" role="contentinfo">
     <div class="footer-container">
         <div class="footer-left">
-            <span>© Mercantec 2025</span>
+            <span>© Mercantec 2026</span>
         </div>
         <nav class="footer-nav" aria-label="Footer">
             <a href="{{ url('/privatlivspolitik') }}">Privatlivspolitik</a>
@@ -73,7 +73,7 @@
     display: flex;
     justify-content: center;
     pointer-events: none;
-    z-index: 2147483647;
+    z-index: 700; /* notification level */
 }
 .cookie-consent[aria-hidden="false"] { pointer-events: auto; display: flex; }
 
@@ -116,8 +116,8 @@
     cursor: pointer; box-shadow: 0 6px 16px rgba(37,99,235,.35); transform: translateY(0);
     transition: transform .15s ease, box-shadow .15s ease;
 }
-.cookie-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(37,99,235,.45); }
-.cookie-btn:active { transform: translateY(0); }
+.cookie-btn:hover { box-shadow: 0 10px 22px rgba(37,99,235,.45); }
+.cookie-btn:active { }
 .btn-shimmer { position: absolute; inset: 0; background: linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent); transform: translateX(-100%); animation: shimmer 3.6s infinite; }
 @keyframes shimmer { 0%{transform:translateX(-100%)}60%{transform:translateX(200%)}100%{transform:translateX(200%)} }
 @media (max-width:640px){ .cookie-card{flex-direction:column;align-items:flex-start} .cookie-actions{width:100%;justify-content:flex-end} }

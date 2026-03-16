@@ -14,13 +14,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vagter for {{ $task->taskName }} | TaskM8</title>
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link rel="stylesheet" href="{{ asset('css/shifts-index.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
     <script src="https://unpkg.com/@formkit/auto-animate@latest/index.js"></script>
     <script>
-        // Dark mode detection
         if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark-mode');
         }
@@ -30,35 +34,41 @@
     @include('partials.header', ['currentPage' => 'tasks'])
 
     <main class="main-content-full">
-        <div class="edit-container">
-            <div class="edit-header">
-                <h1 class="edit-title">Vagter for {{ $task->taskName }}</h1>
-                <div class="header-actions">
-                    @php
-                        $currentUser = auth()->user();
-                        $currentUserRole = null;
-                        if ($currentUser) {
-                            $p = \App\Models\EventParticipant::where('eventId', $task->eventId)
-                                ->where('userId', $currentUser->id)
-                                ->first();
-                            $currentUserRole = $p?->eventRole;
-                        }
-                    @endphp
-                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
-                    <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">
-                        <i class="fas fa-plus"></i>
-                        Opret Vagt
-                    </a>
-                    @endif
-                    <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-btn">
-                        <i class="fas fa-arrow-left"></i>
-                        Tilbage til Opgaver
-                    </a>
+        @php
+            $currentUser = auth()->user();
+            $currentUserRole = null;
+            if ($currentUser) {
+                $p = \App\Models\EventParticipant::where('eventId', $task->eventId)
+                    ->where('userId', $currentUser->id)
+                    ->first();
+                $currentUserRole = $p?->eventRole;
+            }
+            $shiftsCount = $task->shifts->count();
+            $uniqueUsers = $task->shifts->pluck('userId')->unique()->count();
+        @endphp
+        <div class="overview-shell">
+            <section class="overview-hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Vagter</p>
+                    <h1>Planlæg vagter for {{ $task->taskName }}</h1>
+                    <p class="lede">
+                        Se bemandingen, redigér tider og opret nye vagter for opgaven. Brug genvejene til hurtigt at vende tilbage til opgaverne.
+                    </p>
+                    <div class="hero-meta">
+                        <span class="pill">Vagter: {{ $shiftsCount }}</span>
+                        <span class="pill">Personer: {{ $uniqueUsers }}</span>
+                        <span class="pill">Opgave: {{ $task->taskName }}</span>
+                    </div>
                 </div>
-            </div>
+                <div class="hero-actions">
+                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
+                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn create-btn">Opret vagt</a>
+                    @endif
+                    <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-ghost">Tilbage til opgaver</a>
+                </div>
+            </section>
 
-            {{-- Success flash removed intentionally to avoid popup --}}
-
+            <div class="edit-container">
             @if(session('error'))
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -103,21 +113,37 @@
                         $displayShifts = $displayShifts->where('userId', $currentUser->id);
                     }
                 @endphp
-                <div class="shifts-filter" style="display:flex; gap:8px; align-items:center; margin: 1rem 0;">
-                    <span style="font-weight:600;">Vis:</span>
-                    <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn {{ $isMine ? 'secondary-btn' : 'primary-btn' }}">Alle vagter</a>
-                    <a href="{{ route('tasks.shifts.index', $task->id) }}?filter=mine" class="btn {{ $isMine ? 'primary-btn' : 'secondary-btn' }}">Mine vagter</a>
+                <div class="shifts-toolbar">
+                    <div class="shifts-filter" role="group" aria-label="Filtrer vagter">
+                        <span class="shifts-filter-label">Vis:</span>
+                        <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn {{ $isMine ? 'secondary-btn' : 'primary-btn' }}">Alle vagter</a>
+                        <a href="{{ route('tasks.shifts.index', $task->id) }}?filter=mine" class="btn {{ $isMine ? 'primary-btn' : 'secondary-btn' }}">Mine vagter</a>
+                    </div>
+                    <label class="shifts-search-wrap" for="shift-search">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input id="shift-search" type="search" class="shifts-search-input" placeholder="Søg efter navn eller e-mail">
+                    </label>
                 </div>
                 <div class="shifts-section">
                     <h2 class="shifts-title">
                         <i class="fas fa-list"></i>
-                        Alle Vagter
+                        {{ $isMine ? 'Mine Vagter' : 'Alle Vagter' }}
                     </h2>
                     <div class="shifts-list">
                         @forelse($displayShifts as $shift)
+                            @php
+                                $startTime = \Carbon\Carbon::parse($shift->startTime);
+                                $endTime = \Carbon\Carbon::parse($shift->endTime);
+                                $durationMinutes = $startTime->diffInMinutes($endTime);
+                                $durationHours = intdiv($durationMinutes, 60);
+                                $remainingMinutes = $durationMinutes % 60;
+                                $durationText = $durationHours > 0
+                                    ? ($durationHours . ' t' . ($remainingMinutes > 0 ? ' ' . $remainingMinutes . ' min' : ''))
+                                    : ($remainingMinutes . ' min');
+                            @endphp
                             <div class="shift-card">
                                 <div class="shift-header">
-                                    <div class="shift-user">
+                                    <div class="shift-user" data-shift-user="{{ strtolower($shift->user->name . ' ' . $shift->user->email) }}">
                                         <div class="user-avatar">
                                             <i class="fas fa-user"></i>
                                         </div>
@@ -147,18 +173,21 @@
                                         <div class="time-item">
                                             <div>
                                                 <span class="time-label">Start</span>
-                                                <span class="time-value">{{ \Carbon\Carbon::parse($shift->startTime)->format('j.n.Y H:i') }}</span>
+                                                <span class="time-value">{{ $startTime->format('j.n.Y H:i') }}</span>
                                             </div>
                                         </div>
                                         <div class="time-separator">til</div>
                                         <div class="time-item">
                                             <div>
                                                 <span class="time-label">Slut</span>
-                                                <span class="time-value">{{ \Carbon\Carbon::parse($shift->endTime)->format('j.n.Y H:i') }}</span>
+                                                <span class="time-value">{{ $endTime->format('j.n.Y H:i') }}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                    <span class="duration-info">
+                                        <i class="fas fa-clock" aria-hidden="true"></i>
+                                        {{ $durationText }}
+                                    </span>
                                 </div>
                             </div>
 
@@ -183,7 +212,7 @@
                                 </div>
                             </div>
                         @empty
-                            <div class="empty-state" style="padding: 1rem; color: var(--color-text-secondary);">
+                            <div class="empty-state shifts-empty">
                                 Ingen vagter fundet.
                             </div>
                         @endforelse
@@ -203,6 +232,7 @@
                     </a>
                 </div>
             @endif
+        </div>
         </div>
     </main>
 
@@ -236,6 +266,22 @@
                 autoAnimate(document.querySelector('.shifts-list'));
                 autoAnimate(document.querySelector('.stats-grid'));
             }
+        });
+
+        // Search in shifts list
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('shift-search');
+            const cards = Array.from(document.querySelectorAll('.shift-card'));
+            if (!input || cards.length === 0) return;
+
+            input.addEventListener('input', function() {
+                const term = input.value.trim().toLowerCase();
+                cards.forEach((card) => {
+                    const userEl = card.querySelector('[data-shift-user]');
+                    const haystack = userEl ? userEl.getAttribute('data-shift-user') : '';
+                    card.style.display = haystack.includes(term) ? '' : 'none';
+                });
+            });
         });
 
         // Loading state for delete buttons
