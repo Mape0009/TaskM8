@@ -70,10 +70,19 @@ class Permissions
             'respond-event',
         ];
 
+        public const VOLUNTEER = [
+            'view-event',
+            'view-task',
+            'view-shift',
+            'view-participants',
+            'respond-event',
+        ];
+
         public const PARTICIPANT = [
             'view-event',
             'view-participants',
             'respond-event',
+            'volunteer',
         ];
 
         public static function forRole(string $role): array
@@ -83,6 +92,7 @@ class Permissions
                 'coOwner' => self::CO_OWNER,
                 'taskManager' => self::TASK_MANAGER,
                 'taskWorker' => self::TASK_WORKER,
+                'volunteer' => self::VOLUNTEER,
                 'participant' => self::PARTICIPANT,
                 default => [],
             };

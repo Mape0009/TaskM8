@@ -72,6 +72,8 @@
         $isFullTop = !empty($event->participantLimit) && ($acceptedCount >= $event->participantLimit) && !$isAcceptedTop;
         $myParticipation = auth()->check() ? \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first() : null;
         $rsvpStatus = $myParticipation->status ?? null;
+        $myRole = $myParticipation->eventRole ?? 'participant';
+        $canVolunteer = \App\Http\RolePermissions\Permissions::hasPermission($myRole, 'volunteer');
         $hasResponded = in_array($rsvpStatus, ['accepted', 'declined']);
         $participantLimit = !empty($event->participantLimit) ? (int) $event->participantLimit : null;
         $spotsLeft = $participantLimit ? max($participantLimit - $acceptedCount, 0) : null;
@@ -187,6 +189,12 @@
                     </div>
                 @else
                     <div class="event-actions-details event-actions-details--column" aria-label="Deltagelsesstatus">
+                        @if($canVolunteer && $myRole !== \App\Models\EventRole::volunteer->name)
+                            <form action="{{ route('events.volunteer', ['eventId' => $event->id]) }}" method="POST" style="width:100%;">
+                                @csrf
+                                <button type="submit" class="btn invite-btn" style="width:100%; margin-bottom:0.75rem;">Bliv frivillig</button>
+                            </form>
+                        @endif
                         <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
                             @if($rsvpStatus === 'accepted')
                                 <span class="status-dot"></span> Deltager
@@ -253,6 +261,25 @@
     </div>
     @endif
     @endauth
+    
+    <!-- Volunteer Modal -->
+    <div id="volunteer-modal" class="volunteer-modal">
+        <div class="volunteer-modal-content">
+            <div class="volunteer-modal-header">
+                <h2>Bliv frivillig</h2>
+            </div>
+            <div class="volunteer-modal-body">
+                <p>Vil du blive frivillig for denne begivenhed?</p>
+            </div>
+            <div class="volunteer-modal-footer">
+                <form id="become-volunteer-form" action="{{ url('/events/'.$event->id.'/volunteer') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="volunteer-btn confirm">Bekræft</button>
+                </form>
+                <button type="button" class="volunteer-btn cancel" onclick="closeVolunteerModal()">Annuller</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Invitation Modal -->
     <div id="invite-modal" class="invite-modal">

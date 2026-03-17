@@ -16,6 +16,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\GroupMemberController;
 
 
 Route::get('/', function () {
@@ -121,6 +122,7 @@ Route::delete('/participant/delete/{id}', [EventParticipantController::class, 'd
 Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'])->middleware('auth')->name('events.join');
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
+Route::post('/events/{eventId}/volunteer', [EventParticipantController::class, 'becomeVolunteer'])->middleware('auth')->name('events.volunteer');
 Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
 Route::get('/events/{eventId}/participants-list', [EventParticipantController::class, 'getParticipantsList'])->middleware('auth')->name('events.participants-list');
 Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');
@@ -195,6 +197,15 @@ Route::middleware('auth')->group(function () {
     Route::post('groups/{id}/join', [GroupController::class, 'join'])->name('groups.join');
 });
 Route::get('groups/overview', [GroupController::class, 'index'])->name('groups.overview');
+Route::delete('groups/delete/{id}', [GroupController::class, 'delete'])->name('groups.delete');
+
+
+// Group Member routes
+Route::view('groups/members/{groupId}', 'group.groupMembers');
+Route::get('groups/members/{groupId}', [GroupMemberController::class, 'index'])->name('groupMember.index');
+Route::get('groups/{id}/invite', [GroupMemberController::class, 'showUsers'])->name('groupMember.invite');
+Route::post('groups/{groupId}/invite', [GroupMemberController::class, 'invite'])->name('groupMember.invite.post');
+Route::delete('groupMember/delete/{id}', [GroupMemberController::class, 'delete'])->name('groupMember.delete');
 
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
