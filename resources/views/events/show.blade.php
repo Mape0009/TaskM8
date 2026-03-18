@@ -78,6 +78,9 @@
         $participantLimit = !empty($event->participantLimit) ? (int) $event->participantLimit : null;
         $spotsLeft = $participantLimit ? max($participantLimit - $acceptedCount, 0) : null;
         $attendancePercent = $participantLimit ? min(100, (int) round(($acceptedCount / max($participantLimit, 1)) * 100)) : null;
+        $isAcceptedParticipant = $rsvpStatus === 'accepted';
+        $isVolunteerNow = $myRole === \App\Models\EventRole::volunteer->name;
+        $canShowVolunteerButton = !$isOwnerTop && $isAcceptedParticipant && $canVolunteer;
         $durationLabel = '-';
         if ($start && $end && $end->greaterThan($start)) {
             $durationMinutes = $start->diffInMinutes($end);
@@ -95,81 +98,92 @@
     @endphp
     <main class="main-content-full event-page-shell">
         <section class="event-page-grid">
-            <article class="event-surface event-surface--content">
+            <article class="event-surface event-surface--content event-surface--hero">
                 <header class="event-content-top">
                     <span class="event-content-kicker">Begivenhed</span>
                     <h1 class="event-content-title">{{ $event->eventName ?? 'Begivenhed' }}</h1>
                     <p class="event-content-summary">{{ $heroLead }}</p>
                 </header>
 
-                <div class="event-overview-grid">
+                <div class="event-overview-grid event-overview-grid--tight">
                     <div class="event-overview-item">
-                        <span class="event-overview-item__label">Lokation</span>
-                        <strong class="event-overview-item__value">{{ $event->location ?? 'Ukendt lokation' }}</strong>
+                        <span class="event-overview-item__label">Dag</span>
+                        <strong class="event-overview-item__value">{{ $start ? $start->translatedFormat('D d. M') : '-' }}</strong>
                     </div>
                     <div class="event-overview-item">
-                        <span class="event-overview-item__label">Start</span>
-                        <strong class="event-overview-item__value">{{ $start ? $start->translatedFormat('D d. M Y') . ' kl. ' . $start->format('H:i') : '-' }}</strong>
+                        <span class="event-overview-item__label">Tid</span>
+                        <strong class="event-overview-item__value">
+                            @if($start && $end)
+                                {{ $start->format('H:i') }} - {{ $end->format('H:i') }}
+                            @elseif($start)
+                                {{ $start->format('H:i') }}
+                            @else
+                                -
+                            @endif
+                        </strong>
                     </div>
                     <div class="event-overview-item">
-                        <span class="event-overview-item__label">Varighed</span>
-                        <strong class="event-overview-item__value">{{ $durationLabel }}</strong>
+                        <span class="event-overview-item__label">Sted</span>
+                        <strong class="event-overview-item__value">{{ $event->location ?? 'Ikke angivet' }}</strong>
                     </div>
                     <div class="event-overview-item">
-                        <span class="event-overview-item__label">Deltagere</span>
-                        <strong class="event-overview-item__value">{{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@endif</strong>
+                        <span class="event-overview-item__label">Pladser</span>
+                        <strong class="event-overview-item__value">{{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@else deltagere @endif</strong>
                     </div>
                 </div>
 
-                <section class="event-section-header">
-                    <h2>Beskrivelse</h2>
-                </section>
+                <div class="event-body-grid">
+                    <section class="event-panel event-panel--primary">
+                        <div class="event-panel__header">
+                            <h2>Om begivenheden</h2>
+                            <p>Det vigtigste samlet ét sted.</p>
+                        </div>
+                        <div class="event-description-block event-description-block--hero">
+                            {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
+                        </div>
+                    </section>
 
-                <div class="event-description-block">
-                    {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
+                    <section class="event-panel event-panel--secondary">
+                        <div class="event-panel__header">
+                            <h2>Praktisk overblik</h2>
+                            <p>Kort og hurtigt at skimme.</p>
+                        </div>
+                        <dl class="event-facts-list event-facts-list--compact">
+                            <div class="event-fact-row">
+                                <dt>Start</dt>
+                                <dd>{{ $start ? $start->translatedFormat('l d. F Y') . ' kl. ' . $start->format('H:i') : '-' }}</dd>
+                            </div>
+                            <div class="event-fact-row">
+                                <dt>Slut</dt>
+                                <dd>{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</dd>
+                            </div>
+                            <div class="event-fact-row">
+                                <dt>Varighed</dt>
+                                <dd>{{ $durationLabel }}</dd>
+                            </div>
+                            <div class="event-fact-row">
+                                <dt>Status</dt>
+                                <dd>{{ $isFullTop ? 'Fyldt op' : 'Åben for deltagere' }}</dd>
+                            </div>
+                        </dl>
+                    </section>
                 </div>
 
-                <section class="event-section-header event-section-header--compact">
-                    <h2>Praktisk info</h2>
-                </section>
 
-                <dl class="event-facts-list">
-                    <div class="event-fact-row">
-                        <dt>Start</dt>
-                        <dd>{{ $start ? $start->translatedFormat('l d. F Y') . ' kl. ' . $start->format('H:i') : '-' }}</dd>
-                    </div>
-                    <div class="event-fact-row">
-                        <dt>Slut</dt>
-                        <dd>{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</dd>
-                    </div>
-                    <div class="event-fact-row">
-                        <dt>Status</dt>
-                        <dd>{{ $isFullTop ? 'Fyldt op' : 'Åben for deltagere' }}</dd>
-                    </div>
-                    <div class="event-fact-row">
-                        <dt>Ledige pladser</dt>
-                        <dd>{{ $spotsLeft ?? 'Fri kapacitet' }}</dd>
-                    </div>
-                </dl>
-
-                @auth
-                @if(!$isOwnerTop && session('success'))
-                    <div class="rsvp-flash">{{ session('success') }}</div>
-                @endif
-                @endauth
             </article>
 
             <aside class="event-surface event-surface--actions">
-                <h2 class="event-actions-title">Handlinger</h2>
+                <div class="event-actions-head">
+                    <h2 class="event-actions-title">Dine næste skridt</h2>
+                    <p>Få overblik og vælg handling uden støj.</p>
+                </div>
 
                 <a href="/events" class="back-btn">Tilbage til begivenheder</a>
 
                 <div class="event-attendance-card">
                     <div class="event-attendance-card__top">
-                        <span class="event-attendance-card__label">Begrænsning</span>
-                        <strong>
-                            {{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@endif
-                        </strong>
+                        <span class="event-attendance-card__label">Deltagelse</span>
+                        <strong>{{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@endif</strong>
                     </div>
                     @if(!is_null($attendancePercent))
                         <div class="event-attendance-progress" aria-hidden="true">
@@ -179,6 +193,7 @@
                     @else
                         <p class="event-attendance-card__meta">Ingen deltagergrænse på denne begivenhed.</p>
                     @endif
+
                 </div>
 
                 @auth
@@ -189,25 +204,28 @@
                     </div>
                 @else
                     <div class="event-actions-details event-actions-details--column" aria-label="Deltagelsesstatus">
-                        @if($canVolunteer && $myRole !== \App\Models\EventRole::volunteer->name)
-                            <form action="{{ route('events.volunteer', ['eventId' => $event->id]) }}" method="POST" style="width:100%;">
-                                @csrf
-                                <button type="submit" class="btn invite-btn" style="width:100%; margin-bottom:0.75rem;">Bliv frivillig</button>
-                            </form>
+                        @if(!$isOwnerTop && $rsvpStatus)
+                            <div class="event-inline-status-wrap" aria-label="Din RSVP-status">
+                                <span class="event-inline-status-label">Din status</span>
+                                <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
+                                    @if($rsvpStatus === 'accepted')
+                                        <span class="status-dot"></span> Deltager
+                                    @elseif($rsvpStatus === 'declined')
+                                        <span class="status-dot"></span> Deltager ikke
+                                    @else
+                                        <span class="status-dot"></span> Afventer svar
+                                    @endif
+                                </div>
+                            </div>
                         @endif
-                        <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
-                            @if($rsvpStatus === 'accepted')
-                                <span class="status-dot"></span> Deltager
-                            @elseif($rsvpStatus === 'declined')
-                                <span class="status-dot"></span> Deltager ikke
-                            @else
-                                <span class="status-dot"></span> Afventer svar
-                            @endif
-                        </div>
+
+                        @if($canShowVolunteerButton && !$isVolunteerNow)
+                            <button type="button" class="btn invite-btn event-secondary-action" onclick="openVolunteerConfirm('join')">Bliv frivillig</button>
+                        @endif
 
                         <div class="rsvp-menu" id="rsvp-menu-event">
                             <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-event')">
-                                {{ $hasResponded ? 'Skift svar' : 'Svar' }}
+                                {{ $hasResponded ? 'Skift svar' : 'Svar på invitation' }}
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="caret"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </button>
                             <div class="rsvp-menu-list" role="menu">
@@ -261,26 +279,38 @@
     </div>
     @endif
     @endauth
-    
-    <!-- Volunteer Modal -->
-    <div id="volunteer-modal" class="volunteer-modal">
-        <div class="volunteer-modal-content">
-            <div class="volunteer-modal-header">
-                <h2>Bliv frivillig</h2>
+
+    @auth
+    @if($canShowVolunteerButton)
+    <div id="volunteer-confirm-modal" class="volunteer-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="volunteer-confirm-title" style="display:none;">
+        <div class="volunteer-confirm-modal__dialog">
+            <div class="volunteer-confirm-modal__header">
+                <h2 id="volunteer-confirm-title">Bliv frivillig?</h2>
+                <button type="button" class="volunteer-confirm-modal__close" onclick="closeVolunteerConfirm()" aria-label="Luk">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
             </div>
-            <div class="volunteer-modal-body">
-                <p>Vil du blive frivillig for denne begivenhed?</p>
+            <div class="volunteer-confirm-modal__body">
+                <p id="volunteer-confirm-text">Du er ved at melde dig som frivillig på denne begivenhed.</p>
             </div>
-            <div class="volunteer-modal-footer">
-                <form id="become-volunteer-form" action="{{ url('/events/'.$event->id.'/volunteer') }}" method="POST">
+            <div class="volunteer-confirm-modal__actions">
+                <button type="button" class="btn secondary-btn" onclick="closeVolunteerConfirm()">Annuller</button>
+
+                <form id="volunteer-join-form" action="{{ route('events.volunteer', ['eventId' => $event->id]) }}" method="POST" style="display:none;">
                     @csrf
-                    <button type="submit" class="volunteer-btn confirm">Bekræft</button>
+                    <button type="submit" class="btn primary-btn">Ja, bliv frivillig</button>
                 </form>
-                <button type="button" class="volunteer-btn cancel" onclick="closeVolunteerModal()">Annuller</button>
+
+                <form id="volunteer-leave-form" action="{{ route('events.volunteer.remove', ['eventId' => $event->id]) }}" method="POST" style="display:none;">
+                    @csrf
+                    <button type="submit" class="btn event-danger-btn">Ja, fortryd</button>
+                </form>
             </div>
         </div>
     </div>
-
+    @endif
+    @endauth
+    
     <!-- Invitation Modal -->
     <div id="invite-modal" class="invite-modal">
         <div class="invite-modal-content">
@@ -296,7 +326,7 @@
                     </span>
                     <div class="modal-title">
                         <h2>Inviter til begivenhed</h2>
-                        <p class="modal-subtitle">Vælg hvordan du vil tilføje modtagere: nye e‑mails, tidligere inviterede eller hele grupper.</p>
+                        <p class="modal-subtitle">Tilføj modtagere hurtigt via nye e-mails, tidligere inviterede eller hele grupper.</p>
                     </div>
                 </div>
                 <button class="modal-close-btn" onclick="closeInviteModal()" aria-label="Luk">
@@ -324,18 +354,17 @@
                     <div class="invite-section is-active" data-section="new">
                         <div class="section-heading">
                             <div>
-                                <h3>Nye emails</h3>
+                                <h3>Nye e-mails</h3>
                                 <p class="invite-section-subtitle">Tilføj nye personer med det samme – ét eller flere adresser ad gangen.</p>
                             </div>
                             <span class="pill soft">Ny</span>
                         </div>
                         <div class="email-input-container">
                             <div class="email-input-group">
-                                <input type="email" id="email-input" placeholder="Søg/indtast email adresse" class="email-input">
+                                <input type="email" id="email-input" placeholder="Indtast e-mailadresse" class="email-input">
                                 <button type="button" onclick="addEmail()" class="add-email-btn">Tilføj</button>
                             </div>
                         </div>
-                        <div id="email-list" class="email-list"></div>
                     </div>
 
                     <div class="invite-section" data-section="previous">
@@ -371,9 +400,21 @@
                         </div>
                         <div id="groups-list" class="groups-list grid"></div>
                     </div>
+
+                    <section class="selected-recipients-card" aria-live="polite">
+                        <div class="selected-recipients-header">
+                            <h3>Valgte modtagere</h3>
+                            <span class="selected-recipients-chip" id="selected-recipients-chip">0</span>
+                        </div>
+                        <p class="selected-recipients-subtitle">Her ser du altid, hvem der bliver inviteret, inden du sender.</p>
+                        <div id="email-list" class="email-list"></div>
+                    </section>
                     
                     <div class="invite-footer">
-                        <span class="invite-count" id="invite-count-label">Ingen modtagere valgt endnu.</span>
+                        <div class="invite-footer-meta">
+                            <span class="invite-count" id="invite-count-label">Ingen modtagere valgt endnu.</span>
+                            <span class="invite-feedback" id="invite-feedback" aria-live="polite"></span>
+                        </div>
                         <button type="button" onclick="sendInvitations()" class="btn primary-btn" id="send-invitations-btn" disabled>Send invitationer</button>
                     </div>
                 </form>
@@ -401,6 +442,34 @@
         function closeDeleteModal() {
             var m = document.getElementById('delete-modal');
             if (m) { m.style.display = 'none'; }
+        }
+
+        function openVolunteerConfirm(mode) {
+            var modal = document.getElementById('volunteer-confirm-modal');
+            if (!modal) return;
+            var title = document.getElementById('volunteer-confirm-title');
+            var text = document.getElementById('volunteer-confirm-text');
+            var joinForm = document.getElementById('volunteer-join-form');
+            var leaveForm = document.getElementById('volunteer-leave-form');
+            if (joinForm) joinForm.style.display = 'none';
+            if (leaveForm) leaveForm.style.display = 'none';
+
+            if (mode === 'leave') {
+                if (title) title.textContent = 'Fortryd frivilligrolle?';
+                if (text) text.textContent = 'Du bliver sat tilbage som almindelig deltager. Er du sikker på, at du vil fortsætte?';
+                if (leaveForm) leaveForm.style.display = 'inline-flex';
+            } else {
+                if (title) title.textContent = 'Bliv frivillig?';
+                if (text) text.textContent = 'Som frivillig kan du hjælpe med opgaver på begivenheden. Vil du fortsætte?';
+                if (joinForm) joinForm.style.display = 'inline-flex';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeVolunteerConfirm() {
+            var modal = document.getElementById('volunteer-confirm-modal');
+            if (modal) modal.style.display = 'none';
         }
 
         function toggleRsvpDropdown(menuId) {
@@ -448,17 +517,45 @@
             document.getElementById('invite-modal').style.display = 'none';
             document.getElementById('email-input').value = '';
             document.getElementById('search-invitees').value = '';
+            document.getElementById('search-groups').value = '';
             addedEmails = [];
+            setInviteFeedback('');
             updateEmailList();
+            renderInvitees();
+            renderGroups();
+        }
+
+        function setInviteFeedback(message = '', tone = 'neutral') {
+            const feedback = document.getElementById('invite-feedback');
+            if (!feedback) return;
+            feedback.textContent = message;
+            feedback.classList.remove('is-neutral', 'is-success', 'is-warning');
+            if (!message) return;
+            if (tone === 'success') feedback.classList.add('is-success');
+            else if (tone === 'warning') feedback.classList.add('is-warning');
+            else feedback.classList.add('is-neutral');
         }
 
         function addEmail() {
             const emailInput = document.getElementById('email-input');
             const email = emailInput.value.trim();
-            if (email && isValidEmail(email) && !addedEmails.includes(email))
-            {
+            if (!email) {
+                setInviteFeedback('Skriv en e-mailadresse for at tilføje en modtager.', 'warning');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                setInviteFeedback('E-mailadressen ser ikke gyldig ud.', 'warning');
+                return;
+            }
+            if (addedEmails.includes(email)) {
+                setInviteFeedback('Denne e-mail er allerede valgt.', 'warning');
+                return;
+            }
+
+            if (email && isValidEmail(email) && !addedEmails.includes(email)) {
                 addedEmails.push(email);
                 emailInput.value = '';
+                setInviteFeedback('Modtager tilføjet.', 'success');
                 updateEmailList();
             }
         }
@@ -470,25 +567,36 @@
 
         function updateEmailList() {
             const emailList = document.getElementById('email-list');
+            const selectedChip = document.getElementById('selected-recipients-chip');
+            if (!emailList) return;
+
             emailList.innerHTML = '';
+            if (addedEmails.length === 0) {
+                emailList.innerHTML = '<div class="email-list-empty">Ingen modtagere endnu. Tilføj e-mails, tidligere inviterede eller grupper.</div>';
+            }
+
             addedEmails.forEach(email => {
                 const emailTag = document.createElement('div');
                 emailTag.className = 'email-tag';
-                emailTag.innerHTML = `
-                    <span>${email}</span>
-                    <button type="button" onclick="removeEmail('${email}')" class="remove-email-btn">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                `;
+                const emailText = document.createElement('span');
+                emailText.textContent = email;
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'remove-email-btn';
+                removeButton.setAttribute('aria-label', 'Fjern ' + email);
+                removeButton.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+                removeButton.addEventListener('click', function() { removeEmail(email); });
+                emailTag.appendChild(emailText);
+                emailTag.appendChild(removeButton);
                 emailList.appendChild(emailTag);
             });
 
             const countLabel = document.getElementById('invite-count-label');
             const sendBtn = document.getElementById('send-invitations-btn');
             const count = addedEmails.length;
+            if (selectedChip) {
+                selectedChip.textContent = String(count);
+            }
             if (count === 0) {
                 if (countLabel) countLabel.textContent = 'Ingen modtagere valgt endnu.';
             } else if (count === 1) {
@@ -546,14 +654,22 @@
                     return;
                 }
                 const members = await response.json();
+                let addedCount = 0;
                 (members || []).forEach(m => {
                     if (m.email && !addedEmails.includes(m.email)) {
                         addedEmails.push(m.email);
+                        addedCount++;
                     }
                 });
+                if (addedCount > 0) {
+                    setInviteFeedback(addedCount + ' modtagere tilføjet fra gruppen "' + (group.name || '') + '".', 'success');
+                } else {
+                    setInviteFeedback('Alle fra denne gruppe er allerede valgt.', 'neutral');
+                }
                 updateEmailList();
             } catch (e) {
                 console.error('Fejl ved tilføjelse af gruppe til invitationer', e);
+                setInviteFeedback('Kunne ikke hente medlemmer fra gruppen.', 'warning');
             }
         }
 
@@ -629,12 +745,20 @@
         function selectInvitee(email) {
             if (!addedEmails.includes(email)) {
                 addedEmails.push(email);
+                setInviteFeedback('Modtager tilføjet fra tidligere inviterede.', 'success');
                 updateEmailList();
+            } else {
+                setInviteFeedback('Denne modtager er allerede valgt.', 'neutral');
             }
         }
 
         function sendInvitations() {
             const form = document.querySelector('#invite-modal form');
+            if (!form) return;
+            if (!addedEmails.length) {
+                setInviteFeedback('Vælg mindst én modtager før du sender.', 'warning');
+                return;
+            }
 
             form.querySelectorAll('input[name="emailsInvite[]"]').forEach(el => el.remove());
 
@@ -654,6 +778,7 @@
                 sendBtn.disabled = true;
                 sendBtn.textContent = 'Sender...';
             }
+            setInviteFeedback('Invitationer sendes nu...', 'neutral');
 
             form.submit();
         }
@@ -688,6 +813,13 @@
         if (deleteModalEl) {
             deleteModalEl.addEventListener('click', function(e) {
                 if (e.target === this) { closeDeleteModal(); }
+            });
+        }
+
+        var volunteerModalEl = document.getElementById('volunteer-confirm-modal');
+        if (volunteerModalEl) {
+            volunteerModalEl.addEventListener('click', function(e) {
+                if (e.target === this) { closeVolunteerConfirm(); }
             });
         }
 

@@ -760,6 +760,299 @@ input[type="datetime-local"] { -webkit-appearance: none; appearance: none; }
     border: 0;
 }
 
+/* Final mobile overrides for task create/edit (loaded last) */
+@media (max-width: 768px) {
+    body.task-create-page,
+    body.task-edit-page {
+        overflow-x: clip;
+    }
+
+    body.task-create-page .overview-shell,
+    body.task-edit-page .overview-shell,
+    body.task-create-page .shift-create-layout,
+    body.task-edit-page .shift-create-layout,
+    body.task-create-page .shift-create-layout > *,
+    body.task-edit-page .shift-create-layout > * {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    body.task-create-page .main-content-full,
+    body.task-edit-page .main-content-full {
+        padding: 0.7rem 0.55rem 1rem !important;
+        gap: 0.7rem;
+    }
+
+    body.task-create-page .overview-shell,
+    body.task-edit-page .overview-shell {
+        padding: 0 !important;
+        display: grid;
+        gap: 0.7rem;
+    }
+
+    body.task-create-page .overview-hero,
+    body.task-edit-page .overview-hero {
+        border-radius: 12px;
+        padding: 0.85rem 0.9rem;
+        gap: 0.65rem;
+        margin-bottom: 0;
+        box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
+    }
+
+    body.task-create-page .hero-copy h1,
+    body.task-edit-page .hero-copy h1 {
+        font-size: clamp(1.12rem, 5.7vw, 1.38rem);
+        line-height: 1.15;
+        margin: 0.15rem 0 0.3rem;
+    }
+
+    body.task-create-page .lede,
+    body.task-edit-page .lede {
+        font-size: 0.84rem;
+        line-height: 1.38;
+        margin: 0;
+    }
+
+    body.task-create-page .hero-meta,
+    body.task-edit-page .hero-meta {
+        display: none;
+    }
+
+    body.task-create-page .pill,
+    body.task-edit-page .pill {
+        font-size: 0.76rem;
+        padding: 0.25rem 0.58rem;
+    }
+
+    body.task-create-page .shift-create-layout,
+    body.task-edit-page .shift-create-layout {
+        gap: 0.65rem;
+        grid-template-columns: 1fr;
+    }
+
+    body.task-create-page .shift-wizard-progress,
+    body.task-edit-page .shift-wizard-progress {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        overflow: hidden;
+        white-space: normal;
+        gap: 0.35rem;
+        padding: 0;
+        margin-bottom: 0.65rem;
+    }
+
+    body.task-create-page .shift-wizard-step,
+    body.task-edit-page .shift-wizard-step {
+        min-width: 0;
+        font-size: 0.7rem;
+        line-height: 1.15;
+        padding: 0.48rem 0.3rem;
+        border-radius: 12px;
+    }
+
+    body.task-create-page .task-form-wrapper,
+    body.task-edit-page .task-form-wrapper {
+        border-radius: 12px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    body.task-create-page .task-form,
+    body.task-edit-page .task-form {
+        gap: 0.65rem;
+    }
+
+    body.task-create-page .form-step,
+    body.task-edit-page .form-step {
+        padding: 0.8rem;
+        border-radius: 12px;
+    }
+
+    body.task-create-page .step-header,
+    body.task-edit-page .step-header {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 0.55rem;
+        margin-bottom: 0.65rem;
+        padding-bottom: 0.55rem;
+    }
+
+    body.task-create-page .step-number,
+    body.task-edit-page .step-number {
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    body.task-create-page .step-content h3,
+    body.task-edit-page .step-content h3 {
+        font-size: 0.94rem;
+        line-height: 1.2;
+    }
+
+    body.task-create-page .step-content p,
+    body.task-edit-page .step-content p {
+        font-size: 0.78rem;
+        line-height: 1.32;
+    }
+
+    body.task-create-page .form-group,
+    body.task-edit-page .form-group {
+        gap: 0.35rem;
+    }
+
+    body.task-create-page .form-label,
+    body.task-edit-page .form-label {
+        font-size: 0.82rem;
+        margin-bottom: 0.1rem;
+    }
+
+    body.task-create-page .form-input,
+    body.task-edit-page .form-input,
+    body.task-create-page textarea,
+    body.task-edit-page textarea,
+    body.task-create-page input[type="datetime-local"],
+    body.task-edit-page input[type="datetime-local"] {
+        min-height: 46px;
+        font-size: 16px;
+        padding: 0.78rem 0.82rem;
+        border-radius: 10px;
+    }
+
+    body.task-create-page textarea,
+    body.task-edit-page textarea {
+        min-height: 120px;
+    }
+
+    body.task-create-page .form-actions,
+    body.task-edit-page .form-actions {
+        margin-top: 0.75rem;
+        padding-top: 0.65rem;
+        gap: 0.5rem;
+        flex-direction: column-reverse;
+    }
+
+    body.task-create-page .form-actions .btn,
+    body.task-edit-page .form-actions .btn {
+        width: 100%;
+        min-height: 46px;
+        justify-content: center;
+    }
+
+    body.task-create-page .form-actions-inline,
+    body.task-edit-page .form-actions-inline {
+        width: 100%;
+        display: grid;
+        gap: 0.55rem;
+    }
+
+    body.task-create-page .review-card,
+    body.task-edit-page .review-card {
+        padding: 0.8rem;
+        border-radius: 12px;
+    }
+
+    body.task-create-page .review-grid,
+    body.task-edit-page .review-grid {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+    }
+
+    body.task-create-page .review-label,
+    body.task-edit-page .review-label {
+        font-size: 0.78rem;
+    }
+
+    body.task-create-page .review-value,
+    body.task-edit-page .review-value {
+        font-size: 0.94rem;
+    }
+
+    body.task-create-page .shift-create-aside,
+    body.task-edit-page .shift-create-aside {
+        order: 2;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    body.task-create-page .shift-create-aside .edit-card,
+    body.task-edit-page .shift-create-aside .edit-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding: 0.8rem;
+        margin: 0;
+        overflow: hidden;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    body.task-create-page .shift-create-aside .edit-card h3,
+    body.task-edit-page .shift-create-aside .edit-card h3 {
+        font-size: 0.95rem;
+        line-height: 1.2;
+    }
+
+    body.task-create-page .shift-create-aside .edit-card p,
+    body.task-edit-page .shift-create-aside .edit-card p {
+        font-size: 0.82rem;
+        line-height: 1.42;
+        margin: 0.35rem 0 0.65rem;
+    }
+
+    body.task-create-page .shift-create-aside .task-edit-meta-item,
+    body.task-edit-page .shift-create-aside .task-edit-meta-item,
+    body.task-create-page .shift-create-aside .task-edit-meta-item strong,
+    body.task-edit-page .shift-create-aside .task-edit-meta-item strong,
+    body.task-create-page .shift-create-aside p,
+    body.task-edit-page .shift-create-aside p {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    body.task-create-page .shift-create-aside .task-edit-meta-item,
+    body.task-edit-page .shift-create-aside .task-edit-meta-item {
+        padding: 0.62rem 0.68rem;
+        border-radius: 10px;
+        margin-top: 0.5rem;
+    }
+
+    body.task-create-page .shift-create-aside .task-edit-meta-item span,
+    body.task-edit-page .shift-create-aside .task-edit-meta-item span {
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+    }
+
+    body.task-create-page .shift-create-aside .task-edit-meta-item strong,
+    body.task-edit-page .shift-create-aside .task-edit-meta-item strong {
+        font-size: 0.88rem;
+        line-height: 1.34;
+    }
+}
+
+@media (max-width: 420px) {
+    body.task-create-page .main-content-full,
+    body.task-edit-page .main-content-full {
+        padding-inline: 0.45rem !important;
+    }
+
+    body.task-create-page .shift-wizard-step,
+    body.task-edit-page .shift-wizard-step {
+        font-size: 0.66rem;
+        padding-inline: 0.2rem;
+    }
+
+    body.task-create-page .form-step,
+    body.task-edit-page .form-step,
+    body.task-create-page .shift-create-aside .edit-card,
+    body.task-edit-page .shift-create-aside .edit-card {
+        padding: 0.72rem;
+    }
+}
+
 /* Skip Link */
 .skip-link {
     position: absolute;

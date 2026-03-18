@@ -517,3 +517,170 @@ body.task-edit-page .task-edit-meta-item strong {
         justify-content: center;
     }
 }
+
+/* Task create/edit mobile UX polish */
+body.task-create-page .shift-create-aside .edit-card,
+body.task-edit-page .shift-create-aside .edit-card {
+    position: sticky;
+    top: 92px;
+}
+
+@media (max-width: 900px) {
+    body.task-create-page .shift-create-aside .edit-card,
+    body.task-edit-page .shift-create-aside .edit-card {
+        position: static;
+        top: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    body.task-create-page .main-content-full,
+    body.task-edit-page .main-content-full {
+        padding: 0.95rem 0.7rem;
+    }
+
+    body.task-create-page .overview-shell,
+    body.task-edit-page .overview-shell {
+        padding: 0;
+    }
+
+    body.task-create-page .overview-hero,
+    body.task-edit-page .overview-hero {
+        border-radius: 14px;
+        padding: 1rem;
+        gap: 0.9rem;
+        margin-bottom: 0.9rem;
+    }
+
+    body.task-create-page .hero-copy h1,
+    body.task-edit-page .hero-copy h1 {
+        font-size: clamp(1.25rem, 7vw, 1.6rem);
+    }
+
+    body.task-create-page .lede,
+    body.task-edit-page .lede {
+        font-size: 0.95rem;
+        line-height: 1.45;
+    }
+
+    body.task-create-page .hero-meta,
+    body.task-edit-page .hero-meta {
+        gap: 0.4rem;
+    }
+
+    body.task-create-page .pill,
+    body.task-edit-page .pill {
+        font-size: 0.78rem;
+        padding: 0.28rem 0.62rem;
+    }
+
+    body.task-create-page .shift-create-layout,
+    body.task-edit-page .shift-create-layout {
+        gap: 0.75rem;
+    }
+
+    body.task-create-page .shift-wizard-progress,
+    body.task-edit-page .shift-wizard-progress {
+        display: flex;
+        gap: 0.45rem;
+        overflow-x: auto;
+        padding-bottom: 0.3rem;
+        scrollbar-width: thin;
+    }
+
+    body.task-create-page .shift-wizard-step,
+    body.task-edit-page .shift-wizard-step {
+        flex: 0 0 auto;
+        min-width: 118px;
+        white-space: nowrap;
+        padding: 0.48rem 0.68rem;
+        font-size: 0.8rem;
+    }
+
+    body.task-create-page .task-form-wrapper,
+    body.task-edit-page .task-form-wrapper {
+        border-radius: 14px;
+    }
+
+    body.task-create-page .form-step,
+    body.task-edit-page .form-step {
+        padding: 0.9rem;
+    }
+
+    body.task-create-page .step-header,
+    body.task-edit-page .step-header {
+        gap: 0.65rem;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.65rem;
+    }
+
+    body.task-create-page .step-number,
+    body.task-edit-page .step-number {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    body.task-create-page .step-content h3,
+    body.task-edit-page .step-content h3 {
+        font-size: 1rem;
+    }
+
+    body.task-create-page .step-content p,
+    body.task-edit-page .step-content p {
+        font-size: 0.86rem;
+    }
+
+    body.task-create-page .form-input,
+    body.task-edit-page .form-input,
+    body.task-create-page textarea,
+    body.task-edit-page textarea,
+    body.task-create-page input[type="datetime-local"],
+    body.task-edit-page input[type="datetime-local"] {
+        min-height: 46px;
+        font-size: 16px;
+    }
+
+    body.task-create-page .form-actions,
+    body.task-edit-page .form-actions {
+        margin-top: 1rem;
+        padding-top: 0.8rem;
+        gap: 0.6rem;
+    }
+
+    body.task-create-page .form-actions .btn,
+    body.task-edit-page .form-actions .btn {
+        width: 100%;
+        min-height: 46px;
+        justify-content: center;
+    }
+
+    body.task-create-page .form-actions-split,
+    body.task-edit-page .form-actions-split {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    body.task-create-page .form-actions-inline,
+    body.task-edit-page .form-actions-inline {
+        display: grid;
+        gap: 0.6rem;
+        width: 100%;
+    }
+
+    body.task-create-page .review-card,
+    body.task-edit-page .review-card {
+        padding: 0.9rem;
+    }
+
+    body.task-create-page .review-grid,
+    body.task-edit-page .review-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    body.task-create-page .shift-create-aside .edit-card,
+    body.task-edit-page .shift-create-aside .edit-card {
+        padding: 0.9rem;
+    }
+}

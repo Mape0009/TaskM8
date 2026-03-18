@@ -148,6 +148,11 @@ h6,
     backdrop-filter: blur(8px);
 }
 
+/* Keep fixed overlays viewport-bound when modal markup is rendered inside event cards. */
+.event-card {
+    backdrop-filter: none;
+}
+
 .overview-hero,
 .guest-hero,
 .cta-banner {
@@ -189,6 +194,8 @@ a.btn,
     border-radius: 12px;
     font-weight: 650;
     border: 1px solid transparent;
+    box-sizing: border-box;
+    max-width: 100%;
     transition: box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 

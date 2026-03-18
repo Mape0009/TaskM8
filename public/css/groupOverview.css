@@ -479,9 +479,9 @@ html.dark-mode .segment-btn.is-active {
     background: #111827;
 }
 
-html.dark-mode .group-card {
-    background: var(--color-background-secondary, #18181c);
-    border-color: rgba(255, 255, 255, 0.08);
+:is(html.dark-mode, body.dark-mode) .group-card {
+    background: var(--ds-surface-strong, rgba(15, 23, 35, 0.95));
+    border-color: var(--ds-border, rgba(148, 163, 184, 0.2));
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
 }
 

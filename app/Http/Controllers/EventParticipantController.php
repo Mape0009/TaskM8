@@ -265,7 +265,32 @@ class EventParticipantController extends Controller
         $participant->eventRole = EventRole::volunteer->name;
         $participant->save();
         
-        return redirect()->back()->with('success', 'You are now a volunteer.');
+        return redirect()->back()->with('success', 'Du er nu frivillig!');
+    }
+
+    public function removeVolunteer(Request $request, $eventId)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
+        }
+
+        $participant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $userId)
+            ->first();
+
+        if (!$participant) {
+            abort(403, 'You do not have access to this event.');
+        }
+
+        if ($participant->eventRole !== EventRole::volunteer->name) {
+            abort(403, 'You are not a volunteer.');
+        }
+
+        $participant->eventRole = EventRole::participant->name;
+        $participant->save();
+
+        return redirect()->back()->with('success', 'Du er ikke længere frivillig.');
     }
 
     public function promoteFromVolunteer(Request $request, $participantId)
