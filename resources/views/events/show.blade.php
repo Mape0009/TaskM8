@@ -300,11 +300,6 @@
                     @csrf
                     <button type="submit" class="btn primary-btn">Ja, bliv frivillig</button>
                 </form>
-
-                <form id="volunteer-leave-form" action="{{ route('events.volunteer.remove', ['eventId' => $event->id]) }}" method="POST" style="display:none;">
-                    @csrf
-                    <button type="submit" class="btn event-danger-btn">Ja, fortryd</button>
-                </form>
             </div>
         </div>
     </div>
