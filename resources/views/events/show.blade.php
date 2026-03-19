@@ -100,74 +100,58 @@
         <section class="event-page-grid">
             <article class="event-surface event-surface--content event-surface--hero">
                 <header class="event-content-top">
-                    <span class="event-content-kicker">Begivenhed</span>
                     <h1 class="event-content-title">{{ $event->eventName ?? 'Begivenhed' }}</h1>
-                    <p class="event-content-summary">{{ $heroLead }}</p>
                 </header>
 
-                <div class="event-overview-grid event-overview-grid--tight">
-                    <div class="event-overview-item">
-                        <span class="event-overview-item__label">Dag</span>
-                        <strong class="event-overview-item__value">{{ $start ? $start->translatedFormat('D d. M') : '-' }}</strong>
+                <div class="event-simple-info">
+                    <div class="event-info-row">
+                        <span class="event-info-label">Sted</span>
+                        <strong class="event-info-value">{{ $event->location ?? 'Ikke angivet' }}</strong>
                     </div>
-                    <div class="event-overview-item">
-                        <span class="event-overview-item__label">Tid</span>
-                        <strong class="event-overview-item__value">
-                            @if($start && $end)
-                                {{ $start->format('H:i') }} - {{ $end->format('H:i') }}
-                            @elseif($start)
-                                {{ $start->format('H:i') }}
+                    <div class="event-info-row">
+                        <span class="event-info-label">Tidspunkt</span>
+                        <strong class="event-info-value">
+                            @if($start)
+                                {{ $start->translatedFormat('j. F Y') }} kl. {{ $start->format('H:i') }}
                             @else
                                 -
                             @endif
                         </strong>
                     </div>
-                    <div class="event-overview-item">
-                        <span class="event-overview-item__label">Sted</span>
-                        <strong class="event-overview-item__value">{{ $event->location ?? 'Ikke angivet' }}</strong>
-                    </div>
-                    <div class="event-overview-item">
-                        <span class="event-overview-item__label">Pladser</span>
-                        <strong class="event-overview-item__value">{{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@else deltagere @endif</strong>
+                    <div class="event-info-row">
+                        <span class="event-info-label">Pladser</span>
+                        <strong class="event-info-value">{{ $acceptedCount }}{{ $participantLimit ? '/' . $participantLimit : ' deltagere' }}</strong>
                     </div>
                 </div>
 
-                <div class="event-body-grid">
-                    <section class="event-panel event-panel--primary">
-                        <div class="event-panel__header">
-                            <h2>Om begivenheden</h2>
-                            <p>Det vigtigste samlet ét sted.</p>
-                        </div>
-                        <div class="event-description-block event-description-block--hero">
-                            {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
-                        </div>
-                    </section>
+                <section class="event-panel event-panel--primary">
+                    <div class="event-panel__header">
+                        <h2>Om begivenheden</h2>
+                    </div>
+                    <div class="event-description-block event-description-block--hero">
+                        {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
+                    </div>
+                </section>
 
-                    <section class="event-panel event-panel--secondary">
-                        <div class="event-panel__header">
-                            <h2>Praktisk overblik</h2>
-                            <p>Kort og hurtigt at skimme.</p>
+                <section class="event-panel event-panel--secondary">
+                    <div class="event-panel__header">
+                        <h2>Praktisk overblik</h2>
+                    </div>
+                    <dl class="event-facts-list event-facts-list--compact">
+                        <div class="event-fact-row">
+                            <dt>Start</dt>
+                            <dd>{{ $start ? $start->translatedFormat('l d. F Y') . ' kl. ' . $start->format('H:i') : '-' }}</dd>
                         </div>
-                        <dl class="event-facts-list event-facts-list--compact">
-                            <div class="event-fact-row">
-                                <dt>Start</dt>
-                                <dd>{{ $start ? $start->translatedFormat('l d. F Y') . ' kl. ' . $start->format('H:i') : '-' }}</dd>
-                            </div>
-                            <div class="event-fact-row">
-                                <dt>Slut</dt>
-                                <dd>{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</dd>
-                            </div>
-                            <div class="event-fact-row">
-                                <dt>Varighed</dt>
-                                <dd>{{ $durationLabel }}</dd>
-                            </div>
-                            <div class="event-fact-row">
-                                <dt>Status</dt>
-                                <dd>{{ $isFullTop ? 'Fyldt op' : 'Åben for deltagere' }}</dd>
-                            </div>
-                        </dl>
-                    </section>
-                </div>
+                        <div class="event-fact-row">
+                            <dt>Slut</dt>
+                            <dd>{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</dd>
+                        </div>
+                        <div class="event-fact-row">
+                            <dt>Status</dt>
+                            <dd>{{ $isFullTop ? 'Fyldt op' : 'Åben for deltagere' }}</dd>
+                        </div>
+                    </dl>
+                </section>
 
 
             </article>

@@ -222,10 +222,12 @@
             <div class="guest-hero__grid">
                 <div class="guest-hero__content">
                     <p class="guest-hero__eyebrow animate-from-top">PLANLÆGNING UDEN STRESS</p>
-                    <h1 class="guest-hero__title animate-from-top">Begivenheder med overblik, struktur og ro fra første klik</h1>
-                    <p class="guest-hero__subtitle animate-from-left delay-150">TaskM8 samler invitationer, svar, opgaver og deltagerstyring i én moderne platform, så du kan planlægge hurtigere og med fuld kontrol.</p>
+                    <h1 class="guest-hero__title animate-from-top">Planlæg begivenheder nemt og effektivt</h1>
+                    <p class="guest-hero__subtitle animate-from-left delay-150">TaskM8 samler invitationer, svar og overblik ét sted – hurtigt, simpelt og gratis.
+
+</p>
                     <div class="guest-hero__cta animate-from-right delay-300">
-                        <a href="/signup" class="btn primary-btn guest-hero__cta-btn">Kom i gang gratis</a>
+                        <a href="/signup" class="btn primary-btn guest-hero__cta-btn">Kom i gang</a>
                         <a href="/signin" class="btn secondary-btn guest-hero__cta-btn guest-hero__cta-btn--secondary">Log ind</a>
                     </div>
                 </div>
@@ -292,7 +294,7 @@
             </div>
         </section>
 
-        <section class="cta-banner animate-fade-up">
+        {{-- <section class="cta-banner animate-fade-up">
             <div class="cta-banner__content">
                 <h3>Download vores app</h3>
                 <p>TaskM8 er tilgængelig på både iOS og Android.</p>
@@ -314,7 +316,7 @@
                 </a>
             </div>
         </section>
-        </div>
+        </div> --}}
         @endguest
     </main>
     <script src="{{ asset('build/assets/app-DNxiirP_.js') }}" type="module"></script>

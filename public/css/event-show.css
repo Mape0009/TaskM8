@@ -33,21 +33,8 @@ body.event-show-page .event-surface--actions {
 
 body.event-show-page .event-content-top {
     display: grid;
-    gap: 0.45rem;
-}
-
-body.event-show-page .event-content-kicker {
-    display: inline-flex;
-    width: fit-content;
-    padding: 0.34rem 0.72rem;
-    border-radius: 999px;
-    background: rgba(0, 123, 255, 0.1);
-    border: 1px solid rgba(0, 123, 255, 0.18);
-    color: var(--color-accent-primary, #007bff);
-    font-size: 0.72rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
 body.event-show-page .event-content-title {
@@ -56,16 +43,38 @@ body.event-show-page .event-content-title {
     line-height: 0.98;
     letter-spacing: -0.045em;
     color: var(--color-text-primary, #f0f0f0);
-    max-width: 14ch;
+    max-width: 100%;
     text-wrap: balance;
 }
 
-body.event-show-page .event-content-summary {
-    margin: 0;
+body.event-show-page .event-simple-info {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border, #222);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+body.event-show-page .event-info-row {
+    display: grid;
+    gap: 0.3rem;
+}
+
+body.event-show-page .event-info-label {
     color: var(--color-text-secondary, #a0a0a0);
-    font-size: 0.98rem;
-    line-height: 1.58;
-    max-width: 66ch;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+body.event-show-page .event-info-value {
+    color: var(--color-text-primary, #f0f0f0);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
 body.event-show-page .event-overview-grid {
@@ -119,6 +128,7 @@ body.event-show-page .event-panel {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin-bottom: 20px;
 }
 
 body.event-show-page .event-panel__header {
@@ -555,6 +565,7 @@ body:not(.dark-mode).event-show-page .event-danger-btn:hover {
 
     body.event-show-page .event-panel {
         padding: 0.9rem;
+        margin-bottom: 20px;
     }
 
     body.event-show-page .event-fact-row {

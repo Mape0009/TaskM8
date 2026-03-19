@@ -56,6 +56,7 @@
     --ds-desktop-min: 901px;
 }
 
+html.dark-mode,
 body.dark-mode {
     --ds-bg: #090d14;
     --ds-bg-soft: #0f1722;
@@ -80,8 +81,8 @@ body {
 body {
     font-family: var(--ds-font-body);
     background-image:
-        radial-gradient(56rem 56rem at -10% -18%, rgba(14, 165, 164, 0.14), transparent 62%),
-        radial-gradient(56rem 56rem at 108% -14%, rgba(37, 99, 235, 0.14), transparent 62%);
+    radial-gradient(52rem 52rem at -14% -22%, rgba(14, 165, 164, 0.08), transparent 64%),
+    radial-gradient(52rem 52rem at 112% -18%, rgba(37, 99, 235, 0.08), transparent 64%);
 }
 
 h1,
@@ -102,7 +103,7 @@ h6,
     background: color-mix(in srgb, var(--ds-surface-strong) 92%, transparent);
     border-bottom: 1px solid var(--ds-border);
     backdrop-filter: blur(10px);
-    box-shadow: var(--ds-shadow-sm);
+    box-shadow: none;
 }
 
 .navigation a {
@@ -128,12 +129,14 @@ h6,
 .task-card,
 .group-card,
 .event-details-container,
+.event-details-card,
 .legal-section,
 .form-card,
 .edit-card,
 .cta-banner,
 .feature-card,
 .cookie-card,
+.participant-card,
 .participants-modal-content,
 .confirm-modal-content,
 .modal-content,
@@ -141,11 +144,11 @@ h6,
 .mnav__panel,
 .auth-container,
 .site-footer {
-    background: var(--ds-surface);
+    background: color-mix(in srgb, var(--ds-surface-strong) 96%, transparent) !important;
     border: 1px solid var(--ds-border);
-    box-shadow: var(--ds-shadow-sm);
-    border-radius: var(--ds-radius-md);
-    backdrop-filter: blur(8px);
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    backdrop-filter: none;
 }
 
 /* Keep fixed overlays viewport-bound when modal markup is rendered inside event cards. */
@@ -156,7 +159,7 @@ h6,
 .overview-hero,
 .guest-hero,
 .cta-banner {
-    border-radius: var(--ds-radius-lg);
+    border-radius: 10px;
 }
 
 .stat-card,
@@ -170,9 +173,9 @@ h6,
 .edit-card,
 .feature-card
  {
-    background: var(--ds-card-surface);
+    background: color-mix(in srgb, var(--ds-card-surface) 98%, transparent) !important;
     border-color: var(--color-border, var(--ds-border));
-    box-shadow: var(--ds-shadow-md);
+    box-shadow: none !important;
     transition: 
         transform var(--ds-transition-base),
         box-shadow var(--ds-transition-base),
@@ -180,7 +183,7 @@ h6,
 }
 
 .site-footer {
-    border-radius: 18px 18px 0 0;
+    border-radius: 0 !important;
 }
 
 .btn,
@@ -362,19 +365,16 @@ select,
         transform var(--transition-fast);
 }
 
-/* Smooth focus-within transitions for form groups */
 .form-row {
     transition: opacity var(--transition-base);
 }
 
-/* Hover lift effect for cards */
 .stat-card,
 .event-card,
 .task-card,
 .group-card,
 .feature-card {
-    transition: 
-        box-shadow var(--transition-base),
+    transition:
         border-color var(--transition-base),
         background-color var(--transition-base);
 }
@@ -384,7 +384,7 @@ select,
 .task-card:hover,
 .group-card:hover,
 .feature-card:hover {
-    box-shadow: var(--ds-shadow-lg);
+    box-shadow: none !important;
 }
 
 /* Smooth animations for modals */
@@ -477,8 +477,9 @@ select:focus {
 
 @media (max-width: 900px) {
     .main-content-full {
-        padding-left: 18px;
-        padding-right: 18px;
+        width: 90%;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 

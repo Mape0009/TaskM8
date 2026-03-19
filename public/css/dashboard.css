@@ -231,11 +231,13 @@ body {
 /* Main Content Styles */
 .main-content-full {
     flex-grow: 1;
-    padding: calc(var(--spacing-unit) * 6) calc(var(--spacing-unit) * 8); /* 48px 64px */
+    width: min(1600px, 90%);
+    margin: 0 auto;
+    padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 2); /* 32px 16px */
     min-height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
-    gap: calc(var(--spacing-unit) * 6); /* 48px */
+    gap: calc(var(--spacing-unit) * 4); /* 32px */
 }
 
 .content-header {
@@ -1676,7 +1678,6 @@ body.dark-mode .rsvp-menu-item:active {
 .previous-events-listing .event-card {
     padding: 1rem;
     border-radius: 14px;
-    border: 1px solid rgba(56, 189, 248, 0.2);
     box-shadow: 0 12px 26px rgba(2, 8, 23, 0.24);
     background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     gap: 0.55rem;

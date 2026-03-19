@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="da" class="no-js">
 <head>
-    @php
-        $pageTitle = 'Rediger Vagt for ' . $task->taskName . ' | TaskM8';
+    @php        \Carbon\Carbon::setLocale('da');        $pageTitle = 'Rediger Vagt for ' . $task->taskName . ' | TaskM8';
         $metaDescription = 'Rediger vagt for opgaven ' . $task->taskName . '.';
     @endphp
     @include('partials.seo', [
