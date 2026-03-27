@@ -123,6 +123,11 @@ Route::post('/events/{eventId}/join', [EventParticipantController::class, 'join'
 Route::post('/events/{eventId}/decline', [EventParticipantController::class, 'decline'])->middleware('auth')->name('events.decline');
 Route::post('/events/{eventId}/rsvp', [EventParticipantController::class, 'rsvp'])->middleware('auth')->name('events.rsvp');
 Route::post('/events/{eventId}/volunteer', [EventParticipantController::class, 'becomeVolunteer'])->middleware('auth')->name('events.volunteer');
+Route::post('/events/{eventId}/unvolunteer', [EventParticipantController::class, 'cancelVolunteer'])->middleware('auth')->name('events.unvolunteer');
+Route::post('/events/participants/{participantId}/removeVolunteer', [EventParticipantController::class, 'removeVolunteer'])->middleware('auth')->name('events.removeVolunteer');
+//Route::get('/events/{eventId}/volunteers', [EventParticipantController::class, 'getVolunteers'])->middleware('auth')->name('events.getVolunteers');
+Route::post('/events/participants/{participantId}/promoteFromVolunteer', [EventParticipantController::class, 'promoteFromVolunteer'])->middleware('auth')->name('events.promoteFromVolunteer');
+Route::get('test/{eventId}', [EventParticipantController::class, 'getVolunteers']);
 Route::get('organizerOverview/{eventId}', [EventParticipantController::class, 'index'])->middleware('auth')->name('events.participants');
 Route::get('/events/{eventId}/participants-list', [EventParticipantController::class, 'getParticipantsList'])->middleware('auth')->name('events.participants-list');
 Route::post('/organizerOverview/roleUpdate', [EventParticipantController::class, 'roleUpdate'])->middleware('auth')->name('events.roleUpdate');

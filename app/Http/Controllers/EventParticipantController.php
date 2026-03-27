@@ -268,6 +268,57 @@ class EventParticipantController extends Controller
         return redirect()->back()->with('success', 'You are now a volunteer.');
     }
 
+    public function cancelVolunteer(Request $request, $eventId)
+    {
+        $currentUser = auth()->user();
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
+        }
+
+        $currentVolunteer = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentVolunteer?->eventRole ?? 'volunteer';
+
+        if (!Permissions::hasPermission($role, 'unvolunteer')) {
+            abort(403, 'You do not have permission to cancel volunteering.');
+        }
+
+        if (!$currentVolunteer || $currentVolunteer->eventRole !== EventRole::volunteer->name) {
+            abort(403, 'You are not currently a volunteer for this event.');
+        }
+
+        $currentVolunteer->eventRole = EventRole::participant->name;
+        $currentVolunteer->save();
+
+        return redirect()->back()->with('success', 'You are no longer a volunteer.');
+    }
+
+    public function removeVolunteer(Request $request, $participantId)
+    {
+        $currentUser = auth()->user();
+        $participantToRemove = EventParticipant::findOrFail($participantId);
+        $eventId = $participantToRemove->eventId;
+        $currentParticipant = EventParticipant::where('eventId', $eventId)
+            ->where('userId', $currentUser?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+
+        if (!Permissions::hasPermission($role, 'manage-volunteers')) {
+            abort(403, 'You do not have permission to remove volunteers.');
+        }
+
+        if ($participantToRemove->eventRole !== EventRole::volunteer->name) {
+            abort(403, 'Only volunteers can be removed using this endpoint.');
+        }
+
+        $participantToRemove->eventRole = EventRole::participant->name;
+        $participantToRemove->save();
+
+        return redirect()->back()->with('success', 'Volunteer removed successfully.');
+    }
+
     public function promoteFromVolunteer(Request $request, $participantId)
     {
         $currentUser = auth()->user();
@@ -290,5 +341,21 @@ class EventParticipantController extends Controller
         $participantToPromote->save();
 
         return redirect()->back()->with('success', 'Participant promoted from volunteer successfully.');
+    }
+
+    public function getVolunteers($eventId)
+    {
+        $volunteers = EventParticipant::where('eventId', $eventId)
+            ->where('eventRole', EventRole::volunteer->name)
+            ->with('user')
+            ->get()
+            ->map(function ($volunteer) {
+                return [
+                    'id' => $volunteer->id,
+                    'name' => $volunteer->user->name ?? 'Ukendt',
+                ];
+            });
+
+        return view('test', compact('volunteers', 'eventId'));
     }
 }
