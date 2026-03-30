@@ -79,7 +79,6 @@
 
 .btn.create-btn:hover {
     background-color: #1d4ed8;
-    transform: translateY(-1px);
     box-shadow: 0 10px 24px rgba(37, 99, 235, 0.3);
 }
 
@@ -128,4 +127,3 @@ html.dark-mode .btn.secondary-ghost {
         padding: 0 1rem;
     }
 }
-

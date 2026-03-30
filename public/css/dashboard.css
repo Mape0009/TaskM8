@@ -233,11 +233,12 @@ body {
     flex-grow: 1;
     width: min(1600px, 90%);
     margin: 0 auto;
-    padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 2); /* 32px 16px */
-    min-height: calc(100vh - 80px);
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2); /* 32px 16px */
+    min-height: calc(90vh - 80px);
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing-unit) * 4); /* 32px */
+    margin-top: 20px;
 }
 
 .content-header {
@@ -375,7 +376,7 @@ body {
     border-color: rgba(148, 163, 184, 0.24);
 }
 
-:is(html.dark-mode, body.dark-mode) .stat-info .stat-value { color: #f8fafc; }
+:is(html.dark-mode, body.dark-mode) .stat-info .stat-value { color: #f8fafc; font-weight: 600; }
 :is(html.dark-mode, body.dark-mode) .stat-info .stat-title { color: #cbd5e1; }
 :is(html.dark-mode, body.dark-mode) .stat-info .stat-note {
     background: rgba(15, 23, 42, 0.74);
@@ -759,7 +760,7 @@ body {
 }
 :is(html.dark-mode, body.dark-mode) .cta-banner { background: #0b0b0d; border-color: rgba(255,255,255,0.14); box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
 :is(html.dark-mode, body.dark-mode) .metric { background: rgba(15,23,42,0.66); }
-:is(html.dark-mode, body.dark-mode) .feature-card:hover { box-shadow: 0 18px 40px rgba(0,0,0,0.38); border-color: rgba(56, 189, 248, 0.32); }
+:is(html.dark-mode, body.dark-mode) .feature-card:hover { box-shadow: 0 18px 40px rgba(0,0,0,0.38); }
 
 .upcoming-events h2,
 .event-listing h2,
@@ -1686,7 +1687,7 @@ body.dark-mode .rsvp-menu-item:active {
 .upcoming-events .event-card:hover,
 .event-listing .event-card:hover,
 .previous-events-listing .event-card:hover {
-    border-color: rgba(14, 165, 233, 0.55);
+    border-color: rgba(14, 165, 233, 0.15);
     box-shadow: 0 16px 28px rgba(2, 8, 23, 0.34);
 }
 
@@ -1725,6 +1726,10 @@ body:not(.dark-mode) .previous-events-listing .event-card {
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.previous-events-listing {
+    font-weight: 700;
 }
 
 .event-dates-text {

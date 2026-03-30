@@ -317,7 +317,7 @@ main.main-content-full .event-details-card {
 .task-create-title .event-ref { color: var(--color-brand, #2563eb); font-weight: 800; }
 .back-btn.subtle { background: var(--color-bg-elevated); color: var(--color-text-primary); border: 1px solid var(--color-border); }
 
-.task-form { background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: 16px; padding: 18px; box-shadow: 0 12px 40px rgba(2,8,20,0.08); }
+.task-form { background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: 16px; box-shadow: 0 12px 40px rgba(2,8,20,0.08); }
 .form-section { margin-bottom: 18px; }
 .section-title { margin: 0 0 10px 0; font-size: 1.05rem; font-weight: 800; color: var(--color-text-primary); }
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -706,6 +706,7 @@ body.tasks-simple-page .tasks-page-header {
     background: transparent;
     padding: 10px 12px;
     margin-bottom: 10px;
+    height: 6rem;
 }
 
 body.tasks-simple-page .tasks-page-header h1 {
@@ -715,7 +716,7 @@ body.tasks-simple-page .tasks-page-header h1 {
 }
 
 body.tasks-simple-page .tasks-page-header p {
-    margin: 2px 0 0;
+    margin: 12px 0 0;
     color: var(--color-text-secondary);
     font-size: 0.88rem;
 }
@@ -745,6 +746,7 @@ body.tasks-simple-page .task-simple-list {
     border-radius: 8px;
     overflow: hidden;
     background: transparent;
+    margin-top: 50px;
 }
 
 body.tasks-simple-page .task-simple-row {

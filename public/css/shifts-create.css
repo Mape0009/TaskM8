@@ -989,6 +989,16 @@ input[type="datetime-local"] { -webkit-appearance: none; appearance: none; }
         box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
     }
 
+    .edit-card {
+        display: none;
+    }
+
+    .btn.secondary-ghost {
+        font-weight: 500;
+        padding: 0.1rem 0;
+        width: auto;
+    }
+
     body.task-create-page .shift-create-aside .edit-card h3,
     body.task-edit-page .shift-create-aside .edit-card h3 {
         font-size: 0.95rem;

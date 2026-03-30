@@ -5,7 +5,7 @@
     --ds-font-body: "Inter Tight", "Inter", "Segoe UI", sans-serif;
     --ds-font-heading: "Sora", "Inter Tight", "Inter", sans-serif;
 
-    --ds-bg: #f5f7fb;
+    --ds-bg: #e7ecf5;
     --ds-bg-soft: #edf2f7;
     --ds-surface: rgba(255, 255, 255, 0.86);
     --ds-surface-strong: rgba(255, 255, 255, 0.96);
@@ -144,7 +144,7 @@ h6,
 .mnav__panel,
 .auth-container,
 .site-footer {
-    background: color-mix(in srgb, var(--ds-surface-strong) 96%, transparent) !important;
+    /* background: color-mix(in srgb, var(--ds-surface-strong) 96%, transparent) !important; */
     border: 1px solid var(--ds-border);
     box-shadow: none !important;
     border-radius: 8px !important;
@@ -173,7 +173,6 @@ h6,
 .edit-card,
 .feature-card
  {
-    background: color-mix(in srgb, var(--ds-card-surface) 98%, transparent) !important;
     border-color: var(--color-border, var(--ds-border));
     box-shadow: none !important;
     transition: 

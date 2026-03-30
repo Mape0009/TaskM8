@@ -103,41 +103,15 @@
                     <h1 class="event-content-title">{{ $event->eventName ?? 'Begivenhed' }}</h1>
                 </header>
 
-                <div class="event-simple-info">
-                    <div class="event-info-row">
-                        <span class="event-info-label">Sted</span>
-                        <strong class="event-info-value">{{ $event->location ?? 'Ikke angivet' }}</strong>
-                    </div>
-                    <div class="event-info-row">
-                        <span class="event-info-label">Tidspunkt</span>
-                        <strong class="event-info-value">
-                            @if($start)
-                                {{ $start->translatedFormat('j. F Y') }} kl. {{ $start->format('H:i') }}
-                            @else
-                                -
-                            @endif
-                        </strong>
-                    </div>
-                    <div class="event-info-row">
-                        <span class="event-info-label">Pladser</span>
-                        <strong class="event-info-value">{{ $acceptedCount }}{{ $participantLimit ? '/' . $participantLimit : ' deltagere' }}</strong>
-                    </div>
-                </div>
-
-                <section class="event-panel event-panel--primary">
-                    <div class="event-panel__header">
-                        <h2>Om begivenheden</h2>
-                    </div>
-                    <div class="event-description-block event-description-block--hero">
-                        {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
-                    </div>
-                </section>
-
                 <section class="event-panel event-panel--secondary">
                     <div class="event-panel__header">
                         <h2>Praktisk overblik</h2>
                     </div>
                     <dl class="event-facts-list event-facts-list--compact">
+                        <div class="event-fact-row">
+                            <dt>Sted</dt>
+                            <dd>{{ $event->location ?? 'Ikke angivet' }}</dd>
+                        </div>
                         <div class="event-fact-row">
                             <dt>Start</dt>
                             <dd>{{ $start ? $start->translatedFormat('l d. F Y') . ' kl. ' . $start->format('H:i') : '-' }}</dd>
@@ -153,6 +127,14 @@
                     </dl>
                 </section>
 
+                <section class="event-panel event-panel--primary">
+                    <div class="event-panel__header">
+                        <h2>Om begivenheden</h2>
+                    </div>
+                    <div class="event-description-block event-description-block--hero">
+                        {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
+                    </div>
+                </section>
 
             </article>
 

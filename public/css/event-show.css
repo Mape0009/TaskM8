@@ -595,6 +595,7 @@ body:not(.dark-mode).event-show-page .event-danger-btn:hover {
     body.event-show-page .event-attendance-card,
     body.event-show-page .rsvp-menu-list {
         border-radius: 14px;
+        margin-bottom: 10px;
     }
 
     body.event-show-page .event-overview-item {

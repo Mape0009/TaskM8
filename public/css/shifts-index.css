@@ -1226,7 +1226,7 @@ body.shifts-simple-page .shifts-page-actions .btn {
 
 body.shifts-simple-page .shifts-simple-container {
     margin-top: 10px;
-    max-width: 100%;
+    max-width: 75%;
 }
 
 body.shifts-simple-page .shifts-toolbar {
@@ -1350,6 +1350,11 @@ body.shifts-simple-page .shifts-empty-state {
 @media (max-width: 750px) {
     body.shifts-simple-page .main-content-full {
         padding: 8px;
+        max-width: 100%;
+    }
+
+    body.shifts-simple-page .shifts-simple-container {
+        max-width: 100%;
     }
 
     body.shifts-simple-page .shifts-page-header {
