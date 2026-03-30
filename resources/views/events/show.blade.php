@@ -185,8 +185,16 @@
                             </div>
                         @endif
 
-                        @if($canShowVolunteerButton && !$isVolunteerNow)
-                            <button type="button" class="btn invite-btn event-secondary-action" onclick="openVolunteerConfirm('join')">Bliv frivillig</button>
+                        @if($canVolunteer && $myRole !== \App\Models\EventRole::volunteer->name)
+                            <form action="{{ route('events.volunteer', ['eventId' => $event->id]) }}" method="POST" style="width:100%;">
+                                @csrf
+                                <button type="submit" class="btn invite-btn" style="width:100%; margin-bottom:0.75rem;">Bliv frivillig</button>
+                            </form>
+                        @elseif($myRole === \App\Models\EventRole::volunteer->name)
+                            <form action="{{ route('events.unvolunteer', ['eventId' => $event->id]) }}" method="POST" style="width:100%;">
+                                @csrf
+                                <button type="submit" class="btn event-danger-btn" style="width:100%; margin-bottom:0.75rem;">Stop frivillig</button>
+                            </form>
                         @endif
 
                         <div class="rsvp-menu" id="rsvp-menu-event">

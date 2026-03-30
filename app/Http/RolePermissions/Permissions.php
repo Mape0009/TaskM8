@@ -23,6 +23,7 @@ class Permissions
             'manage-taskWorkers',
             'manage-taskManagers',
             'manage-coOwners',
+            'manage-volunteers',
             'delete-participant',
             'transfer-ownership',
         ];
@@ -44,6 +45,7 @@ class Permissions
             'manage-participants',
             'manage-taskWorkers',
             'manage-taskManagers',
+            'manage-volunteers',
             'delete-participant',
             'respond-event',
         ];
@@ -76,6 +78,7 @@ class Permissions
             'view-shift',
             'view-participants',
             'respond-event',
+            'unvolunteer',
         ];
 
         public const PARTICIPANT = [
