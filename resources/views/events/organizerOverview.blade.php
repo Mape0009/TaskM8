@@ -21,8 +21,20 @@
     <main class="roles-wrapper">
         <div class="roles-header">
             <h1 class="roles-title">Uddel roller</h1>
-            <div class="search">
-                <input id="participant-search" type="text" placeholder="Søg efter deltager (navn eller email)">
+            <div class="filter-search-container">
+                <div class="search">
+                    <input id="participant-search" type="text" placeholder="Søg efter deltager (navn eller email)">
+                </div>
+                <div class="role-filter">
+                    <select id="role-filter" name="role-filter">
+                        <option value="">Alle roller</option>
+                        <option value="volunteer">Frivillige</option>
+                        <option value="coOwner">Medejer</option>
+                        <option value="taskManager">Opgaveansvarlig</option>
+                        <option value="taskWorker">Opgavemedlem</option>
+                        <option value="participant">Deltager</option>
+                    </select>
+                </div>
             </div>
             <div class="page-actions">
                 <a href="/events/{{ $eventId }}" class="btn ghost">Tilbage til begivenhed</a>
@@ -33,6 +45,8 @@
             $currentParticipant = $participants->firstWhere('userId', $currentUser->id);
             $currentRole = $currentParticipant?->eventRole ?? 'participant';
             $canDelete = \App\Http\RolePermissions\Permissions::hasPermission($currentRole, 'delete-participant');
+            $canManageVolunteers = \App\Http\RolePermissions\Permissions::hasPermission($currentRole, 'manage-volunteers');
+            $canManageParticipants = \App\Http\RolePermissions\Permissions::hasPermission($currentRole, 'manage-participants');
             $canManage = function($targetRole) use ($currentRole) {
                 $map = [
                     'coOwner' => 'manage-coOwners',
@@ -44,8 +58,42 @@
             };
         @endphp
 
+        @if($volunteers->count() > 0 && $canManageVolunteers)
+        <section class="volunteers-section" id="volunteers-section">
+            <h2 class="section-title">Frivillige til godkendelse</h2>
+            <div class="volunteers-list">
+                @foreach($volunteers as $volunteer)
+                    @php
+                        $initials = strtoupper(substr($volunteer->user->name ?? $volunteer->user->email, 0, 1));
+                    @endphp
+                    <div class="volunteer-card" data-role="volunteer">
+                        <div class="participant-info">
+                            <div class="avatar">{{ $initials }}</div>
+                            <div class="name-email">
+                                <div class="name">{{ $volunteer->user->name ?? 'Ukendt' }}</div>
+                                <div class="email">{{ $volunteer->user->email }}</div>
+                            </div>
+                        </div>
+                        <div class="volunteer-actions">
+                            <form action="{{ route('events.promoteFromVolunteer', ['participantId' => $volunteer->id]) }}" method="POST" class="inline-form">
+                                @csrf
+                                <button type="submit" class="btn success">Godkend</button>
+                            </form>
+                            <form action="{{ route('events.removeVolunteer', ['participantId' => $volunteer->id]) }}" method="POST" class="inline-form">
+                                @csrf
+                                <button type="submit" class="btn danger">Afvis</button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+        @endif
+
         @php
-            $visibleParticipants = $participants->filter(function($p){ return in_array($p->status, ['accepted','pending']); });
+            $visibleParticipants = $participants->filter(function($p){ 
+                return in_array($p->status, ['accepted','pending']) && $p->eventRole !== 'volunteer';
+            });
         @endphp
         <section class="participants-list" id="participants">
             @forelse ($visibleParticipants as $participant)
@@ -56,7 +104,7 @@
                     $isCurrentCoOwner = ($currentRole === $eventRole::coOwner->name);
                     $isSelf = ($participant->userId === $currentUser->id);
                 @endphp
-                <div class="participant-card" data-name="{{ strtolower($participant->user->name ?? '') }}" data-email="{{ strtolower($participant->user->email ?? '') }}">
+                <div class="participant-card" data-name="{{ strtolower($participant->user->name ?? '') }}" data-email="{{ strtolower($participant->user->email ?? '') }}" data-role="{{ $participant->eventRole }}">
                     <div class="participant-info">
                         <div class="avatar">{{ $initials }}</div>
                         <div class="name-email">

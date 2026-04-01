@@ -1848,6 +1848,12 @@ body:not(.dark-mode) .event-dates-text p {
         padding: 6px;
         justify-content: center;
     }
+
+    .upcoming-events .bin-button,
+    .event-listing .bin-button,
+    .previous-events-listing .bin-button {
+        display: none;
+    }
 }
 
 

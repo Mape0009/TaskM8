@@ -154,7 +154,7 @@
             </button>
 
             {{-- RSVP-status --}}
-            <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
+            {{-- <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
                 @if($rsvpStatus === 'accepted')
                     <span class="status-dot"></span> Deltager
                 @elseif($rsvpStatus === 'declined')
@@ -162,7 +162,7 @@
                 @else
                     <span class="status-dot"></span> Afventer svar
                 @endif
-            </div>
+            </div> --}}
 
             {{-- Leave/Delete modals --}}
             <div id="leave-modal-{{ $event->id }}" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="leave-confirm-title-{{ $event->id }}" style="display:none;">

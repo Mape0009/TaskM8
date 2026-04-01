@@ -75,9 +75,6 @@ class ShiftController extends Controller
             'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
         ]);
 
-        // Reuse loaded task
-
-        // Ensure selected user is eligible for assignment in this event
         $participant = EventParticipant::where('eventId', $task->eventId)
                                        ->where('userId', $request->userId)
                                        ->first();
@@ -88,7 +85,6 @@ class ShiftController extends Controller
             return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
         }
         
-        // Prevent overlapping shifts for the same user and task
         $hasOverlap = Shift::where('taskId', $taskId)
                             ->where('userId', $request->userId)
                             ->where(function ($q) use ($request) {
@@ -112,7 +108,6 @@ class ShiftController extends Controller
             return redirect()->back()->withErrors(['userId' => 'Kan ikke oprette vagt pga. unik begrænsning. Kør database-migrationerne og prøv igen.'])->withInput();
         }
 
-        // Return without success popup to keep UI clean
         return redirect()->route('tasks.shifts.index', $taskId);
     }
 

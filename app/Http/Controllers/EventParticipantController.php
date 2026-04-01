@@ -22,13 +22,17 @@ class EventParticipantController extends Controller
             abort(403, 'You do not have permission to view participants.');
         }
         $participants = EventParticipant::where('eventId', $eventId)->with(['user', 'event'])->get();
+        $volunteers = EventParticipant::where('eventId', $eventId)
+            ->where('eventRole', EventRole::volunteer->name)
+            ->with('user')
+            ->get();
         $eventRole = EventRole::class;
 
         if (! $participant) {
             abort(403, 'You do not have access to this event.');
         }
 
-        return view('events.organizerOverview', compact('participants', 'eventId', 'currentUser', 'eventRole'));
+        return view('events.organizerOverview', compact('participants', 'volunteers', 'eventId', 'currentUser', 'eventRole'));
     }
 
     public function show($id)
@@ -268,30 +272,30 @@ class EventParticipantController extends Controller
         return redirect()->back()->with('success', 'Du er nu frivillig!');
     }
 
-    public function removeVolunteer(Request $request, $eventId)
-    {
-        $userId = Auth::id();
-        if (!$userId) {
-            return redirect('/signin');
-        }
+    // public function removeVolunteer(Request $request, $eventId)
+    // {
+    //     $userId = Auth::id();
+    //     if (!$userId) {
+    //         return redirect('/signin');
+    //     }
 
-        $participant = EventParticipant::where('eventId', $eventId)
-            ->where('userId', $userId)
-            ->first();
+    //     $participant = EventParticipant::where('eventId', $eventId)
+    //         ->where('userId', $userId)
+    //         ->first();
 
-        if (!$participant) {
-            abort(403, 'You do not have access to this event.');
-        }
+    //     if (!$participant) {
+    //         abort(403, 'You do not have access to this event.');
+    //     }
 
-        if ($participant->eventRole !== EventRole::volunteer->name) {
-            abort(403, 'You are not a volunteer.');
-        }
+    //     if ($participant->eventRole !== EventRole::volunteer->name) {
+    //         abort(403, 'You are not a volunteer.');
+    //     }
 
-        $participant->eventRole = EventRole::participant->name;
-        $participant->save();
+    //     $participant->eventRole = EventRole::participant->name;
+    //     $participant->save();
 
-        return redirect()->back()->with('success', 'Du er ikke længere frivillig.');
-    }
+    //     return redirect()->back()->with('success', 'Du er ikke længere frivillig.');
+    // }
 
     public function cancelVolunteer(Request $request, $eventId)
     {
@@ -317,7 +321,7 @@ class EventParticipantController extends Controller
         $currentVolunteer->eventRole = EventRole::participant->name;
         $currentVolunteer->save();
 
-        return redirect()->back()->with('success', 'You are no longer a volunteer.');
+        return redirect()->back()->with('success', 'Du er ikke længere frivillig');
     }
 
     public function removeVolunteer(Request $request, $participantId)
@@ -331,17 +335,17 @@ class EventParticipantController extends Controller
         $role = $currentParticipant?->eventRole ?? 'participant';
 
         if (!Permissions::hasPermission($role, 'manage-volunteers')) {
-            abort(403, 'You do not have permission to remove volunteers.');
+            abort(403, 'Du har ikke tilladelse til at fjerne frivillige.');
         }
 
         if ($participantToRemove->eventRole !== EventRole::volunteer->name) {
-            abort(403, 'Only volunteers can be removed using this endpoint.');
+            abort(403, 'Kun frivillige kan fjernes ved hjælp af dette endpoint.');
         }
 
         $participantToRemove->eventRole = EventRole::participant->name;
         $participantToRemove->save();
 
-        return redirect()->back()->with('success', 'Volunteer removed successfully.');
+        return redirect()->back()->with('success', 'Frivilligen er afvist!');
     }
 
     public function promoteFromVolunteer(Request $request, $participantId)
@@ -355,17 +359,17 @@ class EventParticipantController extends Controller
         $role = $currentParticipant?->eventRole ?? 'participant';
 
         if (!Permissions::hasPermission($role, 'manage-participants')) {
-            abort(403, 'You do not have permission to promote participants.');
+            abort(403, 'Du har ikke tilladelse til at promovere deltagere.');
         }
 
         if ($participantToPromote->eventRole !== EventRole::volunteer->name) {
-            abort(403, 'Only volunteers can be promoted using this endpoint.');
+            abort(403, 'Kun frivillige kan promoveres ved hjælp af dette endpoint.');
         }
 
         $participantToPromote->eventRole = EventRole::taskWorker->name;
         $participantToPromote->save();
 
-        return redirect()->back()->with('success', 'Participant promoted from volunteer successfully.');
+        return redirect()->back()->with('success', 'Deltageren er nu en medarbejder!');
     }
 
     public function getVolunteers($eventId)

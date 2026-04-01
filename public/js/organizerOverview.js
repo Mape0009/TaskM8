@@ -1,17 +1,29 @@
 (function(){
     var input = document.getElementById('participant-search');
+    var roleFilter = document.getElementById('role-filter');
     var list = document.getElementById('participants');
-    if (input && list) {
-        input.addEventListener('input', function(){
-            var q = (input.value || '').toLowerCase().trim();
-            var items = list.querySelectorAll('.participant-card');
-            items.forEach(function(item){
-                var name = (item.getAttribute('data-name') || '');
-                var email = (item.getAttribute('data-email') || '');
-                var show = !q || name.indexOf(q) !== -1 || email.indexOf(q) !== -1;
-                item.style.display = show ? '' : 'none';
-            });
+    
+    function filterParticipants() {
+        var q = (input.value || '').toLowerCase().trim();
+        var role = (roleFilter.value || '');
+        var items = list.querySelectorAll('.participant-card');
+        items.forEach(function(item){
+            var name = (item.getAttribute('data-name') || '');
+            var email = (item.getAttribute('data-email') || '');
+            var itemRole = (item.getAttribute('data-role') || '');
+            
+            var matchesSearch = !q || name.indexOf(q) !== -1 || email.indexOf(q) !== -1;
+            var matchesRole = !role || itemRole === role;
+            var show = matchesSearch && matchesRole;
+            item.style.display = show ? '' : 'none';
         });
+    }
+    
+    if (input) {
+        input.addEventListener('input', filterParticipants);
+    }
+    if (roleFilter) {
+        roleFilter.addEventListener('change', filterParticipants);
     }
 
     var modal = document.getElementById('coowner-confirm-modal');
