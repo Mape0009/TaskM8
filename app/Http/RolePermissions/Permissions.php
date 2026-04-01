@@ -26,6 +26,7 @@ class Permissions
             'manage-volunteers',
             'delete-participant',
             'transfer-ownership',
+            'receiveTask',
         ];
 
         public const CO_OWNER = [
@@ -48,6 +49,7 @@ class Permissions
             'manage-volunteers',
             'delete-participant',
             'respond-event',
+            'receiveTask',
         ];
 
         public const TASK_MANAGER = [
@@ -62,6 +64,7 @@ class Permissions
             'view-shift',
             'view-participants',
             'respond-event',
+            'receiveTask',
         ];
 
         public const TASK_WORKER = [
@@ -70,6 +73,7 @@ class Permissions
             'view-shift',
             'view-participants',
             'respond-event',
+            'receiveTask',
         ];
 
         public const VOLUNTEER = [

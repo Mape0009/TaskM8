@@ -1003,18 +1003,29 @@ html.dark-mode .event-date {
 @media (max-width: 520px) {
     .event-listing .event-actions,
     .previous-events-listing .event-actions {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-start;
         gap: 0.5rem;
     }
 
     .event-listing .event-actions .btn,
     .previous-events-listing .event-actions .btn {
-        width: 100%;
         min-height: 40px;
         padding: 0 0.9rem;
         font-size: calc(var(--spacing-unit) * 1.625);
         justify-content: center;
+    }
+
+    .event-listing .event-actions .event-main-action,
+    .previous-events-listing .event-actions .event-main-action {
+        flex: 0 0 auto;
+        width: auto;
+        min-height: 37px;
+        padding: 0 0.7rem;
+        font-size: 0.76rem;
+        letter-spacing: 0.01em;
     }
 }
 
@@ -1815,8 +1826,10 @@ body:not(.dark-mode) .event-dates-text p {
     .upcoming-events .event-actions,
     .event-listing .event-actions,
     .previous-events-listing .event-actions {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 
     .upcoming-events .event-actions .btn,
@@ -1828,8 +1841,17 @@ body:not(.dark-mode) .event-dates-text p {
     .upcoming-events .event-actions .rsvp-menu-trigger,
     .event-listing .event-actions .rsvp-menu-trigger,
     .previous-events-listing .event-actions .rsvp-menu-trigger {
-        width: 100%;
         justify-content: center;
+    }
+
+    .upcoming-events .event-actions .event-main-action,
+    .event-listing .event-actions .event-main-action,
+    .previous-events-listing .event-actions .event-main-action {
+        flex: 0 0 auto;
+        width: auto;
+        min-height: 37px;
+        padding: 0 0.7rem;
+        font-size: 0.76rem;
     }
 
     .upcoming-events .event-header .rsvp-menu,

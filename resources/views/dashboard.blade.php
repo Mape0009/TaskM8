@@ -117,9 +117,9 @@
                         </div>
                         <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
                        <div class="event-actions">
-    <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
+    <a href="/events/{{ $event->id }}" class="btn primary-btn event-main-action">Se detaljer</a>
 <a href="javascript:void(0);" 
-   class="btn secondary-btn" 
+   class="btn secondary-btn event-main-action" 
    onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">
    Deltagere
 </a>

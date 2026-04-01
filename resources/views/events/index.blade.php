@@ -108,8 +108,8 @@
                             </div>
                             <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
                             <div class="event-actions">
-                                <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
-                                <button type="button" class="btn secondary-btn" onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">Deltagere</button>
+                                <a href="/events/{{ $event->id }}" class="btn primary-btn event-main-action">Se detaljer</a>
+                                <button type="button" class="btn secondary-btn event-main-action" onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">Deltagere</button>
                             </div>
                         </div>
                     @empty

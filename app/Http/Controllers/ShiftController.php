@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\EventParticipant;
 use App\Models\Event;
 use App\Http\RolePermissions\Permissions;
+use Illuminate\Support\Collection;
 
 class ShiftController extends Controller
 {
@@ -34,17 +35,8 @@ class ShiftController extends Controller
     public function create($taskId)
     {
         $task = Task::findOrFail($taskId);
-        // Allow assigning shifts to any participants of the event (regardless of status)
-        if ($task->eventId) {
-            $participantUserIds = EventParticipant::where('eventId', $task->eventId)
-                ->pluck('userId');
-            $users = $participantUserIds->isEmpty()
-                ? User::all()
-                : User::whereIn('id', $participantUserIds)->get();
-        } else {
-            // Fallback for tasks without event linkage
-            $users = User::all();
-        }
+        $users = $this->eligibleAssigneesForEvent($task->eventId);
+
         return view('shifts.create', compact('task', 'users'));
     }
 
@@ -75,13 +67,8 @@ class ShiftController extends Controller
             'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
         ]);
 
-        $participant = EventParticipant::where('eventId', $task->eventId)
-                                       ->where('userId', $request->userId)
-                                       ->first();
-        $roleOk = in_array($participant?->eventRole, ['owner','coOwner','taskManager','taskWorker'], true);
-        $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
-                         || ($event && (int)$event->ownerId === (int)$request->userId);
-        if (!$isParticipant) {
+        $eligibleUserIds = $this->eligibleAssigneesForEvent($task->eventId)->pluck('id');
+        if (!$eligibleUserIds->contains((int) $request->userId)) {
             return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
         }
         
@@ -115,15 +102,7 @@ class ShiftController extends Controller
     {
         $task = Task::findOrFail($taskId);
         $shift = Shift::with('user')->findOrFail($shiftId);
-        if ($task->eventId) {
-            $participantUserIds = EventParticipant::where('eventId', $task->eventId)
-                ->pluck('userId');
-            $users = $participantUserIds->isEmpty()
-                ? User::all()
-                : User::whereIn('id', $participantUserIds)->get();
-        } else {
-            $users = User::all();
-        }
+        $users = $this->eligibleAssigneesForEvent($task->eventId);
         
         return view('shifts.edit', compact('task', 'shift', 'users'));
     }
@@ -148,14 +127,8 @@ class ShiftController extends Controller
         $task = Task::findOrFail($taskId);
 
         // Ensure selected user is eligible for assignment in this event
-        $participant = EventParticipant::where('eventId', $task->eventId)
-                                       ->where('userId', $request->userId)
-                                       ->first();
-        $event = Event::find($task->eventId);
-        $roleOk = in_array($participant?->eventRole, ['owner','coOwner','taskManager','taskWorker'], true);
-        $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
-                         || ($event && (int)$event->ownerId === (int)$request->userId);
-        if (!$isParticipant) {
+        $eligibleUserIds = $this->eligibleAssigneesForEvent($task->eventId)->pluck('id');
+        if (!$eligibleUserIds->contains((int) $request->userId)) {
             return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
         }
         
@@ -264,5 +237,32 @@ class ShiftController extends Controller
              ->delete();
 
         return redirect()->back();
+    }
+
+    private function eligibleAssigneesForEvent($eventId): Collection
+    {
+        if (!$eventId) {
+            return collect();
+        }
+
+        $rolesWithReceiveTask = collect(['owner', 'coOwner', 'taskManager', 'taskWorker'])
+            ->filter(fn (string $role) => Permissions::hasPermission($role, 'receiveTask'))
+            ->values();
+
+        if ($rolesWithReceiveTask->isEmpty()) {
+            return collect();
+        }
+
+        $eligibleUserIds = EventParticipant::where('eventId', $eventId)
+            ->where('status', 'accepted')
+            ->whereIn('eventRole', $rolesWithReceiveTask)
+            ->pluck('userId')
+            ->unique();
+
+        if ($eligibleUserIds->isEmpty()) {
+            return collect();
+        }
+
+        return User::whereIn('id', $eligibleUserIds)->get();
     }
 }
