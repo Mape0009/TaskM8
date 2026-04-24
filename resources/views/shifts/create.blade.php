@@ -2,6 +2,7 @@
 <html lang="da" class="no-js">
 <head>
     @php
+        \Carbon\Carbon::setLocale('da');
         $pageTitle = 'Tilføj Vagt til ' . $task->taskName . ' | TaskM8';
         $metaDescription = 'Tilføj en ny vagt til opgaven ' . $task->taskName . '.';
     @endphp

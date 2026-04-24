@@ -1,6 +1,6 @@
 .overview-shell {
     padding: 0 1.25rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter Tight', 'Inter', sans-serif;
 }
 
 .overview-hero {
@@ -13,6 +13,7 @@
     justify-content: space-between;
     gap: 2rem;
     box-shadow: 0 12px 30px rgba(17, 24, 39, 0.06);
+    margin-bottom: 55px;
 }
 
 .hero-copy h1 {
@@ -78,7 +79,6 @@
 
 .btn.create-btn:hover {
     background-color: #1d4ed8;
-    transform: translateY(-1px);
     box-shadow: 0 10px 24px rgba(37, 99, 235, 0.3);
 }
 
@@ -127,4 +127,3 @@ html.dark-mode .btn.secondary-ghost {
         padding: 0 1rem;
     }
 }
-

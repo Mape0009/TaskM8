@@ -21,15 +21,14 @@
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="tasks-simple-page">
 @include('partials.header', ['currentPage' => 'tasks'])
 
 <main class="main-content-full">
-    <div class="overview-shell">
+    <div class="overview-shell tasks-simple-shell">
         @php
             $taskCount = $tasks->count();
             $totalShifts = $tasks->sum(function($task) { return $task->shifts->count(); });
@@ -43,63 +42,39 @@
             }
         @endphp
 
-        <section class="overview-hero">
-            <div class="hero-copy">
-                <p class="eyebrow">Opgaver</p>
-                <h1>{{ isset($event) ? 'Opgaver for ' . $event->eventName : 'Samlet overblik over dine opgaver' }}</h1>
-                <p class="lede">
-                    Følg status på alle opgaver og hop hurtigt videre til tilhørende vagter. Brug genvejene til at planlægge og holde teamet opdateret.
-                </p>
-                <div class="hero-meta">
-                    <span class="pill">Opgaver: {{ $taskCount }}</span>
-                    <span class="pill">Vagter: {{ $totalShifts }}</span>
-                    @if(isset($event))
-                        <span class="pill">Begivenhed: {{ $event->eventName }}</span>
-                    @endif
-                </div>
+        <section class="tasks-page-header">
+            <div>
+                <h1>{{ isset($event) ? 'Opgaver for ' . $event->eventName : 'Opgaver' }}</h1>
+                <p>En enkel og overskuelig liste over opgaver og tilhørende vagter.</p>
+                <p class="tasks-page-meta">{{ $taskCount }} opgaver · {{ $totalShifts }} vagter</p>
             </div>
-            <div class="hero-actions">
+            <div class="tasks-page-actions">
                 @if(isset($event) && \App\Http\RolePermissions\Permissions::hasPermission($currentUserRoleForEvent ?? 'participant', 'create-task'))
-                    <a href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}" class="btn create-btn">
-                        Opret opgave
-                    </a>
+                    <a href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}" class="btn primary-btn">Opret opgave</a>
                 @elseif(!isset($event))
-                    <a href="{{ url('/events') }}" class="btn secondary-ghost">Find begivenhed</a>
+                    <a href="{{ url('/events') }}" class="btn secondary-btn">Find begivenhed</a>
                 @endif
             </div>
         </section>
 
-        <section class="task-listing">
-            <div class="task-listing-header">
-                <div class="header-content">
-                    <h2>{{ isset($event) ? 'Opgaver for ' . $event->eventName : 'Mine opgaver' }}</h2>
-                    @if(isset($event))
-                        <p class="header-description">Administrer opgaver og vagter for denne begivenhed</p>
-                    @else
-                        <p class="header-description">Se og administrer alle dine opgaver</p>
-                    @endif
+        <section class="task-listing tasks-simple-listing">
+            <div class="task-simple-list" role="table" aria-label="Opgaveliste">
+                <div class="task-simple-row task-simple-row-head" role="row">
+                    <div role="columnheader">Opgave</div>
+                    <div role="columnheader">Vagter</div>
+                    <div role="columnheader" class="task-simple-actions">Handlinger</div>
                 </div>
-            </div>
 
-            <div class="task-list">
                 @forelse($tasks as $task)
-                    <div class="task-card">
-                        <div class="task-header">
-                            <div class="task-title-section">
-                                <h3>{{ $task->taskName }}</h3>
-                                @if($task->description)
-                                    <p class="task-description">{{ $task->description }}</p>
-                                @endif
-                            </div>
-                            <div class="task-stats" style="margin-bottom: 1rem;">
-                                <div class="stat-item" >
-                                    <i class="fas fa-users"></i>
-                                    <span>{{ $task->shifts->count() }} vagt{{ $task->shifts->count() !== 1 ? 'er' : '' }}</span>
-                                </div>
-                            </div>
+                    <div class="task-simple-row" role="row">
+                        <div role="cell" class="task-simple-main">
+                            <strong>{{ $task->taskName }}</strong>
+                            @if($task->description)
+                                <span>{{ $task->description }}</span>
+                            @endif
                         </div>
-
-                        <div class="task-actions">
+                        <div role="cell">{{ $task->shifts->count() }} vagt{{ $task->shifts->count() !== 1 ? 'er' : '' }}</div>
+                        <div role="cell" class="task-simple-actions">
                             @php
                                 $eventForTask = isset($event) ? $event : ($task->eventId ? \App\Models\Event::find($task->eventId) : null);
                                 $currentUserRole = null;
@@ -112,39 +87,20 @@
                                 }
                             @endphp
                             @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'view-shift'))
-                                <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn primary-btn">
-                                    <i class="fas fa-list"></i>
-                                    Vagter
-                                </a>
+                                <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn primary-btn">Vagter</a>
                             @endif
                             @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-task'))
-                                <a href="/tasks/{{ $task->id }}/edit" class="btn secondary-btn">
-                                    <i class="fas fa-edit"></i>
-                                    Rediger Opgave
-                                </a>
+                                <a href="/tasks/{{ $task->id }}/edit" class="btn secondary-btn">Rediger</a>
                             @endif
                             @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'delete-task'))
-                                <button type="button" class="bin-button" aria-label="Slet Opgave" onclick="openDeleteModal({{ $task->id }})">
-                                    <svg class="bin-top" viewBox="0 0 39 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
-                                        <line x1="12" y1="1.5" x2="26.0357" y2="1.5" stroke="white" stroke-width="3"></line>
-                                    </svg>
-                                    <svg class="bin-bottom" viewBox="0 0 33 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="path-1-inside-1_8_19" fill="white">
-                                            <path d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"></path>
-                                        </mask>
-                                        <path d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z" fill="white" mask="url(#path-1-inside-1_8_19)"></path>
-                                        <path d="M12 6L12 29" stroke="white" stroke-width="4"></path>
-                                        <path d="M21 6V29" stroke="white" stroke-width="4"></path>
-                                    </svg>
-                                </button>
+                                <button type="button" class="btn danger-btn" aria-label="Slet opgave" onclick="openDeleteModal({{ $task->id }})">Slet</button>
                             @endif
                         </div>
                     </div>
                 @empty
                     <div class="task-empty-state">
                         <h3>Ingen opgaver endnu</h3>
-                        <p>Start med at oprette den første opgave, så du kan planlaegge vagter og fordele ansvar.</p>
+                        <p>Start med at oprette den første opgave, så du kan planlægge vagter og fordele ansvar.</p>
                         @if(isset($event) && \App\Http\RolePermissions\Permissions::hasPermission($currentUserRoleForEvent ?? 'participant', 'create-task'))
                             <a href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}" class="btn primary-btn">Opret opgave</a>
                         @endif

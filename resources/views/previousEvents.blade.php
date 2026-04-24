@@ -11,10 +11,6 @@
         'canonical' => url()->current(),
         'image' => asset('TaskM8-Logo.png'),
     ])
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link rel="stylesheet" href="{{ asset('css/participants-modal.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

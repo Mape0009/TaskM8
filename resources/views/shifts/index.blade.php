@@ -2,6 +2,7 @@
 <html lang="da" class="no-js">
 <head>
     @php
+        \Carbon\Carbon::setLocale('da');
         $pageTitle = 'Vagter for ' . $task->taskName . ' | TaskM8';
         $metaDescription = 'Administrer vagter for opgaven ' . $task->taskName . '.';
     @endphp
@@ -20,17 +21,15 @@
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link rel="stylesheet" href="{{ asset('css/shifts-index.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
-    <script src="https://unpkg.com/@formkit/auto-animate@latest/index.js"></script>
     <script>
         if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark-mode');
         }
     </script>
 </head>
-<body>
+<body class="shifts-simple-page">
     @include('partials.header', ['currentPage' => 'tasks'])
 
     <main class="main-content-full">
@@ -46,29 +45,22 @@
             $shiftsCount = $task->shifts->count();
             $uniqueUsers = $task->shifts->pluck('userId')->unique()->count();
         @endphp
-        <div class="overview-shell">
-            <section class="overview-hero">
-                <div class="hero-copy">
-                    <p class="eyebrow">Vagter</p>
-                    <h1>Planlæg vagter for {{ $task->taskName }}</h1>
-                    <p class="lede">
-                        Se bemandingen, redigér tider og opret nye vagter for opgaven. Brug genvejene til hurtigt at vende tilbage til opgaverne.
-                    </p>
-                    <div class="hero-meta">
-                        <span class="pill">Vagter: {{ $shiftsCount }}</span>
-                        <span class="pill">Personer: {{ $uniqueUsers }}</span>
-                        <span class="pill">Opgave: {{ $task->taskName }}</span>
-                    </div>
+        <div class="overview-shell shifts-simple-shell">
+            <section class="shifts-page-header">
+                <div class="shifts-page-header-copy">
+                    <h1>Vagtplan for {{ $task->taskName }}</h1>
+                    <p>En enkel oversigt over alle vagter for opgaven. Hver vagt vises på én linje.</p>
+                    <p class="shifts-page-meta">{{ $shiftsCount }} vagter · {{ $uniqueUsers }} personer</p>
                 </div>
-                <div class="hero-actions">
+                <div class="shifts-page-actions">
                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
-                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn create-btn">Opret vagt</a>
+                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">Opret vagt</a>
                     @endif
-                    <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-ghost">Tilbage til opgaver</a>
+                    <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-btn">Tilbage til opgaver</a>
                 </div>
             </section>
 
-            <div class="edit-container">
+            <div class="edit-container shifts-simple-container">
             @if(session('error'))
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -77,33 +69,6 @@
             @endif
 
             @if($task->shifts->count() > 0)
-                <!-- Stats Cards -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3>{{ $task->shifts->count() }}</h3>
-                            <p>{{ $task->shifts->count() === 1 ? 'Vagt' : 'Vagter' }}</p>
-                        </div>
-                    </div>
-                  
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-user-check"></i>
-                        </div>
-                        <div class="stat-content">
-                            @php
-                                $uniqueUsers = $task->shifts->pluck('userId')->unique()->count();
-                            @endphp
-                            <h3>{{ $uniqueUsers }}</h3>
-                            <p>{{ $uniqueUsers === 1 ? 'Person' : 'Personer' }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Filter and Shifts List -->
                 @php
                     $currentUser = auth()->user();
                     $filter = request()->query('filter', 'all');
@@ -121,77 +86,44 @@
                     </div>
                     <label class="shifts-search-wrap" for="shift-search">
                         <i class="fas fa-search" aria-hidden="true"></i>
-                        <input id="shift-search" type="search" class="shifts-search-input" placeholder="Søg efter navn eller e-mail">
+                        <input id="shift-search" type="search" class="shifts-search-input" placeholder="Søg efter navn eller e-mail" aria-label="Søg i vagtlisten">
                     </label>
                 </div>
-                <div class="shifts-section">
-                    <h2 class="shifts-title">
-                        <i class="fas fa-list"></i>
-                        {{ $isMine ? 'Mine Vagter' : 'Alle Vagter' }}
-                    </h2>
-                    <div class="shifts-list">
+
+                <div class="shifts-simple-table-scroll">
+                <div class="shifts-simple-table" role="table" aria-label="Vagtliste">
+                    <div class="shifts-line shifts-line-head" role="row">
+                        <div class="line-col" role="columnheader">Person</div>
+                        <div class="line-col" role="columnheader">Tid</div>
+                        <div class="line-col line-col-actions" role="columnheader">Handlinger</div>
+                    </div>
+
+                    <div class="shifts-simple-body">
                         @forelse($displayShifts as $shift)
                             @php
                                 $startTime = \Carbon\Carbon::parse($shift->startTime);
                                 $endTime = \Carbon\Carbon::parse($shift->endTime);
-                                $durationMinutes = $startTime->diffInMinutes($endTime);
-                                $durationHours = intdiv($durationMinutes, 60);
-                                $remainingMinutes = $durationMinutes % 60;
-                                $durationText = $durationHours > 0
-                                    ? ($durationHours . ' t' . ($remainingMinutes > 0 ? ' ' . $remainingMinutes . ' min' : ''))
-                                    : ($remainingMinutes . ' min');
+                                $sameDay = $startTime->isSameDay($endTime);
+                                $timeRangeText = $sameDay
+                                    ? ($startTime->translatedFormat('j F Y') . ' kl. ' . $startTime->format('H:i') . '  -  ' . $endTime->format('H:i'))
+                                    : ($startTime->translatedFormat('j F Y H:i') . '  -  ' . $endTime->translatedFormat('j F Y H:i'));
                             @endphp
-                            <div class="shift-card">
-                                <div class="shift-header">
-                                    <div class="shift-user" data-shift-user="{{ strtolower($shift->user->name . ' ' . $shift->user->email) }}">
-                                        <div class="user-avatar">
-                                            <i class="fas fa-user"></i>
-                                        </div>
-                                        <div class="user-info">
-                                            <h3>{{ $shift->user->name }}</h3>
-                                            <p>{{ $shift->user->email }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="shift-actions">
-                                        @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-shift'))
-                                        <a href="{{ route('tasks.shifts.edit', [$task->id, $shift->id]) }}" class="btn primary-btn">
-                                            <i class="fas fa-edit"></i>
-                                            Rediger
-                                        </a>
-                                        @endif
-                                        @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'delete-shift'))
-                                        <button type="button" class="btn danger-btn" aria-label="Slet vagt" onclick="openDeleteShiftModal({{ $shift->id }})">
-                                            <i class="fas fa-trash"></i>
-                                            Slet
-                                        </button>
-                                        @endif
-                                    </div>
+                            <div class="shifts-line" role="row" data-shift-user="{{ strtolower($shift->user->name . ' ' . $shift->user->email) }}">
+                                <div class="line-col line-col-person" role="cell">
+                                    <strong>{{ $shift->user->name }}</strong>
+                                    <span class="line-email">{{ $shift->user->email }}</span>
                                 </div>
-                                
-                                <div class="shift-details">
-                                    <div class="time-info">
-                                        <div class="time-item">
-                                            <div>
-                                                <span class="time-label">Start</span>
-                                                <span class="time-value">{{ $startTime->format('j.n.Y H:i') }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="time-separator">til</div>
-                                        <div class="time-item">
-                                            <div>
-                                                <span class="time-label">Slut</span>
-                                                <span class="time-value">{{ $endTime->format('j.n.Y H:i') }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span class="duration-info">
-                                        <i class="fas fa-clock" aria-hidden="true"></i>
-                                        {{ $durationText }}
-                                    </span>
+                                <div class="line-col line-col-time" role="cell">{{ $timeRangeText }}</div>
+                                <div class="line-col line-col-actions" role="cell">
+                                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-shift'))
+                                        <a href="{{ route('tasks.shifts.edit', [$task->id, $shift->id]) }}" class="btn secondary-btn">Rediger</a>
+                                    @endif
+                                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'delete-shift'))
+                                        <button type="button" class="btn danger-btn" aria-label="Slet vagt" onclick="openDeleteShiftModal({{ $shift->id }})">Slet</button>
+                                    @endif
                                 </div>
                             </div>
 
-                            <!-- Delete Shift Confirmation Modal -->
                             <div id="delete-shift-modal-{{ $shift->id }}" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="delete-shift-title-{{ $shift->id }}" style="display:none;">
                                 <div class="confirm-modal-content">
                                     <div class="confirm-modal-body">
@@ -203,7 +135,7 @@
                                     </div>
                                     <div class="confirm-actions">
                                         <button type="button" class="confirm-btn cancel" onclick="closeDeleteShiftModal({{ $shift->id }})">Annuller</button>
-                                        <form action="{{ route('tasks.shifts.destroy', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
+                                        <form class="delete-shift-form" action="{{ route('tasks.shifts.destroy', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="confirm-btn danger">Slet</button>
@@ -212,24 +144,18 @@
                                 </div>
                             </div>
                         @empty
-                            <div class="empty-state shifts-empty">
-                                Ingen vagter fundet.
-                            </div>
+                            <p class="empty-state shifts-empty">Ingen vagter fundet.</p>
                         @endforelse
                     </div>
                 </div>
+                </div>
             @else
-                <!-- Empty State -->
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <i class="fas fa-user-clock"></i>
-                    </div>
+                <div class="empty-state shifts-empty-state">
                     <h2>Ingen vagter endnu</h2>
                     <p>Opret den første vagt for at begynde at planlægge opgaven.</p>
-                    <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">
-                        <i class="fas fa-plus"></i>
-                        Opret Første Vagt
-                    </a>
+                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
+                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">Opret første vagt</a>
+                    @endif
                 </div>
             @endif
         </div>
@@ -247,6 +173,14 @@
             var el = document.getElementById('delete-shift-modal-' + id);
             if(el){ el.style.display = 'none'; }
         }
+
+        window.addEventListener('click', function (event) {
+            if (!event.target || !event.target.classList) return;
+            if (event.target.classList.contains('confirm-modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+
         // Dark Mode Toggle
         document.addEventListener('DOMContentLoaded', function() {
             const darkModeToggle = document.getElementById('darkModeToggle');
@@ -260,32 +194,23 @@
             }
         });
 
-        // Auto-animate for smooth transitions
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof autoAnimate !== 'undefined') {
-                autoAnimate(document.querySelector('.shifts-list'));
-                autoAnimate(document.querySelector('.stats-grid'));
-            }
-        });
-
         // Search in shifts list
         document.addEventListener('DOMContentLoaded', function() {
             const input = document.getElementById('shift-search');
-            const cards = Array.from(document.querySelectorAll('.shift-card'));
-            if (!input || cards.length === 0) return;
+            const rows = Array.from(document.querySelectorAll('.shifts-line[data-shift-user]'));
+            if (!input || rows.length === 0) return;
 
             input.addEventListener('input', function() {
                 const term = input.value.trim().toLowerCase();
-                cards.forEach((card) => {
-                    const userEl = card.querySelector('[data-shift-user]');
-                    const haystack = userEl ? userEl.getAttribute('data-shift-user') : '';
-                    card.style.display = haystack.includes(term) ? '' : 'none';
+                rows.forEach((row) => {
+                    const haystack = row.getAttribute('data-shift-user') || '';
+                    row.style.display = haystack.includes(term) ? '' : 'none';
                 });
             });
         });
 
         // Loading state for delete buttons
-        document.querySelectorAll('form').forEach(form => {
+        document.querySelectorAll('form.delete-shift-form').forEach(form => {
             form.addEventListener('submit', function() {
                 const button = this.querySelector('button[type="submit"]');
                 if (button) {

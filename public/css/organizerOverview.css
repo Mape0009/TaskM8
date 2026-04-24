@@ -163,6 +163,114 @@ body {
     gap: 8px;
 }
 
+.filter-search-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+}
+
+.role-filter {
+    display: flex;
+    align-items: center;
+    min-width: 180px;
+}
+
+.role-filter select {
+    width: 100%;
+    padding: 10px 36px 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: linear-gradient(
+            45deg,
+            transparent 50%,
+            var(--color-text-secondary) 50%
+        ),
+        linear-gradient(
+            135deg,
+            var(--color-text-secondary) 50%,
+            transparent 50%
+        );
+    background-position: calc(100% - 18px) calc(50% - 3px),
+        calc(100% - 12px) calc(50% - 3px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    color-scheme: light dark;
+}
+
+.role-filter select:focus {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 1px;
+    border-color: var(--color-accent-primary);
+}
+
+.volunteers-section {
+    margin-bottom: 32px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    color: var(--color-text-primary);
+}
+
+.volunteers-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 100%;
+}
+
+.volunteer-card {
+    background: var(--color-background-secondary);
+    border: 2px solid var(--color-accent-warning, #ffc107);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 6px 20px var(--color-shadow-light);
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.volunteer-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.inline-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.btn.success {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.btn.success:hover {
+    background-color: #45a049;
+}
+
+.btn.danger {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.btn.danger:hover {
+    background-color: #da190b;
+}
+
 .confirm-icon {
     width: 48px;
     height: 48px;
@@ -183,13 +291,21 @@ body {
 @media (max-width: 768px) {
   .roles-wrapper { max-width: 100%; padding: 0 14px; }
   .roles-header { gap: 10px; }
+  .filter-search-container { flex: 1 1 100%; }
   .search { flex: 1 1 100%; }
+  .role-filter { flex: 1 1 100%; }
+  .role-filter select { width: 100%; }
   .participants-list { gap: 10px; width: 100%; }
+  .volunteer-card { flex-direction: column; align-items: flex-start; }
+  .volunteer-actions { width: 100%; }
+  .volunteer-actions .btn { flex: 1; }
   .participant-card { padding: 12px; }
   .actions { width: 100%; justify-content: stretch; gap: 10px; }
   .role-form { flex-direction: column; width: 100%; }
   .role-select { width: 100%; min-width: 0; font-size: 16px; }
   .btn.primary { width: 100%; justify-content: center; }
+  .btn.success { width: 100%; }
+  .btn.danger { width: 100%; }
   .page-actions { width: 100%; flex-wrap: wrap; }
 }
 

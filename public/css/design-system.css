@@ -1,9 +1,11 @@
-/* Global design system override for a unified, modern TaskM8 look */
-:root {
-    --ds-font-body: "Plus Jakarta Sans", "Inter", "Segoe UI", sans-serif;
-    --ds-font-heading: "Sora", "Plus Jakarta Sans", "Inter", sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
 
-    --ds-bg: #f5f7fb;
+/* Global design system override */
+:root {
+    --ds-font-body: "Inter Tight", "Inter", "Segoe UI", sans-serif;
+    --ds-font-heading: "Sora", "Inter Tight", "Inter", sans-serif;
+
+    --ds-bg: #e7ecf5;
     --ds-bg-soft: #edf2f7;
     --ds-surface: rgba(255, 255, 255, 0.86);
     --ds-surface-strong: rgba(255, 255, 255, 0.96);
@@ -12,17 +14,17 @@
     --ds-text-muted: #475569;
     --ds-border: rgba(15, 23, 42, 0.11);
 
-    --ds-accent: #0ea5a4;
+    --ds-accent: #5082EF;
     --ds-accent-2: #2563eb;
     --ds-danger: #dc2626;
 
-    /* Shadow scale - from subtle to prominent */
+    /* Shadow scale */
     --ds-shadow-sm: 0 10px 20px rgba(15, 23, 42, 0.08);
     --ds-shadow-md: 0 18px 40px rgba(15, 23, 42, 0.12);
     --ds-shadow-lg: 0 25px 50px rgba(15, 23, 42, 0.15);
     --ds-shadow-xl: 0 30px 70px rgba(15, 23, 42, 0.2);
 
-    /* Border radius scale - consistent sizing */
+    /* Border radius scale */
     --ds-radius-xs: 6px;
     --ds-radius-sm: 12px;
     --ds-radius-md: 18px;
@@ -30,7 +32,7 @@
     --ds-radius-xl: 32px;
     --ds-radius-full: 999px;
 
-    /* Z-index scale - organized hierarchy */
+    /* Z-index scale */
     --ds-z-base: 0;
     --ds-z-content: 1;
     --ds-z-dropdown: 100;
@@ -42,18 +44,19 @@
     --ds-z-notification: 700;
     --ds-z-debug: 999;
 
-    /* Transition timing - consistent motion */
+    /* Transition timing */
     --ds-transition-fast: 0.15s ease;
     --ds-transition-base: 0.2s ease;
     --ds-transition-slow: 0.3s ease;
 
-    /* Responsive breakpoints - five-point scale */
+    /* Responsive breakpoints */
     --ds-mobile-max: 480px;
     --ds-tablet-min: 481px;
     --ds-tablet-max: 900px;
     --ds-desktop-min: 901px;
 }
 
+html.dark-mode,
 body.dark-mode {
     --ds-bg: #090d14;
     --ds-bg-soft: #0f1722;
@@ -78,8 +81,8 @@ body {
 body {
     font-family: var(--ds-font-body);
     background-image:
-        radial-gradient(56rem 56rem at -10% -18%, rgba(14, 165, 164, 0.14), transparent 62%),
-        radial-gradient(56rem 56rem at 108% -14%, rgba(37, 99, 235, 0.14), transparent 62%);
+    radial-gradient(52rem 52rem at -14% -22%, rgba(14, 165, 164, 0.08), transparent 64%),
+    radial-gradient(52rem 52rem at 112% -18%, rgba(37, 99, 235, 0.08), transparent 64%);
 }
 
 h1,
@@ -92,14 +95,15 @@ h6,
 .event-details-title,
 .overview-hero h1 {
     font-family: var(--ds-font-heading);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
 }
 
 .main-header {
     background: color-mix(in srgb, var(--ds-surface-strong) 92%, transparent);
     border-bottom: 1px solid var(--ds-border);
     backdrop-filter: blur(10px);
-    box-shadow: var(--ds-shadow-sm);
+    box-shadow: none;
 }
 
 .navigation a {
@@ -125,14 +129,14 @@ h6,
 .task-card,
 .group-card,
 .event-details-container,
-.overview-hero,
+.event-details-card,
 .legal-section,
 .form-card,
 .edit-card,
 .cta-banner,
 .feature-card,
-.metric,
 .cookie-card,
+.participant-card,
 .participants-modal-content,
 .confirm-modal-content,
 .modal-content,
@@ -140,17 +144,22 @@ h6,
 .mnav__panel,
 .auth-container,
 .site-footer {
-    background: var(--ds-surface);
+    /* background: color-mix(in srgb, var(--ds-surface-strong) 96%, transparent) !important; */
     border: 1px solid var(--ds-border);
-    box-shadow: var(--ds-shadow-sm);
-    border-radius: var(--ds-radius-md);
-    backdrop-filter: blur(8px);
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    backdrop-filter: none;
+}
+
+/* Keep fixed overlays viewport-bound when modal markup is rendered inside event cards. */
+.event-card {
+    backdrop-filter: none;
 }
 
 .overview-hero,
 .guest-hero,
 .cta-banner {
-    border-radius: var(--ds-radius-lg);
+    border-radius: 10px;
 }
 
 .stat-card,
@@ -162,11 +171,10 @@ h6,
 .legal-section,
 .form-card,
 .edit-card,
-.feature-card,
-.metric {
-    background: var(--ds-card-surface);
+.feature-card
+ {
     border-color: var(--color-border, var(--ds-border));
-    box-shadow: var(--ds-shadow-md);
+    box-shadow: none !important;
     transition: 
         transform var(--ds-transition-base),
         box-shadow var(--ds-transition-base),
@@ -174,7 +182,7 @@ h6,
 }
 
 .site-footer {
-    border-radius: 18px 18px 0 0;
+    border-radius: 0 !important;
 }
 
 .btn,
@@ -188,6 +196,8 @@ a.btn,
     border-radius: 12px;
     font-weight: 650;
     border: 1px solid transparent;
+    box-sizing: border-box;
+    max-width: 100%;
     transition: box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -330,7 +340,7 @@ textarea::placeholder {
 }
 
 /* ============================================================================ */
-/* ANIMATIONS & TRANSITIONS - Luxury smooth interactions */
+/* ANIMATIONS & TRANSITIONS */
 /* ============================================================================ */
 
 /* Smooth transitions for all interactive elements */
@@ -354,19 +364,16 @@ select,
         transform var(--transition-fast);
 }
 
-/* Smooth focus-within transitions for form groups */
 .form-row {
     transition: opacity var(--transition-base);
 }
 
-/* Hover lift effect for cards - subtle depth change, no movement */
 .stat-card,
 .event-card,
 .task-card,
 .group-card,
 .feature-card {
-    transition: 
-        box-shadow var(--transition-base),
+    transition:
         border-color var(--transition-base),
         background-color var(--transition-base);
 }
@@ -376,8 +383,7 @@ select,
 .task-card:hover,
 .group-card:hover,
 .feature-card:hover {
-    box-shadow: var(--ds-shadow-lg);
-    border-color: rgba(14, 165, 164, 0.3);
+    box-shadow: none !important;
 }
 
 /* Smooth animations for modals */
@@ -422,7 +428,7 @@ select,
     }
 }
 
-/* Smooth pulse animation for attention-grabbing */
+/* Smooth pulse animation */
 @keyframes pulse {
     0%, 100% {
         opacity: 1;
@@ -470,8 +476,9 @@ select:focus {
 
 @media (max-width: 900px) {
     .main-content-full {
-        padding-left: 18px;
-        padding-right: 18px;
+        width: 90%;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 

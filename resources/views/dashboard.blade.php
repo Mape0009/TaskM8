@@ -22,33 +22,36 @@
     <main class="main-content-full">
         @auth
         <section class="stats-cards">
-            <div class="stat-card">
-                <div class="stat-info">
-                    <span class="stat-title">Afventer svar: </span>
-                    <span class="stat-value">{{$pendingEventsCount}}</span>
-                </div>
+            <div class="stat-card stat-card--pending">
                 <div class="stat-icon">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
                 </div>
-            </div>
-            <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-title">Mine Begivenheder: </span>
-                    <span class="stat-value">{{$participatedEventsCount}}</span>
+                    <span class="stat-value">{{$pendingEventsCount}}</span>
+                    <span class="stat-title">Afventer svar</span>
+                    <span class="stat-note">Kræver handling</span>
                 </div>
+            </div>
+            <div class="stat-card stat-card--mine">
                 <div class="stat-icon">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 </div>
-            </div>
-            <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-title">Tidligere Inviterede: </span>
-                    <span class="stat-value">{{ $previousInviteesCount }}</span>
+                    <span class="stat-value">{{$participatedEventsCount}}</span>
+                    <span class="stat-title">Mine begivenheder</span>
+                    <span class="stat-note">Aktive planer</span>
                 </div>
+            </div>
+            <div class="stat-card stat-card--network">
                 <div class="stat-icon">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493 M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07 M15 19.128v.106A12.318 12.318 0 0 1 8.624 21 c-2.331 0-4.512-.645-6.374-1.766l-.001-.109 a6.375 6.375 0 0 1 11.964-3.07 M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25 a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                     </svg>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">{{ $previousInviteesCount }}</span>
+                    <span class="stat-title">Tidligere inviterede</span>
+                    <span class="stat-note">Nemt genbrug</span>
                 </div>
             </div>
         </section>
@@ -113,19 +116,6 @@
                             @endif
                         </div>
                         <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
-                        @php
-                            \Carbon\Carbon::setLocale('da');
-                            $start = $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
-                            $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
-                        @endphp
-                        <div class="event-dates-text">
-                            <p style="margin: 0 0 4px 0; color: var(--color-text-secondary); font-weight: 600;">
-                                Start: {{ $start ? $start->format('j.n.Y') . ' kl ' . $start->format('H:i') : '-' }}
-                            </p>
-                            <p style="margin: 0 0 20px 0; color: var(--color-text-secondary); font-weight: 600;">
-                                Slut: {{ $end ? $end->format('j.n.Y') . ' kl ' . $end->format('H:i') : '-' }}
-                            </p>
-                        </div>
                        <div class="event-actions">
     <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
 <a href="javascript:void(0);" 
@@ -144,42 +134,8 @@
             }
             $myParticipation = \App\Models\EventParticipant::where('eventId', $event->id)->where('userId', auth()->id())->first();
             $rsvpStatus = $myParticipation->status ?? null; 
-            $isParticipant = $rsvpStatus === 'accepted';
-            $hasResponded = in_array($rsvpStatus, ['accepted','declined']);
         @endphp
         @if(!$isOwner)
-            @php
-                $isFull = !empty($event->participantLimit) && (
-                    \App\Models\EventParticipant::where('eventId', $event->id)->where('status', 'accepted')->count() >= $event->participantLimit
-                ) && !$isParticipant;
-            @endphp
-
-            {{-- RSVP menu --}}
-            <div class="rsvp-menu" id="rsvp-menu-{{ $event->id }}">
-                <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-{{ $event->id }}')">
-                    {{ $hasResponded ? 'Skift svar' : 'Svar' }}
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                         class="caret"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
-                <div class="rsvp-menu-list" role="menu">
-                    <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="status" value="accepted" />
-                        <button type="submit" class="rsvp-menu-item accepted" {{ $isFull ? 'disabled' : '' }}>
-                            <span class="dot"></span> Deltag
-                        </button>
-                    </form>
-                    <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="status" value="declined" />
-                        <button type="submit" class="rsvp-menu-item declined">
-                            <span class="dot"></span> Deltager ikke
-                        </button>
-                    </form>
-                </div>
-            </div>
-
             {{-- Slet-knap --}}
             <button type="button" class="bin-button" aria-label="Forlad begivenhed" 
                     onclick="document.getElementById('leave-modal-{{ $event->id }}').style.display='flex'">
@@ -198,7 +154,7 @@
             </button>
 
             {{-- RSVP-status --}}
-            <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
+            {{-- <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
                 @if($rsvpStatus === 'accepted')
                     <span class="status-dot"></span> Deltager
                 @elseif($rsvpStatus === 'declined')
@@ -206,7 +162,7 @@
                 @else
                     <span class="status-dot"></span> Afventer svar
                 @endif
-            </div>
+            </div> --}}
 
             {{-- Leave/Delete modals --}}
             <div id="leave-modal-{{ $event->id }}" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="leave-confirm-title-{{ $event->id }}" style="display:none;">
@@ -266,16 +222,13 @@
             <div class="guest-hero__grid">
                 <div class="guest-hero__content">
                     <p class="guest-hero__eyebrow animate-from-top">PLANLÆGNING UDEN STRESS</p>
-                    <h1 class="guest-hero__title animate-from-top">Begivenheder med overblik, struktur og ro fra første klik</h1>
-                    <p class="guest-hero__subtitle animate-from-left delay-150">TaskM8 samler invitationer, svar, opgaver og deltagerstyring i én moderne platform, så du kan planlægge hurtigere og med fuld kontrol.</p>
+                    <h1 class="guest-hero__title animate-from-top">Planlæg begivenheder nemt og effektivt</h1>
+                    <p class="guest-hero__subtitle animate-from-left delay-150">TaskM8 samler invitationer, svar og overblik ét sted – hurtigt, simpelt og gratis.
+
+</p>
                     <div class="guest-hero__cta animate-from-right delay-300">
-                        <a href="/signup" class="btn primary-btn guest-hero__cta-btn">Kom i gang gratis</a>
+                        <a href="/signup" class="btn primary-btn guest-hero__cta-btn">Kom i gang</a>
                         <a href="/signin" class="btn secondary-btn guest-hero__cta-btn guest-hero__cta-btn--secondary">Log ind</a>
-                    </div>
-                    <div class="guest-trust animate-fade-up">
-                        <div class="guest-trust__item">Brugervenlig</div>
-                        <div class="guest-trust__item">Struktureret</div>
-                        <div class="guest-trust__item">Altid tilgængelig</div>
                     </div>
                 </div>
 
@@ -341,7 +294,7 @@
             </div>
         </section>
 
-        <section class="cta-banner animate-fade-up">
+        {{-- <section class="cta-banner animate-fade-up">
             <div class="cta-banner__content">
                 <h3>Download vores app</h3>
                 <p>TaskM8 er tilgængelig på både iOS og Android.</p>
@@ -363,7 +316,7 @@
                 </a>
             </div>
         </section>
-        </div>
+        </div> --}}
         @endguest
     </main>
     <script src="{{ asset('build/assets/app-DNxiirP_.js') }}" type="module"></script>

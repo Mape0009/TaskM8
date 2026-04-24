@@ -25,8 +25,44 @@ document.addEventListener('DOMContentLoaded', function(){
   if(!form) return;
   var steps=Array.prototype.slice.call(form.querySelectorAll('.form-step'));
   var current=0;
+  var stepTipText=document.getElementById('task-step-tip-text');
+  var stepTipLabel=document.getElementById('task-step-tip-label');
+  var stepTipValue=document.getElementById('task-step-tip-value');
+  var stepTips={
+    0:{
+      text:'Et godt titel-tip: hold navnet kort, konkret og handlingsorienteret.',
+      label:'Titel-tip',
+      value:'Brug formatet: Hvad + hvor (fx "Indkøb i Netto")'
+    },
+    1:{
+      text:'Et godt beskrivelse-tip: skriv målet, forventet resultat og evt. vigtige detaljer.',
+      label:'Beskrivelse-tip',
+      value:'Svar kort på: Hvad skal gøres, og hvornår er opgaven "færdig"?'
+    },
+    2:{
+      text:'Ved bekræftelse: læs opgaven som om en ny deltager skal overtage den uden ekstra forklaring.',
+      label:'Bekræftelse',
+      value:'Tjek: tydeligt navn, brugbar beskrivelse og korrekt begivenhed'
+    }
+  };
 
-  function showStep(i){ steps.forEach(function(s,idx){ s.hidden = idx!==i; }); current=i; updateReview(); }
+  function updateStepTip(i){
+    var tip=stepTips[i]||stepTips[0];
+    if(stepTipText){ stepTipText.textContent=tip.text; }
+    if(stepTipLabel){ stepTipLabel.textContent=tip.label; }
+    if(stepTipValue){ stepTipValue.textContent=tip.value; }
+  }
+
+  function showStep(i){
+    steps.forEach(function(s,idx){ s.hidden = idx!==i; });
+    current=i;
+    document.querySelectorAll('[data-step-indicator]').forEach(function(el, idx){
+      el.classList.toggle('is-active', idx===i);
+      el.classList.toggle('is-done', idx<i);
+    });
+    updateStepTip(i);
+    updateReview();
+  }
   function updateReview(){
     var name=form.querySelector('#taskName');
     var desc=form.querySelector('#description');

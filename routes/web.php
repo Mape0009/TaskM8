@@ -74,6 +74,7 @@ Route::get('/previousEvents', function () {
 })->middleware('auth');
 
 // Legal policy pages
+Route::view('/om-os', 'about');
 Route::view('/privatlivspolitik', 'legal.privatlivspolitik');
 Route::view('/cookiepolitik', 'legal.cookiepolitik');
 Route::view('/vilkar', 'legal.vilkar');

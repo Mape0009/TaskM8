@@ -185,7 +185,7 @@ function renderParticipants() {
     
     participantsList.innerHTML = filteredParticipants.map(participant => {
         const initials = (participant.name || '?').charAt(0).toUpperCase();
-        const statusText = getStatusText(participant.status);
+        const statusText = getStatusText(participant.status, participant.eventRole);
         const statusClass = participant.status;
         
         return `
@@ -204,13 +204,21 @@ function renderParticipants() {
 }
 
 // Get status text in Danish
-function getStatusText(status) {
+function getStatusText(status, eventRole = null) {
     const statusMap = {
         'accepted': 'Deltager',
         'declined': 'Deltager ikke',
         'pending': 'Afventer svar'
     };
-    return statusMap[status] || status;
+
+    const baseStatus = statusMap[status] || status;
+
+    // Volunteers are always accepted; show this as an add-on in the accepted state.
+    if (status === 'accepted' && eventRole === 'volunteer') {
+        return `${baseStatus} - frivillig`;
+    }
+
+    return baseStatus;
 }
 
 // Event listeners
