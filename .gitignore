@@ -24,3 +24,4 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 node_modules
+vendor/_laravel_ide/_model_helpers.php
