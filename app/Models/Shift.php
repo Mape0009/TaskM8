@@ -11,6 +11,7 @@ class Shift extends Model
         'userId',
         'startTime',
         'endTime',
+        'status',
     ];
 
     public function task()

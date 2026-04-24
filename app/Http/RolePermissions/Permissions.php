@@ -17,6 +17,8 @@ class Permissions
             'edit-shift',
             'delete-shift',
             'view-shift',
+            'receive-shift',
+            'volunteer-shift',
             'manage-invites',
             'view-participants',
             'manage-participants',
@@ -40,6 +42,7 @@ class Permissions
             'edit-shift',
             'delete-shift',
             'view-shift',
+            'volunteer-shift',
             'manage-invites',
             'view-participants',
             'manage-participants',
@@ -60,6 +63,7 @@ class Permissions
             'edit-shift',
             'delete-shift',
             'view-shift',
+            'volunteer-shift',
             'view-participants',
             'respond-event',
         ];
@@ -68,6 +72,7 @@ class Permissions
             'view-event',
             'view-task',
             'view-shift',
+            'volunteer-shift',
             'view-participants',
             'respond-event',
         ];

@@ -158,6 +158,7 @@ Route::put('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'update'
 Route::delete('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'destroy'])->name('tasks.shifts.destroy');
 Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tasks.join');
 Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
+Route::post('/tasks/{taskId}/volunteer', [ShiftController::class, 'volunteer'])->name('tasks.shifts.volunteer');
 
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);

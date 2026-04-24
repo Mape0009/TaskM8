@@ -57,7 +57,7 @@
                             <option value="">Vælg en person...</option>
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}" {{ old('userId', $shift->userId) == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
+                                    {{ $user->name ?? $user->email ?? 'Ukendt bruger' }}
                                 </option>
                             @endforeach
                         </select>

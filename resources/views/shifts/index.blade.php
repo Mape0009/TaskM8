@@ -108,13 +108,19 @@
                                     ? ($startTime->translatedFormat('j F Y') . ' kl. ' . $startTime->format('H:i') . '  -  ' . $endTime->format('H:i'))
                                     : ($startTime->translatedFormat('j F Y H:i') . '  -  ' . $endTime->translatedFormat('j F Y H:i'));
                             @endphp
-                            <div class="shifts-line" role="row" data-shift-user="{{ strtolower($shift->user->name . ' ' . $shift->user->email) }}">
+                            <div class="shifts-line" role="row" data-shift-user="{{ strtolower(($shift->user?->name ?? $shift->user?->email ?? 'Ingen bruger') . ' ' . ($shift->user?->email ?? '')) }}">
                                 <div class="line-col line-col-person" role="cell">
-                                    <strong>{{ $shift->user->name }}</strong>
-                                    <span class="line-email">{{ $shift->user->email }}</span>
+                                    <strong>{{ $shift->user?->name ?? $shift->user?->email ?? 'Ingen bruger' }}</strong>
+                                    <span class="line-email">{{ $shift->user?->email ?? 'Ingen e-mail' }}</span>
                                 </div>
                                 <div class="line-col line-col-time" role="cell">{{ $timeRangeText }}</div>
                                 <div class="line-col line-col-actions" role="cell">
+                                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'volunteer-shift') && $shift->userId !== $currentUser?->id)
+                                        <form action="{{ route('tasks.shifts.volunteer', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn primary-btn" aria-label="Melder sig på vagt">Meld mig</button>
+                                        </form>
+                                    @endif
                                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-shift'))
                                         <a href="{{ route('tasks.shifts.edit', [$task->id, $shift->id]) }}" class="btn secondary-btn">Rediger</a>
                                     @endif

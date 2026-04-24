@@ -78,7 +78,7 @@
                                 <option value="">Vælg en bruger</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ old('userId') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
+                                        {{ $user->name ?? $user->email ?? 'Ukendt bruger' }} ({{ $user->email }})
                                     </option>
                                 @endforeach
                             </select>

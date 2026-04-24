@@ -103,6 +103,7 @@ class ShiftController extends Controller
                 'userId' => $request->userId,
                 'startTime' => $request->startTime,
                 'endTime' => $request->endTime,
+                'status' => 'pending',
             ]);
         } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
             return redirect()->back()->withErrors(['userId' => 'Kan ikke oprette vagt pga. unik begrænsning. Kør database-migrationerne og prøv igen.'])->withInput();
@@ -264,5 +265,27 @@ class ShiftController extends Controller
              ->delete();
 
         return redirect()->back();
+    }
+
+    public function volunteer($taskId)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
+        }
+        
+        $shift = Shift::where('taskId', $taskId)
+                  ->whereNull('userId')
+                  ->first();
+
+        if (!$shift) {
+            return redirect()->back()->withErrors(['message' => 'Ingen ledige vagter at melde sig på.']);
+        }
+        
+        $shift->userId = $userId;
+        $shift->status = 'pending';
+        $shift->save();
+
+        return redirect()->back()->with('success', 'Du har meldt dig som frivillig for opgaven.');
     }
 }
