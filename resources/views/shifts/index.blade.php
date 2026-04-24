@@ -68,6 +68,13 @@
                 </div>
             @endif
 
+            @if(session('success'))
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    {{ session('success') }}
+                </div>
+            @endif
+
             @if($task->shifts->count() > 0)
                 @php
                     $currentUser = auth()->user();
@@ -107,18 +114,32 @@
                                 $timeRangeText = $sameDay
                                     ? ($startTime->translatedFormat('j F Y') . ' kl. ' . $startTime->format('H:i') . '  -  ' . $endTime->format('H:i'))
                                     : ($startTime->translatedFormat('j F Y H:i') . '  -  ' . $endTime->translatedFormat('j F Y H:i'));
+                                $isVolunteerRequest = $shift->status === 'pending' && $shift->userId && $shift->created_at && $shift->updated_at && !$shift->created_at->equalTo($shift->updated_at);
                             @endphp
                             <div class="shifts-line" role="row" data-shift-user="{{ strtolower(($shift->user?->name ?? $shift->user?->email ?? 'Ingen bruger') . ' ' . ($shift->user?->email ?? '')) }}">
                                 <div class="line-col line-col-person" role="cell">
                                     <strong>{{ $shift->user?->name ?? $shift->user?->email ?? 'Ingen bruger' }}</strong>
                                     <span class="line-email">{{ $shift->user?->email ?? 'Ingen e-mail' }}</span>
+                                    @if($isVolunteerRequest)
+                                        <span class="shift-status-badge shift-status-pending">Afventer</span>
+                                    @endif
                                 </div>
                                 <div class="line-col line-col-time" role="cell">{{ $timeRangeText }}</div>
                                 <div class="line-col line-col-actions" role="cell">
-                                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'volunteer-shift') && $shift->userId !== $currentUser?->id)
+                                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'volunteer-shift') && is_null($shift->userId))
                                         <form action="{{ route('tasks.shifts.volunteer', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
                                             @csrf
                                             <button type="submit" class="btn primary-btn" aria-label="Melder sig på vagt">Meld mig</button>
+                                        </form>
+                                    @endif
+                                    @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-shift') && $isVolunteerRequest)
+                                        <form action="{{ route('tasks.shifts.accept', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn primary-btn" aria-label="Godkend frivillig">Godkend</button>
+                                        </form>
+                                        <form action="{{ route('tasks.shifts.deny', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn danger-btn" aria-label="Afvis frivillig">Afvis</button>
                                         </form>
                                     @endif
                                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-shift'))

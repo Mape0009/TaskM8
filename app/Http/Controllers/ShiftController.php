@@ -104,7 +104,7 @@ class ShiftController extends Controller
                 'userId' => $request->userId,
                 'startTime' => $request->startTime,
                 'endTime' => $request->endTime,
-                'status' => 'pending',
+                'status' => $request->filled('userId') ? 'accepted' : 'pending',
             ]);
         } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
             return redirect()->back()->withErrors(['userId' => 'Kan ikke oprette vagt pga. unik begrænsning. Kør database-migrationerne og prøv igen.'])->withInput();
@@ -179,6 +179,7 @@ class ShiftController extends Controller
             'userId' => $request->userId,
             'startTime' => $request->startTime,
             'endTime' => $request->endTime,
+            'status' => 'accepted',
         ]);
 
         return redirect()->route('tasks.shifts.index', $taskId);
@@ -268,14 +269,25 @@ class ShiftController extends Controller
         return redirect()->back();
     }
 
-    public function volunteer($taskId)
+    public function volunteer($taskId, $shiftId)
     {
         $userId = Auth::id();
         if (!$userId) {
             return redirect('/signin');
         }
+
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $userId)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'volunteer-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
         
         $shift = Shift::where('taskId', $taskId)
+                  ->where('id', $shiftId)
+                  ->where('status', 'pending')
                   ->whereNull('userId')
                   ->first();
 
@@ -288,5 +300,62 @@ class ShiftController extends Controller
         $shift->save();
 
         return redirect()->back()->with('success', 'Du har meldt dig som frivillig for opgaven.');
+    }
+
+    public function acceptVolunteer($taskId, $shiftId)
+    {
+        $user = auth()->user();
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'edit-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
+
+        $shift = Shift::where('taskId', $taskId)->findOrFail($shiftId);
+        if (!$shift->userId) {
+            return redirect()->back()->withErrors(['message' => 'Vagten har ingen frivillig at godkende.']);
+        }
+
+        $isVolunteerRequest = $shift->status === 'pending' && $shift->created_at && $shift->updated_at && !$shift->created_at->equalTo($shift->updated_at);
+        if (!$isVolunteerRequest) {
+            return redirect()->back()->withErrors(['message' => 'Kun afventende vagter kan godkendes.']);
+        }
+
+        $shift->status = 'accepted';
+        $shift->save();
+
+        return redirect()->back()->with('success', 'Frivillig er godkendt til vagten.');
+    }
+
+    public function denyVolunteer($taskId, $shiftId)
+    {
+        $user = auth()->user();
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'edit-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
+
+        $shift = Shift::where('taskId', $taskId)->findOrFail($shiftId);
+        if (!$shift->userId) {
+            return redirect()->back()->withErrors(['message' => 'Vagten har ingen frivillig at afvise.']);
+        }
+
+        $isVolunteerRequest = $shift->status === 'pending' && $shift->created_at && $shift->updated_at && !$shift->created_at->equalTo($shift->updated_at);
+        if (!$isVolunteerRequest) {
+            return redirect()->back()->withErrors(['message' => 'Kun afventende vagter kan afvises.']);
+        }
+
+        $shift->userId = null;
+        $shift->status = 'pending';
+        $shift->save();
+
+        return redirect()->back()->with('success', 'Frivillig er afvist, og vagten er ledig igen.');
     }
 }
