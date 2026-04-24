@@ -62,11 +62,10 @@ class ShiftController extends Controller
         }
         
         $request->validate([
-            'userId' => 'required|exists:users,id',
+            'userId' => 'nullable|exists:users,id',
             'startTime' => 'required|date',
             'endTime' => 'required|date|after:startTime',
         ], [
-            'userId.required' => 'Vælg en bruger.',
             'userId.exists' => 'Den valgte bruger findes ikke.',
             'startTime.required' => 'Starttidspunkt skal angives.',
             'startTime.date' => 'Starttidspunkt skal være en gyldig dato.',
@@ -75,26 +74,28 @@ class ShiftController extends Controller
             'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
         ]);
 
-        $participant = EventParticipant::where('eventId', $task->eventId)
-                                       ->where('userId', $request->userId)
-                                       ->first();
-        $roleOk = in_array($participant?->eventRole, ['owner','coOwner','taskManager','taskWorker'], true);
-        $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
-                         || ($event && (int)$event->ownerId === (int)$request->userId);
-        if (!$isParticipant) {
-            return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
-        }
-        
-        $hasOverlap = Shift::where('taskId', $taskId)
-                            ->where('userId', $request->userId)
-                            ->where(function ($q) use ($request) {
-                                $q->where('startTime', '<', $request->endTime)
-                                  ->where('endTime', '>', $request->startTime);
-                            })
-                            ->exists();
+        if ($request->filled('userId')) {
+            $participant = EventParticipant::where('eventId', $task->eventId)
+                                           ->where('userId', $request->userId)
+                                           ->first();
+            $roleOk = in_array($participant?->eventRole, ['owner','coOwner','taskManager','taskWorker'], true);
+            $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
+                             || ($event && (int)$event->ownerId === (int)$request->userId);
+            if (!$isParticipant) {
+                return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
+            }
 
-        if ($hasOverlap) {
-            return back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => '']);
+            $hasOverlap = Shift::where('taskId', $taskId)
+                                ->where('userId', $request->userId)
+                                ->where(function ($q) use ($request) {
+                                    $q->where('startTime', '<', $request->endTime)
+                                      ->where('endTime', '>', $request->startTime);
+                                })
+                                ->exists();
+
+            if ($hasOverlap) {
+                return back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => '']);
+            }
         }
 
         try {
