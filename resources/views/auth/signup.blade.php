@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Opret konto | TaskM8';
+        $pageTitle = 'TaskM8 | Opret Konto';
         $metaDescription = 'Opret en konto på TaskM8 og kom i gang på få minutter.';
     @endphp
     @include('partials.seo', [
