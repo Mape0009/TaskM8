@@ -222,7 +222,7 @@
             <div class="guest-hero__grid">
                 <div class="guest-hero__content">
                     <p class="guest-hero__eyebrow animate-from-top">PLANLÆGNING UDEN STRESS</p>
-                    <h1 class="guest-hero__title animate-from-top">Planlæg begivenheder nemt og effektivt</h1>
+                    <h1 class="guest-hero__title animate-from-top">Slip for rod  planlæg smartere</h1>
                     <p class="guest-hero__subtitle animate-from-left delay-150">TaskM8 samler invitationer, svar og overblik ét sted – hurtigt, simpelt og gratis.
 
 </p>
