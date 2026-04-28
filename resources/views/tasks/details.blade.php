@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = ($task->taskName ?? 'Opgave') . ' | TaskM8';
+        $pageTitle = 'TaskM8 | Opgavedetaljer';
         $metaDescription = Str::limit($task->description ?? 'Se detaljer for opgaven i TaskM8.', 150);
     @endphp
     @include('partials.seo', [

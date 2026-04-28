@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Opret opgave | TaskM8';
+        $pageTitle = 'TaskM8 | Opret opgave';
         $metaDescription = 'Opret og tildel opgaver til begivenheder i TaskM8.';
     @endphp
     @include('partials.seo', [

@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'TaskM8 – Planlæg og saml begivenheder';
+        $pageTitle = 'TaskM8 | Forside';
         $metaDescription = 'Planlæg, inviter og få overblik over alle dine begivenheder i TaskM8.';
     @endphp
     @include('partials.seo', [

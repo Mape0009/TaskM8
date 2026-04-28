@@ -2,8 +2,8 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Grupper | TaskM8';
-        $metaDescription = 'Administrer dine grupper og få overblik over medlemmer i TaskM8.';
+        $pageTitle = 'TaskM8 | Afsluttede begivenheder';
+        $metaDescription = 'Se og genbrug dine tidligere begivenheder i TaskM8. Brug afsluttede begivenheder som skabeloner, invitér de samme deltagere igen, eller ryd op i arkivet.';
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,

@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Cookiepolitik | TaskM8';
+        $pageTitle = 'TaskM8 | Cookiepolitik';
         $metaDescription = 'Hvad er cookies, og hvordan bruger TaskM8 dem?';
     @endphp
     @include('partials.seo', [

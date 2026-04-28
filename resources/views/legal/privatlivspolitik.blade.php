@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Privatlivspolitik | TaskM8';
+        $pageTitle = 'TaskM8 | Privatlivspolitik';
         $metaDescription = 'Sådan behandler TaskM8 dine personoplysninger.';
     @endphp
     @include('partials.seo', [

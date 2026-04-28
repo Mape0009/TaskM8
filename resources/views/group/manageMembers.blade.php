@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Administrer medlemmer | TaskM8';
+        $pageTitle = 'TaskM8 | Administrer gruppemedlemmer';
         $metaDescription = 'Administrer medlemmer i gruppen ' . ($group->groupName ?? 'gruppe') . ' på TaskM8.';
     @endphp
     @include('partials.seo', [

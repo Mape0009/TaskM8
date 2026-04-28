@@ -3,7 +3,7 @@
 <head>
     @php
         \Carbon\Carbon::setLocale('da');
-        $pageTitle = 'Tilføj Vagt til ' . $task->taskName . ' | TaskM8';
+        $pageTitle = 'TaskM8 | Opret vagt for ' . $task->taskName;
         $metaDescription = 'Tilføj en ny vagt til opgaven ' . $task->taskName . '.';
     @endphp
     @include('partials.seo', [

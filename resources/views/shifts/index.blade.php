@@ -3,7 +3,7 @@
 <head>
     @php
         \Carbon\Carbon::setLocale('da');
-        $pageTitle = 'Vagter for ' . $task->taskName . ' | TaskM8';
+        $pageTitle = 'TaskM8 | Vagter for ' . $task->taskName;
         $metaDescription = 'Administrer vagter for opgaven ' . $task->taskName . '.';
     @endphp
     @include('partials.seo', [

@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Vilkår og betingelser | TaskM8';
+        $pageTitle = 'TaskM8 | Vilkår';
         $metaDescription = 'De grundlæggende regler for at bruge TaskM8.';
     @endphp
     @include('partials.seo', [
