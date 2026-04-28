@@ -172,13 +172,6 @@ body.dark-mode .logo-img-light {
     font-family: inherit;
 }
 
-.user-profile-trigger:hover,
-.user-profile-dropdown.open .user-profile-trigger {
-    background-color: var(--color-background-tertiary);
-    color: var(--color-accent-primary);
-    box-shadow: 0 2px 8px var(--color-shadow-dark);
-}
-
 .dropdown-arrow {
     color: #64748b;
     transition: transform 0.2s;
@@ -317,7 +310,6 @@ body.dark-mode .user-profile-trigger {
 }
 
 body.dark-mode .user-profile-trigger:hover {
-    background: radial-gradient(120% 120% at 0% 0%, rgba(44, 89, 239, 0.2) 0%, rgba(26, 40, 73, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     box-shadow: none;
 }
 

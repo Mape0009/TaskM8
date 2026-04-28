@@ -39,8 +39,9 @@ body.dark-mode {
 :is(html.dark-mode, body.dark-mode) .guest-hero {
     background-color: #06080d;
     background-image:
-        radial-gradient(56rem 56rem at 12% 8%, rgba(37, 99, 235, 0.28), transparent 62%),
-        radial-gradient(52rem 52rem at 90% 12%, rgba(20, 184, 166, 0.22), transparent 64%);
+    radial-gradient(40rem 40rem at 50% 0%, rgba(37, 99, 235, 0.12), transparent 70%),
+    radial-gradient(60rem 60rem at 10% 10%, rgba(37, 99, 235, 0.32), transparent 65%),
+    radial-gradient(60rem 60rem at 90% 10%, rgba(37, 99, 235, 0.20), transparent 65%);
     border-color: #111827;
     box-shadow: 0 26px 56px rgba(0, 0, 0, 0.52);
 }
