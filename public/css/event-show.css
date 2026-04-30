@@ -1,7 +1,14 @@
+body.event-show-page {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
 body.event-show-page .event-page-shell {
     max-width: 1180px;
     margin: 0 auto;
     padding: 1.2rem 1.1rem 2.2rem;
+    flex: 1 0 auto;
 }
 
 body.event-show-page .event-page-grid {

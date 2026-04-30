@@ -52,7 +52,7 @@
         .about-hero {
             position: relative;
             overflow: hidden;
-            padding: 80px 20px 120px;
+            padding: 64px 20px 88px;
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
         }
 
@@ -126,12 +126,12 @@
         }
 
         .section {
-            margin-bottom: 120px;
+            margin-bottom: 88px;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 64px;
+            margin-bottom: 48px;
         }
 
         .section-label {
@@ -168,12 +168,12 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 32px;
-            margin-top: 48px;
+            margin-top: 40px;
             align-items: stretch;
         }
 
         .value-card {
-            padding: 40px 32px;
+            padding: 32px 28px;
             background: var(--neutral-100);
             border-radius: 16px;
             border: 1px solid var(--neutral-200);
@@ -215,13 +215,13 @@
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 48px;
-            margin-top: 48px;
+            gap: 36px;
+            margin-top: 40px;
         }
 
         .feature-item {
             display: flex;
-            gap: 24px;
+            gap: 18px;
         }
 
         .feature-number {
@@ -253,8 +253,8 @@
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-top: 48px;
+            gap: 32px;
+            margin-top: 40px;
         }
 
         .team-member {
@@ -293,9 +293,9 @@
         .cta-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
-            padding: 80px 40px;
+            padding: 64px 36px;
             text-align: center;
-            margin-top: 120px;
+            margin-top: 88px;
             position: relative;
             overflow: hidden;
         }
@@ -386,7 +386,7 @@
         /* Responsive */
         @media (max-width: 768px) {
             .about-hero {
-                padding: 60px 20px 80px;
+                padding: 52px 20px 68px;
             }
 
             .hero-title {
@@ -394,11 +394,11 @@
             }
 
             .section {
-                margin-bottom: 80px;
+                margin-bottom: 64px;
             }
 
             .section-header {
-                margin-bottom: 40px;
+                margin-bottom: 32px;
             }
 
             .values-grid {
@@ -406,15 +406,15 @@
             }
 
             .value-card {
-                padding: 32px 24px;
+                padding: 28px 22px;
             }
 
             .features-grid {
-                gap: 32px;
+                gap: 28px;
             }
 
             .feature-item {
-                gap: 16px;
+                gap: 14px;
             }
 
             .feature-number {
@@ -423,12 +423,12 @@
 
             .team-grid {
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 32px;
+                gap: 24px;
             }
 
             .cta-section {
-                padding: 60px 24px;
-                margin-top: 80px;
+                padding: 52px 22px;
+                margin-top: 64px;
             }
 
             .cta-title {
@@ -443,7 +443,7 @@
 
         @media (max-width: 480px) {
             .about-hero {
-                padding: 40px 16px 60px;
+                padding: 36px 16px 52px;
             }
 
             .hero-eyebrow {
@@ -463,12 +463,12 @@
             }
 
             .value-card {
-                padding: 24px 20px;
+                padding: 22px 18px;
             }
 
             .features-grid {
                 grid-template-columns: 1fr;
-                gap: 24px;
+                gap: 20px;
             }
 
             .team-grid {
@@ -480,7 +480,7 @@
             }
 
             .cta-section {
-                padding: 40px 16px;
+                padding: 36px 16px;
                 border-radius: 16px;
             }
         }
