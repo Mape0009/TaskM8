@@ -1,76 +1,147 @@
-
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <title>TaskM8 Begivenhedsinvitation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>Begivenhedsinvitation</title>
+  <style>
+    @media only screen and (max-width: 640px) {
+      .outer-pad { padding: 12px !important; }
+      .hero-pad { padding: 26px 20px 22px !important; }
+      .content-pad { padding: 20px 16px 22px !important; }
+      .title { font-size: 38px !important; line-height: 1.08 !important; }
+      .subtitle { font-size: 20px !important; }
+      .event-title { font-size: 30px !important; }
+      .event-line { font-size: 18px !important; }
+      .pin-code { font-size: 38px !important; letter-spacing: 4px !important; }
+      .button-link { width: 100% !important; box-sizing: border-box !important; text-align: center !important; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body, .email-bg { background: #101621 !important; }
+      .card { background: #171f2d !important; border-color: #2f3e59 !important; }
+      .hero-title, .hero-subtitle, .body-text, .event-title, .event-line, .notice { color: #e8eefb !important; -webkit-text-fill-color: #e8eefb !important; }
+      .section-label { color: #9bc0ff !important; -webkit-text-fill-color: #9bc0ff !important; }
+      .event-box, .pin-box { background: #1c2739 !important; border-color: #42597f !important; }
+      .footer { background: #141d2a !important; color: #aebdd8 !important; }
+    }
+
+    [data-ogsc] .event-box,
+    [data-ogsb] .event-box,
+    [data-ogsc] .pin-box,
+    [data-ogsb] .pin-box {
+      background: #1c2739 !important;
+      border-color: #42597f !important;
+    }
+
+    [data-ogsc] .event-title,
+    [data-ogsc] .event-line,
+    [data-ogsc] .body-text,
+    [data-ogsc] .notice,
+    [data-ogsb] .event-title,
+    [data-ogsb] .event-line,
+    [data-ogsb] .body-text,
+    [data-ogsb] .notice {
+      color: #e8eefb !important;
+      -webkit-text-fill-color: #e8eefb !important;
+    }
+
+    [data-ogsc] .section-label,
+    [data-ogsb] .section-label {
+      color: #9bc0ff !important;
+      -webkit-text-fill-color: #9bc0ff !important;
+    }
+  </style>
 </head>
-<body style="margin:0; padding:0; background:#f2f4f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#202124;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f2f4f8; padding:0; margin:0;">
+<body class="email-bg" style="margin:0; padding:0; background:#ebeff5; font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="email-bg" style="background:#ebeff5;">
     <tr>
-      <td align="center">
-        <table width="680" cellpadding="0" cellspacing="0" border="0" style="max-width:680px; margin:40px auto; background:#fff; border-radius:16px; box-shadow:0 4px 40px rgba(0,0,0,0.07); overflow:hidden;">
+      <td align="center" class="outer-pad" style="padding:22px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:700px;">
           <tr>
-            <td style="background:linear-gradient(90deg,#1a73e8,#4a8df0); color:#fff; padding:40px 30px 30px 30px; text-align:center; border-radius:16px 16px 0 0;">
-              <h1 style="font-size:26px; margin:0;">Du er inviteret!</h1>
-              <p style="font-size:16px; margin:8px 0 0; opacity:0.9;">via TaskM8 – platformen til nem planlægning</p>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:32px;">
-              <h2 style="font-size:20px; margin-bottom:12px; color:#1a73e8;">Begivenhedsdetaljer</h2>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9fbfe; border:1px solid #d2e3fc; border-left:6px solid #1a73e8; border-radius:12px; padding:20px; margin-bottom:24px;">
-                <tr><td style="padding:20px;">
-                  <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Titel:</strong> {{ $event['title'] ?? '' }}</p>
-@if(!empty($event['time']))
-  <p style="margin:6px 0; font-size:15px;">
-    <strong style="color:#1a73e8;">Starttidspunkt:</strong> 
-    {{ \Carbon\Carbon::parse($event['time'])->format('d. F Y · H:i') }}
-  </p>
-@endif
+            <td class="card" style="background:#ffffff; border:1px solid #d8e1ef; border-radius:18px; overflow:hidden;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(130deg,#1f67d8 0%,#4a90ee 62%,#70b0ff 100%);">
+                <tr>
+                  <td align="center" class="hero-pad" style="padding:34px 30px 30px;">
+                    <div style="width:90px; height:56px; line-height:56px; border-radius:14px; text-align:center; font-size:16px; font-weight:800; color:#ffffff; background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.34);">TASKM8</div>
+                    <div class="hero-title title" style="margin-top:14px; font-size:30px; line-height:1.05; font-weight:650; color:#ffffff; -webkit-text-fill-color:#ffffff; letter-spacing:-0.8px;">Du er inviteret</div>
+                    <div class="hero-subtitle subtitle" style="margin-top:10px; font-size:22px; line-height:1.35; color:#eef5ff; -webkit-text-fill-color:#eef5ff;">til en begivenhed via TaskM8</div>
+                  </td>
+                </tr>
+              </table>
 
-@if(!empty($event['end_time']))
-  <p style="margin:6px 0; font-size:15px;">
-    <strong style="color:#1a73e8;">Sluttidspunkt:</strong> 
-    {{ \Carbon\Carbon::parse($event['end_time'])->format('d. F Y · H:i') }}
-  </p>
-@endif
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="content-pad" style="padding:26px 30px 28px;">
+                    <div class="section-label" style="margin:0 0 12px; font-size:12px; font-weight:800; letter-spacing:1.1px; text-transform:uppercase; color:#2f71d9; -webkit-text-fill-color:#2f71d9;">Begivenhedsdetaljer</div>
 
-                  </p>
-                  <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Lokation:</strong> {{ $event['location'] ?? '' }}</p>
-                  <p style="margin:6px 0; font-size:15px;"><strong style="color:#1a73e8;">Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>
-                </td></tr>
-              </table>
-              <h2 style="font-size:20px; margin-bottom:12px; color:#1a73e8;">Bekræft din deltagelse</h2>
-              <p style="margin-bottom:16px;">For at deltage, skal du oprette en konto og bekræfte din identitet med den midlertidige PIN-kode nedenfor:</p>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
-                <tr>
-                  <td align="center" style="background:#e8f0fe; border-radius:10px; padding:20px; text-align:center; font-size:24px; font-weight:bold; color:#1a73e8; letter-spacing:4px; box-shadow:inset 0 0 0 1px #c3d3f5;">
-                    {{ $event['pin_code'] ?? '' }}
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="event-box" style="background:#f3f7ff; border:1px solid #ccd9ef; border-left:4px solid #2f71d9; border-radius:14px;">
+                      <tr>
+                        <td style="padding:18px 18px 14px;">
+                          <div class="event-title" style="margin:0 0 12px; font-size:25px; line-height:1.12; font-weight:650; color:#162233; -webkit-text-fill-color:#162233; letter-spacing:-0.5px;">{{ $event['title'] ?? 'Uden titel' }}</div>
+
+                          @if(!empty($event['time']))
+                            <p class="event-line" style="margin:0 0 10px; font-size:20px; line-height:1.35; color:#24344a; -webkit-text-fill-color:#24344a;">
+                              <strong class="section-label" style="color:#2f71d9; -webkit-text-fill-color:#2f71d9;">Start:</strong>
+                              {{ \Carbon\Carbon::parse($event['time'])->locale('da')->translatedFormat('d. F Y') }} kl. {{ \Carbon\Carbon::parse($event['time'])->format('H:i') }}
+                            </p>
+                          @endif
+
+                          @if(!empty($event['end_time']))
+                            <p class="event-line" style="margin:0 0 10px; font-size:20px; line-height:1.35; color:#24344a; -webkit-text-fill-color:#24344a;">
+                              <strong class="section-label" style="color:#2f71d9; -webkit-text-fill-color:#2f71d9;">Slut:</strong>
+                              {{ \Carbon\Carbon::parse($event['end_time'])->locale('da')->translatedFormat('d. F Y') }} kl. {{ \Carbon\Carbon::parse($event['end_time'])->format('H:i') }}
+                            </p>
+                          @endif
+
+                          @if(!empty($event['location']))
+                            <p class="event-line" style="margin:0 0 10px; font-size:20px; line-height:1.35; color:#24344a; -webkit-text-fill-color:#24344a;"><strong class="section-label" style="color:#2f71d9; -webkit-text-fill-color:#2f71d9;">Lokation:</strong> {{ $event['location'] ?? '' }}</p>
+                          @endif
+
+                          @if(!empty($event['description']))
+                            <p class="event-line" style="margin:0; font-size:20px; line-height:1.35; color:#24344a; -webkit-text-fill-color:#24344a;"><strong class="section-label" style="color:#2f71d9; -webkit-text-fill-color:#2f71d9;">Beskrivelse:</strong> {{ $event['description'] ?? '' }}</p>
+                          @endif
+                        </td>
+                      </tr>
+                    </table>
+
+                    <div class="section-label" style="margin:18px 0 8px; font-size:12px; font-weight:800; letter-spacing:1.1px; text-transform:uppercase; color:#2f71d9; -webkit-text-fill-color:#2f71d9;">Bekræft din deltagelse</div>
+                    <p class="body-text" style="margin:0 0 14px; font-size:17px; line-height:1.55; color:#4b5d78; -webkit-text-fill-color:#4b5d78;">
+                      For at deltage skal du oprette en TaskM8-konto. Brug PIN-koden nedenfor for at bekræfte din identitet under oprettelsen.
+                    </p>
+
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="pin-box" style="background:#f3f7ff; border:1px solid #ccd9ef; border-radius:14px; margin-bottom:18px;">
+                      <tr>
+                        <td align="center" style="padding:14px 16px 16px;">
+                          <div class="section-label" style="font-size:12px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#2f71d9; -webkit-text-fill-color:#2f71d9;">Din PIN-kode</div>
+                          <div class="pin-code" style="margin-top:6px; font-size:50px; line-height:1; letter-spacing:6px; font-family:Consolas,'Courier New',monospace; font-weight:800; color:#1f67d8; -webkit-text-fill-color:#1f67d8;">{{ $event['pin_code'] ?? '000000' }}</div>
+                          <div class="body-text" style="margin-top:8px; font-size:13px; color:#566a87; -webkit-text-fill-color:#566a87;">Indtast koden under tilmelding</div>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
+                      <tr>
+                        <td align="center">
+                          <a href="{{ $event['invite_url'] ?? (url('/signup') . '?email=' . urlencode($event['invite_email'] ?? '') . '&pin=' . urlencode($event['pin_code'] ?? '') . '&event=' . urlencode($event['id'] ?? '')) }}" class="button-link" style="display:inline-block; text-decoration:none; background:#2f71d9; color:#ffffff; -webkit-text-fill-color:#ffffff; font-size:18px; font-weight:800; padding:13px 26px; border-radius:999px;">Opret konto og deltag</a>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <p class="notice" style="margin:0; font-size:13px; line-height:1.55; color:#5f718d; -webkit-text-fill-color:#5f718d;">
+                      Du modtager denne e-mail, fordi en person har inviteret dig til en begivenhed via TaskM8. Hvis du ikke genkender invitationen, kan du trygt ignorere denne besked.
+                    </p>
                   </td>
                 </tr>
               </table>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td align="center">
-                    <a href="{{ $event['invite_url'] ?? (url('/signup') . '?email=' . urlencode($event['invite_email'] ?? '') . '&pin=' . urlencode($event['pin_code'] ?? '') . '&event=' . urlencode($event['id'] ?? '')) }}" style="display:inline-block; background:linear-gradient(to right,#1a73e8,#3b82f6); padding:14px 32px; border-radius:8px; font-weight:600; text-decoration:none; font-size:16px; box-shadow:0 3px 10px rgba(26,115,232,0.3); transition:background 0.2s ease, transform 0.2s ease;">➡️ Opret konto og deltag</a>
-                  </td>
+                  <td class="footer" align="center" style="padding:14px 20px 18px; font-size:13px; color:#697b96; border-top:1px solid #dde5f1; background:#f9fbff;">TaskM8 | Event Management Platform</td>
                 </tr>
               </table>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px;">
-                <tr>
-                  <td style="background:#f1f3f4; padding:16px; border-radius:10px; font-size:14px; color:#444; border:1px solid #dadce0;">
-                    Du modtager denne e-mail, fordi en person har inviteret dig til en begivenhed via TaskM8.<br>
-                    Hvis du ikke genkender invitationen, kan du trygt ignorere denne besked.
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td style="background:#f9fafa; padding:24px; font-size:13px; color:#888; text-align:center; border-top:1px solid #e0e0e0; border-radius:0 0 16px 16px;">
-              TaskM8 · taskm8.dk
             </td>
           </tr>
         </table>
