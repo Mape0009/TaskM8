@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = isset($event) ? ($event->eventName . ' – Opgaver | TaskM8') : 'Opgaver | TaskM8';
+        $pageTitle = isset($event) ? ($event->eventName . ' | TaskM8') : 'Opgaver | TaskM8';
         $metaDescription = isset($event)
             ? ('Se og administrer opgaver for ' . $event->eventName)
             : 'Se og administrer dine opgaver relateret til begivenheder i TaskM8.';

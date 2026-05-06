@@ -3,7 +3,7 @@
 <head>
     @php
         \Carbon\Carbon::setLocale('da');
-        $pageTitle = 'Tilføj Vagt til ' . $task->taskName . ' | TaskM8';
+        $pageTitle = 'TaskM8 | Opret vagt for ' . $task->taskName;
         $metaDescription = 'Tilføj en ny vagt til opgaven ' . $task->taskName . '.';
     @endphp
     @include('partials.seo', [
@@ -74,11 +74,11 @@
                         </div>
                         <div class="form-group">
                             <label for="userId" class="form-label">Vælg Bruger</label>
-                            <select name="userId" id="userId" class="form-select" required>
-                                <option value="">Vælg en bruger</option>
+                            <select name="userId" id="userId" class="form-select">
+                                <option value="">Ingen bruger valgt</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ old('userId') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
+                                        {{ $user->name ?? $user->email ?? 'Ukendt bruger' }} ({{ $user->email }})
                                     </option>
                                 @endforeach
                             </select>
@@ -202,7 +202,9 @@
                 const userSel = form.querySelector('#userId');
                 const startEl = form.querySelector('#startTime');
                 const endEl = form.querySelector('#endTime');
-                const userText = userSel && userSel.options[userSel.selectedIndex] ? userSel.options[userSel.selectedIndex].text : '';
+                const userText = userSel && userSel.options[userSel.selectedIndex]
+                    ? userSel.options[userSel.selectedIndex].text
+                    : 'Ingen bruger valgt';
                 const fmt = (v) => v ? new Date(v).toLocaleString([], { year:'numeric', month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '';
                 const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
                 set('reviewUser', userText);

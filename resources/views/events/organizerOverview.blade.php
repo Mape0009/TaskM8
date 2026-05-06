@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Uddel roller | TaskM8';
+        $pageTitle = 'TaskM8 | Uddel roller';
         $metaDescription = 'Administrer deltagere og tildel roller for begivenheden.';
     @endphp
     @include('partials.seo', [

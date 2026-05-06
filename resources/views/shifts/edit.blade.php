@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="da" class="no-js">
 <head>
-    @php        \Carbon\Carbon::setLocale('da');        $pageTitle = 'Rediger Vagt for ' . $task->taskName . ' | TaskM8';
+    @php        \Carbon\Carbon::setLocale('da');        $pageTitle = 'TaskM8 | Rediger vagt for ' . $task->taskName;
         $metaDescription = 'Rediger vagt for opgaven ' . $task->taskName . '.';
     @endphp
     @include('partials.seo', [
@@ -57,7 +57,7 @@
                             <option value="">Vælg en person...</option>
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}" {{ old('userId', $shift->userId) == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
+                                    {{ $user->name ?? $user->email ?? 'Ukendt bruger' }}
                                 </option>
                             @endforeach
                         </select>

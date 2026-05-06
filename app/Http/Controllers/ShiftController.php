@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\EventParticipant;
 use App\Models\Event;
 use App\Http\RolePermissions\Permissions;
-use Illuminate\Support\Collection;
 
 class ShiftController extends Controller
 {
@@ -35,8 +34,17 @@ class ShiftController extends Controller
     public function create($taskId)
     {
         $task = Task::findOrFail($taskId);
-        $users = $this->eligibleAssigneesForEvent($task->eventId);
-
+        // Allow assigning shifts to any participants of the event (regardless of status)
+        if ($task->eventId) {
+            $participantUserIds = EventParticipant::where('eventId', $task->eventId)
+                ->pluck('userId');
+            $users = $participantUserIds->isEmpty()
+                ? User::all()
+                : User::whereIn('id', $participantUserIds)->get();
+        } else {
+            // Fallback for tasks without event linkage
+            $users = User::all();
+        }
         return view('shifts.create', compact('task', 'users'));
     }
 
@@ -54,11 +62,10 @@ class ShiftController extends Controller
         }
         
         $request->validate([
-            'userId' => 'required|exists:users,id',
+            'userId' => 'nullable|exists:users,id',
             'startTime' => 'required|date',
             'endTime' => 'required|date|after:startTime',
         ], [
-            'userId.required' => 'Vælg en bruger.',
             'userId.exists' => 'Den valgte bruger findes ikke.',
             'startTime.required' => 'Starttidspunkt skal angives.',
             'startTime.date' => 'Starttidspunkt skal være en gyldig dato.',
@@ -67,21 +74,28 @@ class ShiftController extends Controller
             'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
         ]);
 
-        $eligibleUserIds = $this->eligibleAssigneesForEvent($task->eventId)->pluck('id');
-        if (!$eligibleUserIds->contains((int) $request->userId)) {
-            return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
-        }
-        
-        $hasOverlap = Shift::where('taskId', $taskId)
-                            ->where('userId', $request->userId)
-                            ->where(function ($q) use ($request) {
-                                $q->where('startTime', '<', $request->endTime)
-                                  ->where('endTime', '>', $request->startTime);
-                            })
-                            ->exists();
+        if ($request->filled('userId')) {
+            $participant = EventParticipant::where('eventId', $task->eventId)
+                                           ->where('userId', $request->userId)
+                                           ->first();
+            $roleOk = in_array($participant?->eventRole, ['owner','coOwner','taskManager','taskWorker'], true);
+            $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
+                             || ($event && (int)$event->ownerId === (int)$request->userId);
+            if (!$isParticipant) {
+                return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
+            }
 
-        if ($hasOverlap) {
-            return back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => '']);
+            $hasOverlap = Shift::where('taskId', $taskId)
+                                ->where('userId', $request->userId)
+                                ->where(function ($q) use ($request) {
+                                    $q->where('startTime', '<', $request->endTime)
+                                      ->where('endTime', '>', $request->startTime);
+                                })
+                                ->exists();
+
+            if ($hasOverlap) {
+                return back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => '']);
+            }
         }
 
         try {
@@ -90,6 +104,7 @@ class ShiftController extends Controller
                 'userId' => $request->userId,
                 'startTime' => $request->startTime,
                 'endTime' => $request->endTime,
+                'status' => $request->filled('userId') ? 'accepted' : 'pending',
             ]);
         } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
             return redirect()->back()->withErrors(['userId' => 'Kan ikke oprette vagt pga. unik begrænsning. Kør database-migrationerne og prøv igen.'])->withInput();
@@ -102,7 +117,15 @@ class ShiftController extends Controller
     {
         $task = Task::findOrFail($taskId);
         $shift = Shift::with('user')->findOrFail($shiftId);
-        $users = $this->eligibleAssigneesForEvent($task->eventId);
+        if ($task->eventId) {
+            $participantUserIds = EventParticipant::where('eventId', $task->eventId)
+                ->pluck('userId');
+            $users = $participantUserIds->isEmpty()
+                ? User::all()
+                : User::whereIn('id', $participantUserIds)->get();
+        } else {
+            $users = User::all();
+        }
         
         return view('shifts.edit', compact('task', 'shift', 'users'));
     }
@@ -127,8 +150,14 @@ class ShiftController extends Controller
         $task = Task::findOrFail($taskId);
 
         // Ensure selected user is eligible for assignment in this event
-        $eligibleUserIds = $this->eligibleAssigneesForEvent($task->eventId)->pluck('id');
-        if (!$eligibleUserIds->contains((int) $request->userId)) {
+        $participant = EventParticipant::where('eventId', $task->eventId)
+                                       ->where('userId', $request->userId)
+                                       ->first();
+        $event = Event::find($task->eventId);
+        $roleOk = in_array($participant?->eventRole, ['owner','coOwner','taskManager','taskWorker'], true);
+        $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
+                         || ($event && (int)$event->ownerId === (int)$request->userId);
+        if (!$isParticipant) {
             return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
         }
         
@@ -150,6 +179,7 @@ class ShiftController extends Controller
             'userId' => $request->userId,
             'startTime' => $request->startTime,
             'endTime' => $request->endTime,
+            'status' => 'accepted',
         ]);
 
         return redirect()->route('tasks.shifts.index', $taskId);
@@ -239,30 +269,93 @@ class ShiftController extends Controller
         return redirect()->back();
     }
 
-    private function eligibleAssigneesForEvent($eventId): Collection
+    public function volunteer($taskId, $shiftId)
     {
-        if (!$eventId) {
-            return collect();
+        $userId = Auth::id();
+        if (!$userId) {
+            return redirect('/signin');
         }
 
-        $rolesWithReceiveTask = collect(['owner', 'coOwner', 'taskManager', 'taskWorker'])
-            ->filter(fn (string $role) => Permissions::hasPermission($role, 'receiveTask'))
-            ->values();
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $userId)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'volunteer-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
+        
+        $shift = Shift::where('taskId', $taskId)
+                  ->where('id', $shiftId)
+                  ->where('status', 'pending')
+                  ->whereNull('userId')
+                  ->first();
 
-        if ($rolesWithReceiveTask->isEmpty()) {
-            return collect();
+        if (!$shift) {
+            return redirect()->back()->withErrors(['message' => 'Ingen ledige vagter at melde sig på.']);
+        }
+        
+        $shift->userId = $userId;
+        $shift->status = 'pending';
+        $shift->save();
+
+        return redirect()->back()->with('success', 'Du har meldt dig som frivillig for opgaven.');
+    }
+
+    public function acceptVolunteer($taskId, $shiftId)
+    {
+        $user = auth()->user();
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'edit-shift')) {
+            abort(403, 'Ikke tilladt.');
         }
 
-        $eligibleUserIds = EventParticipant::where('eventId', $eventId)
-            ->where('status', 'accepted')
-            ->whereIn('eventRole', $rolesWithReceiveTask)
-            ->pluck('userId')
-            ->unique();
-
-        if ($eligibleUserIds->isEmpty()) {
-            return collect();
+        $shift = Shift::where('taskId', $taskId)->findOrFail($shiftId);
+        if (!$shift->userId) {
+            return redirect()->back()->withErrors(['message' => 'Vagten har ingen frivillig at godkende.']);
         }
 
-        return User::whereIn('id', $eligibleUserIds)->get();
+        $isVolunteerRequest = $shift->status === 'pending' && $shift->created_at && $shift->updated_at && !$shift->created_at->equalTo($shift->updated_at);
+        if (!$isVolunteerRequest) {
+            return redirect()->back()->withErrors(['message' => 'Kun afventende vagter kan godkendes.']);
+        }
+
+        $shift->status = 'accepted';
+        $shift->save();
+
+        return redirect()->back()->with('success', 'Frivillig er godkendt til vagten.');
+    }
+
+    public function denyVolunteer($taskId, $shiftId)
+    {
+        $user = auth()->user();
+        $task = Task::findOrFail($taskId);
+        $currentParticipant = EventParticipant::where('eventId', $task->eventId)
+            ->where('userId', $user?->id)
+            ->first();
+        $role = $currentParticipant?->eventRole ?? 'participant';
+        if (!Permissions::hasPermission($role, 'edit-shift')) {
+            abort(403, 'Ikke tilladt.');
+        }
+
+        $shift = Shift::where('taskId', $taskId)->findOrFail($shiftId);
+        if (!$shift->userId) {
+            return redirect()->back()->withErrors(['message' => 'Vagten har ingen frivillig at afvise.']);
+        }
+
+        $isVolunteerRequest = $shift->status === 'pending' && $shift->created_at && $shift->updated_at && !$shift->created_at->equalTo($shift->updated_at);
+        if (!$isVolunteerRequest) {
+            return redirect()->back()->withErrors(['message' => 'Kun afventende vagter kan afvises.']);
+        }
+
+        $shift->userId = null;
+        $shift->status = 'pending';
+        $shift->save();
+
+        return redirect()->back()->with('success', 'Frivillig er afvist, og vagten er ledig igen.');
     }
 }

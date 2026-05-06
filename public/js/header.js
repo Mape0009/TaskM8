@@ -791,3 +791,81 @@ function initializeModalListeners() {
         });
     }
 })();
+
+// Settings Tabs Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabBtns = document.querySelectorAll('.settings-tab-btn');
+    const tabContents = document.querySelectorAll('.settings-tab-content');
+    const cancelNotificationsBtn = document.getElementById('cancel-notifications-btn');
+
+    // Tab switching
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+
+            // Remove active class from all tabs and contents
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked tab and corresponding content
+            this.classList.add('active');
+            const activeContent = document.querySelector(`[data-tab-content="${tabName}"]`);
+            if (activeContent) {
+                activeContent.classList.add('active');
+            }
+        });
+    });
+
+    // Cancel notifications button
+    if (cancelNotificationsBtn) {
+        cancelNotificationsBtn.addEventListener('click', function() {
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Settings modal close button
+    const closeSettingsBtn = document.getElementById('close-settings-modal-btn');
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', function() {
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Cancel password settings button
+    const cancelSettingsBtn = document.getElementById('cancel-settings-btn');
+    if (cancelSettingsBtn) {
+        cancelSettingsBtn.addEventListener('click', function() {
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Notification checkboxes - just for UI (backend implementation separate)
+    const notificationCheckboxes = document.querySelectorAll('.notification-checkbox');
+    notificationCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            // Store in localStorage for demo (backend will handle real persistence)
+            const notification = this.getAttribute('data-notification');
+            const channel = this.getAttribute('data-channel');
+            const key = `notification_${notification}_${channel}`;
+            localStorage.setItem(key, this.checked ? 'true' : 'false');
+        });
+
+        // Load saved state from localStorage
+        const notification = checkbox.getAttribute('data-notification');
+        const channel = checkbox.getAttribute('data-channel');
+        const key = `notification_${notification}_${channel}`;
+        const saved = localStorage.getItem(key);
+        if (saved !== null) {
+            checkbox.checked = saved === 'true';
+        }
+    });
+});

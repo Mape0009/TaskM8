@@ -224,10 +224,20 @@ ol {
     border-color: #fce7e7;
     color: #8b1c1c;
 }
+.alert-success {
+    background: #ecfdf5;
+    border-color: #bbf7d0;
+    color: #166534;
+}
 html.dark-mode .alert-error {
     background: rgba(239, 68, 68, 0.12);
     border-color: #ef4444;
     color: #fca5a5;
+}
+html.dark-mode .alert-success {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: #10b981;
+    color: #6ee7b7;
 }
 
 /* 6) STATS */
@@ -1295,6 +1305,28 @@ body.shifts-simple-page .line-col-person {
     display: flex;
     flex-direction: column;
     gap: 1px;
+}
+
+body.shifts-simple-page .shift-status-badge {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    margin-top: 2px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+body.shifts-simple-page .shift-status-pending {
+    background: rgba(245, 158, 11, 0.18);
+    color: #92400e;
+}
+
+body.shifts-simple-page .shift-status-accepted {
+    background: rgba(16, 185, 129, 0.16);
+    color: #065f46;
 }
 
 body.shifts-simple-page .line-col-person strong {

@@ -5,7 +5,7 @@
         \Carbon\Carbon::setLocale('da');
         $start = isset($event->startDate) && $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
         $end = isset($event->endDate) && $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
-        $pageTitle = ($event->eventName ?? 'Event Details') . ' | TaskM8';
+        $pageTitle = 'TaskM8 | ' . ($event->eventName ?? 'Begivenhed');
         $metaDescription = \Illuminate\Support\Str::limit($event->description ?? 'Se detaljer for begivenheden i TaskM8.', 155);
         $heroLead = \Illuminate\Support\Str::limit(trim(strip_tags($event->description ?? 'Planlagt begivenhed i TaskM8.')), 180);
         $eventJson = [

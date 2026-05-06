@@ -4,19 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Shift extends Model
+class Notification extends Model
 {
     protected $fillable = [
-        'taskId',
         'userId',
-        'startTime',
-        'endTime',
-        'status',
+        'eventId',
+        'message',
+        'isRead',
     ];
 
-    public function task()
+    public function event()
     {
-        return $this->belongsTo(Task::class, 'taskId');
+        return $this->belongsTo(Event::class, 'eventId');
     }
 
     public function user()

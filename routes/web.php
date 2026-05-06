@@ -158,6 +158,9 @@ Route::put('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'update'
 Route::delete('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'destroy'])->name('tasks.shifts.destroy');
 Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tasks.join');
 Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
+Route::post('/tasks/{taskId}/shifts/{shiftId}/volunteer', [ShiftController::class, 'volunteer'])->name('tasks.shifts.volunteer');
+Route::post('/tasks/{taskId}/shifts/{shiftId}/accept', [ShiftController::class, 'acceptVolunteer'])->name('tasks.shifts.accept');
+Route::post('/tasks/{taskId}/shifts/{shiftId}/deny', [ShiftController::class, 'denyVolunteer'])->name('tasks.shifts.deny');
 
 //Sitemap route
 Route::get('/generate-sitemap', [SitemapController::class, 'generateSitemap']);
@@ -189,6 +192,9 @@ Route::put('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'update'
 Route::delete('/tasks/{taskId}/shifts/{shiftId}', [ShiftController::class, 'destroy'])->name('tasks.shifts.destroy');
 Route::post('/tasks/{taskId}/join', [ShiftController::class, 'join'])->name('tasks.join');
 Route::post('/tasks/{taskId}/leave', [ShiftController::class, 'leave'])->name('tasks.leave');
+Route::post('/tasks/{taskId}/shifts/{shiftId}/volunteer', [ShiftController::class, 'volunteer'])->name('tasks.shifts.volunteer');
+Route::post('/tasks/{taskId}/shifts/{shiftId}/accept', [ShiftController::class, 'acceptVolunteer'])->name('tasks.shifts.accept');
+Route::post('/tasks/{taskId}/shifts/{shiftId}/deny', [ShiftController::class, 'denyVolunteer'])->name('tasks.shifts.deny');
 
 // Group routes
 Route::middleware('auth')->group(function () {

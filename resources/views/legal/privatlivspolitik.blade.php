@@ -2,8 +2,8 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Privatlivspolitik | TaskM8';
-        $metaDescription = 'Læs hvordan TaskM8 behandler personoplysninger i overensstemmelse med dansk og EU-lovgivning (GDPR).';
+        $pageTitle = 'TaskM8 | Privatlivspolitik';
+        $metaDescription = 'Sådan behandler TaskM8 dine personoplysninger.';
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -14,106 +14,77 @@
     ])
     <link rel="stylesheet" href="{{ asset('css/legal.css') }}">
 </head>
-<body class="legal-page">
+<body>
     @include('partials.header', ['currentPage' => null])
     <main class="legal-shell">
-        <section class="legal-hero">
-            <span class="legal-eyebrow">Juridisk</span>
-            <div class="legal-hero-head">
-                <h1 class="legal-title">Privatlivspolitik</h1>
-                <p class="legal-updated">Senest opdateret: {{ now()->format('d.m.Y') }}</p>
-                <p class="legal-sub">Her kan du hurtigt få overblik over, hvilke oplysninger vi behandler, hvorfor vi gør det, og hvilke rettigheder du har. Vi har skrevet det kort, klart og uden unødigt juridisk støj.</p>
-            </div>
-            <div class="legal-facts">
-                <div class="legal-fact-card">
-                    <span>Dataansvarlig</span>
-                    <strong>Mercantec er ansvarlig for behandlingen af personoplysninger i TaskM8.</strong>
-                </div>
-                <div class="legal-fact-card">
-                    <span>Formål</span>
-                    <strong>Vi bruger kun oplysninger for at drive, beskytte og forbedre tjenesten.</strong>
-                </div>
-                <div class="legal-fact-card">
-                    <span>Dine rettigheder</span>
-                    <strong>Du kan bede om indsigt, rettelse, sletning og i nogle tilfælde begrænsning.</strong>
-                </div>
-            </div>
-        </section>
 
-        <div class="legal-layout">
-            <aside class="legal-toc" aria-label="Indholdsfortegnelse">
-                <h2>På denne side</h2>
-                <nav class="legal-toc-links">
-                    <a href="#ansvar">Hvem er ansvarlig?</a>
-                    <a href="#oplysninger">Hvilke oplysninger bruger vi?</a>
-                    <a href="#deling">Hvem deler vi med?</a>
-                    <a href="#opbevaring">Hvor længe gemmer vi data?</a>
-                    <a href="#rettigheder">Dine rettigheder</a>
-                    <a href="#sikkerhed">Sådan beskytter vi data</a>
-                    <a href="#kontakt">Kontakt</a>
-                </nav>
-            </aside>
-
-            <div class="legal-content">
-                <section class="legal-section" id="ansvar">
-                    <h2>Hvem er ansvarlig?</h2>
-                    <p>Mercantec er dataansvarlig for TaskM8. Det betyder, at vi bestemmer hvilke personoplysninger der behandles, til hvilke formål og med hvilke sikkerhedsforanstaltninger.</p>
-                </section>
-
-                <section class="legal-section" id="oplysninger">
-                    <h2>Hvilke oplysninger bruger vi?</h2>
-                    <div class="legal-table">
-                        <div class="legal-table-row">
-                            <strong>Kontooplysninger</strong>
-                            <span>Navn, e-mail og loginoplysninger bruges til at oprette din konto, give adgang og sende nødvendige beskeder.</span>
-                        </div>
-                        <div class="legal-table-row">
-                            <strong>Brugs- og sikkerhedsdata</strong>
-                            <span>Vi registrerer relevante hændelser som login, aktivitet og fejl for at beskytte tjenesten og forbedre stabiliteten.</span>
-                        </div>
-                        <div class="legal-table-row">
-                            <strong>Begivenheds- og planlægningsdata</strong>
-                            <span>Oplysninger om begivenheder, deltagere, opgaver og vagter bruges for at få TaskM8 til at fungere som planlægningsværktøj.</span>
-                        </div>
+        <div class="legal-content">
+            <section class="legal-section" id="hvad-indsamler-vi">
+                <h2>Hvilke data indsamler vi?</h2>
+                <div class="legal-table">
+                    <div class="legal-table-row">
+                        <strong>Kontodata</strong>
+                        <span>Dit navn, e-mail og loginoplysninger skal til for, at du kan få adgang til TaskM8.</span>
                     </div>
-                    <p>Behandlingen sker typisk for at opfylde vores aftale med dig og ud fra en legitim interesse i at drive en sikker og brugbar tjeneste.</p>
-                </section>
+                    <div class="legal-table-row">
+                        <strong>Dit indhold</strong>
+                        <span>Informationer om begivenheder, opgaver, vagter og deltagere som du selv udfylder for at bruge platformen.</span>
+                    </div>
+                </div>
+            </section>
 
-                <section class="legal-section" id="deling">
-                    <h2>Hvem deler vi oplysninger med?</h2>
-                    <p>Vi deler kun oplysninger med nødvendige samarbejdspartnere som hosting-, drifts- og e-mailleverandører. De fungerer som databehandlere og må kun behandle data efter vores instrukser.</p>
-                    <div class="legal-note">Vi sælger ikke dine personoplysninger og bruger dem ikke til skjult profilering.</div>
-                </section>
+            <section class="legal-section" id="hvorfor-bruger-vi-det">
+                <h2>Hvorfor bruger vi dine data?</h2>
+                <ul class="legal-list">
+                    <li>For at du kan oprette en konto og logge ind</li>
+                    <li>For at gemme dine begivenheder, opgaver og vagter</li>
+                    <li>For at holde platformen sikker og fungerende</li>
+                    <li>For at kontakte dig hvis der er problemer</li>
+                </ul>
+                <div class="legal-note">
+                    Vi bruger <strong>IKKE</strong> dine data til at sælge, dele med tredjepart (undtagen nødvendige driftsleverandører) eller til at profilere dig.
+                </div>
+            </section>
 
-                <section class="legal-section" id="opbevaring">
-                    <h2>Hvor længe gemmer vi oplysninger?</h2>
-                    <p>Vi gemmer kun oplysninger så længe det er nødvendigt for drift, sikkerhed, support og lovmæssige forpligtelser. Når oplysninger ikke længere er nødvendige, slettes eller anonymiseres de.</p>
-                </section>
+            <section class="legal-section" id="hvor-længe">
+                <h2>Hvor længe gemmer vi data?</h2>
+                <p>
+                    Vi gemmer kun data så længe det er nødvendigt. Når du sletter din konto, fjerner vi dine personlige oplysninger. 
+                
+                </p>
+            </section>
 
-                <section class="legal-section" id="rettigheder">
-                    <h2>Dine rettigheder</h2>
-                    <ul class="legal-list">
-                        <li>Du kan bede om indsigt i hvilke oplysninger vi har om dig.</li>
-                        <li>Du kan bede om at få rettet forkerte eller ufuldstændige oplysninger.</li>
-                        <li>Du kan i visse tilfælde bede om sletning eller begrænsning af behandlingen.</li>
-                        <li>Du kan gøre indsigelse mod behandling, når reglerne giver dig ret til det.</li>
-                        <li>Du kan anmode om dataportabilitet for oplysninger, du selv har givet.</li>
-                    </ul>
-                    <p>Hvis du vil bruge en rettighed, kan du kontakte os. Du har også ret til at klage til Datatilsynet.</p>
-                </section>
+            <section class="legal-section" id="dine-rettigheder">
+                <h2>Dine rettigheder</h2>
+                <ul class="legal-list">
+                    <li><strong>Indsigt:</strong> Du kan bede om at se hvad vi har gemt om dig</li>
+                    <li><strong>Rettelse:</strong> Du kan få ændret forkerte oplysninger</li>
+                    <li><strong>Sletning:</strong> Du kan bede om at få dine data slettet</li>
+                    <li><strong>Dataportabilitet:</strong> Du kan få dine data i et format du kan bruge andetsteds</li>
+                </ul>
+                <p>
+                    <strong>Vil du bruge en af dine rettigheder?</strong> Kontakt Mercantec på deres kontaktoplysninger.
+                </p>
+            </section>
 
-                <section class="legal-section" id="sikkerhed">
-                    <h2>Sådan beskytter vi dine data</h2>
-                    <p>Vi anvender passende tekniske og organisatoriske sikkerhedsforanstaltninger. Det omfatter blandt andet adgangsstyring, overvågning, begrænsning af adgang og relevante sikkerhedsprocedurer i driften.</p>
-                </section>
+            <section class="legal-section" id="sikkerhed">
+                <h2>Hvordan beskytter vi dine data?</h2>
+                <p>
+                    Vi bruger moderne sikkerhed som kryptering, sikker login (SSL) og begrænset adgang. 
+                    Kun vigtige medarbejdere kan se dine data, og de underskriver altid fortrolighedsaftaler.
+                </p>
+            </section>
 
-                <section class="legal-section" id="kontakt">
-                    <h2>Kontakt</h2>
-                    <p>Hvis du har spørgsmål til privatliv eller behandling af personoplysninger i TaskM8, kan du kontakte Mercantec via kontaktoplysningerne på hjemmesiden.</p>
-                </section>
-            </div>
+            <section class="legal-section" id="kontakt">
+                <h2>Kontakt</h2>
+                <p>
+                    Har du spørgsmål til hvordan vi håndterer data? Kontakt Mercantec. 
+                    Du kan også klage til Datatilsynet hvis du mener vi behandler dine data uhensigtsmæssigt.
+                </p>
+            </section>
         </div>
     </main>
+
     @include('partials.footer')
 </body>
 </html>

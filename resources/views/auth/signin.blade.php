@@ -2,8 +2,8 @@
 <html lang="da">
 <head>
     @php
-        $pageTitle = 'Log ind | TaskM8';
-        $metaDescription = 'Log ind på TaskM8 for at planlægge og styre dine begivenheder.';
+        $pageTitle = 'TaskM8 | Login';
+        $metaDescription = 'Log ind på din TaskM8-konto for at få adgang til dine begivenheder, opgaver og grupper. Indtast din e-mail og adgangskode for at fortsætte.';
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
