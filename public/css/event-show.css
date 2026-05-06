@@ -20,7 +20,7 @@ body.event-show-page .event-page-grid {
 
 body.event-show-page .event-surface {
     box-sizing: border-box;
-    background: var(--color-background-secondary, #18181c);
+    background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     border: 1px solid var(--color-border, #222);
     border-radius: 22px;
     box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);

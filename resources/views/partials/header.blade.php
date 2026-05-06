@@ -53,7 +53,7 @@
                             <circle cx="12" cy="12" r="3"></circle>
                             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                         </svg>
-                        Skift adgangskode
+                        Indstillinger
                     </button>
                     <div class="dropdown-divider"></div>
                     <form action="{{ route('logout') }}" method="POST" class="dropdown-logout-form">
@@ -171,35 +171,141 @@
             </button>
         </div>
         
-        <form id="change-password-form" class="modal-form" method="POST" action="{{ route('user.change-password') }}">
-            @csrf
-            
-            <div class="form-section">
-                <h3 class="section-title">Skift adgangskode</h3>
-                <div class="form-row">
-                    <label for="current-password">Nuværende adgangskode</label>
-                    <input type="password" id="current-password" name="current_password" required placeholder="Indtast din nuværende adgangskode">
-                    @error('current_password')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+        <!-- Settings Tabs Navigation -->
+        <div class="settings-tabs-nav">
+            <button class="settings-tab-btn active" data-tab="password">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2.5 9.5L2 19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2l-.5-9.5M6.5 6a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4m-9 0v-.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v.5"></path>
+                </svg>
+                Skift adgangskode
+            </button>
+            <button class="settings-tab-btn" data-tab="notifications">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                Notifikationer
+            </button>
+        </div>
+        
+        <!-- Tab Content: Password -->
+        <div class="settings-tab-content active" data-tab-content="password">
+            <form id="change-password-form" class="modal-form" method="POST" action="{{ route('user.change-password') }}">
+                @csrf
+                
+                <div class="form-section">
+                    <h3 class="section-title">Skift adgangskode</h3>
+                    <div class="form-row">
+                        <label for="current-password">Nuværende adgangskode</label>
+                        <input type="password" id="current-password" name="current_password" required placeholder="Indtast din nuværende adgangskode">
+                        @error('current_password')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-row">
+                        <label for="new-password">Ny adgangskode</label>
+                        <input type="password" id="new-password" name="new_password" required placeholder="Indtast din nye adgangskode">
+                        @error('new_password')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-row">
+                        <label for="new-password-confirm">Bekræft ny adgangskode</label>
+                        <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="Gentag din nye adgangskode">
+                    </div>
                 </div>
-                <div class="form-row">
-                    <label for="new-password">Ny adgangskode</label>
-                    <input type="password" id="new-password" name="new_password" required placeholder="Indtast din nye adgangskode">
-                    @error('new_password')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                <div class="form-actions">
+                    <button type="button" class="btn secondary-btn" id="cancel-settings-btn">Annuller</button>
+                    <button type="submit" class="btn primary-btn">Skift adgangskode</button>
                 </div>
-                <div class="form-row">
-                    <label for="new-password-confirm">Bekræft ny adgangskode</label>
-                    <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="Gentag din nye adgangskode">
+            </form>
+        </div>
+        
+        <!-- Tab Content: Notifications -->
+        <div class="settings-tab-content" data-tab-content="notifications">
+            <div class="modal-form notifications-settings">
+                <div class="notifications-intro">
+                    <p>Vælg hvor du vil modtage notifikationer. System sender til din notifikationsmenu, Email sender til din emailindbakke.</p>
+                </div>
+                
+                <div class="notifications-table">
+                    <div class="notifications-header">
+                        <div class="notifications-col notifications-col-notification">Notifikation</div>
+                        <div class="notifications-col notifications-col-system">System</div>
+                        <div class="notifications-col notifications-col-email">Email</div>
+                    </div>
+                    
+                    <div class="notifications-row">
+                        <div class="notifications-col notifications-col-notification">
+                            <p class="notifications-title">Ny begivenhed</p>
+                            <p class="notifications-description">Få besked når en ny begivenhed er tilføjet</p>
+                        </div>
+                        <div class="notifications-col notifications-col-system">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="system" checked>
+                        </div>
+                        <div class="notifications-col notifications-col-email">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="email" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="notifications-row">
+                        <div class="notifications-col notifications-col-notification">
+                            <p class="notifications-title">Nye vagter</p>
+                            <p class="notifications-description">Få besked når du får nye vagter til en begivenhed</p>
+                        </div>
+                        <div class="notifications-col notifications-col-system">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="system" checked>
+                        </div>
+                        <div class="notifications-col notifications-col-email">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="email" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="notifications-row">
+                        <div class="notifications-col notifications-col-notification">
+                            <p class="notifications-title">Deltager forlader begivenhed</p>
+                            <p class="notifications-description">Få besked når en deltager forlader en begivenhed</p>
+                        </div>
+                        <div class="notifications-col notifications-col-system">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="system" checked>
+                        </div>
+                        <div class="notifications-col notifications-col-email">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="email" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="notifications-row">
+                        <div class="notifications-col notifications-col-notification">
+                            <p class="notifications-title">Medarbejder forlader begivenhed</p>
+                            <p class="notifications-description">Få besked når en medarbejder forlader en begivenhed</p>
+                        </div>
+                        <div class="notifications-col notifications-col-system">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="system" checked>
+                        </div>
+                        <div class="notifications-col notifications-col-email">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="email" checked>
+                        </div>
+                    </div>
+                    
+                    <div class="notifications-row">
+                        <div class="notifications-col notifications-col-notification">
+                            <p class="notifications-title">Gruppe invitation</p>
+                            <p class="notifications-description">Få besked når du bliver inviteret til en gruppe</p>
+                        </div>
+                        <div class="notifications-col notifications-col-system">
+                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="system" checked>
+                        </div>
+                        <div class="notifications-col notifications-col-email">
+                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="email" checked>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="notifications-footer">
+                    <button type="button" class="btn secondary-btn" id="cancel-notifications-btn">Annuller</button>
                 </div>
             </div>
-            <div class="form-actions">
-                <button type="button" class="btn secondary-btn" id="cancel-settings-btn">Annuller</button>
-                <button type="submit" class="btn primary-btn">Skift adgangskode</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -242,7 +348,7 @@
             </button>
             <ul class="mnav__submenu" id="mnav-user-menu" hidden>
                 <li><button class="mnav__action mnav__action--primary" id="mnav-create">Ny begivenhed</button></li>
-                <li><button class="mnav__action" id="mnav-settings">Skift adgangskode</button></li>
+                <li><button class="mnav__action" id="mnav-settings">Indstillinger</button></li>
                 <li>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
