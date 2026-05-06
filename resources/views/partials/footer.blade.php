@@ -14,6 +14,19 @@
     </div>
 </footer>
 
+<div id="tm8-page-loader" class="tm8-page-loader" aria-hidden="true">
+    <div class="tm8-page-loader__card" role="status" aria-live="polite" aria-label="Indlæser">
+        <div class="loading-wave" aria-hidden="true">
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+        </div>
+        <h2 class="tm8-page-loader__title">Vent et øjeblik</h2>
+        <p class="tm8-page-loader__text">Vi gør siden klar.</p>
+    </div>
+</div>
+
 <style>
     .site-footer {
         border-top: 1px solid var(--footer-border, #dbe1ea);

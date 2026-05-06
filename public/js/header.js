@@ -1,3 +1,60 @@
+function toggleTm8Loader(show) {
+    const loader = document.getElementById('tm8-page-loader');
+    if (!loader) {
+        return;
+    }
+
+    if (show) {
+        loader.classList.add('is-visible');
+        loader.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('tm8-loader-lock');
+    } else {
+        loader.classList.remove('is-visible');
+        loader.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('tm8-loader-lock');
+    }
+}
+
+function wireTm8Loader(formId, delayMs, options) {
+    const form = document.getElementById(formId);
+    if (!form || form.dataset.tm8LoaderWired === 'true') {
+        return;
+    }
+
+    const loaderOptions = options || {};
+    form.dataset.tm8LoaderWired = 'true';
+    form.addEventListener('submit', function(event) {
+        if (form.dataset.tm8LoaderSubmitting === 'true') {
+            return;
+        }
+
+        if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+            if (typeof form.reportValidity === 'function') {
+                form.reportValidity();
+            }
+            return;
+        }
+
+        event.preventDefault();
+        form.dataset.tm8LoaderSubmitting = 'true';
+
+        const loaderTitle = document.querySelector('#tm8-page-loader .tm8-page-loader__title');
+        const loaderText = document.querySelector('#tm8-page-loader .tm8-page-loader__text');
+        if (loaderTitle && loaderOptions.title) {
+            loaderTitle.textContent = loaderOptions.title;
+        }
+        if (loaderText && loaderOptions.text) {
+            loaderText.textContent = loaderOptions.text;
+        }
+
+        toggleTm8Loader(true);
+
+        window.setTimeout(function() {
+            form.submit();
+        }, delayMs || 1000);
+    });
+}
+
 // Modal logic
 const modal = document.getElementById('new-event-modal');
 const modalContent = document.getElementById('modal-content');
@@ -71,14 +128,9 @@ if (startInput && endInput) {
     });
 }
 if (form) {
-    form.addEventListener('submit', function(e) {
-        // Show loading state
-        const submitBtn = form.querySelector('.primary-btn');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Opretter...';
-        submitBtn.disabled = true;
-        
-      
+    wireTm8Loader('new-event-form', 1000, {
+        title: 'Vi opretter begivenhed',
+        text: 'Et øjeblik mens vi gemmer din nye begivenhed.'
     });
 }
 
@@ -133,6 +185,8 @@ function prefillFromTemplate() {
 // Initialize on load as well (for pages where modal is already in DOM)
 document.addEventListener('DOMContentLoaded', function() {
     wireEventDescriptionCounter();
+    wireTm8Loader('taskWizard', 1000);
+    wireTm8Loader('shiftWizard', 1000);
     try {
         const params = new URLSearchParams(window.location.search);
         if (params.get('open') === 'create') {

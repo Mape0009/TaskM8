@@ -20,6 +20,19 @@
     <script src="{{ asset('js/theme-toggle.js') }}"></script>
 </head>
 <body class="signup-page">
+    <div id="tm8-page-loader" class="tm8-page-loader" aria-hidden="true">
+        <div class="tm8-page-loader__card" role="status" aria-live="polite" aria-label="Opretter konto">
+            <div class="loading-wave" aria-hidden="true">
+                <div class="loading-bar"></div>
+                <div class="loading-bar"></div>
+                <div class="loading-bar"></div>
+                <div class="loading-bar"></div>
+            </div>
+            <h2 class="tm8-page-loader__title">Opretter konto</h2>
+            <p class="tm8-page-loader__text">Vi gør din profil klar.</p>
+        </div>
+    </div>
+
     <div class="auth-container">
         <h2>Opret Konto</h2>
         <form action="{{ route('user.create') }}" method="POST">
@@ -53,5 +66,42 @@
         </form>
         <p>Har du allerede en konto? <a href="/signin">Login</a></p>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('.auth-container form');
+            const loader = document.getElementById('tm8-page-loader');
+
+            if (!form || !loader) {
+                return;
+            }
+
+            let isSubmitting = false;
+
+            form.addEventListener('submit', function (event) {
+                if (isSubmitting) {
+                    return;
+                }
+
+                if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+                    if (typeof form.reportValidity === 'function') {
+                        form.reportValidity();
+                    }
+                    return;
+                }
+
+                event.preventDefault();
+                isSubmitting = true;
+
+                loader.classList.add('is-visible');
+                loader.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('tm8-loader-lock');
+
+                window.setTimeout(function () {
+                    form.submit();
+                }, 1000);
+            });
+        });
+    </script>
 </body>
 </html>
