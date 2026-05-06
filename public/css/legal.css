@@ -1,6 +1,6 @@
 .legal-page {
-	background: var(--neutral-50, #f9fafb);
-	min-height: 100vh;
+    background: var(--neutral-50, #f9fafb);
+    min-height: 100vh;
 }
 
 .dark-mode .legal-page {
@@ -8,9 +8,32 @@
 }
 
 .legal-shell {
-	width: min(900px, 100%);
+	/* more robust responsive container */
+	max-width: 900px;
+	width: 95%;
 	margin: 0 auto;
-	padding: 80px 20px 60px;
+	padding: 64px 16px 48px;
+}
+
+/* Prevent horizontal overflow and long-word issues */
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+/* Improve wrapping of long text/URLs */
+.legal-content,
+.legal-section,
+.legal-table-row,
+.legal-list li {
+	overflow-wrap: break-word;
+	word-break: break-word;
+	hyphens: auto;
+}
+
+/* Ensure media scale down on small screens */
+img, iframe, embed, video {
+	max-width: 100%;
+	height: auto;
 }
 
 .legal-hero {

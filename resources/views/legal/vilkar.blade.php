@@ -18,80 +18,70 @@
     @include('partials.header', ['currentPage' => null])
     <main class="legal-shell">
 
-        <div class="legal-content">
-            <section class="legal-section" id="accept">
-                <h2>Ved brug af TaskM8 accepterer du</h2>
-                <p>
-                    Når du bruger TaskM8, accepterer du disse vilkår. Hvis du ikke er enig, skal du ikke bruge tjenesten. 
-                    Vi er berettiget til at ændre vilkårene, og hvis vi gør det, varsler vi dig. Fortsat brug betyder at du accepterer de nye vilkår.
-                </p>
-            </section>
+        <header class="legal-hero" aria-labelledby="legal-title">
+            <div class="legal-hero-head">
+                <div class="legal-eyebrow">Vilkår</div>
+                <h1 id="legal-title" class="legal-title">Vilkår for brug af TaskM8</h1>
+                <p class="legal-sub">Kort og klart: brug TaskM8 ansvarligt. Her forklarer vi dine og vores vigtigste rettigheder og pligter.</p>
+            </div>
+        </header>
 
-            <section class="legal-section" id="konto">
-                <h2>Din Konto</h2>
-                <ul class="legal-list">
-                    <li>Du er ansvarlig for at holde dit password hemmeligt</li>
-                    <li>Du er ansvarlig for alt hvad der sker via din konto</li>
-                <li>Hvis du tror nogen bruger din konto uden tilladelse, anbefaler vi, at du ændrer din adgangskode</li>
-                </ul>
-            </section>
-
-            <section class="legal-section" id="brug">
-                <h2>Sådan bruger du TaskM8</h2>
-                <p>Du skal bruge TaskM8 lovligt og på hensigtsmæssig måde. Det betyder:</p>
-                <ul class="legal-list">
-                    <li>Ingen forsøg på at hacke, afprøve sikkerhed eller få uautoriseret adgang</li>
-                    <li>Ingen bots, spam eller automater der overbelaster systemet</li>
-                    <li>Ingen forsøg på at skade, forstyrre eller udnytte platformen</li>
-                    <li>Respekt for andre brugeres rettigheder og data</li>
-                </ul>
-                <div class="legal-note">
-                    Hvis vi opdager misbrug, kan vi suspendere eller lukke din konto uden varsel.
+        <div class="legal-layout">
+            <nav class="legal-toc" aria-label="Indholdsfortegnelse">
+                <h2>Indhold</h2>
+                <div class="legal-toc-links">
+                    <a href="#accept">Accept</a>
+                    <a href="#konto">Din konto</a>
+                    <a href="#brug">Brug</a>
+                    <a href="#indhold">Dit indhold</a>
+                    <a href="#ansvar">Ansvar</a>
+                    <a href="#sluk-konto">Opsigelse</a>
+                    <a href="#lovvalg">Lovvalg</a>
                 </div>
-            </section>
+            </nav>
 
-            <section class="legal-section" id="indhold">
-                <h2>Dit Indhold</h2>
-                <p>
-                    Du ejer dit indhold (begivenheder, opgaver, osv.). Vi har rettigheder til at bruge det for at yde tjenesten 
-                    (f.eks. at gemme det, sikkerhedskopiere det, og vise det til dig).
-                </p>
-            </section>
+            <div class="legal-content">
+                <section class="legal-section" id="accept">
+                    <h2>Accept</h2>
+                    <p>Ved at bruge TaskM8 accepterer du disse vilkår. Vi kan tilpasse vilkårene – ændringer annonceres, og fortsat brug betyder accept.</p>
+                </section>
 
-            <section class="legal-section" id="ansvar">
-                <h2>Vores Ansvar</h2>
-                <p>
-                    Vi stiller TaskM8 til rådighed og forsøger at gøre det sikkert og stabilt. Vi kan dog ikke garantere, at det 
-                    altid fungerer perfekt, at der ikke er fejl, eller at det passer til dine særlige behov.
-                </p>
-                <p>
-                    <strong>I det omfang loven tillader det:</strong> Vi hæfter ikke for indirekte skade eller tab, selv hvis vi blev advaret på forhånd.
-                </p>
-            </section>
+                <section class="legal-section" id="konto">
+                    <h2>Din konto</h2>
+                    <ul class="legal-list">
+                        <li>Du er ansvarlig for login og sikkerhed på din konto.</li>
+                        <li>Hold dit kodeord sikkert og del det ikke.</li>
+                        <li>Mistænker du misbrug, skift straks din adgangskode og kontakt os.</li>
+                    </ul>
+                </section>
 
-            <section class="legal-section" id="sluk-konto">
-                <h2>Hvis du vil stoppe</h2>
-                <p>
-                    Du kan slette din konto når som helst. Når du gør det, slettes dine data efter kort tid. 
-                    Hvis du skylder penge (f.eks. for premium), skal det være betalt først.
-                </p>
-            </section>
+                <section class="legal-section" id="brug">
+                    <h2>Acceptabel brug</h2>
+                    <p>Brug platformen lovligt og hensigtsmæssigt. Du må ikke misbruge systemet, angribe sikkerheden eller forstyrre andre brugere.</p>
+                    <div class="legal-note">Ved groft misbrug kan vi suspendere eller lukke konti uden forudgående varsel.</div>
+                </section>
 
-            <section class="legal-section" id="lovvalg">
-                <h2>Lovvalg</h2>
-                <p>
-                    Disse vilkår er underlagt dansk ret. Hvis der opstår uenighed, forsøger vi at løse det i dialog. 
-                    Hvis det ikke lykkes, kan sagen gå til de danske domstole.
-                </p>
-            </section>
+                <section class="legal-section" id="indhold">
+                    <h2>Dit indhold</h2>
+                    <p>Du beholder ejerskabet af det indhold, du opretter. Vi har en begrænset ret til at behandle det for at levere tjenesten (opbevaring, backup, visning).</p>
+                </section>
 
-            <section class="legal-section" id="kontakt">
-                <h2>Spørgsmål?</h2>
-                <p>
-                    Har du spørgsmål til vilkårene? Kontakt Mercantec. 
-                    Vi svarer gerne på dine henvendelser.
-                </p>
-            </section>
+                <section class="legal-section" id="ansvar">
+                    <h2>Vores ansvar</h2>
+                    <p>Vi bestræber os på driftssikkerhed, men kan ikke garantere fejlfrie tjenester. I det omfang loven tillader det er vores ansvar begrænset.</p>
+                </section>
+
+                <section class="legal-section" id="sluk-konto">
+                    <h2>Opsigelse</h2>
+                    <p>Du kan slette din konto når som helst. Data slettes i henhold til vores politik, medmindre lovkrav eller betalinger betyder noget andet.</p>
+                </section>
+
+                <section class="legal-section" id="lovvalg">
+                    <h2>Lovvalg</h2>
+                    <p>Disse vilkår er underlagt dansk ret. Vi forsøger altid at løse tvister i dialog før retlige skridt.</p>
+                </section>
+
+            </div>
         </div>
     </main>
 

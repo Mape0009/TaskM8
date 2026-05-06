@@ -18,70 +18,72 @@
     @include('partials.header', ['currentPage' => null])
     <main class="legal-shell">
 
-        <div class="legal-content">
-            <section class="legal-section" id="hvad-indsamler-vi">
-                <h2>Hvilke data indsamler vi?</h2>
-                <div class="legal-table">
-                    <div class="legal-table-row">
-                        <strong>Kontodata</strong>
-                        <span>Dit navn, e-mail og loginoplysninger skal til for, at du kan få adgang til TaskM8.</span>
-                    </div>
-                    <div class="legal-table-row">
-                        <strong>Dit indhold</strong>
-                        <span>Informationer om begivenheder, opgaver, vagter og deltagere som du selv udfylder for at bruge platformen.</span>
-                    </div>
+        <header class="legal-hero" aria-labelledby="legal-title">
+            <div class="legal-hero-head">
+                <div class="legal-eyebrow">Privatliv</div>
+                <h1 id="legal-title" class="legal-title">Privatlivspolitik</h1>
+                <p class="legal-sub">Kort: Vi behandler dine data kun for at levere tjenesten. Her er hvad vi indsamler og hvorfor.</p>
+            </div>
+        </header>
+
+        <div class="legal-layout">
+            <nav class="legal-toc" aria-label="Indholdsfortegnelse">
+                <h2>Indhold</h2>
+                <div class="legal-toc-links">
+                    <a href="#hvad-indsamler-vi">Hvad vi indsamler</a>
+                    <a href="#hvorfor-bruger-vi-det">Hvorfor</a>
+                    <a href="#hvor-længe">Opbevaring</a>
+                    <a href="#dine-rettigheder">Dine rettigheder</a>
+                    <a href="#sikkerhed">Sikkerhed</a>
                 </div>
-            </section>
+            </nav>
 
-            <section class="legal-section" id="hvorfor-bruger-vi-det">
-                <h2>Hvorfor bruger vi dine data?</h2>
-                <ul class="legal-list">
-                    <li>For at du kan oprette en konto og logge ind</li>
-                    <li>For at gemme dine begivenheder, opgaver og vagter</li>
-                    <li>For at holde platformen sikker og fungerende</li>
-                    <li>For at kontakte dig hvis der er problemer</li>
-                </ul>
-                <div class="legal-note">
-                    Vi bruger <strong>IKKE</strong> dine data til at sælge, dele med tredjepart (undtagen nødvendige driftsleverandører) eller til at profilere dig.
-                </div>
-            </section>
+            <div class="legal-content">
+                <section class="legal-section" id="hvad-indsamler-vi">
+                    <h2>Hvad indsamler vi?</h2>
+                    <div class="legal-table">
+                        <div class="legal-table-row">
+                            <strong>Kontodata</strong>
+                            <span>Navn, e-mail og loginoplysninger – nødvendig for din konto.</span>
+                        </div>
+                        <div class="legal-table-row">
+                            <strong>Dit indhold</strong>
+                            <span>Begivenheder, opgaver, vagter og deltagerinfo du opretter.</span>
+                        </div>
+                    </div>
+                </section>
 
-            <section class="legal-section" id="hvor-længe">
-                <h2>Hvor længe gemmer vi data?</h2>
-                <p>
-                    Vi gemmer kun data så længe det er nødvendigt. Når du sletter din konto, fjerner vi dine personlige oplysninger. 
-                
-                </p>
-            </section>
+                <section class="legal-section" id="hvorfor-bruger-vi-det">
+                    <h2>Hvorfor vi bruger data</h2>
+                    <ul class="legal-list">
+                        <li>For at levere og forbedre TaskM8</li>
+                        <li>For at sikre platformen og kontakte dig ved behov</li>
+                        <li>Kun nødvendige driftsleverandører får adgang (ingen salg af data)</li>
+                    </ul>
+                    <div class="legal-note">Vi sælger ikke dine personoplysninger.</div>
+                </section>
 
-            <section class="legal-section" id="dine-rettigheder">
-                <h2>Dine rettigheder</h2>
-                <ul class="legal-list">
-                    <li><strong>Indsigt:</strong> Du kan bede om at se hvad vi har gemt om dig</li>
-                    <li><strong>Rettelse:</strong> Du kan få ændret forkerte oplysninger</li>
-                    <li><strong>Sletning:</strong> Du kan bede om at få dine data slettet</li>
-                    <li><strong>Dataportabilitet:</strong> Du kan få dine data i et format du kan bruge andetsteds</li>
-                </ul>
-                <p>
-                    <strong>Vil du bruge en af dine rettigheder?</strong> Kontakt Mercantec på deres kontaktoplysninger.
-                </p>
-            </section>
+                <section class="legal-section" id="hvor-længe">
+                    <h2>Hvor længe opbevarer vi data?</h2>
+                    <p>Vi beholder data kun så længe det er nødvendigt for tjenesten eller efter lovkrav. Sletter du din konto, fjerner vi personoplysninger i overensstemmelse med vores politik.</p>
+                </section>
 
-            <section class="legal-section" id="sikkerhed">
-                <h2>Hvordan beskytter vi dine data?</h2>
-                <p>
-                    Vi bruger moderne sikkerhed som kryptering, sikker login (SSL) og begrænset adgang. 
-                    Kun vigtige medarbejdere kan se dine data, og de underskriver altid fortrolighedsaftaler.
-                </p>
-            </section>
+                <section class="legal-section" id="dine-rettigheder">
+                    <h2>Dine rettigheder</h2>
+                    <ul class="legal-list">
+                        <li><strong>Indsigt</strong> – Se hvad vi gemmer om dig</li>
+                        <li><strong>Rettelse</strong> – Få forkerte oplysninger rettet</li>
+                        <li><strong>Sletning</strong> – Anmod om sletning af dine personoplysninger</li>
+                        <li><strong>Dataportabilitet</strong> – Få dine data i et standardformat</li>
+                    </ul>
+                    <p>Kontakt os for at få hjælp til at bruge dine rettigheder.</p>
+                </section>
 
-            <section class="legal-section" id="kontakt">
-                <h2>Kontakt</h2>
-                <p>
-                    Har du spørgsmål til hvordan vi håndterer data? Kontakt Mercantec. 
-                    Du kan også klage til Datatilsynet hvis du mener vi behandler dine data uhensigtsmæssigt.
-                </p>
-            </section>
+                <section class="legal-section" id="sikkerhed">
+                    <h2>Sikkerhed</h2>
+                    <p>Vi beskytter data med moderne sikkerhedsforanstaltninger (kryptering, adgangskontrol og overvågning). Kun autoriserede medarbejdere har adgang ved behov.</p>
+                </section>
+            </div>
         </div>
     </main>
 
