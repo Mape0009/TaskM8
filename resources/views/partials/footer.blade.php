@@ -30,9 +30,14 @@
 <style>
     .site-footer {
         border-top: 1px solid var(--footer-border, #dbe1ea);
-        background: var(--footer-bg, #f8fafc);
+        background: #f8fafc;
         padding: 14px 0;
         margin-top: 28px;
+    }
+
+    html.dark-mode .site-footer,
+    body.dark-mode .site-footer {
+        background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     }
 
     .footer-container {
@@ -183,7 +188,7 @@
 @endphp
 
 @unless($hideCookieConsent)
-<!-- Cookie Consent Modal -->
+<!-- Cookie Consent Modal (centered, professional, accept-only) -->
 <div id="cookie-consent" class="cookie-consent" aria-live="polite" aria-hidden="true" style="display:none;">
     <div class="cookie-overlay" id="cookie-overlay" aria-hidden="true"></div>
     <div class="card cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-title" aria-describedby="cookie-desc" tabindex="-1">
@@ -201,7 +206,7 @@
 </div>
 
 <style>
-/* Centered modal styles */
+/* Centered modal styles inspired by provided design, accept-only */
 .cookie-consent { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 99999; }
 .cookie-consent[aria-hidden="false"] { pointer-events: auto; }
 .cookie-overlay { display: none; position: fixed; inset: 0; background: rgba(6,10,22,0.55); backdrop-filter: blur(4px); z-index: 99998; }

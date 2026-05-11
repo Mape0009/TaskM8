@@ -127,9 +127,9 @@ body.event-show-page .event-body-grid {
 }
 
 body.event-show-page .event-panel {
-    border: 1px solid var(--color-border, #222);
+    /* border: 1px solid var(--color-border, #222); */
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.015);
+    /* background: rgba(255, 255, 255, 0.015); */
     padding: 1rem;
     min-width: 0;
     display: flex;
@@ -179,7 +179,7 @@ body.event-show-page .event-facts-list {
     padding: 0;
     display: grid;
     gap: 0;
-    border: 1px solid var(--color-border, #222);
+    /* border: 1px solid var(--color-border, #222); */
     border-radius: 16px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.012);
@@ -194,7 +194,7 @@ body.event-show-page .event-fact-row {
     grid-template-columns: minmax(90px, 120px) minmax(0, 1fr);
     gap: 0.9rem;
     padding: 0.95rem 1rem;
-    border-top: 1px solid var(--color-border, #222);
+    /* border-top: 1px solid var(--color-border, #222); */
 }
 
 body.event-show-page .event-fact-row:first-child {

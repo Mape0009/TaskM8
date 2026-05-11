@@ -151,7 +151,6 @@ h6,
     backdrop-filter: none;
 }
 
-/* Keep fixed overlays viewport-bound when modal markup is rendered inside event cards. */
 .event-card {
     backdrop-filter: none;
 }
