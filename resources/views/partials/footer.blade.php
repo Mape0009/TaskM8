@@ -183,7 +183,7 @@
 @endphp
 
 @unless($hideCookieConsent)
-<!-- Cookie Consent Modal (centered, professional, accept-only) -->
+<!-- Cookie Consent Modal -->
 <div id="cookie-consent" class="cookie-consent" aria-live="polite" aria-hidden="true" style="display:none;">
     <div class="cookie-overlay" id="cookie-overlay" aria-hidden="true"></div>
     <div class="card cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-title" aria-describedby="cookie-desc" tabindex="-1">
@@ -201,7 +201,7 @@
 </div>
 
 <style>
-/* Centered modal styles inspired by provided design, accept-only */
+/* Centered modal styles */
 .cookie-consent { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 99999; }
 .cookie-consent[aria-hidden="false"] { pointer-events: auto; }
 .cookie-overlay { display: none; position: fixed; inset: 0; background: rgba(6,10,22,0.55); backdrop-filter: blur(4px); z-index: 99998; }

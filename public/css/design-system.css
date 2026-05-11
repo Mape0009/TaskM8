@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anke+Devanagari&family=Sora:wght@500;600;700;800&display=swap");
 
 /* Global design system override */
 :root {
-    --ds-font-body: "Inter Tight", "Inter", "Segoe UI", sans-serif;
-    --ds-font-heading: "Sora", "Inter Tight", "Inter", sans-serif;
+    --ds-font-body: "Anke Devanagari", "Segoe UI", sans-serif;
+    --ds-font-heading: "Sora", "Anke Devanagari", sans-serif;
 
     --ds-bg: #e7ecf5;
     --ds-bg-soft: #edf2f7;
@@ -443,6 +443,7 @@ select,
     transition: 
         background-color var(--transition-base),
         color var(--transition-base);
+        font-weight: 600;
 }
 
 /* Smooth dropdown animations */

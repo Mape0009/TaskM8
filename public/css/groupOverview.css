@@ -1,5 +1,5 @@
 .overview-shell {
-    font-family: 'Inter Tight', 'Inter', sans-serif;
+    font-family: 'Anke Devanagari', sans-serif;
 }
 
 .overview-hero {
@@ -462,7 +462,7 @@ html.dark-mode .pill-muted {
 }
 
 html.dark-mode .segmented-control {
-    background: rgba(255, 255, 255, 0.04);
+    background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     border-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -480,7 +480,7 @@ html.dark-mode .segment-btn.is-active {
 }
 
 :is(html.dark-mode, body.dark-mode) .group-card {
-    background: var(--ds-surface-strong, rgba(15, 23, 35, 0.95));
+    background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     border-color: var(--ds-border, rgba(148, 163, 184, 0.2));
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
 }
@@ -511,7 +511,7 @@ html.dark-mode .empty-text {
 }
 
 html.dark-mode .empty-state {
-    background: rgba(255, 255, 255, 0.03);
+    background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     border-color: rgba(255, 255, 255, 0.08);
 }
 

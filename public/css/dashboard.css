@@ -207,7 +207,7 @@ html {
 }
 
 body {
-    font-family: "Inter Tight", "Inter", sans-serif;
+    font-family: 'Anke Devanagari', sans-serif;
     margin: 0;
     min-height: 100dvh;
     display: flex;
@@ -1192,7 +1192,7 @@ html.dark-mode .event-date {
 .rsvp-menu {
     position: relative;
     display: inline-block;
-    font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+    font-family: 'Anke Devanagari', system-ui, sans-serif;
 }
 
 .rsvp-menu.open .rsvp-menu-list {
@@ -1234,8 +1234,8 @@ html.dark-mode .event-date {
     gap: 0.75rem;
     cursor: pointer;
     transition:
-        background 0.15s ease,
-        color 0.15s ease,
+        background 0.25s ease,
+        color 0.25s ease,
         transform 0.1s ease,
         box-shadow 0.2s ease;
 }

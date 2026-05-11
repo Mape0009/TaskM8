@@ -109,7 +109,6 @@ body.dark-mode .logo-img-light {
     box-shadow: none !important;
 }
 .main-header .theme-toggle-btn:hover {
-    background: #f1f5f9 !important;
     transform: scale(1.05) !important;
 }
 .theme-toggle-btn:hover {

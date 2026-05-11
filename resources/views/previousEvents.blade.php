@@ -13,7 +13,7 @@
     ])
     <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
     <link rel="stylesheet" href="{{ asset('css/participants-modal.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anke+Devanagari&display=swap" rel="stylesheet">
 </head>
 <body>
     @include('partials.header', ['currentPage' => 'previousEvents'])

@@ -300,6 +300,19 @@ unset($__errorArgs, $__bag); ?>
                             <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="email" checked>
                         </div>
                     </div>
+
+                                        <div class="notifications-row">
+                        <div class="notifications-col notifications-col-notification">
+                            <p class="notifications-title">Begivenhed slettes</p>
+                            <p class="notifications-description">Få besked når en begivenhed slettes</p>
+                        </div>
+                        <div class="notifications-col notifications-col-system">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="system" checked>
+                        </div>
+                        <div class="notifications-col notifications-col-email">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="email" checked>
+                        </div>
+                    </div>
                     
                     <div class="notifications-row">
                         <div class="notifications-col notifications-col-notification">

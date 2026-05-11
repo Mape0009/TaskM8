@@ -50,7 +50,7 @@
                             @csrf
                             <div class="form-row">
                                 <label for="member-email">E-mailadresse</label>
-                                <input type="email" id="member-email" name="email" placeholder="person@example.com" required>
+                                <input type="email" id="member-email" name="email" placeholder="Indtast e-mailadresse" required>
                             </div>
                             <div class="form-actions manage-members-form-actions">
                                 <button type="submit" class="btn primary-btn">Tilføj medlem</button>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/groupOverview.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anke+Devanagari&display=swap" rel="stylesheet">
 </head>
 <body>
     @include('partials.header', ['currentPage' => 'groups/overview'])
@@ -18,7 +18,7 @@
         <section class="overview-hero">
             <div class="hero-copy">
                 <p class="eyebrow">Grupper</p>
-                <h1>Få overblik over dine fællesskaber</h1>
+                <h1>Få overblik over dine grupper</h1>
                 <p class="lede">
                     Saml teams, frivillige og samarbejdspartnere ét sted. Skift mellem alle grupper og dine egne grupper. 
                 </p>

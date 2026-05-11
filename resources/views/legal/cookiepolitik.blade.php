@@ -41,7 +41,7 @@
             <div class="legal-content">
                 <section class="legal-section" id="hvad-er">
                     <h2>Hvad er cookies?</h2>
-                    <p>Cookies er små filer, der gør hjemmesider bedre til dig. De husker fx login og indstillinger, så TaskM8 fungerer glat.</p>
+                    <p>Cookies er små filer, der gør hjemmesider bedre til dig. De husker fx login og indstillinger, så TaskM8 fungerer som den skal.</p>
                 </section>
 
                 <section class="legal-section" id="hvilke">
@@ -67,7 +67,7 @@
                     <h2>Hvor længe gemmes cookies?</h2>
                     <ul class="legal-list">
                         <li>Sessioncookies slettes, når du lukker din browser</li>
-                        <li>Sikkerhedscookies slettes ved logout eller efter en kort periode</li>
+                        <li>Sikkerhedscookies slettes når du logger ud eller efter en kort periode</li>
                         <li>Samtykkecookie kan gemmes i op til 12 måneder</li>
                     </ul>
                 </section>
