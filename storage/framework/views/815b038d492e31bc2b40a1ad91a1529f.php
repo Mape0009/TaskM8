@@ -26,6 +26,69 @@
             <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         </button>
         <?php if(Auth::check()): ?>
+        <div class="notification-center">
+            <button class="notification-btn-header" id="notification-btn-header" aria-label="Open notifications" aria-haspopup="true" aria-expanded="false" aria-controls="notification-panel">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="notification-btn-header__badge" aria-hidden="true">5</span>
+            </button>
+            <div class="notification-panel" id="notification-panel" hidden>
+                <div class="notification-panel__header">
+                    <div>
+                        <p class="notification-panel__eyebrow">Notifikationer</p>
+                        <h3 class="notification-panel__title">Seneste 5</h3>
+                    </div>
+                    <div class="notification-panel__actions">
+                        <span class="notification-panel__count" id="notification-count-pill">5 nye</span>
+                        <button type="button" class="notification-panel__mark-read" id="notification-mark-read-btn">Marker som læst</button>
+                    </div>
+                </div>
+                <ul class="notification-panel__list" aria-label="Seneste notifikationer">
+                    <li class="notification-item notification-item--unread">
+                        <span class="notification-item__dot" aria-hidden="true"></span>
+                        <div class="notification-item__body">
+                            <p class="notification-item__title">Ny begivenhed oprettet</p>
+                            <p class="notification-item__text">Mads oprettede “Sommerfest 2026”.</p>
+                        </div>
+                        <span class="notification-item__time">2 min</span>
+                    </li>
+                    <li class="notification-item notification-item--unread">
+                        <span class="notification-item__dot" aria-hidden="true"></span>
+                        <div class="notification-item__body">
+                            <p class="notification-item__title">Du er tildelt en vagt</p>
+                            <p class="notification-item__text">Fredag 14:00 - 18:00 er nu din.</p>
+                        </div>
+                        <span class="notification-item__time">15 min</span>
+                    </li>
+                    <li class="notification-item notification-item--unread">
+                        <span class="notification-item__dot" aria-hidden="true"></span>
+                        <div class="notification-item__body">
+                            <p class="notification-item__title">Ny gruppeinvitation</p>
+                            <p class="notification-item__text">Maria inviterede dig til "Skoleoplæringen".</p>
+                        </div>
+                        <span class="notification-item__time">34 min</span>
+                    </li>
+                    <li class="notification-item">
+                        <span class="notification-item__dot" aria-hidden="true"></span>
+                        <div class="notification-item__body">
+                            <p class="notification-item__title">Begivenhed opdateret</p>
+                            <p class="notification-item__text">Tidsplanen for "Byfest" er ændret.</p>
+                        </div>
+                        <span class="notification-item__time">1 t</span>
+                    </li>
+                    <li class="notification-item">
+                        <span class="notification-item__dot" aria-hidden="true"></span>
+                        <div class="notification-item__body">
+                            <p class="notification-item__title">Ny deltager</p>
+                            <p class="notification-item__text">Jonas tilmeldte sig "Havnefest".</p>
+                        </div>
+                        <span class="notification-item__time">2 t</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="user-profile-dropdown">
             <button class="user-profile-trigger" id="user-profile-trigger" aria-label="Open user menu">
                 <div class="user-avatar"><?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?></div>
@@ -239,12 +302,12 @@ unset($__errorArgs, $__bag); ?>
         <div class="settings-tab-content" data-tab-content="notifications">
             <div class="modal-form notifications-settings">
                 <div class="notifications-intro">
-                    <p>Vælg hvor du vil modtage notifikationer. System sender til din notifikationsmenu, Email sender til din emailindbakke.</p>
+                    <p>System sender til din notifikationsmenu. Email sender til din emailindbakke.</p>
                 </div>
                 
                 <div class="notifications-table">
                     <div class="notifications-header">
-                        <div class="notifications-col notifications-col-notification">Notifikation</div>
+                        <div class="notifications-col notifications-col-notification">Notifikationer</div>
                         <div class="notifications-col notifications-col-system">System</div>
                         <div class="notifications-col notifications-col-email">Email</div>
                     </div>

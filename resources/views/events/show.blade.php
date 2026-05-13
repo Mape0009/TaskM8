@@ -141,7 +141,7 @@
             <aside class="event-surface event-surface--actions">
                 <div class="event-actions-head">
                     <h2 class="event-actions-title">Dine næste skridt</h2>
-                    <p>Få overblik og vælg handling uden støj.</p>
+                    <p>Få overblik og vælg handlinger</p>
                 </div>
 
                 <a href="/events" class="back-btn">Tilbage til begivenheder</a>

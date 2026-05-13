@@ -30,7 +30,7 @@
 <style>
     .site-footer {
         border-top: 1px solid var(--footer-border, #dbe1ea);
-        background: #f8fafc;
+        background: #f5f7fb; 
         padding: 14px 0;
         margin-top: 28px;
     }

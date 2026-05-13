@@ -851,6 +851,114 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabBtns = document.querySelectorAll('.settings-tab-btn');
     const tabContents = document.querySelectorAll('.settings-tab-content');
     const cancelNotificationsBtn = document.getElementById('cancel-notifications-btn');
+    const notificationCenter = document.querySelector('.notification-center');
+    const notificationBtnHeader = document.getElementById('notification-btn-header');
+    const notificationPanel = document.getElementById('notification-panel');
+    const notificationMarkReadBtn = document.getElementById('notification-mark-read-btn');
+    const notificationCountPill = document.getElementById('notification-count-pill');
+
+    function getUnreadNotifications() {
+        return document.querySelectorAll('.notification-item--unread');
+    }
+
+    function getTotalNotifications() {
+        return document.querySelectorAll('.notification-item').length;
+    }
+
+    function syncNotificationBadge(unreadCount) {
+        if (!notificationBtnHeader || !notificationCountPill) {
+            return;
+        }
+
+        const badge = notificationBtnHeader.querySelector('.notification-btn-header__badge');
+        if (badge) {
+            // show badge only when there are unread notifications
+            badge.hidden = unreadCount <= 0;
+            // also set inline display to ensure CSS specificity doesn't leave an empty red dot
+            badge.style.display = unreadCount > 0 ? '' : 'none';
+            badge.textContent = unreadCount > 0 ? String(unreadCount) : '';
+        }
+
+        // count pill reflects unread count and is hidden when none
+        notificationCountPill.hidden = unreadCount <= 0;
+        notificationCountPill.textContent = unreadCount === 1 ? '1 ny' : `${unreadCount} nye`;
+
+        if (notificationMarkReadBtn) {
+            notificationMarkReadBtn.hidden = unreadCount <= 0;
+            notificationMarkReadBtn.disabled = unreadCount <= 0;
+        }
+    }
+
+    function closeNotificationPanel() {
+        if (!notificationBtnHeader || !notificationPanel) {
+            return;
+        }
+
+        notificationBtnHeader.setAttribute('aria-expanded', 'false');
+        notificationPanel.hidden = true;
+    }
+
+    function openNotificationPanel() {
+        if (!notificationBtnHeader || !notificationPanel) {
+            return;
+        }
+
+        notificationBtnHeader.setAttribute('aria-expanded', 'true');
+        notificationPanel.hidden = false;
+    }
+
+    function toggleNotificationPanel() {
+        if (!notificationBtnHeader || !notificationPanel) {
+            return;
+        }
+
+        if (notificationPanel.hidden) {
+            openNotificationPanel();
+        } else {
+            closeNotificationPanel();
+        }
+    }
+
+    if (notificationBtnHeader && notificationPanel) {
+        notificationBtnHeader.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleNotificationPanel();
+            const userProfileDropdown = document.querySelector('.user-profile-dropdown');
+            if (userProfileDropdown) {
+                userProfileDropdown.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (notificationCenter && !notificationCenter.contains(e.target)) {
+                closeNotificationPanel();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeNotificationPanel();
+            }
+        });
+    }
+
+    if (notificationMarkReadBtn) {
+        notificationMarkReadBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const unreadNotifications = getUnreadNotifications();
+            unreadNotifications.forEach(notification => {
+                notification.classList.remove('notification-item--unread');
+            });
+
+            syncNotificationBadge(0);
+            notificationMarkReadBtn.disabled = true;
+            notificationMarkReadBtn.textContent = 'Marked as read';
+        });
+    }
+
+    syncNotificationBadge(getUnreadNotifications().length);
 
     // Tab switching
     tabBtns.forEach(btn => {
