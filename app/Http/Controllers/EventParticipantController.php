@@ -8,6 +8,10 @@ use App\Models\EventRole;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 use App\Http\RolePermissions\Permissions;
+use App\Models\Notification;
+use App\Http\Controllers\Notifications\NotificationMessages;
+use App\Http\Controllers\NotificationController;
+use App\Models\User;
 
 class EventParticipantController extends Controller
 {
@@ -89,6 +93,23 @@ class EventParticipantController extends Controller
             return redirect('/signin');
         }
         EventParticipant::where('eventId', $eventId)->where('userId', $userId)->delete();
+
+        // Notify owner and co-owners about the decline
+        $event = Event::find($eventId);
+        $user = User::find($userId);
+        $organizers = EventParticipant::where('eventId', $eventId)
+            ->whereIn('eventRole', [EventRole::owner->name, EventRole::coOwner->name])
+            ->get();
+
+        foreach ($organizers as $organizer) {
+            $notificationController = new NotificationController();
+            $notificationController->sendNotification(
+                $organizer->userId,
+                $event->id,
+                NotificationMessages::PARTICIPANT_LEFT
+            );
+        }
+
         return redirect()->back();
     }
 

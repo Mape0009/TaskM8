@@ -7,6 +7,9 @@ use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Notifications\NotificationMessages;
+use App\Http\Controllers\NotificationController;
+use App\Models\Notification;
 
 class GroupController extends Controller
 {
@@ -194,6 +197,14 @@ class GroupController extends Controller
             'groupId' => $group->id,
             'userId' => $user->id,
         ]);
+
+        // Notify the user that they have been added to the group
+        $notificationController = new NotificationController();
+        $notificationController->sendNotification(
+            $user->id,
+            $group->id,
+            NotificationMessages::GROUP_JOINED
+        );
 
         return redirect()->back();
     }
