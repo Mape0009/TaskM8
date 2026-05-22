@@ -340,7 +340,6 @@ textarea::placeholder {
 /* ANIMATIONS & TRANSITIONS */
 /* ============================================================================ */
 
-/* Smooth transitions for all interactive elements */
 * {
     --transition-fast: var(--ds-transition-fast, 0.15s ease);
     --transition-base: var(--ds-transition-base, 0.2s ease);
@@ -373,6 +372,7 @@ select,
     transition:
         border-color var(--transition-base),
         background-color var(--transition-base);
+        background: linear-gradient(160deg, #ffffff 0%, #f8fbff 62%, #eff6ff 100%);
 }
 
 .stat-card:hover,

@@ -585,7 +585,6 @@ body > .site-footer {
     margin: 0;
     color: #334155;
     font-size: clamp(15px, 2.2vw, 19px);
-    max-width: 60ch;
     line-height: 1.65;
 }
 .guest-hero__cta {
@@ -1289,7 +1288,7 @@ html.dark-mode .event-date {
 /* --- LIGHT/DARK MODE ADJUSTMENTS --- */
 html.dark-mode .rsvp-menu-list,
 body.dark-mode .rsvp-menu-list {
-    background: var(--color-background-tertiary);
+    background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     border-color: var(--color-border);
     box-shadow: 0 8px 18px var(--color-shadow-dark);
 }

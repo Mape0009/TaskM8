@@ -752,7 +752,7 @@ body.dark-mode .user-avatar {
     border: 2px solid #333338;
 }
 body.dark-mode .notification-btn-header {
-    background: #2a2a30;
+    background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     border-color: rgba(148, 163, 184, 0.18);
     color: #e2e8f0;
 }
