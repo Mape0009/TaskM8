@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskM8 | Gruppeoversigt</title>
+    <title>{{ __('ui.group_overview_page_title') }}</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/groupOverview.css') }}">
@@ -17,29 +17,27 @@
     <div class="overview-shell">
         <section class="overview-hero">
             <div class="hero-copy">
-                <p class="eyebrow">Grupper</p>
-                <h1>Få overblik over dine grupper</h1>
-                <p class="lede">
-                    Saml teams, frivillige og samarbejdspartnere ét sted. Skift mellem alle grupper og dine egne grupper. 
-                </p>
+                <p class="eyebrow">{{ __('ui.groups') }}</p>
+                <h1>{{ __('ui.group_overview_title') }}</h1>
+                <p class="lede">{{ __('ui.group_overview_intro') }}</p>
                 <div class="hero-meta">
                     @unless($isAuthenticated)
-                        <span class="pill pill-muted">Log ind for at se dine grupper</span>
+                        <span class="pill pill-muted">{{ __('ui.group_overview_login_hint') }}</span>
                     @endunless
                 </div>
             </div>
             <div class="hero-actions">
-                <a href="{{ url('groups/create') }}" class="btn create-btn">Opret gruppe</a>
+                <a href="{{ url('groups/create') }}" class="btn create-btn">{{ __('ui.group_create_btn') }}</a>
             </div>
         </section>
 
         <section class="filter-bar">
-            <div class="segmented-control" role="tablist" aria-label="Skift gruppeliste">
+            <div class="segmented-control" role="tablist" aria-label="{{ __('ui.group_overview_switch') }}">
                 <button class="segment-btn is-active" data-target="all" role="tab" aria-selected="true">
-                    Alle grupper
+                    {{ __('ui.group_all') }}
                 </button>
                 <button class="segment-btn" data-target="mine" role="tab" aria-selected="false" {{ $isAuthenticated ? '' : 'disabled' }}>
-                    Mine grupper
+                    {{ __('ui.group_mine') }}
                     <span class="segment-count">{{ $myGroups->count() }}</span>
                 </button>
             </div>
@@ -51,42 +49,42 @@
                     <article class="group-card">
                         <div class="group-card-header">
                             <div>
-                                <p class="card-eyebrow">{{ $group->private ? 'Privat gruppe' : 'Offentlig gruppe' }}</p>
+                                <p class="card-eyebrow">{{ $group->private ? __('ui.group_private_group') : __('ui.group_public_group') }}</p>
                                 <h2>{{ $group->groupName }}</h2>
                             </div>
                             <span class="group-private {{ $group->private ? 'private' : 'public' }}">
-                                {{ $group->private ? 'Privat' : 'Offentlig' }}
+                                {{ $group->private ? __('ui.group_private') : __('ui.group_public') }}
                             </span>
                         </div>
-                        <p class="group-description">{{ $group->description ?? 'Ingen beskrivelse tilføjet endnu.' }}</p>
+                        <p class="group-description">{{ $group->description ?? __('ui.group_no_description') }}</p>
                         <div class="group-card-footer">
                             <div class="meta">
                                 <span class="meta-item">
                                     <span class="dot"></span>
-                                    Oprettet {{ optional($group->created_at)->format('d.m.Y') ?? '—' }}
+                                    {{ __('ui.group_created') }} {{ optional($group->created_at)->format('d.m.Y') ?? '—' }}
                                 </span>
                             </div>
                             @auth
                                 <div class="group-actions">
                                     @if($group->ownerId === auth()->id())
                                         <a href="{{ route('groups.manage', $group->id) }}" class="btn secondary-btn">
-                                            <span>Administrer medlemmer</span>
+                                            <span>{{ __('ui.group_manage_members') }}</span>
                                         </a>
                                         <button type="button"
                                             class="btn delete-btn"
-                                            onclick="openGroupConfirmModal('{{ route('groups.delete', ['id' => $group->id]) }}', 'Slet gruppe', 'Er du sikker på, at du vil slette denne gruppe? Dette kan ikke fortrydes.', 'DELETE')">
-                                            Slet
+                                                onclick="openGroupConfirmModal('{{ route('groups.delete', ['id' => $group->id]) }}', '{{ __('ui.group_delete_title') }}', '{{ __('ui.group_delete_confirm') }}', 'DELETE')">
+                                                {{ __('ui.delete') }}
                                         </button>
                                     @elseif($myGroupIds->contains($group->id))
                                         <button type="button"
                                             class="btn secondary-btn"
-                                            onclick="openGroupConfirmModal('{{ route('groups.leave', ['id' => $group->id]) }}', 'Forlad gruppe', 'Vil du forlade denne gruppe?', 'POST')">
-                                            Forlad gruppe
+                                            onclick="openGroupConfirmModal('{{ route('groups.leave', ['id' => $group->id]) }}', '{{ __('ui.group_leave_title') }}', '{{ __('ui.group_leave_confirm') }}', 'POST')">
+                                            {{ __('ui.group_leave') }}
                                         </button>
                                     @elseif(!$group->private)
                                         <form action="{{ route('groups.join', ['id' => $group->id]) }}" method="POST" class="delete-form">
                                             @csrf
-                                            <button type="submit" class="btn primary-btn">Tilmeld</button>
+                                            <button type="submit" class="btn primary-btn">{{ __('ui.group_join') }}</button>
                                         </form>
                                     @endif
                                 </div>
@@ -95,8 +93,8 @@
                     </article>
                 @empty
                     <div class="empty-state">
-                        <p class="empty-title">Der er ingen grupper endnu</p>
-                        <p class="empty-text">Opret en ny gruppe for at komme i gang.</p>
+                            <p class="empty-title">{{ __('ui.group_none_title') }}</p>
+                            <p class="empty-text">{{ __('ui.group_none_text') }}</p>
                     </div>
                 @endforelse
             </div>
@@ -104,50 +102,50 @@
             <div class="groups-grid is-hidden" data-view="mine">
                 @if(!$isAuthenticated)
                     <div class="empty-state">
-                        <p class="empty-title">Log ind for at se dine grupper</p>
-                        <p class="empty-text">Når du er logget ind, viser vi de grupper du ejer eller allerede er medlem af.</p>
+                            <p class="empty-title">{{ __('ui.group_login_title') }}</p>
+                            <p class="empty-text">{{ __('ui.group_login_text') }}</p>
                     </div>
                 @else
                     @forelse ($myGroups as $group)
                         <article class="group-card">
                             <div class="group-card-header">
                                 <div>
-                                    <p class="card-eyebrow">Mine grupper</p>
+                                    <p class="card-eyebrow">{{ __('ui.group_mine') }}</p>
                                     <h2>{{ $group->groupName }}</h2>
                                 </div>
                                 <span class="group-private {{ $group->private ? 'private' : 'public' }}">
-                                    {{ $group->private ? 'Privat' : 'Offentlig' }}
+                                    {{ $group->private ? __('ui.group_private') : __('ui.group_public') }}
                                 </span>
                             </div>
-                            <p class="group-description">{{ $group->description ?? 'Ingen beskrivelse tilføjet endnu.' }}</p>
+                            <p class="group-description">{{ $group->description ?? __('ui.group_no_description') }}</p>
                             <div class="group-card-footer">
                                 <div class="meta">
                                     <span class="meta-item">
                                         <span class="dot"></span>
-                                        Medlem siden {{ optional($group->created_at)->format('d.m.Y') ?? '—' }}
+                                        {{ __('ui.group_member_since') }} {{ optional($group->created_at)->format('d.m.Y') ?? '—' }}
                                     </span>
                                 </div>
                                 @auth
                                     <div class="group-actions">
                                         @if($group->ownerId === auth()->id())
                                             <a href="{{ route('groups.manage', $group->id) }}" class="btn secondary-btn">
-                                                <span>Administrer medlemmer</span>
+                                                <span>{{ __('ui.group_manage_members') }}</span>
                                             </a>
                                             <button type="button"
                                                 class="btn delete-btn"
-                                                onclick="openGroupConfirmModal('{{ route('groups.delete', ['id' => $group->id]) }}', 'Slet gruppe', 'Er du sikker på, at du vil slette denne gruppe? Dette kan ikke fortrydes.', 'DELETE')">
+                                                onclick="openGroupConfirmModal('{{ route('groups.delete', ['id' => $group->id]) }}', '{{ __('ui.group_delete_title') }}', '{{ __('ui.group_delete_confirm') }}', 'DELETE')">
                                                 Slet
                                             </button>
                                         @elseif($myGroupIds->contains($group->id))
                                             <button type="button"
                                                 class="btn secondary-btn"
-                                                onclick="openGroupConfirmModal('{{ route('groups.leave', ['id' => $group->id]) }}', 'Forlad gruppe', 'Vil du forlade denne gruppe?', 'POST')">
-                                                Forlad gruppe
+                                                onclick="openGroupConfirmModal('{{ route('groups.leave', ['id' => $group->id]) }}', '{{ __('ui.group_leave_title') }}', '{{ __('ui.group_leave_confirm') }}', 'POST')">
+                                                {{ __('ui.group_leave') }}
                                             </button>
                                         @elseif(!$group->private)
                                             <form action="{{ route('groups.join', ['id' => $group->id]) }}" method="POST" class="delete-form">
                                                 @csrf
-                                                <button type="submit" class="btn primary-btn">Tilmeld</button>
+                                                <button type="submit" class="btn primary-btn">{{ __('ui.group_join') }}</button>
                                             </form>
                                         @endif
                                     </div>
@@ -156,8 +154,8 @@
                         </article>
                     @empty
                         <div class="empty-state">
-                            <p class="empty-title">Du er ikke i nogen grupper endnu</p>
-                            <p class="empty-text">Opret en gruppe eller bliv inviteret for at se dine grupper her.</p>
+                                <p class="empty-title">{{ __('ui.group_none_member_title') }}</p>
+                                <p class="empty-text">{{ __('ui.group_none_member_text') }}</p>
                         </div>
                     @endforelse
                 @endif
@@ -175,15 +173,15 @@
                 <svg fill="currentColor" viewBox="0 0 20 20" class="confirm-icon" xmlns="http://www.w3.org/2000/svg">
                     <path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path>
                 </svg>
-                <h2 id="group-confirm-title" class="confirm-title">Er du sikker?</h2>
-                <p id="group-confirm-text" class="confirm-text">Bekræft handlingen.</p>
+                    <h2 id="group-confirm-title" class="confirm-title">{{ __('ui.confirm_are_you_sure') }}</h2>
+                    <p id="group-confirm-text" class="confirm-text">{{ __('ui.group_confirm_action') }}</p>
             </div>
             <div class="confirm-actions">
-                <button type="button" class="confirm-btn cancel" onclick="closeGroupConfirmModal()">Annuller</button>
-                <form id="group-confirm-form" method="POST" class="confirm-btn-form">
+                <button type="button" class="confirm-btn cancel" onclick="closeGroupConfirmModal()">{{ __('ui.cancel') }}</button>
+                    <form id="group-confirm-form" method="POST" class="confirm-btn-form">
                     @csrf
                     <input type="hidden" name="_method" id="group-confirm-method" value="POST">
-                    <button type="submit" class="confirm-btn danger">Bekræft</button>
+                        <button type="submit" class="confirm-btn danger">{{ __('ui.confirm') }}</button>
                 </form>
             </div>
         </div>

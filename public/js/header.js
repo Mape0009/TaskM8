@@ -792,8 +792,14 @@ function initializeModalListeners() {
     const closeBtn = document.getElementById('mnav-close');
     const userBtn = document.getElementById('mnav-user');
     const submenu = document.getElementById('mnav-user-menu');
+    const languageBtn = document.getElementById('mnav-language');
+    const languageMenu = document.getElementById('mnav-language-menu');
     const createBtn = document.getElementById('mnav-create');
     const settingsBtnMobile = document.getElementById('mnav-settings');
+    const localeForm = document.getElementById('locale-switcher-form');
+    const localeInput = document.getElementById('locale-switcher-input');
+    const localeTrigger = document.getElementById('locale-switcher-trigger');
+    const localeMenu = document.getElementById('locale-switcher-menu');
 
     function openNav() {
         mnav.classList.add('is-open');
@@ -806,6 +812,8 @@ function initializeModalListeners() {
         document.body.style.overflow = '';
         if (userBtn) userBtn.setAttribute('aria-expanded', 'false');
         if (submenu) submenu.hidden = true;
+        if (languageBtn) languageBtn.setAttribute('aria-expanded', 'false');
+        if (languageMenu) languageMenu.hidden = true;
     }
 
     toggleBtn.addEventListener('click', (e) => { e.preventDefault(); openNav(); });
@@ -844,6 +852,34 @@ function initializeModalListeners() {
             if (settingsModal) settingsModal.style.display = 'flex';
         });
     }
+    if (languageBtn && languageMenu) {
+        languageBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const expanded = languageBtn.getAttribute('aria-expanded') === 'true';
+            languageBtn.setAttribute('aria-expanded', String(!expanded));
+            languageMenu.hidden = expanded;
+        });
+    }
+    document.querySelectorAll('.mnav__action--locale').forEach((button) => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const locale = button.dataset.locale;
+            if (!locale || !localeForm || !localeInput || localeInput.value === locale) {
+                closeNav();
+                return;
+            }
+
+            localeInput.value = locale;
+            if (localeMenu) {
+                localeMenu.hidden = true;
+            }
+            if (localeTrigger) {
+                localeTrigger.setAttribute('aria-expanded', 'false');
+            }
+            closeNav();
+            localeForm.submit();
+        });
+    });
 })();
 
 // Settings Tabs Functionality

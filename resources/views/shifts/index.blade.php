@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="da" class="no-js">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="no-js">
 <head>
     @php
         \Carbon\Carbon::setLocale('da');
-        $pageTitle = 'TaskM8 | Vagter for ' . $task->taskName;
-        $metaDescription = 'Administrer vagter for opgaven ' . $task->taskName . '.';
+        $pageTitle = __('ui.shifts_page_title_for', ['task' => $task->taskName]);
+        $metaDescription = __('ui.shifts_meta_for', ['task' => $task->taskName]);
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -14,7 +14,7 @@
     ])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vagter for {{ $task->taskName }} | TaskM8</title>
+    <title>{{ __('ui.shifts_page_title_for', ['task' => $task->taskName]) }} | TaskM8</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
@@ -48,15 +48,15 @@
         <div class="overview-shell shifts-simple-shell">
             <section class="shifts-page-header">
                 <div class="shifts-page-header-copy">
-                    <h1>Vagtplan for {{ $task->taskName }}</h1>
-                    <p>En enkel oversigt over alle vagter for opgaven. Hver vagt vises på én linje.</p>
-                    <p class="shifts-page-meta">{{ $shiftsCount }} vagter · {{ $uniqueUsers }} personer</p>
+                    <h1>{{ __('ui.shifts_overview_for', ['task' => $task->taskName]) }}</h1>
+                    <p>{{ __('ui.shifts_intro') }}</p>
+                    <p class="shifts-page-meta">{{ $shiftsCount }} {{ __('ui.task_shifts') }} · {{ $uniqueUsers }} {{ __('ui.people') }}</p>
                 </div>
                 <div class="shifts-page-actions">
                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
-                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">Opret vagt</a>
+                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">{{ __('ui.create_shift_btn') }}</a>
                     @endif
-                    <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-btn">Tilbage til opgaver</a>
+                    <a href="{{ route('events.tasks.index', $task->eventId) }}" class="btn secondary-btn">{{ __('ui.back_to_tasks') }}</a>
                 </div>
             </section>
 
@@ -88,12 +88,12 @@
                 <div class="shifts-toolbar">
                     <div class="shifts-filter" role="group" aria-label="Filtrer vagter">
                         <span class="shifts-filter-label">Vis:</span>
-                        <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn {{ $isMine ? 'secondary-btn' : 'primary-btn' }}">Alle vagter</a>
-                        <a href="{{ route('tasks.shifts.index', $task->id) }}?filter=mine" class="btn {{ $isMine ? 'primary-btn' : 'secondary-btn' }}">Mine vagter</a>
+                        <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn {{ $isMine ? 'secondary-btn' : 'primary-btn' }}">{{ __('ui.all_shifts') }}</a>
+                        <a href="{{ route('tasks.shifts.index', $task->id) }}?filter=mine" class="btn {{ $isMine ? 'primary-btn' : 'secondary-btn' }}">{{ __('ui.my_shifts') }}</a>
                     </div>
                     <label class="shifts-search-wrap" for="shift-search">
                         <i class="fas fa-search" aria-hidden="true"></i>
-                        <input id="shift-search" type="search" class="shifts-search-input" placeholder="Søg efter navn eller e-mail" aria-label="Søg i vagtlisten">
+                        <input id="shift-search" type="search" class="shifts-search-input" placeholder="{{ __('ui.search_name_email') }}" aria-label="{{ __('ui.search_shifts') }}">
                     </label>
                 </div>
 
@@ -157,8 +157,8 @@
                                         <svg fill="currentColor" viewBox="0 0 20 20" class="confirm-icon" xmlns="http://www.w3.org/2000/svg">
                                             <path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path>
                                         </svg>
-                                        <h2 id="delete-shift-title-{{ $shift->id }}" class="confirm-title">Er du sikker?</h2>
-                                        <p class="confirm-text">Vil du slette denne vagt? Dette kan ikke fortrydes.</p>
+                                        <h2 id="delete-shift-title-{{ $shift->id }}" class="confirm-title">{{ __('ui.confirm_are_you_sure') }}</h2>
+                                        <p class="confirm-text">{{ __('ui.confirm_delete_shift') }}</p>
                                     </div>
                                     <div class="confirm-actions">
                                         <button type="button" class="confirm-btn cancel" onclick="closeDeleteShiftModal({{ $shift->id }})">Annuller</button>
@@ -178,7 +178,7 @@
                 </div>
             @else
                 <div class="empty-state shifts-empty-state">
-                    <h2>Ingen vagter endnu</h2>
+                    <h2>{{ __('ui.no_shifts_yet') }}</h2>
                     <p>Opret den første vagt for at begynde at planlægge opgaven.</p>
                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
                         <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">Opret første vagt</a>

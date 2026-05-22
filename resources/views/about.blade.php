@@ -495,28 +495,28 @@
         <!-- Mission & Vision Section -->
         <section class="section">
             <div class="section-header">
-                <span class="section-label">Vores Mission</span>
-                <h2 class="section-title">Styr på begivenheden</h2>
-                <p class="section-description">TaskM8 er udviklet med formål at gøre planlægning af begivenheder enkel, stabil og overskuelig. Vi fokuserer på klare arbejdsgange, tydelige lister og godt design, så brugerne hurtigt kan finde det, de har brug for.</p>
+                <span class="section-label">{{ __('ui.about_mission_label') }}</span>
+                <h2 class="section-title">{{ __('ui.about_title') }}</h2>
+                <p class="section-description">{{ __('ui.about_description') }}</p>
             </div>
 
             <div class="values-grid">
                 <div class="value-card">
                     <div class="value-icon">✨</div>
-                    <h3 class="value-title">Vores Fokus</h3>
-                    <p class="value-description">Brugervenlighed, tydelig data og høj driftsikkerhed</p>
+                    <h3 class="value-title">{{ __('ui.about_focus_title') }}</h3>
+                    <p class="value-description">{{ __('ui.about_focus_text') }}</p>
                 </div>
 
                 <div class="value-card">
                     <div class="value-icon">👥</div>
-                    <h3 class="value-title">Hvem Står Bag</h3>
-                    <p class="value-description">TaskM8-teamet består af elever fra Mercantec Skoleoplæring Viborg</p>
+                    <h3 class="value-title">{{ __('ui.about_team_title') }}</h3>
+                    <p class="value-description">{{ __('ui.about_team_text') }}</p>
                 </div>
 
                 <div class="value-card">
                     <div class="value-icon">📞</div>
-                    <h3 class="value-title">Kontakt</h3>
-                    <p class="value-description">Se Mercantecs kontaktoplysninger på den officielle hjemmeside.</p>
+                    <h3 class="value-title">{{ __('ui.about_contact_title') }}</h3>
+                    <p class="value-description">{{ __('ui.about_contact_text') }}</p>
                 </div>
 
               </main>

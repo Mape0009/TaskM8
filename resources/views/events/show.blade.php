@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        \Carbon\Carbon::setLocale('da');
+        \Carbon\Carbon::setLocale(app()->getLocale());
         $start = isset($event->startDate) && $event->startDate ? \Carbon\Carbon::parse($event->startDate) : null;
         $end = isset($event->endDate) && $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
-        $pageTitle = 'TaskM8 | ' . ($event->eventName ?? 'Begivenhed');
-        $metaDescription = \Illuminate\Support\Str::limit($event->description ?? 'Se detaljer for begivenheden i TaskM8.', 155);
-        $heroLead = \Illuminate\Support\Str::limit(trim(strip_tags($event->description ?? 'Planlagt begivenhed i TaskM8.')), 180);
+        $pageTitle = 'TaskM8 | ' . ($event->eventName ?? __('ui.event_overview'));
+        $metaDescription = \Illuminate\Support\Str::limit($event->description ?? __('ui.back_to_events'), 155);
+        $heroLead = \Illuminate\Support\Str::limit(trim(strip_tags($event->description ?? __('ui.guest_subtitle'))), 180);
         $eventJson = [
             '@context' => 'https://schema.org',
             '@type' => 'Event',
@@ -31,19 +31,19 @@
                 [
                     '@type' => 'ListItem',
                     'position' => 1,
-                    'name' => 'Forside',
+                    'name' => __('ui.page_title_dashboard'),
                     'item' => url('/dashboard')
                 ],
                 [
                     '@type' => 'ListItem',
                     'position' => 2,
-                    'name' => 'Begivenheder',
+                    'name' => __('ui.events'),
                     'item' => url('/events')
                 ],
                 [
                     '@type' => 'ListItem',
                     'position' => 3,
-                    'name' => $event->eventName ?? 'Begivenhed',
+                    'name' => $event->eventName ?? __('ui.event_overview'),
                     'item' => url()->current()
                 ],
             ],
@@ -100,39 +100,39 @@
         <section class="event-page-grid">
             <article class="event-surface event-surface--content event-surface--hero">
                 <header class="event-content-top">
-                    <h1 class="event-content-title">{{ $event->eventName ?? 'Begivenhed' }}</h1>
+                    <h1 class="event-content-title">{{ $event->eventName ?? __('ui.event_overview') }}</h1>
                 </header>
 
                 <section class="event-panel event-panel--secondary">
                     <div class="event-panel__header">
-                        <h2>Praktisk overblik</h2>
+                        <h2>{{ __('ui.event_overview') }}</h2>
                     </div>
                     <dl class="event-facts-list event-facts-list--compact">
                         <div class="event-fact-row">
-                            <dt>Sted</dt>
-                            <dd>{{ $event->location ?? 'Ikke angivet' }}</dd>
+                            <dt>{{ __('ui.location') }}</dt>
+                            <dd>{{ $event->location ?? __('ui.unknown') }}</dd>
                         </div>
                         <div class="event-fact-row">
-                            <dt>Start</dt>
+                            <dt>{{ __('ui.start_time') }}</dt>
                             <dd>{{ $start ? $start->translatedFormat('l d. F Y') . ' kl. ' . $start->format('H:i') : '-' }}</dd>
                         </div>
                         <div class="event-fact-row">
-                            <dt>Slut</dt>
+                            <dt>{{ __('ui.end_time') }}</dt>
                             <dd>{{ $end ? $end->translatedFormat('l d. F Y') . ' kl. ' . $end->format('H:i') : '-' }}</dd>
                         </div>
                         <div class="event-fact-row">
-                            <dt>Status</dt>
-                            <dd>{{ $isFullTop ? 'Fyldt op' : 'Åben for deltagere' }}</dd>
+                            <dt>{{ __('ui.event_status') }}</dt>
+                            <dd>{{ $isFullTop ? __('ui.event_full') : __('ui.event_open') }}</dd>
                         </div>
                     </dl>
                 </section>
 
                 <section class="event-panel event-panel--primary">
                     <div class="event-panel__header">
-                        <h2>Om begivenheden</h2>
+                        <h2>{{ __('ui.about_event') }}</h2>
                     </div>
                     <div class="event-description-block event-description-block--hero">
-                        {{ $event->description ?? 'Der er ingen beskrivelse af denne begivenhed.' }}
+                        {{ $event->description ?? __('ui.no_events_found') }}
                     </div>
                 </section>
 
@@ -140,24 +140,24 @@
 
             <aside class="event-surface event-surface--actions">
                 <div class="event-actions-head">
-                    <h2 class="event-actions-title">Dine næste skridt</h2>
-                    <p>Få overblik og vælg handlinger</p>
+                    <h2 class="event-actions-title">{{ __('ui.next_steps') }}</h2>
+                    <p>{{ __('ui.overview_hint') }}</p>
                 </div>
 
-                <a href="/events" class="back-btn">Tilbage til begivenheder</a>
+                <a href="/events" class="back-btn">{{ __('ui.back_to_events') }}</a>
 
                 <div class="event-attendance-card">
                     <div class="event-attendance-card__top">
-                        <span class="event-attendance-card__label">Deltagelse</span>
+                        <span class="event-attendance-card__label">{{ __('ui.event_participation') }}</span>
                         <strong>{{ $acceptedCount }}@if($participantLimit)/{{ $participantLimit }}@endif</strong>
                     </div>
                     @if(!is_null($attendancePercent))
                         <div class="event-attendance-progress" aria-hidden="true">
                             <span style="width: {{ $attendancePercent }}%"></span>
                         </div>
-                        <p class="event-attendance-card__meta">{{ $spotsLeft }} pladser tilbage</p>
+                        <p class="event-attendance-card__meta">{{ __('ui.spots_left', ['count' => $spotsLeft]) }}</p>
                     @else
-                        <p class="event-attendance-card__meta">Ingen deltagergrænse på denne begivenhed.</p>
+                        <p class="event-attendance-card__meta">{{ __('ui.no_participant_limit') }}</p>
                     @endif
 
                 </div>
@@ -165,21 +165,21 @@
                 @auth
                 @if($isOwnerTop)
                     <div class="event-actions-details event-actions-details--column">
-                        <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">Inviter deltagere</button>
-                        <button type="button" class="btn event-danger-btn" onclick="openDeleteModal()">Slet begivenhed</button>
+                        <button class="btn invite-btn" onclick="openInviteModal({{ $event->id }}, '{{ $event->eventName }}')">{{ __('ui.invite_participants') }}</button>
+                        <button type="button" class="btn event-danger-btn" onclick="openDeleteModal()">{{ __('ui.delete_event_button') }}</button>
                     </div>
                 @else
-                    <div class="event-actions-details event-actions-details--column" aria-label="Deltagelsesstatus">
+                    <div class="event-actions-details event-actions-details--column" aria-label="{{ __('ui.event_participation') }}">
                         @if(!$isOwnerTop && $rsvpStatus)
-                            <div class="event-inline-status-wrap" aria-label="Din RSVP-status">
-                                <span class="event-inline-status-label">Din status</span>
+                            <div class="event-inline-status-wrap" aria-label="{{ __('ui.your_status') }}">
+                                <span class="event-inline-status-label">{{ __('ui.your_status') }}</span>
                                 <div class="rsvp-status {{ $rsvpStatus === 'accepted' ? 'accepted' : ($rsvpStatus === 'declined' ? 'declined' : 'pending') }}">
                                     @if($rsvpStatus === 'accepted')
-                                        <span class="status-dot"></span> Deltager
+                                        <span class="status-dot"></span> {{ __('ui.attending') }}
                                     @elseif($rsvpStatus === 'declined')
-                                        <span class="status-dot"></span> Deltager ikke
+                                        <span class="status-dot"></span> {{ __('ui.not_attending') }}
                                     @else
-                                        <span class="status-dot"></span> Afventer svar
+                                        <span class="status-dot"></span> {{ __('ui.awaiting_response') }}
                                     @endif
                                 </div>
                             </div>
@@ -188,18 +188,18 @@
                         @if($canVolunteer && $myRole !== \App\Models\EventRole::volunteer->name)
                             <form action="{{ route('events.volunteer', ['eventId' => $event->id]) }}" method="POST" style="width:100%;">
                                 @csrf
-                                <button type="submit" class="btn invite-btn" style="width:100%; margin-bottom:0.75rem;">Bliv frivillig</button>
+                                <button type="submit" class="btn invite-btn" style="width:100%; margin-bottom:0.75rem;">{{ __('ui.become_volunteer') }}</button>
                             </form>
                         @elseif($myRole === \App\Models\EventRole::volunteer->name)
                             <form action="{{ route('events.unvolunteer', ['eventId' => $event->id]) }}" method="POST" style="width:100%;">
                                 @csrf
-                                <button type="submit" class="btn event-danger-btn" style="width:100%; margin-bottom:0.75rem;">Stop frivillig</button>
+                                <button type="submit" class="btn event-danger-btn" style="width:100%; margin-bottom:0.75rem;">{{ __('ui.stop_volunteer') }}</button>
                             </form>
                         @endif
 
                         <div class="rsvp-menu" id="rsvp-menu-event">
                             <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-event')">
-                                {{ $hasResponded ? 'Skift svar' : 'Svar på invitation' }}
+                                {{ $hasResponded ? __('ui.confirm') : __('ui.invite') }}
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="caret"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </button>
                             <div class="rsvp-menu-list" role="menu">
@@ -207,14 +207,14 @@
                                     @csrf
                                     <input type="hidden" name="status" value="accepted" />
                                     <button type="submit" class="rsvp-menu-item accepted" {{ $isFullTop ? 'disabled' : '' }}>
-                                        <span class="dot"></span> Deltag
+                                        <span class="dot"></span> {{ __('ui.attending') }}
                                     </button>
                                 </form>
                                 <form action="{{ route('events.rsvp', ['eventId' => $event->id]) }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="status" value="declined" />
                                     <button type="submit" class="rsvp-menu-item declined">
-                                        <span class="dot"></span> Deltager ikke
+                                        <span class="dot"></span> {{ __('ui.not_attending') }}
                                     </button>
                                 </form>
                             </div>
@@ -238,15 +238,15 @@
                 <svg fill="currentColor" viewBox="0 0 20 20" class="confirm-icon" xmlns="http://www.w3.org/2000/svg">
                     <path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path>
                 </svg>
-                <h2 id="confirm-title" class="confirm-title">Er du sikker?</h2>
-                <p class="confirm-text">Vil du slette denne begivenhed? Dette kan ikke fortrydes.</p>
+                <h2 id="confirm-title" class="confirm-title">{{ __('ui.confirm_are_you_sure') }}</h2>
+                <p class="confirm-text">{{ __('ui.confirm_delete_event') }}</p>
             </div>
             <div class="confirm-actions">
-                <button type="button" class="confirm-btn cancel" onclick="closeDeleteModal()">Annuller</button>
+                <button type="button" class="confirm-btn cancel" onclick="closeDeleteModal()">{{ __('ui.cancel') }}</button>
                 <form id="delete-event-form" action="{{ url('/events/delete/'.$event->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="confirm-btn danger">Slet</button>
+                    <button type="submit" class="confirm-btn danger">{{ __('ui.delete') }}</button>
                 </form>
             </div>
         </div>
@@ -259,20 +259,20 @@
     <div id="volunteer-confirm-modal" class="volunteer-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="volunteer-confirm-title" style="display:none;">
         <div class="volunteer-confirm-modal__dialog">
             <div class="volunteer-confirm-modal__header">
-                <h2 id="volunteer-confirm-title">Bliv frivillig?</h2>
+                <h2 id="volunteer-confirm-title">{{ __('ui.confirm_volunteer_title') }}</h2>
                 <button type="button" class="volunteer-confirm-modal__close" onclick="closeVolunteerConfirm()" aria-label="Luk">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
             <div class="volunteer-confirm-modal__body">
-                <p id="volunteer-confirm-text">Du er ved at melde dig som frivillig på denne begivenhed.</p>
+                <p id="volunteer-confirm-text">{{ __('ui.confirm_volunteer_text') }}</p>
             </div>
             <div class="volunteer-confirm-modal__actions">
-                <button type="button" class="btn secondary-btn" onclick="closeVolunteerConfirm()">Annuller</button>
+                <button type="button" class="btn secondary-btn" onclick="closeVolunteerConfirm()">{{ __('ui.cancel') }}</button>
 
                 <form id="volunteer-join-form" action="{{ route('events.volunteer', ['eventId' => $event->id]) }}" method="POST" style="display:none;">
                     @csrf
-                    <button type="submit" class="btn primary-btn">Ja, bliv frivillig</button>
+                    <button type="submit" class="btn primary-btn">{{ __('ui.yes_become_volunteer') }}</button>
                 </form>
             </div>
         </div>
@@ -294,8 +294,8 @@
                         </svg>
                     </span>
                     <div class="modal-title">
-                        <h2>Inviter til begivenhed</h2>
-                        <p class="modal-subtitle">Tilføj modtagere hurtigt via nye e-mails, tidligere inviterede eller hele grupper.</p>
+                        <h2>{{ __('ui.invite_to_event') }}</h2>
+                        <p class="modal-subtitle">{{ __('ui.invite_intro') }}</p>
                     </div>
                 </div>
                 <button class="modal-close-btn" onclick="closeInviteModal()" aria-label="Luk">
@@ -309,13 +309,13 @@
                     <div class="invite-category-tabs">
                         <div class="invite-category-list" role="tablist" aria-label="Vælg modtager-type">
                             <button type="button" class="invite-category-btn is-active" data-target="new" role="tab" aria-selected="true">
-                                Nye e-mails
+                                {{ __('ui.new_emails') }}
                             </button>
                             <button type="button" class="invite-category-btn" data-target="previous" role="tab" aria-selected="false">
-                                Tidligere inviterede
+                                {{ __('ui.previous_invitees') }}
                             </button>
                             <button type="button" class="invite-category-btn" data-target="groups" role="tab" aria-selected="false">
-                                Grupper
+                                {{ __('ui.groups_title') }}
                             </button>
                         </div>
                     </div>
@@ -323,15 +323,15 @@
                     <div class="invite-section is-active" data-section="new">
                         <div class="section-heading">
                             <div>
-                                <h3>Nye e-mails</h3>
-                                <p class="invite-section-subtitle">Tilføj nye personer med det samme – ét eller flere adresser ad gangen.</p>
+                                <h3>{{ __('ui.new_emails') }}</h3>
+                                <p class="invite-section-subtitle">{{ __('ui.new_emails_intro') }}</p>
                             </div>
-                            <span class="pill soft">Ny</span>
+                            <span class="pill soft">{{ __('ui.new_emails') }}</span>
                         </div>
                         <div class="email-input-container">
                             <div class="email-input-group">
-                                <input type="email" id="email-input" placeholder="Indtast e-mailadresse" class="email-input">
-                                <button type="button" onclick="addEmail()" class="add-email-btn">Tilføj</button>
+                                <input type="email" id="email-input" placeholder="{{ __('ui.email') }}" class="email-input">
+                                <button type="button" onclick="addEmail()" class="add-email-btn">{{ __('ui.add') }}</button>
                             </div>
                         </div>
                     </div>
@@ -339,15 +339,15 @@
                     <div class="invite-section" data-section="previous">
                         <div class="section-heading">
                             <div>
-                                <h3>Tidligere inviterede</h3>
-                                <p class="invite-section-subtitle">Find og geninviter personer du allerede har kontaktet.</p>
+                                <h3>{{ __('ui.previous_invitees') }}</h3>
+                                <p class="invite-section-subtitle">{{ __('ui.previous_invitees_intro') }}</p>
                             </div>
-                            <span class="pill neutral">Historik</span>
+                            <span class="pill neutral">{{ __('ui.history') }}</span>
                         </div>
                         <div class="search-container">
                             <div class="search-input-wrapper">
                                 <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                <input type="text" id="search-invitees" placeholder="Søg efter tidligere inviterede..." class="search-input">
+                                <input type="text" id="search-invitees" placeholder="{{ __('ui.search_participant') }}" class="search-input">
                             </div>
                         </div>
                         <div id="invitees-list" class="invitees-list"></div>
@@ -356,15 +356,15 @@
                     <div class="invite-section" data-section="groups">
                         <div class="section-heading">
                             <div>
-                                <h3>Grupper</h3>
-                                <p class="invite-section-subtitle">Inviter et helt hold på én gang. Vi tilføjer alle medlemmers e-mails til listen.</p>
+                                <h3>{{ __('ui.groups_title') }}</h3>
+                                <p class="invite-section-subtitle">{{ __('ui.groups_intro') }}</p>
                             </div>
-                            <span class="pill accent">Hold</span>
+                            <span class="pill accent">{{ __('ui.team') }}</span>
                         </div>
                         <div class="search-container group-search-container">
                             <div class="search-input-wrapper">
                                 <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                <input type="text" id="search-groups" placeholder="Søg efter en gruppe..." class="search-input">
+                                <input type="text" id="search-groups" placeholder="{{ __('ui.groups_title') }}" class="search-input">
                             </div>
                         </div>
                         <div id="groups-list" class="groups-list grid"></div>
@@ -372,19 +372,19 @@
 
                     <section class="selected-recipients-card" aria-live="polite">
                         <div class="selected-recipients-header">
-                            <h3>Valgte modtagere</h3>
+                            <h3>{{ __('ui.selected_recipients') }}</h3>
                             <span class="selected-recipients-chip" id="selected-recipients-chip">0</span>
                         </div>
-                        <p class="selected-recipients-subtitle">Her ser du altid, hvem der bliver inviteret, inden du sender.</p>
+                        <p class="selected-recipients-subtitle">{{ __('ui.selected_recipients_intro') }}</p>
                         <div id="email-list" class="email-list"></div>
                     </section>
                     
                     <div class="invite-footer">
                         <div class="invite-footer-meta">
-                            <span class="invite-count" id="invite-count-label">Ingen modtagere valgt endnu.</span>
+                            <span class="invite-count" id="invite-count-label">{{ __('ui.no_recipients_selected') }}</span>
                             <span class="invite-feedback" id="invite-feedback" aria-live="polite"></span>
                         </div>
-                        <button type="button" onclick="sendInvitations()" class="btn primary-btn" id="send-invitations-btn" disabled>Send invitationer</button>
+                        <button type="button" onclick="sendInvitations()" class="btn primary-btn" id="send-invitations-btn" disabled>{{ __('ui.send_invitations') }}</button>
                     </div>
                 </form>
             </div>
@@ -424,12 +424,12 @@
             if (leaveForm) leaveForm.style.display = 'none';
 
             if (mode === 'leave') {
-                if (title) title.textContent = 'Fortryd frivilligrolle?';
+                if (title) title.textContent = '{{ __('ui.stop_volunteer_title') }}';
                 if (text) text.textContent = 'Du bliver sat tilbage som almindelig deltager. Er du sikker på, at du vil fortsætte?';
                 if (leaveForm) leaveForm.style.display = 'inline-flex';
             } else {
-                if (title) title.textContent = 'Bliv frivillig?';
-                if (text) text.textContent = 'Som frivillig kan du hjælpe med opgaver på begivenheden. Vil du fortsætte?';
+                if (title) title.textContent = '{{ __('ui.confirm_volunteer_title') }}';
+                if (text) text.textContent = '{{ __('ui.confirm_volunteer_text') }}';
                 if (joinForm) joinForm.style.display = 'inline-flex';
             }
 
@@ -509,22 +509,22 @@
             const emailInput = document.getElementById('email-input');
             const email = emailInput.value.trim();
             if (!email) {
-                setInviteFeedback('Skriv en e-mailadresse for at tilføje en modtager.', 'warning');
+                setInviteFeedback('{{ __('ui.enter_email_prompt') }}', 'warning');
                 return;
             }
             if (!isValidEmail(email)) {
-                setInviteFeedback('E-mailadressen ser ikke gyldig ud.', 'warning');
+                setInviteFeedback('{{ __('ui.invalid_email') }}', 'warning');
                 return;
             }
             if (addedEmails.includes(email)) {
-                setInviteFeedback('Denne e-mail er allerede valgt.', 'warning');
+                setInviteFeedback('{{ __('ui.email_already_selected') }}', 'warning');
                 return;
             }
 
             if (email && isValidEmail(email) && !addedEmails.includes(email)) {
                 addedEmails.push(email);
                 emailInput.value = '';
-                setInviteFeedback('Modtager tilføjet.', 'success');
+                setInviteFeedback('{{ __('ui.recipient_added') }}', 'success');
                 updateEmailList();
             }
         }
@@ -541,7 +541,7 @@
 
             emailList.innerHTML = '';
             if (addedEmails.length === 0) {
-                emailList.innerHTML = '<div class="email-list-empty">Ingen modtagere endnu. Tilføj e-mails, tidligere inviterede eller grupper.</div>';
+                emailList.innerHTML = '<div class="email-list-empty">{{ __('ui.no_recipients_yet') }}</div>';
             }
 
             addedEmails.forEach(email => {
@@ -552,7 +552,7 @@
                 const removeButton = document.createElement('button');
                 removeButton.type = 'button';
                 removeButton.className = 'remove-email-btn';
-                removeButton.setAttribute('aria-label', 'Fjern ' + email);
+                removeButton.setAttribute('aria-label', '{{ __('ui.delete') }} ' + email);
                 removeButton.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
                 removeButton.addEventListener('click', function() { removeEmail(email); });
                 emailTag.appendChild(emailText);
@@ -567,11 +567,11 @@
                 selectedChip.textContent = String(count);
             }
             if (count === 0) {
-                if (countLabel) countLabel.textContent = 'Ingen modtagere valgt endnu.';
+                if (countLabel) countLabel.textContent = '{{ __('ui.no_recipients_selected') }}';
             } else if (count === 1) {
-                if (countLabel) countLabel.textContent = '1 modtager klar til invitation.';
+                if (countLabel) countLabel.textContent = '{{ __('ui.one_recipient_ready') }}';
             } else {
-                if (countLabel) countLabel.textContent = count + ' modtagere klar til invitation.';
+                if (countLabel) countLabel.textContent = '{{ __('ui.many_recipients_ready') }}'.replace(':count', String(count));
             }
             if (sendBtn) {
                 sendBtn.disabled = count === 0;
@@ -592,7 +592,7 @@
                 .filter(g => (g.name || '').toLowerCase().includes(normalized))
                 .slice(0, 3);
             if (!matches.length) {
-                groupsList.innerHTML = '<div class="group-card empty">Ingen grupper matcher din søgning.</div>';
+                groupsList.innerHTML = '<div class="group-card empty">{{ __('ui.no_groups_match') }}</div>';
                 return;
             }
             matches.forEach(group => {
@@ -602,9 +602,9 @@
                     <div class="group-avatar" style="background:${stringToColor(group.name)}">${group.name.charAt(0)}</div>
                     <div class="group-meta">
                         <div class="group-name">${group.name}</div>
-                        <div class="group-sub">${group.members ?? 0} medlemmer</div>
+                        <div class="group-sub">${group.members ?? 0} {{ __('ui.groups') }}</div>
                     </div>
-                    <button type="button" class="group-action" title="Tilføj alle medlemmer fra denne gruppe">Tilføj</button>
+                    <button type="button" class="group-action" title="{{ __('ui.add_all_group_members') }}">{{ __('ui.add') }}</button>
                 `;
                 card.querySelector('.group-action').addEventListener('click', () => addGroupToInvites(group));
                 groupsList.appendChild(card);
@@ -631,14 +631,14 @@
                     }
                 });
                 if (addedCount > 0) {
-                    setInviteFeedback(addedCount + ' modtagere tilføjet fra gruppen "' + (group.name || '') + '".', 'success');
+                    setInviteFeedback(addedCount + ' {{ __('ui.recipient_added_previous') }}', 'success');
                 } else {
-                    setInviteFeedback('Alle fra denne gruppe er allerede valgt.', 'neutral');
+                    setInviteFeedback('{{ __('ui.recipient_already_selected') }}', 'neutral');
                 }
                 updateEmailList();
             } catch (e) {
                 console.error('Fejl ved tilføjelse af gruppe til invitationer', e);
-                setInviteFeedback('Kunne ikke hente medlemmer fra gruppen.', 'warning');
+                setInviteFeedback('{{ __('ui.could_not_fetch_invitees') }}', 'warning');
             }
         }
 
@@ -670,14 +670,14 @@
 
         async function loadPreviousInvitees() {
             const inviteesList = document.getElementById('invitees-list');
-            inviteesList.innerHTML = '<div class="invitee-item">Henter inviterede...</div>';
+            inviteesList.innerHTML = '<div class="invitee-item">{{ __('ui.fetching_invitees') }}</div>';
             try {
                 const res = await fetch('{{ route('events.invitees', $event->id) }}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
                 if (!res.ok) throw new Error('Failed');
                 previousInvitees = await res.json() || [];
                 renderInvitees();
             } catch (e) {
-                inviteesList.innerHTML = '<div class="invitee-item">Kunne ikke hente inviterede.</div>';
+                inviteesList.innerHTML = '<div class="invitee-item">{{ __('ui.could_not_fetch_invitees') }}</div>';
             }
         }
 
@@ -688,7 +688,7 @@
                 .filter(i => ((i.name || '').toLowerCase().includes(normalized) || (i.email || '').toLowerCase().includes(normalized)))
                 .slice(0, 3);
             if (!items.length) {
-                    inviteesList.innerHTML = '<div class="invitee-item">Ingen tidligere inviterede</div>';
+                    inviteesList.innerHTML = '<div class="invitee-item">{{ __('ui.no_previous_invitees') }}</div>';
                     return;
                 }
             inviteesList.innerHTML = '';
@@ -700,11 +700,11 @@
                     <div class="invitee-info">
                         <div class="invitee-avatar">${initials}</div>
                         <div class="invitee-details">
-                            <span class="invitee-name">${i.name || 'Ukendt'}</span>
+                            <span class="invitee-name">${i.name || '{{ __('ui.unknown') }}'}</span>
                             <span class="invitee-email">${i.email}</span>
                         </div>
                     </div>
-                    <button type="button" class="invitee-select-btn">Vælg</button>
+                    <button type="button" class="invitee-select-btn">{{ __('ui.select') }}</button>
                 `;
                 item.querySelector('.invitee-select-btn').addEventListener('click', () => selectInvitee(i.email));
                 inviteesList.appendChild(item);
@@ -714,10 +714,10 @@
         function selectInvitee(email) {
             if (!addedEmails.includes(email)) {
                 addedEmails.push(email);
-                setInviteFeedback('Modtager tilføjet fra tidligere inviterede.', 'success');
+                setInviteFeedback('{{ __('ui.recipient_added_previous') }}', 'success');
                 updateEmailList();
             } else {
-                setInviteFeedback('Denne modtager er allerede valgt.', 'neutral');
+                setInviteFeedback('{{ __('ui.recipient_already_selected') }}', 'neutral');
             }
         }
 
@@ -725,7 +725,7 @@
             const form = document.querySelector('#invite-modal form');
             if (!form) return;
             if (!addedEmails.length) {
-                setInviteFeedback('Vælg mindst én modtager før du sender.', 'warning');
+                setInviteFeedback('{{ __('ui.select_at_least_one') }}', 'warning');
                 return;
             }
 
@@ -745,9 +745,9 @@
             const sendBtn = document.getElementById('send-invitations-btn');
             if (sendBtn) {
                 sendBtn.disabled = true;
-                sendBtn.textContent = 'Sender...';
+                sendBtn.textContent = '{{ __('ui.sending_invitations') }}';
             }
-            setInviteFeedback('Invitationer sendes nu...', 'neutral');
+            setInviteFeedback('{{ __('ui.sending_invitations') }}', 'neutral');
 
             form.submit();
         }

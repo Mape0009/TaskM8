@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'TaskM8 | Opret Konto';
-        $metaDescription = 'Opret en konto på TaskM8 og kom i gang på få minutter.';
+        $pageTitle = 'TaskM8 | ' . __('ui.sign_up');
+        $metaDescription = __('ui.get_started');
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -21,50 +21,50 @@
 </head>
 <body class="signup-page">
     <div id="tm8-page-loader" class="tm8-page-loader" aria-hidden="true">
-        <div class="tm8-page-loader__card" role="status" aria-live="polite" aria-label="Opretter konto">
+        <div class="tm8-page-loader__card" role="status" aria-live="polite" aria-label="{{ __('ui.sign_up') }}">
             <div class="loading-wave" aria-hidden="true">
                 <div class="loading-bar"></div>
                 <div class="loading-bar"></div>
                 <div class="loading-bar"></div>
                 <div class="loading-bar"></div>
             </div>
-            <h2 class="tm8-page-loader__title">Opretter konto</h2>
-            <p class="tm8-page-loader__text">Vi gør din profil klar.</p>
+            <h2 class="tm8-page-loader__title">{{ __('ui.sign_up') }}</h2>
+            <p class="tm8-page-loader__text">{{ __('ui.get_started') }}</p>
         </div>
     </div>
 
     <div class="auth-container">
-        <h2>Opret Konto</h2>
+        <h2>{{ __('ui.sign_up') }}</h2>
         <form action="{{ route('user.create') }}" method="POST">
             @csrf
             <div class="input-group">
-                <label for="name">Navn</label>
-                <input type="text" id="name" name="name" placeholder="Skriv dit navn" required>
+                <label for="name">{{ __('ui.name') }}</label>
+                <input type="text" id="name" name="name" placeholder="{{ __('ui.name') }}" required>
             </div>
             <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Skriv din email" value="{{ request('email') }}" required>
+                <label for="email">{{ __('ui.email') }}</label>
+                <input type="email" id="email" name="email" placeholder="{{ __('ui.email') }}" value="{{ request('email') }}" required>
             </div>
             <div class="input-group">
-                <label for="password">Adgangskode</label>
-                <input type="password" id="password" name="password" placeholder="Lav adgangskode" required>
+                <label for="password">{{ __('ui.new_password') }}</label>
+                <input type="password" id="password" name="password" placeholder="{{ __('ui.new_password') }}" required>
             </div>
             <div class="input-group">
-                <label for="confirm-password">Bekræft adgangskode</label>
-                <input type="password" id="confirm-password" name="password_confirmation" placeholder="Bekræft adgangskode" required>
+                <label for="confirm-password">{{ __('ui.confirm_new_password') }}</label>
+                <input type="password" id="confirm-password" name="password_confirmation" placeholder="{{ __('ui.confirm_new_password') }}" required>
             </div>
             <div class="input-group">
-                <label for="pin">Invitationskode (PIN)</label>
-                <input type="text" id="pin" name="pin" placeholder="4-cifret kode" value="{{ request('pin') }}" maxlength="4">
+                <label for="pin">PIN</label>
+                <input type="text" id="pin" name="pin" placeholder="PIN" value="{{ request('pin') }}" maxlength="4">
             </div>
             <div class="input-group">
-                <label for="phone">Telefon-Nummer (Valgfrit)</label>
-                <input type="tel" id="phone" name="phonenumber" placeholder="Skriv dit telefon-nummer">
+                <label for="phone">{{ __('ui.phone_optional') }}</label>
+                <input type="tel" id="phone" name="phonenumber" placeholder="{{ __('ui.phone') }}">
             </div>
             <input type="hidden" name="event_id" value="{{ request('event') }}">
-            <button type="submit" class="btn primary-btn form-submit">Opret Konto</button>
+            <button type="submit" class="btn primary-btn form-submit">{{ __('ui.sign_up') }}</button>
         </form>
-        <p>Har du allerede en konto? <a href="/signin">Login</a></p>
+        <p>{{ __('ui.already_account') }} <a href="/signin">{{ __('ui.login') }}</a></p>
     </div>
 
     <script>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'TaskM8 | Begivenheder';
-        $metaDescription = 'Se dine begivenheder og få hurtigt overblik i TaskM8.';
+        $pageTitle = 'TaskM8 | ' . __('ui.events');
+        $metaDescription = __('ui.guest_subtitle');
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -27,27 +27,27 @@
             @endphp
             <section class="overview-hero">
                 <div class="hero-copy">
-                    <p class="eyebrow">Begivenheder</p>
-                    <h1>Få overblik over dine begivenheder</h1>
+                    <p class="eyebrow">{{ __('ui.events') }}</p>
+                    <h1>{{ __('ui.guest_title') }}</h1>
                     <p class="lede">
-                        Se dine kommende aktiviteter, håndter deltagere og spring direkte ind i opgaverne. Du kan altid åbne detaljer eller invitere flere deltagere.
+                        {{ __('ui.events_page_intro') }}
                     </p>
                     <div class="hero-meta">
-                        <span class="pill">Aktive begivenheder: {{ $activeEventsCount }}</span>
+                        <span class="pill">{{ __('ui.hero_active_events') }}: {{ $activeEventsCount }}</span>
                         @auth
                         @else
-                            <span class="pill pill-muted">Log ind for at se dine begivenheder</span>
+                            <span class="pill pill-muted">{{ __('ui.login_to_view_events') }}</span>
                         @endauth
                     </div>
                 </div>
                 <div class="hero-actions">
-                    <a href="{{ url('/dashboard?open=create') }}" class="btn create-btn">Opret begivenhed</a>
-                    <a href="{{ url('/previousEvents') }}" class="btn secondary-ghost">Se afsluttede</a>
+                    <a href="{{ url('/dashboard?open=create') }}" class="btn create-btn">{{ __('ui.create_event') }}</a>
+                    <a href="{{ url('/previousEvents') }}" class="btn secondary-ghost">{{ __('ui.previous_events') }}</a>
                 </div>
             </section>
 
             <section class="event-listing">
-                <h2>Mine begivenheder</h2>
+                <h2>{{ __('ui.stat_my_events') }}</h2>
                 <div class="event-list">
                     @forelse($events as $event)
                         <div class="event-card">
@@ -78,28 +78,28 @@
                                 @endphp
                                 @if($hasMenu)
                                 <div class="event-kebab rsvp-menu" id="event-menu-{{ $event->id }}">
-                                    <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('event-menu-{{ $event->id }}')" aria-label="Åbn menu">
+                                    <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('event-menu-{{ $event->id }}')" aria-label="{{ __('ui.open_menu') }}">
                                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="17" r="1"></circle></svg>
                                     </button>
                                     <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 200px;">
                                         @auth
                                             @if($canCreateTask)
-                                                <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">Opret opgave</a>
+                                                <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">{{ __('ui.create_task') }}</a>
                                             @endif
                                             @if($canViewTask)
-                                                <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">Opgaver</a>
+                                                <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">{{ __('ui.tasks') }}</a>
                                             @endif
                                             @if($canInvite)
-                                                <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=invite">Inviter</a>
+                                                <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=invite">{{ __('ui.invite') }}</a>
                                             @endif
                                             @if($canManageAnyRole)
-                                                <a class="rsvp-menu-item" href="{{ route('events.participants', ['eventId' => $event->id]) }}">Uddel roller</a>
+                                                <a class="rsvp-menu-item" href="{{ route('events.participants', ['eventId' => $event->id]) }}">{{ __('ui.assign_roles') }}</a>
                                             @endif
                                             @if($canEditEvent)
-                                                <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">Rediger begivenhed</a>
+                                                <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">{{ __('ui.edit_event') }}</a>
                                             @endif
                                             @if($isOwnerMenu)
-                                                <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
+                                                <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">{{ __('ui.delete_event') }}</a>
                                             @endif
                                         @endauth
                                     </div> 
@@ -108,12 +108,12 @@
                             </div>
                             <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
                             <div class="event-actions">
-                                <a href="/events/{{ $event->id }}" class="btn primary-btn event-main-action">Se detaljer</a>
-                                <button type="button" class="btn secondary-btn event-main-action" onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">Deltagere</button>
+                                <a href="/events/{{ $event->id }}" class="btn primary-btn event-main-action">{{ __('ui.details') }}</a>
+                                <button type="button" class="btn secondary-btn event-main-action" onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">{{ __('ui.participants') }}</button>
                             </div>
                         </div>
                     @empty
-                        <p>Ingen begivenheder fundet.</p>
+                        <p>{{ __('ui.no_events_found') }}</p>
                     @endforelse
                 </div>
             </section>
@@ -151,8 +151,8 @@ document.addEventListener('click', function(e){
                         </svg>
                     </div>
                     <div class="participants-modal-title">
-                        <h2 id="participants-modal-title">Deltagere</h2>
-                        <p class="participants-modal-subtitle" id="participants-modal-subtitle">Se alle deltagere for begivenheden</p>
+                        <h2 id="participants-modal-title">{{ __('ui.participants_modal_title') }}</h2>
+                        <p class="participants-modal-subtitle" id="participants-modal-subtitle">{{ __('ui.participants_modal_subtitle') }}</p>
                     </div>
                 </div>
                 <button class="participants-modal-close-btn" onclick="closeParticipantsModal()" aria-label="Luk">
@@ -164,19 +164,19 @@ document.addEventListener('click', function(e){
             </div>
             <div class="participants-modal-body">
                 <div class="participants-search-section">
-                    <input type="text" id="participants-search" class="participants-search-input" placeholder="Søg efter deltager...">
+                    <input type="text" id="participants-search" class="participants-search-input" placeholder="{{ __('ui.search_participant') }}">
                     <div class="participants-categories">
                         <button type="button" class="participants-category-btn active" data-category="all">
-                            Alle <span class="count" id="count-all">0</span>
+                            {{ __('ui.all') }} <span class="count" id="count-all">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="accepted">
-                            Deltager <span class="count" id="count-accepted">0</span>
+                            {{ __('ui.attending') }} <span class="count" id="count-accepted">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="declined">
-                            Deltager ikke <span class="count" id="count-declined">0</span>
+                            {{ __('ui.not_attending') }} <span class="count" id="count-declined">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="pending">
-                            Afventer svar <span class="count" id="count-pending">0</span>
+                            {{ __('ui.awaiting_response') }} <span class="count" id="count-pending">0</span>
                         </button>
                     </div>
                 </div>
@@ -193,7 +193,7 @@ document.addEventListener('click', function(e){
                                 <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
                                 <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
                             </svg>
-                            Henter deltagere...
+                            {{ __('ui.loading_participants') }}
                         </div>
                     </div>
                 </div>

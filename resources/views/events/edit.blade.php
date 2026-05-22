@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskM8 | Rediger begivenhed</title>
+    <title>TaskM8 | {{ __('ui.edit_event') }}</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/editevent.css') }}">
@@ -16,7 +16,7 @@
         <div class="edit-container">
             <div class="edit-card">
                 <div class="edit-header">
-                    <h1 class="edit-title">Rediger begivenhed</h1>
+                    <h1 class="edit-title">{{ __('ui.edit_event') }}</h1>
                 </div>
 
                 <form class="edit-form" method="POST" action="{{ route('events.update', ['id' => $event->id]) }}">
@@ -24,37 +24,37 @@
                  @method('PUT')
 
                 <div class="form-row">
-                    <label for="eventName">Titel</label>
-                    <input type="text" id="eventName" name="eventName" value="{{ old('eventName', $event->eventName) }}" required placeholder="Indtast begivenhedens titel" />
+                    <label for="eventName">{{ __('ui.title') }}</label>
+                    <input type="text" id="eventName" name="eventName" value="{{ old('eventName', $event->eventName) }}" required placeholder="{{ __('ui.title') }}" />
                 </div>
 
                 <div class="form-row">
-                    <label for="location">Lokation</label>
-                    <input type="text" id="location" name="location" value="{{ old('location', $event->location) }}" placeholder="Indtast lokation" />
+                    <label for="location">{{ __('ui.location') }}</label>
+                    <input type="text" id="location" name="location" value="{{ old('location', $event->location) }}" placeholder="{{ __('ui.location') }}" />
                 </div>
 
                 <div class="edit-grid">
                     <div class="form-row">
-                        <label for="startDate">Start tidspunkt</label>
+                        <label for="startDate">{{ __('ui.start_time') }}</label>
                         <input type="datetime-local" class="date-input" id="startDate" name="startDate" value="{{ old('startDate', \Carbon\Carbon::parse($event->startDate)->format('Y-m-d\TH:i')) }}" required />
                     </div>
                     <div class="form-row">
-                        <label for="endDate">Slut tidspunkt</label>
+                        <label for="endDate">{{ __('ui.end_time') }}</label>
                         <input type="datetime-local" class="date-input" id="endDate" name="endDate" value="{{ old('endDate', \Carbon\Carbon::parse($event->endDate)->format('Y-m-d\TH:i')) }}" required />
                     </div>
                 </div>
 
                 <div class="form-row">
-                    <label for="description">Beskrivelse</label>
+                    <label for="description">{{ __('ui.description') }}</label>
                     <div style="position: relative;">
-                        <textarea id="description" name="description" rows="4" placeholder="Beskriv begivenheden" maxlength="800" style="padding-bottom: 22px;">{{ old('description', $event->description) }}</textarea>
+                        <textarea id="description" name="description" rows="4" placeholder="{{ __('ui.describe_event') }}" maxlength="800" style="padding-bottom: 22px;">{{ old('description', $event->description) }}</textarea>
                         <span id="description-counter" style="position: absolute; bottom: 8px; right: 8px; font-size: 12px; color: var(--text-muted, #6b7280);"></span>
                     </div>
                 </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn primary-btn">Gem ændringer</button>
-                        <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">Annuller</a>
+                        <button type="submit" class="btn primary-btn">{{ __('ui.save_changes') }}</button>
+                        <a href="{{ url('/events/'.$event->id) }}" class="btn secondary-btn">{{ __('ui.cancel') }}</a>
                     </div>
                 </form>
             </div>

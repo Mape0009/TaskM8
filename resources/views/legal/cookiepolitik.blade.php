@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'TaskM8 | Cookiepolitik';
-        $metaDescription = 'Hvad er cookies, og hvordan bruger TaskM8 dem?';
+        $pageTitle = __('ui.legal_cookie_page_title');
+        $metaDescription = __('ui.legal_cookie_meta');
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -20,66 +20,66 @@
 
         <header class="legal-hero" aria-labelledby="legal-title">
             <div class="legal-hero-head">
-                <div class="legal-eyebrow">Cookies</div>
-                <h1 id="legal-title" class="legal-title">Cookiepolitik</h1>
-                <p class="legal-sub">Kort: Cookies hjælper TaskM8 med at fungere. Vi bruger kun nødvendige cookies og ingen tracking.</p>
+                <div class="legal-eyebrow">{{ __('ui.legal_cookie_eyebrow') }}</div>
+                <h1 id="legal-title" class="legal-title">{{ __('ui.legal_cookie_title') }}</h1>
+                <p class="legal-sub">{{ __('ui.legal_cookie_sub') }}</p>
             </div>
         </header>
 
         <div class="legal-layout">
             <nav class="legal-toc" aria-label="Indholdsfortegnelse">
-                <h2>Indhold</h2>
+                <h2>{{ __('ui.legal_cookie_toc') }}</h2>
                 <div class="legal-toc-links">
-                    <a href="#hvad-er">Hvad er cookies?</a>
-                    <a href="#hvilke">Hvilke vi bruger</a>
-                    <a href="#varighed">Hvor længe</a>
-                    <a href="#kontrol">Styring</a>
-                    <a href="#tredjeparter">Tredjepart</a>
+                    <a href="#hvad-er">{{ __('ui.legal_cookie_what_link') }}</a>
+                    <a href="#hvilke">{{ __('ui.legal_cookie_which_link') }}</a>
+                    <a href="#varighed">{{ __('ui.legal_cookie_duration_link') }}</a>
+                    <a href="#kontrol">{{ __('ui.legal_cookie_control_link') }}</a>
+                    <a href="#tredjeparter">{{ __('ui.legal_cookie_third_party_link') }}</a>
                 </div>
             </nav>
 
             <div class="legal-content">
                 <section class="legal-section" id="hvad-er">
-                    <h2>Hvad er cookies?</h2>
-                    <p>Cookies er små filer, der gør hjemmesider bedre til dig. De husker fx login og indstillinger, så TaskM8 fungerer som den skal.</p>
+                    <h2>{{ __('ui.legal_cookie_what') }}</h2>
+                    <p>{{ __('ui.legal_cookie_what_text') }}</p>
                 </section>
 
                 <section class="legal-section" id="hvilke">
-                    <h2>Hvilke cookies bruger vi?</h2>
+                    <h2>{{ __('ui.legal_cookie_which') }}</h2>
                     <div class="legal-table">
                         <div class="legal-table-row">
-                            <strong>Sessioncookies</strong>
-                            <span>Holder dig logget ind, mens du bruger tjenesten.</span>
+                            <strong>{{ __('ui.legal_cookie_session_title') }}</strong>
+                            <span>{{ __('ui.legal_cookie_session_text') }}</span>
                         </div>
                         <div class="legal-table-row">
-                            <strong>Sikkerhedscookie</strong>
-                            <span>Beskytter din konto og forhindrer misbrug.</span>
+                            <strong>{{ __('ui.legal_cookie_security_title') }}</strong>
+                            <span>{{ __('ui.legal_cookie_security_text') }}</span>
                         </div>
                         <div class="legal-table-row">
-                            <strong>Samtykkecookie</strong>
-                            <span>Husker at du har godkendt cookies, så du ikke bliver spurgt igen.</span>
+                            <strong>{{ __('ui.legal_cookie_consent_title') }}</strong>
+                            <span>{{ __('ui.legal_cookie_consent_text') }}</span>
                         </div>
                     </div>
-                    <div class="legal-note">Vi bruger ingen tracking- eller reklamecookies.</div>
+                    <div class="legal-note">{{ __('ui.legal_cookie_note') }}</div>
                 </section>
 
                 <section class="legal-section" id="varighed">
-                    <h2>Hvor længe gemmes cookies?</h2>
+                    <h2>{{ __('ui.legal_cookie_duration') }}</h2>
                     <ul class="legal-list">
-                        <li>Sessioncookies slettes, når du lukker din browser</li>
-                        <li>Sikkerhedscookies slettes når du logger ud eller efter en kort periode</li>
-                        <li>Samtykkecookie kan gemmes i op til 12 måneder</li>
+                        <li>{{ __('ui.legal_cookie_session_li') }}</li>
+                        <li>{{ __('ui.legal_cookie_security_li') }}</li>
+                        <li>{{ __('ui.legal_cookie_consent_li') }}</li>
                     </ul>
                 </section>
 
                 <section class="legal-section" id="kontrol">
-                    <h2>Sådan styrer du cookies</h2>
-                    <p>Du kan altid slette eller blokere cookies i din browser. Bemærk at nogle funktioner kan blive påvirket, hvis du blokerer nødvendige cookies.</p>
+                    <h2>{{ __('ui.legal_cookie_control') }}</h2>
+                    <p>{{ __('ui.legal_cookie_control_text') }}</p>
                 </section>
 
                 <section class="legal-section" id="tredjeparter">
-                    <h2>Tredjeparts cookies</h2>
-                    <p>TaskM8 bruger primært egne cookies til drift. Vi deler ikke cookie-data til reklameleverandører.</p>
+                    <h2>{{ __('ui.legal_cookie_third_party') }}</h2>
+                    <p>{{ __('ui.legal_cookie_third_party_text') }}</p>
                 </section>
             </div>
         </div>

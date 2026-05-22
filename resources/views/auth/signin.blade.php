@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'TaskM8 | Login';
-        $metaDescription = 'Log ind på din TaskM8-konto for at få adgang til dine begivenheder, opgaver og grupper. Indtast din e-mail og adgangskode for at fortsætte.';
+        $pageTitle = 'TaskM8 | ' . __('ui.login');
+        $metaDescription = __('ui.login_to_view_events');
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -21,20 +21,20 @@
 </head>
 <body class="signin-page">
     <div id="tm8-page-loader" class="tm8-page-loader" aria-hidden="true">
-        <div class="tm8-page-loader__card" role="status" aria-live="polite" aria-label="Logger ind">
+        <div class="tm8-page-loader__card" role="status" aria-live="polite" aria-label="{{ __('ui.login') }}">
             <div class="loading-wave" aria-hidden="true">
                 <div class="loading-bar"></div>
                 <div class="loading-bar"></div>
                 <div class="loading-bar"></div>
                 <div class="loading-bar"></div>
             </div>
-            <h2 class="tm8-page-loader__title">Logger ind</h2>
-            <p class="tm8-page-loader__text">Vi gør dit dashboard klar.</p>
+            <h2 class="tm8-page-loader__title">{{ __('ui.login') }}</h2>
+            <p class="tm8-page-loader__text">{{ __('ui.guest_subtitle') }}</p>
         </div>
     </div>
 
     <div class="auth-container">
-        <h2>Login</h2>
+        <h2>{{ __('ui.login') }}</h2>
         <form action="{{ route('loginPost') }}" method="POST">
             @csrf
             @if (session('error'))
@@ -50,16 +50,16 @@
 @endif
 
             <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Skriv email" required>
+                <label for="email">{{ __('ui.email') }}</label>
+                <input type="email" id="email" name="email" placeholder="{{ __('ui.email') }}" required>
             </div>
             <div class="input-group">
-                <label for="password">Adgangskode</label>
-                <input type="password" id="password" name="password" placeholder="Skriv adgangskode" required>
+                <label for="password">{{ __('ui.current_password') }}</label>
+                <input type="password" id="password" name="password" placeholder="{{ __('ui.current_password') }}" required>
             </div>
-            <button type="submit" class="btn primary-btn">Login</button>
+            <button type="submit" class="btn primary-btn">{{ __('ui.login') }}</button>
         </form>
-        <p>Har du ingen konto? <a href="/signup">Opret Konto</a></p>
+        <p>{{ __('ui.no_account') }} <a href="/signup">{{ __('ui.sign_up') }}</a></p>
     </div>
 
     <script>

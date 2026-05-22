@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'TaskM8 | Afsluttede begivenheder';
-        $metaDescription = 'Se og genbrug dine tidligere begivenheder i TaskM8. Brug afsluttede begivenheder som skabeloner, invitér de samme deltagere igen, eller ryd op i arkivet.';
+        $pageTitle = 'TaskM8 | ' . __('ui.previous_events_page');
+        $metaDescription = __('ui.previous_events_lead');
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -29,26 +29,26 @@
             @endphp
             <section class="overview-hero">
                 <div class="hero-copy">
-                    <p class="eyebrow">Afsluttede begivenheder</p>
-                    <h1>Se og genbrug dine bedste begivenheder</h1>
+                    <p class="eyebrow">{{ __('ui.previous_events_page') }}</p>
+                    <h1>{{ __('ui.previous_events_hero') }}</h1>
                     <p class="lede">
-                        Brug afsluttede begivenheder som skabeloner, invitér de samme deltagere igen, eller ryd op i arkivet. Du kan altid hoppe ind og se detaljer.
+                        {{ __('ui.previous_events_lead') }}
                     </p>
                     <div class="hero-meta">
                         @auth
                         @else
-                            <span class="pill pill-muted">Log ind for at se dine afsluttede events</span>
+                            <span class="pill pill-muted">{{ __('ui.login_to_view_previous') }}</span>
                         @endauth
                     </div>
                 </div>
                 <div class="hero-actions">
-                    <a href="{{ url('/dashboard?open=create') }}" class="btn create-btn">Planlæg ny begivenhed</a>
-                    <a href="{{ url('/events') }}" class="btn secondary-ghost">Tilbage til aktive</a>
+                    <a href="{{ url('/dashboard?open=create') }}" class="btn create-btn">{{ __('ui.plan_new_event') }}</a>
+                    <a href="{{ url('/events') }}" class="btn secondary-ghost">{{ __('ui.back_to_active') }}</a>
                 </div>
             </section>
 
             <section class="previous-events-listing">
-                <h2>Tidligere begivenheder</h2>
+                <h2>{{ __('ui.past_events') }}</h2>
                 <div class="event-list">
                     @forelse($previousEvents ?? [] as $event)
                         <div class="event-card">
@@ -68,11 +68,11 @@
                                 @endphp
                                 @if($isOwnerMenu)
                                 <div class="event-kebab rsvp-menu" id="prev-event-menu-{{ $event->id }}">
-                                    <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('prev-event-menu-{{ $event->id }}')" aria-label="Åbn menu">
+                                    <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('prev-event-menu-{{ $event->id }}')" aria-label="{{ __('ui.open_menu') }}">
                                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="17" r="1"></circle></svg>
                                     </button>
                                     <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 200px;">
-                                        <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
+                                        <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">{{ __('ui.delete_event') }}</a>
                                     </div>
                                 </div>
                                 @endif
@@ -80,15 +80,15 @@
                             @php
                                 $end = $event->endDate ? \Carbon\Carbon::parse($event->endDate) : null;
                             @endphp
-                            <p class="event-description">Sluttede: {{ $end ? $end->format('j.n.Y') . ' kl ' . $end->format('H:i') : '-' }}</p>
+                            <p class="event-description">{{ __('ui.previous_event_ended', ['date' => $end ? $end->format('j.n.Y') . ' kl ' . $end->format('H:i') : '-']) }}</p>
                             <div class="event-actions">
-                                <button type="button" class="btn secondary-btn" onclick="openTemplateModal({{ $event->id }}, '{{ addslashes($event->eventName) }}')">Brug som skabelon</button>
-                                <button type="button" class="btn secondary-btn" onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">Deltagere</button>
-                                <a href="/events/{{ $event->id }}" class="btn primary-btn">Se detaljer</a>
+                                <button type="button" class="btn secondary-btn" onclick="openTemplateModal({{ $event->id }}, '{{ addslashes($event->eventName) }}')">{{ __('ui.use_as_template') }}</button>
+                                <button type="button" class="btn secondary-btn" onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">{{ __('ui.participants') }}</button>
+                                <a href="/events/{{ $event->id }}" class="btn primary-btn">{{ __('ui.details') }}</a>
                             </div>
                         </div>
                     @empty
-                        <p>Ingen tidligere begivenheder.</p>
+                        <p>{{ __('ui.no_previous_events') }}</p>
                     @endforelse
                 </div>
             </section>
@@ -111,7 +111,7 @@
             m.style.display = 'flex';
             m.setAttribute('data-event-id', String(eventId));
             var title = document.getElementById('template-modal-title');
-            if (title) { title.textContent = 'Brug som skabelon – ' + eventName; }
+            if (title) { title.textContent = '{{ __('ui.template_title') }} – ' + eventName; }
         }
         function closeTemplateModal() {
             var m = document.getElementById('template-modal');
@@ -152,8 +152,8 @@
                         </svg>
                     </div>
                     <div class="participants-modal-title">
-                        <h2 id="participants-modal-title">Deltagere</h2>
-                        <p class="participants-modal-subtitle" id="participants-modal-subtitle">Se alle deltagere for begivenheden</p>
+                        <h2 id="participants-modal-title">{{ __('ui.participants_modal_title') }}</h2>
+                        <p class="participants-modal-subtitle" id="participants-modal-subtitle">{{ __('ui.participants_modal_subtitle') }}</p>
                     </div>
                 </div>
                 <button class="participants-modal-close-btn" onclick="closeParticipantsModal()" aria-label="Luk">
@@ -165,19 +165,19 @@
             </div>
             <div class="participants-modal-body">
                 <div class="participants-search-section">
-                    <input type="text" id="participants-search" class="participants-search-input" placeholder="Søg efter deltager...">
+                    <input type="text" id="participants-search" class="participants-search-input" placeholder="{{ __('ui.search_participant') }}">
                     <div class="participants-categories">
                         <button type="button" class="participants-category-btn active" data-category="all">
-                            Alle <span class="count" id="count-all">0</span>
+                            {{ __('ui.all') }} <span class="count" id="count-all">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="accepted">
-                            Deltager <span class="count" id="count-accepted">0</span>
+                            {{ __('ui.attending') }} <span class="count" id="count-accepted">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="declined">
-                            Deltager ikke <span class="count" id="count-declined">0</span>
+                            {{ __('ui.not_attending') }} <span class="count" id="count-declined">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="pending">
-                            Afventer svar <span class="count" id="count-pending">0</span>
+                            {{ __('ui.awaiting_response') }} <span class="count" id="count-pending">0</span>
                         </button>
                     </div>
                 </div>
@@ -194,7 +194,7 @@
                                 <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
                                 <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
                             </svg>
-                            Henter deltagere...
+                            {{ __('ui.loading_participants') }}
                         </div>
                     </div>
                 </div>
@@ -215,8 +215,8 @@
                         </svg>
                     </div>
                     <div class="participants-modal-title">
-                        <h2 id="template-modal-title">Brug som skabelon</h2>
-                        <p class="participants-modal-subtitle">Vil du beholde tidligere medlemmer i invitationen?</p>
+                        <h2 id="template-modal-title">{{ __('ui.template_title') }}</h2>
+                        <p class="participants-modal-subtitle">{{ __('ui.template_keep_question') }}</p>
                     </div>
                 </div>
                 <button class="participants-modal-close-btn" onclick="closeTemplateModal()" aria-label="Luk">

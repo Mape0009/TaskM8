@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'TaskM8 | Privatlivspolitik';
-        $metaDescription = 'Sådan behandler TaskM8 dine personoplysninger.';
+        $pageTitle = __('ui.legal_privacy_page_title');
+        $metaDescription = __('ui.legal_privacy_meta');
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -20,68 +20,68 @@
 
         <header class="legal-hero" aria-labelledby="legal-title">
             <div class="legal-hero-head">
-                <div class="legal-eyebrow">Privatliv</div>
-                <h1 id="legal-title" class="legal-title">Privatlivspolitik</h1>
-                <p class="legal-sub">Kort: Vi behandler dine data kun for at levere tjenesten. Her er hvad vi indsamler og hvorfor.</p>
+                <div class="legal-eyebrow">{{ __('ui.legal_privacy_eyebrow') }}</div>
+                <h1 id="legal-title" class="legal-title">{{ __('ui.legal_privacy_title') }}</h1>
+                <p class="legal-sub">{{ __('ui.legal_privacy_sub') }}</p>
             </div>
         </header>
 
         <div class="legal-layout">
             <nav class="legal-toc" aria-label="Indholdsfortegnelse">
-                <h2>Indhold</h2>
+                <h2>{{ __('ui.legal_privacy_toc') }}</h2>
                 <div class="legal-toc-links">
-                    <a href="#hvad-indsamler-vi">Hvad vi indsamler</a>
-                    <a href="#hvorfor-bruger-vi-det">Hvorfor</a>
-                    <a href="#hvor-længe">Opbevaring</a>
-                    <a href="#dine-rettigheder">Dine rettigheder</a>
-                    <a href="#sikkerhed">Sikkerhed</a>
+                    <a href="#hvad-indsamler-vi">{{ __('ui.legal_privacy_what_link') }}</a>
+                    <a href="#hvorfor-bruger-vi-det">{{ __('ui.legal_privacy_why_link') }}</a>
+                    <a href="#hvor-længe">{{ __('ui.legal_privacy_how_long_link') }}</a>
+                    <a href="#dine-rettigheder">{{ __('ui.legal_privacy_rights_link') }}</a>
+                    <a href="#sikkerhed">{{ __('ui.legal_privacy_security_link') }}</a>
                 </div>
             </nav>
 
             <div class="legal-content">
                 <section class="legal-section" id="hvad-indsamler-vi">
-                    <h2>Hvad indsamler vi?</h2>
+                    <h2>{{ __('ui.legal_privacy_what') }}</h2>
                     <div class="legal-table">
                         <div class="legal-table-row">
-                            <strong>Kontodata</strong>
-                            <span>Navn, e-mail og loginoplysninger – nødvendig for din konto.</span>
+                            <strong>{{ __('ui.legal_privacy_account_title') }}</strong>
+                            <span>{{ __('ui.legal_privacy_account_text') }}</span>
                         </div>
                         <div class="legal-table-row">
-                            <strong>Dit indhold</strong>
-                            <span>Begivenheder, opgaver, vagter og deltagerinfo du opretter.</span>
+                            <strong>{{ __('ui.legal_privacy_content_title') }}</strong>
+                            <span>{{ __('ui.legal_privacy_content_text') }}</span>
                         </div>
                     </div>
                 </section>
 
                 <section class="legal-section" id="hvorfor-bruger-vi-det">
-                    <h2>Hvorfor vi bruger data</h2>
+                    <h2>{{ __('ui.legal_privacy_why') }}</h2>
                     <ul class="legal-list">
-                        <li>For at levere og forbedre TaskM8</li>
-                        <li>For at sikre platformen og kontakte dig ved behov</li>
-                        <li>Kun nødvendige driftsleverandører får adgang (ingen salg af data)</li>
+                        <li>{{ __('ui.legal_privacy_why_li1') }}</li>
+                        <li>{{ __('ui.legal_privacy_why_li2') }}</li>
+                        <li>{{ __('ui.legal_privacy_why_li3') }}</li>
                     </ul>
-                    <div class="legal-note">Vi sælger ikke dine personoplysninger.</div>
+                    <div class="legal-note">{{ __('ui.legal_privacy_note') }}</div>
                 </section>
 
                 <section class="legal-section" id="hvor-længe">
-                    <h2>Hvor længe opbevarer vi data?</h2>
-                    <p>Vi beholder data kun så længe det er nødvendigt for tjenesten eller efter lovkrav. Sletter du din konto, fjerner vi personoplysninger i overensstemmelse med vores politik.</p>
+                    <h2>{{ __('ui.legal_privacy_how_long') }}</h2>
+                    <p>{{ __('ui.legal_privacy_how_long_text') }}</p>
                 </section>
 
                 <section class="legal-section" id="dine-rettigheder">
-                    <h2>Dine rettigheder</h2>
+                    <h2>{{ __('ui.legal_privacy_rights') }}</h2>
                     <ul class="legal-list">
-                        <li><strong>Indsigt</strong> – Se hvad vi gemmer om dig</li>
-                        <li><strong>Rettelse</strong> – Få forkerte oplysninger rettet</li>
-                        <li><strong>Sletning</strong> – Anmod om sletning af dine personoplysninger</li>
-                        <li><strong>Dataportabilitet</strong> – Få dine data i et standardformat</li>
+                        <li>{{ __('ui.legal_privacy_rights_li1') }}</li>
+                        <li>{{ __('ui.legal_privacy_rights_li2') }}</li>
+                        <li>{{ __('ui.legal_privacy_rights_li3') }}</li>
+                        <li>{{ __('ui.legal_privacy_rights_li4') }}</li>
                     </ul>
-                    <p>Kontakt os for at få hjælp til at bruge dine rettigheder.</p>
+                    <p>{{ __('ui.legal_privacy_rights_text') }}</p>
                 </section>
 
                 <section class="legal-section" id="sikkerhed">
-                    <h2>Sikkerhed</h2>
-                    <p>Vi beskytter data med moderne sikkerhedsforanstaltninger (kryptering, adgangskontrol og overvågning). Kun autoriserede medarbejdere har adgang ved behov.</p>
+                    <h2>{{ __('ui.legal_privacy_security') }}</h2>
+                    <p>{{ __('ui.legal_privacy_security_text') }}</p>
                 </section>
             </div>
         </div>

@@ -13,31 +13,31 @@
     ])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uddel roller</title>
+    <title>{{ __('ui.assign_roles') }}</title>
     <link rel="stylesheet" href="{{ asset('css/organizerOverview.css') }}">
 </head>
 <body>
     @include('partials.header', ['currentPage' => 'events'])
     <main class="roles-wrapper">
         <div class="roles-header">
-            <h1 class="roles-title">Uddel roller</h1>
+            <h1 class="roles-title">{{ __('ui.assign_roles') }}</h1>
             <div class="filter-search-container">
                 <div class="search">
-                    <input id="participant-search" type="text" placeholder="Søg efter deltager (navn eller email)">
+                    <input id="participant-search" type="text" placeholder="{{ __('ui.search_participant') }}">
                 </div>
                 <div class="role-filter">
                     <select id="role-filter" name="role-filter">
-                        <option value="">Alle roller</option>
-                        <option value="volunteer">Frivillige</option>
-                        <option value="coOwner">Medejer</option>
-                        <option value="taskManager">Opgaveansvarlig</option>
-                        <option value="taskWorker">Opgavemedlem</option>
-                        <option value="participant">Deltager</option>
+                        <option value="">{{ __('ui.role_filter_all') }}</option>
+                        <option value="volunteer">{{ __('ui.approve') }}</option>
+                        <option value="coOwner">{{ __('ui.co_owner') }}</option>
+                        <option value="taskManager">{{ __('ui.task_manager') }}</option>
+                        <option value="taskWorker">{{ __('ui.task_worker') }}</option>
+                        <option value="participant">{{ __('ui.participant_role') }}</option>
                     </select>
                 </div>
             </div>
             <div class="page-actions">
-                <a href="/events/{{ $eventId }}" class="btn ghost">Tilbage til begivenhed</a>
+                <a href="/events/{{ $eventId }}" class="btn ghost">{{ __('ui.go_back_event') }}</a>
             </div>
         </div>
 
@@ -60,7 +60,7 @@
 
         @if($volunteers->count() > 0 && $canManageVolunteers)
         <section class="volunteers-section" id="volunteers-section">
-            <h2 class="section-title">Frivillige til godkendelse</h2>
+            <h2 class="section-title">{{ __('ui.volunteers_to_approve') }}</h2>
             <div class="volunteers-list">
                 @foreach($volunteers as $volunteer)
                     @php
@@ -77,11 +77,11 @@
                         <div class="volunteer-actions">
                             <form action="{{ route('events.promoteFromVolunteer', ['participantId' => $volunteer->id]) }}" method="POST" class="inline-form">
                                 @csrf
-                                <button type="submit" class="btn success">Godkend</button>
+                                <button type="submit" class="btn success">{{ __('ui.approve') }}</button>
                             </form>
                             <form action="{{ route('events.removeVolunteer', ['participantId' => $volunteer->id]) }}" method="POST" class="inline-form">
                                 @csrf
-                                <button type="submit" class="btn danger">Afvis</button>
+                                <button type="submit" class="btn danger">{{ __('ui.reject') }}</button>
                             </form>
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                             <input type="hidden" name="participantId" value="{{ $participant->id }}">
                             <select class="role-select" name="eventRole" @disabled($isOwnerTarget || $isSelf)>
                                 @if($isOwnerTarget)
-                                    <option value="owner" selected>Ejer</option>
+                                    <option value="owner" selected>{{ __('ui.owner') }}</option>
                                 @else
                                     @php
                                         $canOrSelf = function($key) use ($canManage, $participant, $eventRole, $isSelf) {
@@ -140,27 +140,27 @@
                                         };
                                     @endphp
                                     @if($canOrSelf('coOwner'))
-                                        <option value="coOwner" {{ $participant->eventRole === $eventRole::coOwner->name ? 'selected' : '' }}>Med-ejer</option>
+                                        <option value="coOwner" {{ $participant->eventRole === $eventRole::coOwner->name ? 'selected' : '' }}>{{ __('ui.co_owner') }}</option>
                                     @endif
                                     @if($canOrSelf('taskManager'))
-                                        <option value="taskManager" {{ $participant->eventRole === $eventRole::taskManager->name ? 'selected' : '' }}>Opgaveansvarlig</option>
+                                        <option value="taskManager" {{ $participant->eventRole === $eventRole::taskManager->name ? 'selected' : '' }}>{{ __('ui.task_manager') }}</option>
                                     @endif
                                     @if($canOrSelf('taskWorker'))
-                                        <option value="taskWorker" {{ $participant->eventRole === $eventRole::taskWorker->name ? 'selected' : '' }}>Opgavemedlem</option>
+                                        <option value="taskWorker" {{ $participant->eventRole === $eventRole::taskWorker->name ? 'selected' : '' }}>{{ __('ui.task_worker') }}</option>
                                     @endif
                                     @if($canOrSelf('participant'))
-                                        <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>Deltager</option>
+                                        <option value="participant" {{ $participant->eventRole === $eventRole::participant->name ? 'selected' : '' }}>{{ __('ui.participant_role') }}</option>
                                     @endif
                                 @endif
                             </select>
                             @if(!($isOwnerTarget || $isSelf))
-                            <button type="submit" class="btn primary">Gem</button>
+                            <button type="submit" class="btn primary">{{ __('ui.save_changes') }}</button>
                             @endif
                         </form>
                     </div>
                 </div>
             @empty
-                <p>Ingen deltagere fundet.</p>
+                <p>{{ __('ui.no_events_found') }}</p>
             @endforelse
         </section>
     </main>
@@ -170,12 +170,12 @@
                 <svg fill="currentColor" viewBox="0 0 24 24" class="confirm-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M12 1.75c-.41 0-.82.1-1.19.3L4.5 5.1a2.25 2.25 0 0 0-1.19 1.98v4.92c0 5.16 3.55 9.94 8.46 11.25.16.04.33.04.47 0 4.91-1.31 8.46-6.09 8.46-11.25V7.08c0-.82-.45-1.58-1.19-1.98l-6.31-3.05c-.37-.2-.78-.3-1.2-.3Zm0 6.25a.75.75 0 0 1 .75.75v3.44l2.3 2.3a.75.75 0 0 1-1.06 1.06l-2.53-2.53a.75.75 0 0 1-.22-.53V8.75c0-.41.34-.75.76-.75Z"/>
                 </svg>
-                <h2 id="coowner-confirm-title" class="confirm-title">Bekræft Medejer</h2>
-                <p class="confirm-text">Du er ved at give Medejer-rollen. Medejere har udvidede rettigheder på begivenheden. Vil du fortsætte?</p>
+                <h2 id="coowner-confirm-title" class="confirm-title">{{ __('ui.confirm_co_owner_title') }}</h2>
+                <p class="confirm-text">{{ __('ui.confirm_continue') }}</p>
             </div>
             <div class="confirm-actions">
-                <button type="button" class="confirm-btn cancel" id="coowner-cancel-btn">Annuller</button>
-                <button type="button" class="confirm-btn success" id="coowner-confirm-btn">Bekræft</button>
+                <button type="button" class="confirm-btn cancel" id="coowner-cancel-btn">{{ __('ui.cancel') }}</button>
+                <button type="button" class="confirm-btn success" id="coowner-confirm-btn">{{ __('ui.confirm') }}</button>
             </div>
         </div>
     </div>

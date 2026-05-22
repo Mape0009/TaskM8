@@ -1,23 +1,60 @@
+@php
+    $supportedLocales = [
+        'da' => ['label' => 'Dansk', 'icon' => '🇩🇰', 'code' => 'DK'],
+        'en' => ['label' => 'English', 'icon' => '🇬🇧', 'code' => 'EN'],
+        'es' => ['label' => 'Español', 'icon' => '🇪🇸', 'code' => 'ES'],
+        'fi' => ['label' => 'Suomi', 'icon' => '🇫🇮', 'code' => 'FI'],
+        'it' => ['label' => 'Italiano', 'icon' => '🇮🇹', 'code' => 'IT'],
+        'uk' => ['label' => 'Українська', 'icon' => '🇺🇦', 'code' => 'UK'],
+        'ru' => ['label' => 'Русский', 'icon' => '🇷🇺', 'code' => 'RU'],
+    ];
+    $currentLocale = app()->getLocale();
+    $currentLocaleData = $supportedLocales[$currentLocale] ?? ['label' => strtoupper($currentLocale), 'icon' => '🌐', 'code' => strtoupper($currentLocale)];
+@endphp
 <header class="main-header{{ (!Auth::check() && ($currentPage ?? null) === 'dashboard') ? ' guest-dashboard' : '' }}">
     <div class="header-left">
         <div class="logo">
-            <a href="/dashboard" class="logo-link" aria-label="Gå til forside">
+            <a href="/dashboard" class="logo-link" aria-label="{{ __('ui.dashboard') }}">
                 <img src="{{ asset('TaskM8-Logo.png') }}" alt="TaskM8 Logo" class="logo-img logo-img-dark" />
                 <img src="{{ asset('TaskM8-Logo-Dark.png') }}" alt="TaskM8 Logo Dark" class="logo-img logo-img-light" />
             </a>
         </div>
         <nav class="navigation" id="main-nav">
             <ul>
-                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">Oversigt</a></li>
+                <li><a href="/dashboard" class="{{ $currentPage == 'dashboard' ? 'active' : '' }}">{{ __('ui.dashboard') }}</a></li>
                 @if (Auth::check())
-                <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">Begivenheder</a></li>
-                <li><a href="/previousEvents" class="{{ $currentPage == 'previousEvents' ? 'active' : '' }}">Afsluttede</a></li>
-                <li><a href="/groups/overview" class="{{ $currentPage == 'groups/overview' ? 'active' : '' }}">Grupper</a></li>
+                <li><a href="/events" class="{{ $currentPage == 'events' ? 'active' : '' }}">{{ __('ui.events') }}</a></li>
+                <li><a href="/previousEvents" class="{{ $currentPage == 'previousEvents' ? 'active' : '' }}">{{ __('ui.previous_events') }}</a></li>
+                <li><a href="/groups/overview" class="{{ $currentPage == 'groups/overview' ? 'active' : '' }}">{{ __('ui.groups') }}</a></li>
                 @endif
             </ul>
         </nav>
     </div>
     <div class="header-right">
+        <form action="{{ route('locale.switch') }}" method="POST" class="locale-switcher locale-switcher--menu" id="locale-switcher-form">
+            @csrf
+            <input type="hidden" name="locale" id="locale-switcher-input" value="{{ $currentLocale }}">
+            <button type="button" class="locale-switcher__trigger" id="locale-switcher-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="locale-switcher-menu" aria-label="{{ __('ui.language') }}: {{ $currentLocaleData['label'] }}">
+                <span class="locale-switcher__label">{{ $currentLocaleData['code'] }}</span>
+                <svg class="locale-switcher__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+            <div class="locale-switcher__menu" id="locale-switcher-menu" role="menu" aria-label="{{ __('ui.language') }}" hidden>
+                <div class="locale-switcher__menu-label">{{ __('ui.language') }}</div>
+                @foreach ($supportedLocales as $locale => $localeData)
+                    <button type="button" class="locale-switcher__option {{ $currentLocale === $locale ? 'is-active' : '' }}" data-locale="{{ $locale }}" role="menuitemradio" aria-checked="{{ $currentLocale === $locale ? 'true' : 'false' }}">
+                        <span class="locale-switcher__option-icon" aria-hidden="true">{{ $localeData['icon'] }}</span>
+                        <span class="locale-switcher__option-label">{{ $localeData['label'] }}</span>
+                        @if($currentLocale === $locale)
+                            <svg class="locale-switcher__option-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        @endif
+                    </button>
+                @endforeach
+            </div>
+        </form>
         <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
@@ -37,12 +74,57 @@
             <div class="notification-panel" id="notification-panel" hidden>
                 <div class="notification-panel__header">
                     <div>
-                        <p class="notification-panel__eyebrow">Notifikationer</p>
-                        <h3 class="notification-panel__title">Seneste 5</h3>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.getElementById('locale-switcher-form');
+                        const trigger = document.getElementById('locale-switcher-trigger');
+                        const menu = document.getElementById('locale-switcher-menu');
+                        const input = document.getElementById('locale-switcher-input');
+
+                        if (!form || !trigger || !menu || !input) return;
+
+                        const closeMenu = () => {
+                            menu.hidden = true;
+                            trigger.setAttribute('aria-expanded', 'false');
+                        };
+
+                        const openMenu = () => {
+                            menu.hidden = false;
+                            trigger.setAttribute('aria-expanded', 'true');
+                        };
+
+                        trigger.addEventListener('click', function () {
+                            if (menu.hidden) openMenu();
+                            else closeMenu();
+                        });
+
+                        menu.querySelectorAll('.locale-switcher__option').forEach(function (option) {
+                            option.addEventListener('click', function () {
+                                const locale = option.dataset.locale;
+                                if (!locale || input.value === locale) {
+                                    closeMenu();
+                                    return;
+                                }
+                                input.value = locale;
+                                form.submit();
+                            });
+                        });
+
+                        document.addEventListener('click', function (event) {
+                            if (!form.contains(event.target)) closeMenu();
+                        });
+
+                        document.addEventListener('keydown', function (event) {
+                            if (event.key === 'Escape') closeMenu();
+                        });
+                    });
+                    </script>
+                        <p class="notification-panel__eyebrow">{{ __('ui.notifications') }}</p>
+                        <h3 class="notification-panel__title">{{ __('ui.latest_notifications') }}</h3>
                     </div>
                     <div class="notification-panel__actions">
                         <span class="notification-panel__count" id="notification-count-pill">5 nye</span>
-                        <button type="button" class="notification-panel__mark-read" id="notification-mark-read-btn">Marker som læst</button>
+                        <button type="button" class="notification-panel__mark-read" id="notification-mark-read-btn">{{ __('ui.mark_as_read') }}</button>
                     </div>
                 </div>
                 <ul class="notification-panel__list" aria-label="Seneste notifikationer">
@@ -93,7 +175,7 @@
             <button class="user-profile-trigger" id="user-profile-trigger" aria-label="Open user menu">
                 <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
                 <div class="user-info-header">
-                    <p class="user-greeting">Velkommen, {{ Auth::user()->name }}!</p>
+                    <p class="user-greeting">{{ __('ui.welcome', ['name' => Auth::user()->name]) }}</p>
                 </div>
                 <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="6,9 12,15 18,9"></polyline>
@@ -116,7 +198,7 @@
                             <circle cx="12" cy="12" r="3"></circle>
                             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                         </svg>
-                        Indstillinger
+                        {{ __('ui.settings') }}
                     </button>
                     <div class="dropdown-divider"></div>
                     <form action="{{ route('logout') }}" method="POST" class="dropdown-logout-form">
@@ -127,7 +209,7 @@
                                 <polyline points="16,17 21,12 16,7"></polyline>
                                 <line x1="21" y1="12" x2="9" y2="12"></line>
                             </svg>
-                            Log ud
+                            {{ __('ui.logout') }}
                         </button>
                     </form>
                 </div>
@@ -135,11 +217,11 @@
         </div>
         @else
         <div class="login-header">
-            <a href="{{ route('login') }}" class="btn primary-btn">Log ind</a>
+            <a href="{{ route('login') }}" class="btn primary-btn">{{ __('ui.login') }}</a>
         </div>
         @endif
         @if (Auth::check())
-        <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Ny Begivenhed</button>
+        <button class="create-event-btn-header"><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> {{ __('ui.create_event') }}</button>
         @endif
     </div>
  </header>
@@ -151,8 +233,8 @@
                 <div class="modal-icon">
                 </div>
                 <div class="modal-title">
-                    <h2>Opret ny begivenhed</h2>
-                    <p class="modal-subtitle">Udfyld informationerne nedenfor</p>
+                    <h2>{{ __('ui.create_new_event') }}</h2>
+                    <p class="modal-subtitle">{{ __('ui.fill_information') }}</p>
                 </div>
             </div>
             <button class="modal-close-btn" id="close-modal-btn" aria-label="Luk">
@@ -167,48 +249,48 @@
             @csrf
             
             <div class="form-section">
-                <h3 class="section-title">Grundlæggende information</h3>
+                <h3 class="section-title">{{ __('ui.basic_information') }}</h3>
                 <div class="form-row">
-                    <label for="event-title">Titel</label>
-                    <input type="text" id="event-title" name="eventName" required placeholder="Indtast begivenhedens titel">
+                    <label for="event-title">{{ __('ui.title') }}</label>
+                    <input type="text" id="event-title" name="eventName" required placeholder="{{ __('ui.title') }}">
                 </div>
                 <div class="form-row">
-                    <label for="event-location">Lokation</label>
-                    <input type="text" id="event-location" name="location" required placeholder="Indtast lokation">
+                    <label for="event-location">{{ __('ui.location') }}</label>
+                    <input type="text" id="event-location" name="location" required placeholder="{{ __('ui.location') }}">
                 </div>
                 <div class="form-row">
-                    <label for="event-description">Beskrivelse</label>
+                    <label for="event-description">{{ __('ui.description') }}</label>
                     <div style="position: relative;">
-                        <textarea id="event-description" name="description" rows="3" required placeholder="Beskriv begivenheden" maxlength="800" style="padding-bottom: 22px;"></textarea>
+                        <textarea id="event-description" name="description" rows="3" required placeholder="{{ __('ui.describe_event') }}" maxlength="800" style="padding-bottom: 22px;"></textarea>
                         <span id="event-description-counter" style="position: absolute; bottom: 6px; right: 8px; font-size: 12px; color: var(--text-muted, #6b7280);">0/800</span>
                     </div>
                 </div>
             </div>
             
             <div class="form-section">
-                <h3 class="section-title">Tidspunkt</h3>
+                <h3 class="section-title">{{ __('ui.time') }}</h3>
                 <div class="form-row">
-                    <label for="event-start">Start tidspunkt</label>
+                    <label for="event-start">{{ __('ui.start_time') }}</label>
                     <input type="datetime-local" id="event-start" name="startDate" required>
                 </div>
                 <div class="form-row">
-                    <label for="event-end">Slut tidspunkt</label>
+                    <label for="event-end">{{ __('ui.end_time') }}</label>
                     <input type="datetime-local" id="event-end" name="endDate" required>
                 </div>
             </div>
             
             <div class="form-section">
-                <h3 class="section-title">Deltagerbegrænsning (valgfri)</h3>
+                <h3 class="section-title">{{ __('ui.participant_limit_optional') }}</h3>
                 <div class="form-row participant-limit">
-                <label for="participant-limit">Maks antal deltagere</label>
-                <input type="number" id="participant-limit" name="participantLimit" placeholder="Indtast maks antal deltagere" />
+                <label for="participant-limit">{{ __('ui.max_participants') }}</label>
+                <input type="number" id="participant-limit" name="participantLimit" placeholder="{{ __('ui.max_participants') }}" />
             </div>
             </div>
 
             
             <div class="form-actions">
-                <button type="button" class="btn secondary-btn" id="cancel-btn">Annuller</button>
-                <button type="submit" class="btn primary-btn">Opret begivenhed</button>
+                <button type="button" class="btn secondary-btn" id="cancel-btn">{{ __('ui.cancel') }}</button>
+                <button type="submit" class="btn primary-btn">{{ __('ui.save_event') }}</button>
             </div>
         </form>
     </div>
@@ -222,8 +304,8 @@
                 <div class="modal-icon">
                 </div>
                 <div class="modal-title">
-                    <h2>Indstillinger</h2>
-                    <p class="modal-subtitle">Administrer din konto</p>
+                    <h2>{{ __('ui.settings') }}</h2>
+                    <p class="modal-subtitle">{{ __('ui.admin') }}</p>
                 </div>
             </div>
             <button class="modal-close-btn" id="close-settings-modal-btn" aria-label="Luk">
@@ -240,14 +322,14 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M2.5 9.5L2 19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2l-.5-9.5M6.5 6a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4m-9 0v-.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v.5"></path>
                 </svg>
-                Skift adgangskode
+                {{ __('ui.change_password') }}
             </button>
             <button class="settings-tab-btn" data-tab="notifications">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                     <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
-                Notifikationer
+                {{ __('ui.notifications') }}
             </button>
         </div>
         
@@ -257,29 +339,29 @@
                 @csrf
                 
                 <div class="form-section">
-                    <h3 class="section-title">Skift adgangskode</h3>
+                    <h3 class="section-title">{{ __('ui.change_password') }}</h3>
                     <div class="form-row">
-                        <label for="current-password">Nuværende adgangskode</label>
-                        <input type="password" id="current-password" name="current_password" required placeholder="Indtast din nuværende adgangskode">
+                        <label for="current-password">{{ __('ui.current_password') }}</label>
+                        <input type="password" id="current-password" name="current_password" required placeholder="{{ __('ui.current_password') }}">
                         @error('current_password')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-row">
-                        <label for="new-password">Ny adgangskode</label>
-                        <input type="password" id="new-password" name="new_password" required placeholder="Indtast din nye adgangskode">
+                        <label for="new-password">{{ __('ui.new_password') }}</label>
+                        <input type="password" id="new-password" name="new_password" required placeholder="{{ __('ui.new_password') }}">
                         @error('new_password')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-row">
-                        <label for="new-password-confirm">Bekræft ny adgangskode</label>
-                        <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="Gentag din nye adgangskode">
+                        <label for="new-password-confirm">{{ __('ui.confirm_new_password') }}</label>
+                        <input type="password" id="new-password-confirm" name="new_password_confirmation" required placeholder="{{ __('ui.confirm_new_password') }}">
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn secondary-btn" id="cancel-settings-btn">Annuller</button>
-                    <button type="submit" class="btn primary-btn">Skift adgangskode</button>
+                    <button type="button" class="btn secondary-btn" id="cancel-settings-btn">{{ __('ui.cancel') }}</button>
+                    <button type="submit" class="btn primary-btn">{{ __('ui.change_password') }}</button>
                 </div>
             </form>
         </div>
@@ -288,14 +370,14 @@
         <div class="settings-tab-content" data-tab-content="notifications">
             <div class="modal-form notifications-settings">
                 <div class="notifications-intro">
-                    <p>System sender til din notifikationsmenu. Email sender til din emailindbakke.</p>
+                    <p>{{ __('ui.notifications_intro') }}</p>
                 </div>
                 
                 <div class="notifications-table">
                     <div class="notifications-header">
-                        <div class="notifications-col notifications-col-notification">Notifikationer</div>
-                        <div class="notifications-col notifications-col-system">System</div>
-                        <div class="notifications-col notifications-col-email">Email</div>
+                        <div class="notifications-col notifications-col-notification">{{ __('ui.notification_name') }}</div>
+                        <div class="notifications-col notifications-col-system">{{ __('ui.system') }}</div>
+                        <div class="notifications-col notifications-col-email">{{ __('ui.email') }}</div>
                     </div>
                     
                     <div class="notifications-row">
@@ -378,7 +460,7 @@
                 </div>
                 
                 <div class="notifications-footer">
-                    <button type="button" class="btn secondary-btn" id="cancel-notifications-btn">Annuller</button>
+                    <button type="button" class="btn secondary-btn" id="cancel-notifications-btn">{{ __('ui.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -405,37 +487,56 @@
         </header>
         <nav class="mnav__nav" aria-label="Primær">
             <ul class="mnav__list">
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">Oversigt</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'dashboard' ? 'is-active' : '' }}" href="/dashboard">{{ __('ui.dashboard') }}</a></li>
                 @if (Auth::check())
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'events' ? 'is-active' : '' }}" href="/events">Begivenheder</a></li>
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'previousEvents' ? 'is-active' : '' }}" href="/previousEvents">Afsluttede</a></li>
-                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'groups/overview' ? 'is-active' : '' }}" href="/groups/overview">Grupper</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'events' ? 'is-active' : '' }}" href="/events">{{ __('ui.events') }}</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'previousEvents' ? 'is-active' : '' }}" href="/previousEvents">{{ __('ui.previous_events') }}</a></li>
+                <li class="mnav__item"><a class="mnav__link {{ $currentPage == 'groups/overview' ? 'is-active' : '' }}" href="/groups/overview">{{ __('ui.groups') }}</a></li>
 
                 @endif
             </ul>
         </nav>
+
+        <div class="mnav__section mnav__section--locale">
+            <button class="mnav__user mnav__language" id="mnav-language" aria-expanded="false" aria-controls="mnav-language-menu">
+                <span class="mnav__avatar mnav__avatar--language" aria-hidden="true">🌐</span>
+                <span class="mnav__username">{{ __('ui.language') }}</span>
+                <svg class="mnav__chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+            </button>
+            <ul class="mnav__submenu mnav__submenu--locale" id="mnav-language-menu" hidden>
+                @foreach ($supportedLocales as $locale => $localeData)
+                    <li>
+                        <button type="button" class="mnav__action mnav__action--locale {{ $currentLocale === $locale ? 'is-active' : '' }}" data-locale="{{ $locale }}" aria-pressed="{{ $currentLocale === $locale ? 'true' : 'false' }}">
+                            <span class="mnav__locale-row-icon" aria-hidden="true">{{ $localeData['icon'] }}</span>
+                            <span class="mnav__locale-row-label">{{ $localeData['label'] }}</span>
+                            <span class="mnav__locale-row-code">{{ $localeData['code'] }}</span>
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
         
         @if (Auth::check())
         <div class="mnav__section">
             <button class="mnav__user" id="mnav-user" aria-expanded="false" aria-controls="mnav-user-menu">
                 <span class="mnav__avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
-                <span class="mnav__username">Velkommen, {{ Auth::user()->name }}!</span>
+                <span class="mnav__username">{{ __('ui.welcome', ['name' => Auth::user()->name]) }}</span>
                 <svg class="mnav__chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
             </button>
             <ul class="mnav__submenu" id="mnav-user-menu" hidden>
                 <li><button class="mnav__action mnav__action--primary" id="mnav-create">Ny begivenhed</button></li>
-                <li><button class="mnav__action" id="mnav-settings">Indstillinger</button></li>
+                <li><button class="mnav__action" id="mnav-settings">{{ __('ui.settings') }}</button></li>
                 <li>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="mnav__action mnav__action--danger">Log ud</button>
+                        <button type="submit" class="mnav__action mnav__action--danger">{{ __('ui.logout') }}</button>
                     </form>
                 </li>
             </ul>
         </div>
         @else
         <div class="mnav__section">
-            <a href="{{ route('login') }}" class="mnav__action mnav__action--primary">Log ind</a>
+            <a href="{{ route('login') }}" class="mnav__action mnav__action--primary">{{ __('ui.login') }}</a>
         </div>
         @endif
     </aside>

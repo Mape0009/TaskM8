@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'TaskM8 | Forside';
-        $metaDescription = 'Planlæg, inviter og få overblik over alle dine begivenheder i TaskM8.';
+        $pageTitle = 'TaskM8 | ' . __('ui.page_title_dashboard');
+        $metaDescription = __('ui.guest_subtitle');
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -13,7 +13,7 @@
     ])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskM8 Forside</title>
+    <title>TaskM8 {{ __('ui.page_title_dashboard') }}</title>
     <link rel="stylesheet" href="{{ asset('css/participants-modal.css') }}">
 </head>
 <body>
@@ -28,8 +28,8 @@
                 </div>
                 <div class="stat-info">
                     <span class="stat-value">{{$pendingEventsCount}}</span>
-                    <span class="stat-title">Afventer svar</span>
-                    <span class="stat-note">Kræver handling</span>
+                    <span class="stat-title">{{ __('ui.stat_pending') }}</span>
+                    <span class="stat-note">{{ __('ui.stat_pending_note') }}</span>
                 </div>
             </div>
             <div class="stat-card stat-card--mine">
@@ -38,8 +38,8 @@
                 </div>
                 <div class="stat-info">
                     <span class="stat-value">{{$participatedEventsCount}}</span>
-                    <span class="stat-title">Mine begivenheder</span>
-                    <span class="stat-note">Aktive planer</span>
+                    <span class="stat-title">{{ __('ui.stat_my_events') }}</span>
+                    <span class="stat-note">{{ __('ui.stat_my_events_note') }}</span>
                 </div>
             </div>
             <div class="stat-card stat-card--network">
@@ -50,13 +50,13 @@
                 </div>
                 <div class="stat-info">
                     <span class="stat-value">{{ $previousInviteesCount }}</span>
-                    <span class="stat-title">Tidligere inviterede</span>
-                    <span class="stat-note">Nemt genbrug</span>
+                    <span class="stat-title">{{ __('ui.stat_previous_invitees') }}</span>
+                    <span class="stat-note">{{ __('ui.stat_previous_invitees_note') }}</span>
                 </div>
             </div>
         </section>
         <section class="upcoming-events">
-            <h2>Kommende Begivenheder</h2>
+            <h2>{{ __('ui.upcoming_events') }}</h2>
             <div class="event-list">
                 @forelse($events as $event)
                     <div class="event-card">
@@ -87,28 +87,28 @@
                             @endphp
                             @if($hasMenu)
                             <div class="event-kebab rsvp-menu" id="event-menu-{{ $event->id }}">
-                                <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('event-menu-{{ $event->id }}')" aria-label="Åbn menu">
+                                <button class="kebab-btn rsvp-menu-trigger" onclick="toggleRsvpDropdown('event-menu-{{ $event->id }}')" aria-label="{{ __('ui.open_menu') }}">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="17" r="1"></circle></svg>
                                 </button>
                                 <div class="rsvp-menu-list" role="menu" style="right:0; min-width: 200px;">
                                     @auth
                                         @if($canCreateTask)
-                                            <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">Opret opgave</a>
+                                            <a class="rsvp-menu-item" href="{{ route('events.tasks.create.form', ['eventId' => $event->id]) }}">{{ __('ui.create_task') }}</a>
                                         @endif
                                         @if($canViewTask)
-                                            <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">Opgaver</a>
+                                            <a class="rsvp-menu-item" href="{{ route('events.tasks.index', ['eventId' => $event->id]) }}">{{ __('ui.tasks') }}</a>
                                         @endif
                                         @if($canInvite)
-                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=invite">Inviter</a>
+                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=invite">{{ __('ui.invite') }}</a>
                                         @endif
                                         @if($canManageAnyRole)
-                                            <a class="rsvp-menu-item" href="{{ route('events.participants', ['eventId' => $event->id]) }}">Uddel roller</a>
+                                            <a class="rsvp-menu-item" href="{{ route('events.participants', ['eventId' => $event->id]) }}">{{ __('ui.assign_roles') }}</a>
                                         @endif
                                         @if($canEditEvent)
-                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">Rediger begivenhed</a>
+                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}/edit">{{ __('ui.edit_event') }}</a>
                                         @endif
                                         @if($isOwnerMenu)
-                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">Slet begivenhed</a>
+                                            <a class="rsvp-menu-item" href="/events/{{ $event->id }}?open=delete">{{ __('ui.delete_event') }}</a>
                                         @endif
                                     @endauth
                                 </div>
@@ -117,11 +117,11 @@
                         </div>
                         <p class="event-description">{{ Str::limit($event->description, 25) }}</p>
                        <div class="event-actions">
-    <a href="/events/{{ $event->id }}" class="btn primary-btn event-main-action">Se detaljer</a>
+    <a href="/events/{{ $event->id }}" class="btn primary-btn event-main-action">{{ __('ui.details') }}</a>
 <a href="javascript:void(0);" 
    class="btn secondary-btn event-main-action" 
    onclick="openParticipantsModal({{ $event->id }}, '{{ $event->eventName }}')">
-   Deltagere
+    {{ __('ui.participants') }}
 </a>
     @auth
         @php
@@ -171,14 +171,14 @@
                         <svg fill="currentColor" viewBox="0 0 20 20" class="confirm-icon" xmlns="http://www.w3.org/2000/svg">
                             <path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path>
                         </svg>
-                        <h2 id="leave-confirm-title-{{ $event->id }}" class="confirm-title">Er du sikker?</h2>
-                        <p class="confirm-text">Vil du forlade denne begivenhed? Dette kan ikke fortrydes.</p>
+                        <h2 id="leave-confirm-title-{{ $event->id }}" class="confirm-title">{{ __('ui.confirm_are_you_sure') }}</h2>
+                        <p class="confirm-text">{{ __('ui.confirm_leave_event') }}</p>
                     </div>
                     <div class="confirm-actions">
-                        <button type="button" class="confirm-btn cancel" onclick="document.getElementById('leave-modal-{{ $event->id }}').style.display='none'">Annuller</button>
+                        <button type="button" class="confirm-btn cancel" onclick="document.getElementById('leave-modal-{{ $event->id }}').style.display='none'">{{ __('ui.cancel') }}</button>
                         <form action="{{ route('events.decline', ['eventId' => $event->id]) }}" method="POST" style="display:inline;">
                             @csrf
-                            <button type="submit" class="confirm-btn danger">Slet</button>
+                            <button type="submit" class="confirm-btn danger">{{ __('ui.delete') }}</button>
                         </form>
                     </div>
                 </div>
@@ -190,15 +190,15 @@
                 <div class="confirm-modal-content">
                     <div class="confirm-modal-body">
                         <svg fill="currentColor" viewBox="0 0 20 20" class="confirm-icon" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path></svg>
-                        <h2 id="delete-confirm-title-{{ $event->id }}" class="confirm-title">Slet begivenhed?</h2>
-                        <p class="confirm-text">Dette vil permanent slette begivenheden.</p>
+                        <h2 id="delete-confirm-title-{{ $event->id }}" class="confirm-title">{{ __('ui.delete_event') }}?</h2>
+                        <p class="confirm-text">{{ __('ui.confirm_delete_event') }}</p>
                     </div>
                     <div class="confirm-actions">
-                        <button type="button" class="confirm-btn cancel" onclick="document.getElementById('delete-modal-{{ $event->id }}').style.display='none'">Annuller</button>
+                        <button type="button" class="confirm-btn cancel" onclick="document.getElementById('delete-modal-{{ $event->id }}').style.display='none'">{{ __('ui.cancel') }}</button>
                         <form action="{{ url('/events/delete/'.$event->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="confirm-btn danger">Slet</button>
+                            <button type="submit" class="confirm-btn danger">{{ __('ui.delete') }}</button>
                         </form>
                     </div>
                 </div>
@@ -210,7 +210,7 @@
 </div>
                     </div>
                 @empty
-                    <p>Ingen begivenheder fundet.</p>
+                    <p>{{ __('ui.no_events_found') }}</p>
                 @endforelse
             </div>
         </section>
@@ -221,39 +221,39 @@
         <section class="guest-hero">
             <div class="guest-hero__grid">
                 <div class="guest-hero__content">
-                    <p class="guest-hero__eyebrow animate-from-top">PLANLÆGNING UDEN STRESS</p>
-                    <h1 class="guest-hero__title animate-from-top">Planlæg begivenheder nemt og effektivt</h1>
-                    <p class="guest-hero__subtitle animate-from-left delay-150">TaskM8 samler invitationer, svar og overblik ét sted – hurtigt, simpelt og gratis.
+                    <p class="guest-hero__eyebrow animate-from-top">{{ __('ui.guest_eyebrow') }}</p>
+                    <h1 class="guest-hero__title animate-from-top">{{ __('ui.guest_title') }}</h1>
+                    <p class="guest-hero__subtitle animate-from-left delay-150">{{ __('ui.guest_subtitle') }}
 
 </p>
                     <div class="guest-hero__cta animate-from-right delay-300">
-                        <a href="/signup" class="btn primary-btn guest-hero__cta-btn">Kom i gang</a>
-                        <a href="/signin" class="btn secondary-btn guest-hero__cta-btn guest-hero__cta-btn--secondary">Log ind</a>
+                        <a href="/signup" class="btn primary-btn guest-hero__cta-btn">{{ __('ui.get_started') }}</a>
+                        <a href="/signin" class="btn secondary-btn guest-hero__cta-btn guest-hero__cta-btn--secondary">{{ __('ui.login') }}</a>
                     </div>
                 </div>
 
-                <aside class="guest-hero__panel animate-fade-up" aria-label="TaskM8 overblik">
+                <aside class="guest-hero__panel animate-fade-up" aria-label="{{ __('ui.overview') }}">
                     <div class="guest-hero__panel-top">
                         <span class="guest-hero__panel-dot"></span>
                         <span class="guest-hero__panel-dot"></span>
                         <span class="guest-hero__panel-dot"></span>
                     </div>
                     <div class="guest-hero__metrics">
-                        <div class="metric animate-scale-in"><div class="metric__value">{{ $totalUsers }}</div><div class="metric__label">Totale Brugere</div></div>
-                        <div class="metric animate-scale-in delay-2"><div class="metric__value">{{ $totalEvents }}</div><div class="metric__label">Totale Begivenheder</div></div>
+                        <div class="metric animate-scale-in"><div class="metric__value">{{ $totalUsers }}</div><div class="metric__label">{{ __('ui.total_users') }}</div></div>
+                        <div class="metric animate-scale-in delay-2"><div class="metric__value">{{ $totalEvents }}</div><div class="metric__label">{{ __('ui.total_events') }}</div></div>
                     </div>
                     <div class="guest-hero__list">
                         <div class="guest-hero__list-item">
                             <span class="guest-hero__list-icon"></span>
-                            <span>Inviter deltagere med et klik</span>
+                            <span>{{ __('ui.invite_with_click') }}</span>
                         </div>
                         <div class="guest-hero__list-item">
                             <span class="guest-hero__list-icon"></span>
-                            <span>Se svar i realtid</span>
+                            <span>{{ __('ui.see_responses_live') }}</span>
                         </div>
                         <div class="guest-hero__list-item">
                             <span class="guest-hero__list-icon"></span>
-                            <span>Hold styr på opgaver og ansvar</span>
+                            <span>{{ __('ui.manage_tasks') }}</span>
                         </div>
                     </div>
                 </aside>
@@ -261,35 +261,35 @@
         </section>
 
         <section class="features">
-            <h2 class="animate-fade-up">Funktioner</h2>
+            <h2 class="animate-fade-up">{{ __('ui.features') }}</h2>
             <div class="features-grid">
                 <div class="feature-card animate-fade-up">
                     <div class="feature-card__icon">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     </div>
-                    <h3 class="feature-card__title">Opret og inviter</h3>
-                    <p class="feature-card__text">Start en begivenhed på sekunder, inviter nye og eksisterende brugere, og hold alt samlet ét sted.</p>
+                    <h3 class="feature-card__title">{{ __('ui.feature_create_title') }}</h3>
+                    <p class="feature-card__text">{{ __('ui.feature_create_text') }}</p>
                 </div>
                 <div class="feature-card animate-fade-up delay-2">
                     <div class="feature-card__icon">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     </div>
-                    <h3 class="feature-card__title">Overblik i realtid</h3>
-                    <p class="feature-card__text">Følg svarstatus og kapacitet live, så du altid ved, hvem der deltager, og hvad der mangler.</p>
+                    <h3 class="feature-card__title">{{ __('ui.feature_realtime_title') }}</h3>
+                    <p class="feature-card__text">{{ __('ui.feature_realtime_text') }}</p>
                 </div>
                 <div class="feature-card animate-fade-up delay-3">
                     <div class="feature-card__icon">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
                     </div>
-                    <h3 class="feature-card__title">Roller og ansvar</h3>
-                    <p class="feature-card__text">Fordel opgaver og adgang med tydelige roller, så samarbejdet bliver effektivt og professionelt.</p>
+                    <h3 class="feature-card__title">{{ __('ui.feature_roles_title') }}</h3>
+                    <p class="feature-card__text">{{ __('ui.feature_roles_text') }}</p>
                 </div>
                 <div class="feature-card animate-fade-up delay-4">
                     <div class="feature-card__icon">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /> </svg>
                     </div>
-                    <h3 class="feature-card__title">Enheder</h3>
-                    <p class="feature-card__text">Virker til både mobil, tablet og computer.</p>
+                    <h3 class="feature-card__title">{{ __('ui.feature_devices_title') }}</h3>
+                    <p class="feature-card__text">{{ __('ui.feature_devices_text') }}</p>
                 </div>
             </div>
         </section>
@@ -340,8 +340,8 @@
                         </svg>
                     </div>
                     <div class="participants-modal-title">
-                        <h2 id="participants-modal-title">Deltagere</h2>
-                        <p class="participants-modal-subtitle" id="participants-modal-subtitle">Se alle deltagere for begivenheden</p>
+                        <h2 id="participants-modal-title">{{ __('ui.participants_modal_title') }}</h2>
+                        <p class="participants-modal-subtitle" id="participants-modal-subtitle">{{ __('ui.participants_modal_subtitle') }}</p>
                     </div>
                 </div>
                 <button class="participants-modal-close-btn" onclick="closeParticipantsModal()" aria-label="Luk">
@@ -353,19 +353,19 @@
             </div>
             <div class="participants-modal-body">
                 <div class="participants-search-section">
-                    <input type="text" id="participants-search" class="participants-search-input" placeholder="Søg efter deltager...">
+                    <input type="text" id="participants-search" class="participants-search-input" placeholder="{{ __('ui.search_participant') }}">
                     <div class="participants-categories">
                         <button type="button" class="participants-category-btn active" data-category="all">
-                            Alle <span class="count" id="count-all">0</span>
+                            {{ __('ui.all') }} <span class="count" id="count-all">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="accepted">
-                            Deltager <span class="count" id="count-accepted">0</span>
+                            {{ __('ui.attending') }} <span class="count" id="count-accepted">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="declined">
-                            Deltager ikke <span class="count" id="count-declined">0</span>
+                            {{ __('ui.not_attending') }} <span class="count" id="count-declined">0</span>
                         </button>
                         <button type="button" class="participants-category-btn" data-category="pending">
-                            Afventer svar <span class="count" id="count-pending">0</span>
+                            {{ __('ui.awaiting_response') }} <span class="count" id="count-pending">0</span>
                         </button>
                     </div>
                 </div>
@@ -382,7 +382,7 @@
                                 <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
                                 <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
                             </svg>
-                            Henter deltagere...
+                            {{ __('ui.loading_participants') }}
                         </div>
                     </div>
                 </div>
