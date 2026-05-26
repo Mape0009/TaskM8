@@ -12,23 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var tipLabel = document.getElementById('task-edit-tip-label');
   var tipValue = document.getElementById('task-edit-tip-value');
 
-  var tips = {
-    0: {
-      text: 'Et stærkt navn gør opgaven lettere at skimme i en travl liste.',
-      label: 'Navn',
-      value: 'Brug et konkret navn med handling og område'
-    },
-    1: {
-      text: 'En god beskrivelse sparer spørgsmål senere i planlægningen.',
-      label: 'Detaljer',
-      value: 'Skriv forventet resultat og hvornår opgaven er løst'
-    },
-    2: {
-      text: 'Tjek helheden én gang til, før du gemmer ændringerne.',
-      label: 'Kvalitetstjek',
-      value: 'Navn og beskrivelse skal passe sammen'
-    }
-  };
+  var tips = window.taskEditTips || [];
 
   function updateCounter() {
     if (!description || !counter) return;
@@ -36,10 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateTip(stepIndex) {
-    var tip = tips[stepIndex] || tips[0];
-    if (tipText) tipText.textContent = tip.text;
-    if (tipLabel) tipLabel.textContent = tip.label;
-    if (tipValue) tipValue.textContent = tip.value;
+    var tip = tips[stepIndex] || tips[0] || {};
+    if (tipText) tipText.textContent = tip.text || '';
+    if (tipLabel) tipLabel.textContent = tip.label || '';
+    if (tipValue) tipValue.textContent = tip.value || '';
   }
 
   function updateReview() {

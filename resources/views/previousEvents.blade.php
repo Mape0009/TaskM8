@@ -95,6 +95,7 @@
         </div>
     </main>
     @include('partials.footer')
+    @include('partials.participants-modal-i18n')
     <script src="{{ asset('js/participants-modal.js') }}"></script>
     <script>
         function toggleRsvpDropdown(id) {
@@ -111,7 +112,10 @@
             m.style.display = 'flex';
             m.setAttribute('data-event-id', String(eventId));
             var title = document.getElementById('template-modal-title');
-            if (title) { title.textContent = '{{ __('ui.template_title') }} – ' + eventName; }
+            if (title) {
+                var tpl = (window.participantsModalI18n && window.participantsModalI18n.templateTitleFor) || '';
+                title.textContent = tpl.replace(':event', eventName);
+            }
         }
         function closeTemplateModal() {
             var m = document.getElementById('template-modal');
@@ -156,7 +160,7 @@
                         <p class="participants-modal-subtitle" id="participants-modal-subtitle">{{ __('ui.participants_modal_subtitle') }}</p>
                     </div>
                 </div>
-                <button class="participants-modal-close-btn" onclick="closeParticipantsModal()" aria-label="Luk">
+                <button class="participants-modal-close-btn" onclick="closeParticipantsModal()" aria-label="{{ __('ui.close') }}">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -219,7 +223,7 @@
                         <p class="participants-modal-subtitle">{{ __('ui.template_keep_question') }}</p>
                     </div>
                 </div>
-                <button class="participants-modal-close-btn" onclick="closeTemplateModal()" aria-label="Luk">
+                <button class="participants-modal-close-btn" onclick="closeTemplateModal()" aria-label="{{ __('ui.close') }}">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -228,8 +232,8 @@
             </div>
             <div class="participants-modal-body" style="padding: 24px;">
                 <div class="confirm-actions" style="display:flex; gap:12px; justify-content:flex-end;">
-                    <button type="button" class="btn secondary-btn" onclick="chooseTemplateKeep(false)">Nej, start uden medlemmer</button>
-                    <button type="button" class="btn primary-btn" onclick="chooseTemplateKeep(true)">Ja, behold medlemmer</button>
+                    <button type="button" class="btn secondary-btn" onclick="chooseTemplateKeep(false)">{{ __('ui.template_keep_no') }}</button>
+                    <button type="button" class="btn primary-btn" onclick="chooseTemplateKeep(true)">{{ __('ui.template_keep_yes') }}</button>
                 </div>
             </div>
         </div>

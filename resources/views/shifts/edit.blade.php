@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="da" class="no-js">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="no-js">
 <head>
-    @php        \Carbon\Carbon::setLocale('da');        $pageTitle = 'TaskM8 | Rediger vagt for ' . $task->taskName;
-        $metaDescription = 'Rediger vagt for opgaven ' . $task->taskName . '.';
+    @php
+        $pageTitle = __('ui.shift_edit_page_title', ['task' => $task->taskName]);
+        $metaDescription = __('ui.shift_edit_meta', ['task' => $task->taskName]);
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -12,7 +13,7 @@
     ])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rediger Vagt for {{ $task->taskName }} | TaskM8</title>
+    <title>{{ $pageTitle }}</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
@@ -27,11 +28,11 @@
     <main class="main-content-full">
         <div class="edit-container">
             <div class="edit-header">
-                <h1 class="edit-title">Rediger Vagt for {{ $task->taskName }}</h1>
+                <h1 class="edit-title">{{ __('ui.shift_edit_title', ['task' => $task->taskName]) }}</h1>
                 <div class="header-actions">
                     <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn secondary-btn">
                         <i class="fas fa-arrow-left"></i>
-                        Tilbage til Vagter
+                        {{ __('ui.back_to_shifts') }}
                     </a>
                 </div>
             </div>
@@ -52,19 +53,19 @@
                     @method('PUT')
                     
                     <div class="form-row">
-                        <label for="userId">Vælg Person *</label>
+                        <label for="userId">{{ __('ui.shift_select_person_required') }}</label>
                         <select id="userId" name="userId" required class="form-input">
-                            <option value="">Vælg en person...</option>
+                            <option value="">{{ __('ui.select_person_placeholder') }}</option>
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}" {{ old('userId', $shift->userId) == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name ?? $user->email ?? 'Ukendt bruger' }}
+                                    {{ $user->name ?? $user->email ?? __('ui.unknown_user') }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="form-row">
-                        <label for="startTime">Start Tid *</label>
+                        <label for="startTime">{{ __('ui.shift_start_label') }} *</label>
                         <input type="datetime-local" id="startTime" name="startTime" 
                                value="{{ old('startTime', \Carbon\Carbon::parse($shift->startTime)->format('Y-m-d\\TH:i')) }}"
                                required class="form-input"
@@ -73,7 +74,7 @@
                     </div>
 
                     <div class="form-row">
-                        <label for="endTime">Slut Tid *</label>
+                        <label for="endTime">{{ __('ui.shift_end_label') }} *</label>
                         <input type="datetime-local" id="endTime" name="endTime" 
                                value="{{ old('endTime', \Carbon\Carbon::parse($shift->endTime)->format('Y-m-d\\TH:i')) }}"
                                required class="form-input"
@@ -84,11 +85,11 @@
                     <div class="form-actions">
                         <button type="submit" class="btn primary-btn">
                             <i class="fas fa-check"></i>
-                            Gem Ændringer
+                            {{ __('ui.save_changes') }}
                         </button>
                         <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn secondary-btn">
                             <i class="fas fa-times"></i>
-                            Annuller
+                            {{ __('ui.cancel') }}
                         </a>
                     </div>
                 </form>
@@ -99,7 +100,6 @@
     @include('partials.footer')
 
     <script>
-        // Ensure end time is at least +1h after start (local time)
         (function(){
             const startEl = document.getElementById('startTime');
             const endEl = document.getElementById('endTime');
@@ -115,7 +115,6 @@
             });
         })();
 
-        // Auto-animate
         if (typeof autoAnimate !== 'undefined') {
         autoAnimate(document.querySelector('.task-form-wrapper'));
         }

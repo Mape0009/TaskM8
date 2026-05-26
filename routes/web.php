@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\EventParticipantController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MailController;
@@ -32,6 +33,7 @@ Route::post('/locale', function (Request $request) {
 
     session(['locale' => $locale]);
     App::setLocale($locale);
+    Cookie::queue(cookie('locale', $locale, 60 * 24 * 365));
 
     return back();
 })->name('locale.switch');

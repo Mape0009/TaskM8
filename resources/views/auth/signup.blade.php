@@ -46,12 +46,12 @@
                 <input type="email" id="email" name="email" placeholder="{{ __('ui.email') }}" value="{{ request('email') }}" required>
             </div>
             <div class="input-group">
-                <label for="password">{{ __('ui.new_password') }}</label>
-                <input type="password" id="password" name="password" placeholder="{{ __('ui.new_password') }}" required>
+                <label for="password">{{ __('ui.password') }}</label>
+                <input type="password" id="password" name="password" placeholder="{{ __('ui.password') }}" required>
             </div>
             <div class="input-group">
-                <label for="confirm-password">{{ __('ui.confirm_new_password') }}</label>
-                <input type="password" id="confirm-password" name="password_confirmation" placeholder="{{ __('ui.confirm_new_password') }}" required>
+                <label for="confirm-password">{{ __('ui.confirm_password') }}</label>
+                <input type="password" id="confirm-password" name="password_confirmation" placeholder="{{ __('ui.confirm_password') }}" required>
             </div>
             <div class="input-group">
                 <label for="pin">PIN</label>

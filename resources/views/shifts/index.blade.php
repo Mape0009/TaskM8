@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="no-js">
 <head>
     @php
-        \Carbon\Carbon::setLocale('da');
+        \Carbon\Carbon::setLocale(app()->getLocale());
         $pageTitle = __('ui.shifts_page_title_for', ['task' => $task->taskName]);
         $metaDescription = __('ui.shifts_meta_for', ['task' => $task->taskName]);
     @endphp
@@ -86,8 +86,8 @@
                     }
                 @endphp
                 <div class="shifts-toolbar">
-                    <div class="shifts-filter" role="group" aria-label="Filtrer vagter">
-                        <span class="shifts-filter-label">Vis:</span>
+                    <div class="shifts-filter" role="group" aria-label="{{ __('ui.filter_shifts') }}">
+                        <span class="shifts-filter-label">{{ __('ui.show') }}:</span>
                         <a href="{{ route('tasks.shifts.index', $task->id) }}" class="btn {{ $isMine ? 'secondary-btn' : 'primary-btn' }}">{{ __('ui.all_shifts') }}</a>
                         <a href="{{ route('tasks.shifts.index', $task->id) }}?filter=mine" class="btn {{ $isMine ? 'primary-btn' : 'secondary-btn' }}">{{ __('ui.my_shifts') }}</a>
                     </div>
@@ -98,11 +98,11 @@
                 </div>
 
                 <div class="shifts-simple-table-scroll">
-                <div class="shifts-simple-table" role="table" aria-label="Vagtliste">
+                <div class="shifts-simple-table" role="table" aria-label="{{ __('ui.shift_list_aria') }}">
                     <div class="shifts-line shifts-line-head" role="row">
-                        <div class="line-col" role="columnheader">Person</div>
-                        <div class="line-col" role="columnheader">Tid</div>
-                        <div class="line-col line-col-actions" role="columnheader">Handlinger</div>
+                        <div class="line-col" role="columnheader">{{ __('ui.person') }}</div>
+                        <div class="line-col" role="columnheader">{{ __('ui.shift_table_time') }}</div>
+                        <div class="line-col line-col-actions" role="columnheader">{{ __('ui.shift_table_actions') }}</div>
                     </div>
 
                     <div class="shifts-simple-body">
@@ -112,16 +112,16 @@
                                 $endTime = \Carbon\Carbon::parse($shift->endTime);
                                 $sameDay = $startTime->isSameDay($endTime);
                                 $timeRangeText = $sameDay
-                                    ? ($startTime->translatedFormat('j F Y') . ' kl. ' . $startTime->format('H:i') . '  -  ' . $endTime->format('H:i'))
+                                    ? ($startTime->translatedFormat('j F Y') . ' ' . __('ui.time_at') . ' ' . $startTime->format('H:i') . '  -  ' . $endTime->format('H:i'))
                                     : ($startTime->translatedFormat('j F Y H:i') . '  -  ' . $endTime->translatedFormat('j F Y H:i'));
                                 $isVolunteerRequest = $shift->status === 'pending' && $shift->userId && $shift->created_at && $shift->updated_at && !$shift->created_at->equalTo($shift->updated_at);
                             @endphp
-                            <div class="shifts-line" role="row" data-shift-user="{{ strtolower(($shift->user?->name ?? $shift->user?->email ?? 'Ingen bruger') . ' ' . ($shift->user?->email ?? '')) }}">
+                            <div class="shifts-line" role="row" data-shift-user="{{ strtolower(($shift->user?->name ?? $shift->user?->email ?? __('ui.no_user')) . ' ' . ($shift->user?->email ?? '')) }}">
                                 <div class="line-col line-col-person" role="cell">
-                                    <strong>{{ $shift->user?->name ?? $shift->user?->email ?? 'Ingen bruger' }}</strong>
-                                    <span class="line-email">{{ $shift->user?->email ?? 'Ingen e-mail' }}</span>
+                                    <strong>{{ $shift->user?->name ?? $shift->user?->email ?? __('ui.no_user') }}</strong>
+                                    <span class="line-email">{{ $shift->user?->email ?? __('ui.no_email') }}</span>
                                     @if($isVolunteerRequest)
-                                        <span class="shift-status-badge shift-status-pending">Afventer</span>
+                                        <span class="shift-status-badge shift-status-pending">{{ __('ui.awaiting_approval') }}</span>
                                     @endif
                                 </div>
                                 <div class="line-col line-col-time" role="cell">{{ $timeRangeText }}</div>
@@ -129,24 +129,24 @@
                                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'volunteer-shift') && is_null($shift->userId))
                                         <form action="{{ route('tasks.shifts.volunteer', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
                                             @csrf
-                                            <button type="submit" class="btn primary-btn" aria-label="Melder sig på vagt">Meld mig</button>
+                                            <button type="submit" class="btn primary-btn" aria-label="{{ __('ui.volunteer_shift') }}">{{ __('ui.join_shift') }}</button>
                                         </form>
                                     @endif
                                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-shift') && $isVolunteerRequest)
                                         <form action="{{ route('tasks.shifts.accept', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
                                             @csrf
-                                            <button type="submit" class="btn primary-btn" aria-label="Godkend frivillig">Godkend</button>
+                                            <button type="submit" class="btn primary-btn" aria-label="{{ __('ui.approve_volunteer') }}">{{ __('ui.approve') }}</button>
                                         </form>
                                         <form action="{{ route('tasks.shifts.deny', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
                                             @csrf
-                                            <button type="submit" class="btn danger-btn" aria-label="Afvis frivillig">Afvis</button>
+                                            <button type="submit" class="btn danger-btn" aria-label="{{ __('ui.reject_volunteer') }}">{{ __('ui.reject') }}</button>
                                         </form>
                                     @endif
                                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'edit-shift'))
-                                        <a href="{{ route('tasks.shifts.edit', [$task->id, $shift->id]) }}" class="btn secondary-btn">Rediger</a>
+                                        <a href="{{ route('tasks.shifts.edit', [$task->id, $shift->id]) }}" class="btn secondary-btn">{{ __('ui.edit') }}</a>
                                     @endif
                                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'delete-shift'))
-                                        <button type="button" class="btn danger-btn" aria-label="Slet vagt" onclick="openDeleteShiftModal({{ $shift->id }})">Slet</button>
+                                        <button type="button" class="btn danger-btn" aria-label="{{ __('ui.delete_shift') }}" onclick="openDeleteShiftModal({{ $shift->id }})">{{ __('ui.delete') }}</button>
                                     @endif
                                 </div>
                             </div>
@@ -161,17 +161,17 @@
                                         <p class="confirm-text">{{ __('ui.confirm_delete_shift') }}</p>
                                     </div>
                                     <div class="confirm-actions">
-                                        <button type="button" class="confirm-btn cancel" onclick="closeDeleteShiftModal({{ $shift->id }})">Annuller</button>
+                                        <button type="button" class="confirm-btn cancel" onclick="closeDeleteShiftModal({{ $shift->id }})">{{ __('ui.cancel') }}</button>
                                         <form class="delete-shift-form" action="{{ route('tasks.shifts.destroy', [$task->id, $shift->id]) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="confirm-btn danger">Slet</button>
+                                            <button type="submit" class="confirm-btn danger">{{ __('ui.delete') }}</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         @empty
-                            <p class="empty-state shifts-empty">Ingen vagter fundet.</p>
+                            <p class="empty-state shifts-empty">{{ __('ui.no_shifts_found') }}</p>
                         @endforelse
                     </div>
                 </div>
@@ -179,9 +179,9 @@
             @else
                 <div class="empty-state shifts-empty-state">
                     <h2>{{ __('ui.no_shifts_yet') }}</h2>
-                    <p>Opret den første vagt for at begynde at planlægge opgaven.</p>
+                    <p>{{ __('ui.start_first_shift') }}</p>
                     @if(\App\Http\RolePermissions\Permissions::hasPermission($currentUserRole ?? 'participant', 'create-shift'))
-                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">Opret første vagt</a>
+                        <a href="{{ route('tasks.shifts.create', $task->id) }}" class="btn primary-btn">{{ __('ui.create_first_shift_btn') }}</a>
                     @endif
                 </div>
             @endif
@@ -241,7 +241,7 @@
             form.addEventListener('submit', function() {
                 const button = this.querySelector('button[type="submit"]');
                 if (button) {
-                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sletter...';
+                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __('ui.deleting') }}';
                     button.disabled = true;
                 }
             });

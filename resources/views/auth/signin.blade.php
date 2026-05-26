@@ -54,8 +54,8 @@
                 <input type="email" id="email" name="email" placeholder="{{ __('ui.email') }}" required>
             </div>
             <div class="input-group">
-                <label for="password">{{ __('ui.current_password') }}</label>
-                <input type="password" id="password" name="password" placeholder="{{ __('ui.current_password') }}" required>
+                <label for="password">{{ __('ui.password') }}</label>
+                <input type="password" id="password" name="password" placeholder="{{ __('ui.password') }}" required>
             </div>
             <button type="submit" class="btn primary-btn">{{ __('ui.login') }}</button>
         </form>

@@ -45,7 +45,7 @@
         <section class="tasks-page-header">
             <div>
                 <h1>{{ isset($event) ? __('ui.task_overview_for', ['event' => $event->eventName]) : __('ui.task_overview') }}</h1>
-                <p>{{ __('ui.task_page_intro') }}</p>
+                <p>{{ isset($event) ? __('ui.task_page_event_intro', ['event' => $event->eventName]) : __('ui.task_page_intro') }}</p>
                 <p class="tasks-page-meta">{{ $taskCount }} {{ __('ui.task_overview') }} · {{ $totalShifts }} {{ __('ui.task_shifts') }}</p>
             </div>
             <div class="tasks-page-actions">
@@ -73,7 +73,7 @@
                                 <span>{{ $task->description }}</span>
                             @endif
                         </div>
-                        <div role="cell">{{ $task->shifts->count() }} {{ __('ui.shift') }}{{ $task->shifts->count() !== 1 ? 'e' : '' }}</div>
+                        <div role="cell">{{ trans_choice('ui.shift_count', $task->shifts->count(), ['count' => $task->shifts->count()]) }}</div>
                         <div role="cell" class="task-simple-actions">
                             @php
                                 $eventForTask = isset($event) ? $event : ($task->eventId ? \App\Models\Event::find($task->eventId) : null);

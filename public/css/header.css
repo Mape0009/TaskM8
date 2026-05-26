@@ -1012,6 +1012,23 @@ body.dark-mode .create-event-btn-header:hover {
     .main-header .notification-center {
         display: inline-flex !important;
     }
+    .header-right {
+        gap: 0.55em !important;
+        flex-wrap: nowrap;
+    }
+    .guest-dashboard .header-right {
+        gap: 0.5em !important;
+    }
+    .locale-switcher {
+        display: none !important;
+    }
+    .guest-dashboard .locale-switcher {
+        display: inline-flex !important;
+    }
+    .guest-dashboard .login-header {
+        display: block !important;
+        flex: 0 0 auto;
+    }
     .notification-btn-header {
         width: 2.2rem;
         height: 2.2rem;
@@ -2685,8 +2702,23 @@ body.dark-mode .notifications-footer {
         grid-template-columns: 1fr 80px 80px;
         gap: 0.5rem;
     }
-    .locale-switcher {
-        display: none !important;
+    .guest-dashboard .locale-switcher {
+        justify-content: flex-end;
+    }
+    .guest-dashboard .locale-switcher__trigger {
+        height: 2.25rem;
+        padding: 0.18rem 0.5rem 0.18rem 0.24rem;
+        gap: 0.35rem;
+    }
+    .guest-dashboard .locale-switcher__label {
+        min-width: 1.7rem;
+        height: 1.7rem;
+        font-size: 0.7rem;
+    }
+    .guest-dashboard .locale-switcher__menu {
+        min-width: 12.5rem;
+        padding: 0.38rem;
+        right: -0.15rem;
     }
 
     .notifications-title {

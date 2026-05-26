@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 
 class SetLocale
 {
@@ -12,7 +13,7 @@ class SetLocale
 
     public function handle(Request $request, Closure $next)
     {
-        $locale = session('locale', config('app.locale', 'da'));
+        $locale = session('locale') ?? Cookie::get('locale') ?? config('app.locale', 'da');
 
         if (! in_array($locale, self::SUPPORTED_LOCALES, true)) {
             $locale = config('app.fallback_locale', 'da');

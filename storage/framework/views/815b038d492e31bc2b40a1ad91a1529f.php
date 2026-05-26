@@ -74,51 +74,6 @@
             <div class="notification-panel" id="notification-panel" hidden>
                 <div class="notification-panel__header">
                     <div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const form = document.getElementById('locale-switcher-form');
-                        const trigger = document.getElementById('locale-switcher-trigger');
-                        const menu = document.getElementById('locale-switcher-menu');
-                        const input = document.getElementById('locale-switcher-input');
-
-                        if (!form || !trigger || !menu || !input) return;
-
-                        const closeMenu = () => {
-                            menu.hidden = true;
-                            trigger.setAttribute('aria-expanded', 'false');
-                        };
-
-                        const openMenu = () => {
-                            menu.hidden = false;
-                            trigger.setAttribute('aria-expanded', 'true');
-                        };
-
-                        trigger.addEventListener('click', function () {
-                            if (menu.hidden) openMenu();
-                            else closeMenu();
-                        });
-
-                        menu.querySelectorAll('.locale-switcher__option').forEach(function (option) {
-                            option.addEventListener('click', function () {
-                                const locale = option.dataset.locale;
-                                if (!locale || input.value === locale) {
-                                    closeMenu();
-                                    return;
-                                }
-                                input.value = locale;
-                                form.submit();
-                            });
-                        });
-
-                        document.addEventListener('click', function (event) {
-                            if (!form.contains(event.target)) closeMenu();
-                        });
-
-                        document.addEventListener('keydown', function (event) {
-                            if (event.key === 'Escape') closeMenu();
-                        });
-                    });
-                    </script>
                         <p class="notification-panel__eyebrow"><?php echo e(__('ui.notifications')); ?></p>
                         <h3 class="notification-panel__title"><?php echo e(__('ui.latest_notifications')); ?></h3>
                     </div>
@@ -227,6 +182,61 @@
         <?php endif; ?>
     </div>
  </header>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('locale-switcher-form');
+        const trigger = document.getElementById('locale-switcher-trigger');
+        const menu = document.getElementById('locale-switcher-menu');
+        const input = document.getElementById('locale-switcher-input');
+
+        if (!form || !trigger || !menu || !input) return;
+
+        const closeMenu = () => {
+            menu.hidden = true;
+            trigger.setAttribute('aria-expanded', 'false');
+        };
+
+        const openMenu = () => {
+            menu.hidden = false;
+            trigger.setAttribute('aria-expanded', 'true');
+        };
+
+        trigger.addEventListener('click', function () {
+            if (menu.hidden) {
+                openMenu();
+                return;
+            }
+
+            closeMenu();
+        });
+
+        menu.querySelectorAll('.locale-switcher__option').forEach(function (option) {
+            option.addEventListener('click', function () {
+                const locale = option.dataset.locale;
+
+                if (!locale || input.value === locale) {
+                    closeMenu();
+                    return;
+                }
+
+                input.value = locale;
+                form.submit();
+            });
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!form.contains(event.target)) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeMenu();
+            }
+        });
+    });
+</script>
 <!-- New Event Modal -->
 <div id="new-event-modal" class="header-modal">
     <div class="modal-content" id="modal-content">
@@ -515,6 +525,7 @@ unset($__errorArgs, $__bag); ?>
             </ul>
         </nav>
 
+        <?php if(Auth::check()): ?>
         <div class="mnav__section mnav__section--locale">
             <button class="mnav__user mnav__language" id="mnav-language" aria-expanded="false" aria-controls="mnav-language-menu">
                 <span class="mnav__avatar mnav__avatar--language" aria-hidden="true">🌐</span>
@@ -533,8 +544,7 @@ unset($__errorArgs, $__bag); ?>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
-        
-        <?php if(Auth::check()): ?>
+
         <div class="mnav__section">
             <button class="mnav__user" id="mnav-user" aria-expanded="false" aria-controls="mnav-user-menu">
                 <span class="mnav__avatar"><?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?></span>
