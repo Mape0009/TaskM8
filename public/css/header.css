@@ -2539,6 +2539,73 @@ body.dark-mode .header-modal .custom-interval-input:focus {
     display: block;
 }
 
+/* Settings modal: flex layout so footer buttons are not clipped */
+#settings-modal .modal-content {
+    max-height: min(90vh, 900px);
+}
+
+#settings-modal .modal-header,
+#settings-modal .settings-tabs-nav {
+    flex-shrink: 0;
+}
+
+#settings-modal .settings-tab-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+#settings-modal .settings-tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+#settings-modal .settings-tab-content > form.modal-form,
+#settings-modal .settings-tab-content > .modal-form.notifications-settings {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+#settings-modal .settings-tab-content .form-section {
+    flex-shrink: 0;
+}
+
+#settings-modal .settings-tab-content .form-actions,
+#settings-modal .settings-tab-content .notifications-footer {
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    padding-bottom: 0.75rem;
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+}
+
+body.dark-mode #settings-modal .settings-tab-content .form-actions,
+body.dark-mode #settings-modal .settings-tab-content .notifications-footer {
+    background: #1f2937;
+    border-top-color: #4b5563;
+}
+
+#settings-modal .notifications-settings .notifications-intro,
+#settings-modal .notifications-settings .notifications-table {
+    flex-shrink: 0;
+}
+
+#settings-modal .notifications-settings .notifications-table {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    margin-bottom: 0;
+}
+
 /* Notifications Settings */
 .notifications-settings {
     padding: 2rem !important;
@@ -2634,7 +2701,6 @@ body.dark-mode .header-modal .custom-interval-input:focus {
     gap: 1rem;
     margin-top: 2rem;
     padding-top: 1rem;
-    border-top: 1px solid #e2e8f0;
 }
 
 /* Dark mode support for new components */
@@ -2781,6 +2847,17 @@ body.dark-mode .notifications-footer {
 
     .notifications-footer .btn {
         width: 100%;
+    }
+
+    #settings-modal .settings-tab-content > form.modal-form,
+    #settings-modal .settings-tab-content > .modal-form.notifications-settings {
+        padding: 1.5rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    #settings-modal .settings-tab-content .form-actions,
+    #settings-modal .settings-tab-content .notifications-footer {
+        padding-bottom: 0.75rem;
     }
 }
 body.dark-mode #event-success-message .modal-success h3 {

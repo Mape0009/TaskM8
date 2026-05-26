@@ -410,8 +410,8 @@ unset($__errorArgs, $__bag); ?>
                     
                     <div class="notifications-row">
                         <div class="notifications-col notifications-col-notification">
-                            <p class="notifications-title">Ny begivenhed</p>
-                            <p class="notifications-description">Få besked når en ny begivenhed er tilføjet</p>
+                            <p class="notifications-title"><?php echo e(__('ui.notif_event_new_title')); ?></p>
+                            <p class="notifications-description"><?php echo e(__('ui.notif_event_new_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
                             <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="system" checked>
@@ -423,8 +423,8 @@ unset($__errorArgs, $__bag); ?>
                     
                     <div class="notifications-row">
                         <div class="notifications-col notifications-col-notification">
-                            <p class="notifications-title">Nye vagter</p>
-                            <p class="notifications-description">Få besked når du får nye vagter til en begivenhed</p>
+                            <p class="notifications-title"><?php echo e(__('ui.notif_event_shifts_title')); ?></p>
+                            <p class="notifications-description"><?php echo e(__('ui.notif_event_shifts_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
                             <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="system" checked>
@@ -436,8 +436,8 @@ unset($__errorArgs, $__bag); ?>
                     
                     <div class="notifications-row">
                         <div class="notifications-col notifications-col-notification">
-                            <p class="notifications-title">Deltager forlader begivenhed</p>
-                            <p class="notifications-description">Få besked når en deltager forlader en begivenhed</p>
+                            <p class="notifications-title"><?php echo e(__('ui.notif_event_leave_participant_title')); ?></p>
+                            <p class="notifications-description"><?php echo e(__('ui.notif_event_leave_participant_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
                             <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="system" checked>
@@ -449,8 +449,8 @@ unset($__errorArgs, $__bag); ?>
                     
                     <div class="notifications-row">
                         <div class="notifications-col notifications-col-notification">
-                            <p class="notifications-title">Medarbejder forlader begivenhed</p>
-                            <p class="notifications-description">Få besked når en medarbejder forlader en begivenhed</p>
+                            <p class="notifications-title"><?php echo e(__('ui.notif_event_leave_employee_title')); ?></p>
+                            <p class="notifications-description"><?php echo e(__('ui.notif_event_leave_employee_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
                             <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="system" checked>
@@ -462,8 +462,8 @@ unset($__errorArgs, $__bag); ?>
 
                                         <div class="notifications-row">
                         <div class="notifications-col notifications-col-notification">
-                            <p class="notifications-title">Begivenhed slettes</p>
-                            <p class="notifications-description">Få besked når en begivenhed slettes</p>
+                            <p class="notifications-title"><?php echo e(__('ui.notif_event_delete_title')); ?></p>
+                            <p class="notifications-description"><?php echo e(__('ui.notif_event_delete_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
                             <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="system" checked>
@@ -475,8 +475,8 @@ unset($__errorArgs, $__bag); ?>
                     
                     <div class="notifications-row">
                         <div class="notifications-col notifications-col-notification">
-                            <p class="notifications-title">Gruppe invitation</p>
-                            <p class="notifications-description">Få besked når du bliver inviteret til en gruppe</p>
+                            <p class="notifications-title"><?php echo e(__('ui.notif_group_invitation_title')); ?></p>
+                            <p class="notifications-description"><?php echo e(__('ui.notif_group_invitation_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
                             <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="system" checked>
