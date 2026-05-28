@@ -126,7 +126,7 @@ return [
     'group_leave_title' => 'Poistu ryhmästä',
     'group_login_text' => 'Kun olet kirjautunut sisään, näytämme ryhmät, jotka omistat tai joiden jäsen olet jo.',
     'group_login_title' => 'Kirjaudu sisään nähdäksesi ryhmäsi',
-    'group_manage_helper' => 'Anna sellaisen käyttäjän sähköpostiosoite, jolla on jo TaskM8 -tili, lisätäksesi hänet jäseneksi.',
+    'group_manage_helper' => 'Anna sähköpostiosoite kutsuaksesi jäsenen ryhmään.',
     'group_manage_intro' => 'Lisää tai poista jäseniä ryhmästä. Olet tämän ryhmän omistaja, ja muutokset tulevat voimaan välittömästi.',
     'group_manage_members' => 'Hallinnoi käyttäjiä',
     'group_manage_meta' => 'Hallinnoi ryhmän __ PH0 __ jäseniä TaskM8.',

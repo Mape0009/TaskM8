@@ -126,7 +126,7 @@ return [
     'group_leave_title' => 'Abbandona Gruppo',
     'group_login_text' => 'Quando hai effettuato l\'accesso, ti mostriamo i gruppi di cui sei proprietario o di cui sei già membro.',
     'group_login_title' => 'Accedi per vedere i tuoi gruppi',
-    'group_manage_helper' => 'Inserisci l\'email di un utente che ha già un account__ TASKM8 __ per aggiungerlo come membro.',
+    'group_manage_helper' => 'Inserisci un indirizzo email per invitare un membro al gruppo.',
     'group_manage_intro' => 'Aggiungi o rimuovi membri nel gruppo. Sei il proprietario di questo gruppo e le modifiche hanno effetto immediato.',
     'group_manage_members' => 'Gestisci membri',
     'group_manage_meta' => 'Gestisci i membri del gruppo :group su TaskM8.',

@@ -126,7 +126,7 @@ return [
     'group_leave_title' => 'Leave group',
     'group_login_text' => 'When you are logged in, we show the groups you own or are already a member of.',
     'group_login_title' => 'Log in to see your groups',
-    'group_manage_helper' => 'Enter the email of a user who already has a TaskM8 account to add them as a member.',
+    'group_manage_helper' => 'Enter an email address to invite a member to the group.',
     'group_manage_intro' => 'Add or remove members in the group. You are the owner of this group, and changes take effect immediately.',
     'group_manage_members' => 'Manage members',
     'group_manage_meta' => 'Manage members in the group :group on TaskM8.',

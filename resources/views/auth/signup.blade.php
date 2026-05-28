@@ -62,6 +62,7 @@
                 <input type="tel" id="phone" name="phonenumber" placeholder="{{ __('ui.phone') }}">
             </div>
             <input type="hidden" name="event_id" value="{{ request('event') }}">
+            <input type="hidden" name="group_id" value="{{ request('group') }}">
             <button type="submit" class="btn primary-btn form-submit">{{ __('ui.sign_up') }}</button>
         </form>
         <p>{{ __('ui.already_account') }} <a href="/signin">{{ __('ui.login') }}</a></p>

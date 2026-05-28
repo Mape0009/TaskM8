@@ -126,7 +126,7 @@ return [
     'group_leave_title' => 'Forlad gruppe',
     'group_login_text' => 'Når du er logget ind, viser vi de grupper du ejer eller allerede er medlem af.',
     'group_login_title' => 'Log ind for at se dine grupper',
-    'group_manage_helper' => 'Skriv e-mailen på en bruger, der allerede har en TaskM8-konto, for at tilføje vedkommende som medlem.',
+    'group_manage_helper' => 'Indtast en e-mailadresse for at invitere et medlem til gruppen.',
     'group_manage_intro' => 'Tilføj eller fjern medlemmer i gruppen. Du er ejer af denne gruppe, og ændringer træder i kraft med det samme.',
     'group_manage_members' => 'Administrer medlemmer',
     'group_manage_meta' => 'Administrer medlemmer i gruppen :group på TaskM8.',

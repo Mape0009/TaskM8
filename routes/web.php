@@ -104,6 +104,7 @@ Route::get('signup', function(Request $request){
                 'email' => $data['email'] ?? $request->query('email'),
                 'pin' => $data['pin'] ?? $request->query('pin'),
                 'event' => $data['event'] ?? $request->query('event'),
+                'group' => $data['group'] ?? $request->query('group'),
             ]);
         }
     }
