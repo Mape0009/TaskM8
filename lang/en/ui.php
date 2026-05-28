@@ -286,6 +286,8 @@ return [
     'max_participants' => 'Max participants',
     'my_shifts' => 'My shifts',
     'name' => 'Name',
+    'password' => 'Password',
+    'confirm_password' => 'Confirm password',
     'new_emails' => 'New emails',
     'new_emails_intro' => 'Add new people instantly - one or more addresses at a time.',
     'new_password' => 'New password',

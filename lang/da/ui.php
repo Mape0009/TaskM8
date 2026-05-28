@@ -286,6 +286,8 @@ return [
     'max_participants' => 'Maks antal deltagere',
     'my_shifts' => 'Mine vagter',
     'name' => 'Navn',
+    'password' => 'Adgangskode',
+    'confirm_password' => 'Bekræft adgangskode',
     'new_emails' => 'Nye e-mails',
     'new_emails_intro' => 'Tilføj nye personer med det samme – ét eller flere adresser ad gangen.',
     'new_password' => 'Ny adgangskode',

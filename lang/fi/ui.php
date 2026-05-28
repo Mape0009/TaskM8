@@ -286,6 +286,8 @@ return [
     'max_participants' => 'Enimmäismäärä osallistujia',
     'my_shifts' => 'Omat vuoroni',
     'name' => 'Nimi',
+    'password' => 'Salasana',
+    'confirm_password' => 'Vahvista salasana',
     'new_emails' => 'uudet sähköpostiviestit',
     'new_emails_intro' => 'Lisää uusia henkilöitä välittömästi - yksi tai useampi osoite kerrallaan.',
     'new_password' => 'Uusi salasana',
