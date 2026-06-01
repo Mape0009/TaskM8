@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\NotificationSettings;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -79,5 +81,31 @@ class NotificationController extends Controller
         }
 
          return response()->json(['message' => 'Old notifications deleted successfully']);
+    }
+
+    public function updateNotificationSettings(Request $request)
+    {
+        $currentUserId = auth()->id();
+        $settings = NotificationSettings::updateOrCreate(
+            ['userId' => $currentUserId],
+            $request->only([
+                'newEventSystemNotifications',
+                'newShiftSystemNotifications',
+                'participantLeaveSystemNotifications',
+                'employeeLeaveSystemNotifications',
+                'eventDeletedSystemNotifications',
+                'groupInvitationSystemNotifications',
+                'newEventEmailNotifications',
+                'newShiftEmailNotifications',
+                'participantLeaveEmailNotifications',
+                'employeeLeaveEmailNotifications',
+                'eventDeletedEmailNotifications',
+                'groupInvitationEmailNotifications',
+            ])
+        );
+
+        $settings->save();
+        
+        return response()->json($settings);
     }
 }

@@ -382,7 +382,8 @@
                 <div class="notifications-intro">
                     <p>{{ __('ui.notifications_intro') }}</p>
                 </div>
-                
+                <form id="notifications-settings-form" method="POST" action="{{ route('user.update-notifications') }}">
+                    @csrf
                 <div class="notifications-table">
                     <div class="notifications-header">
                         <div class="notifications-col notifications-col-notification">{{ __('ui.notification_name') }}</div>
@@ -396,10 +397,10 @@
                             <p class="notifications-description">{{ __('ui.notif_event_new_desc') }}</p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="system" checked name="newEventSystemNotification">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="email" checked name="newEventEmailNotification">
                         </div>
                     </div>
                     
@@ -408,11 +409,11 @@
                             <p class="notifications-title">{{ __('ui.notif_event_shifts_title') }}</p>
                             <p class="notifications-description">{{ __('ui.notif_event_shifts_desc') }}</p>
                         </div>
-                        <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="system" checked>
+                        <div class="notifications-col notifications-col-system" >
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="system" checked name="eventShiftsSystemNotification">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="email" checked name="eventShiftsEmailNotification">
                         </div>
                     </div>
                     
@@ -422,10 +423,10 @@
                             <p class="notifications-description">{{ __('ui.notif_event_leave_participant_desc') }}</p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="system" checked name="eventLeaveParticipantSystemNotification">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="email" checked name="eventLeaveParticipantEmailNotification">
                         </div>
                     </div>
                     
@@ -435,10 +436,10 @@
                             <p class="notifications-description">{{ __('ui.notif_event_leave_employee_desc') }}</p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="system" checked name="eventLeaveEmployeeSystemNotification">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="email" checked name="eventLeaveEmployeeEmailNotification">
                         </div>
                     </div>
 
@@ -448,10 +449,10 @@
                             <p class="notifications-description">{{ __('ui.notif_event_delete_desc') }}</p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="system" checked name="eventDeleteSystemNotification">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="email" checked name="eventDeleteEmailNotification">
                         </div>
                     </div>
                     
@@ -461,17 +462,19 @@
                             <p class="notifications-description">{{ __('ui.notif_group_invitation_desc') }}</p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="system" checked name="groupInvitationSystemNotification">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="email" checked name="groupInvitationEmailNotification">
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="notifications-footer">
                     <button type="button" class="btn secondary-btn" id="cancel-notifications-btn">{{ __('ui.cancel') }}</button>
+                    <button type="submit" class="btn primary-btn">{{ __('ui.save_settings') }}</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
