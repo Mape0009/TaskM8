@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'Log ind | TaskM8';
-        $metaDescription = 'Log ind på TaskM8 for at planlægge og styre dine begivenheder.';
+        $pageTitle = 'TaskM8 | ' . __('ui.login');
+        $metaDescription = __('ui.login_to_view_events');
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -16,12 +16,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anke+Devanagari&display=swap" rel="stylesheet">
     <script src="{{ asset('js/theme-toggle.js') }}"></script>
 </head>
 <body class="signin-page">
+    <div id="tm8-page-loader" class="tm8-page-loader" aria-hidden="true">
+        <div class="tm8-page-loader__card" role="status" aria-live="polite" aria-label="{{ __('ui.login') }}">
+            <div class="loading-wave" aria-hidden="true">
+                <div class="loading-bar"></div>
+                <div class="loading-bar"></div>
+                <div class="loading-bar"></div>
+                <div class="loading-bar"></div>
+            </div>
+            <h2 class="tm8-page-loader__title">{{ __('ui.login') }}</h2>
+            <p class="tm8-page-loader__text">{{ __('ui.guest_subtitle') }}</p>
+        </div>
+    </div>
+
     <div class="auth-container">
-        <h2>Login</h2>
+        <h2>{{ __('ui.login') }}</h2>
         <form action="{{ route('loginPost') }}" method="POST">
             @csrf
             @if (session('error'))
@@ -37,16 +50,51 @@
 @endif
 
             <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Skriv email" required>
+                <label for="email">{{ __('ui.email') }}</label>
+                <input type="email" id="email" name="email" placeholder="{{ __('ui.email') }}" required>
             </div>
             <div class="input-group">
-                <label for="password">Adgangskode</label>
-                <input type="password" id="password" name="password" placeholder="Skriv adgangskode" required>
+                <label for="password">{{ __('ui.password') }}</label>
+                <input type="password" id="password" name="password" placeholder="{{ __('ui.password') }}" required>
             </div>
-            <button type="submit" class="btn primary-btn">Login</button>
+            <button type="submit" class="btn primary-btn">{{ __('ui.login') }}</button>
         </form>
-        <p>Har du ingen konto? <a href="/signup">Opret Konto</a></p>
+        <p>{{ __('ui.no_account') }} <a href="/signup">{{ __('ui.sign_up') }}</a></p>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('.auth-container form');
+            const loader = document.getElementById('tm8-page-loader');
+            const submitButton = form ? form.querySelector('button[type="submit"]') : null;
+
+            if (!form || !loader) {
+                return;
+            }
+
+            let isSubmitting = false;
+
+            form.addEventListener('submit', function (event) {
+                if (isSubmitting) {
+                    return;
+                }
+
+                event.preventDefault();
+                isSubmitting = true;
+
+                loader.classList.add('is-visible');
+                loader.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('tm8-loader-lock');
+
+                if (submitButton) {
+                    submitButton.disabled = true;
+                }
+
+                window.setTimeout(function () {
+                    form.submit();
+                }, 1000);
+            });
+        });
+    </script>
 </body>
 </html> 

@@ -28,7 +28,7 @@ class ShiftController extends Controller
         $role = $currentParticipant?->eventRole ?? 'participant';
         $event = Event::findOrFail($task->eventId);
         if (!Permissions::hasPermission($role, 'view-shift')) {
-            abort(403, 'Ikke tilladt.');
+            abort(403, __('ui.not_allowed'));
         }
 
         return view('shifts.index', compact('task'));
@@ -61,7 +61,7 @@ class ShiftController extends Controller
         $role = $currentParticipant?->eventRole ?? 'participant';
         $event = Event::findOrFail($task->eventId);
         if (!Permissions::hasPermission($role, 'create-shift')) {
-            abort(403, 'Ikke tilladt.');
+            abort(403, __('ui.not_allowed'));
         }
         
         $request->validate([
@@ -69,12 +69,12 @@ class ShiftController extends Controller
             'startTime' => 'required|date',
             'endTime' => 'required|date|after:startTime',
         ], [
-            'userId.exists' => 'Den valgte bruger findes ikke.',
-            'startTime.required' => 'Starttidspunkt skal angives.',
-            'startTime.date' => 'Starttidspunkt skal være en gyldig dato.',
-            'endTime.required' => 'Sluttidspunkt skal angives.',
-            'endTime.date' => 'Sluttidspunkt skal være en gyldig dato.',
-            'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
+            'userId.exists' => __('ui.shift_validation_user_exists'),
+            'startTime.required' => __('ui.shift_validation_start_required'),
+            'startTime.date' => __('ui.shift_validation_start_date'),
+            'endTime.required' => __('ui.shift_validation_end_required'),
+            'endTime.date' => __('ui.shift_validation_end_date'),
+            'endTime.after' => __('ui.shift_validation_end_after'),
         ]);
 
         if ($request->filled('userId')) {
@@ -85,7 +85,7 @@ class ShiftController extends Controller
             $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
                              || ($event && (int)$event->ownerId === (int)$request->userId);
             if (!$isParticipant) {
-                return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
+                return redirect()->back()->withErrors(['userId' => __('ui.shift_user_not_participant')])->withInput();
             }
 
             $hasOverlap = Shift::where('taskId', $taskId)
@@ -97,7 +97,7 @@ class ShiftController extends Controller
                                 ->exists();
 
             if ($hasOverlap) {
-                return back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => '']);
+                return back()->withErrors(['startTime' => __('ui.shift_overlap_error'), 'endTime' => '']);
             }
         }
 
@@ -110,7 +110,7 @@ class ShiftController extends Controller
                 'status' => $request->filled('userId') ? 'accepted' : 'pending',
             ]);
         } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
-            return redirect()->back()->withErrors(['userId' => 'Kan ikke oprette vagt pga. unik begrænsning. Kør database-migrationerne og prøv igen.'])->withInput();
+            return redirect()->back()->withErrors(['userId' => __('ui.shift_create_unique_error')])->withInput();
         }
 
         return redirect()->route('tasks.shifts.index', $taskId);
@@ -140,13 +140,13 @@ class ShiftController extends Controller
             'startTime' => 'required|date',
             'endTime' => 'required|date|after:startTime',
         ], [
-            'userId.required' => 'Vælg en bruger.',
-            'userId.exists' => 'Den valgte bruger findes ikke.',
-            'startTime.required' => 'Starttidspunkt skal angives.',
-            'startTime.date' => 'Starttidspunkt skal være en gyldig dato.',
-            'endTime.required' => 'Sluttidspunkt skal angives.',
-            'endTime.date' => 'Sluttidspunkt skal være en gyldig dato.',
-            'endTime.after' => 'Sluttidspunkt skal være efter starttidspunkt.',
+            'userId.required' => __('ui.shift_validation_user_required'),
+            'userId.exists' => __('ui.shift_validation_user_exists'),
+            'startTime.required' => __('ui.shift_validation_start_required'),
+            'startTime.date' => __('ui.shift_validation_start_date'),
+            'endTime.required' => __('ui.shift_validation_end_required'),
+            'endTime.date' => __('ui.shift_validation_end_date'),
+            'endTime.after' => __('ui.shift_validation_end_after'),
         ]);
 
         $shift = Shift::findOrFail($shiftId);
@@ -161,7 +161,7 @@ class ShiftController extends Controller
         $isParticipant = ($participant && ($participant->status === 'accepted' || $roleOk))
                          || ($event && (int)$event->ownerId === (int)$request->userId);
         if (!$isParticipant) {
-            return redirect()->back()->withErrors(['userId' => 'Brugeren er ikke tilmeldt/organisator for denne begivenhed.'])->withInput();
+            return redirect()->back()->withErrors(['userId' => __('ui.shift_user_not_participant')])->withInput();
         }
         
         // Prevent overlapping shifts for the same user and task (excluding current shift)
@@ -175,7 +175,7 @@ class ShiftController extends Controller
                             ->exists();
 
         if ($hasOverlap) {
-            return redirect()->back()->withErrors(['startTime' => 'Denne vagt overlapper med en eksisterende vagt for brugeren.', 'endTime' => ''])->withInput();
+            return redirect()->back()->withErrors(['startTime' => __('ui.shift_overlap_error'), 'endTime' => ''])->withInput();
         }
 
         $shift->update([
@@ -206,7 +206,7 @@ class ShiftController extends Controller
         $role = $currentParticipant?->eventRole ?? 'participant';
         $event = Event::findOrFail($task->eventId);
         if (!Permissions::hasPermission($role, 'delete-shift')) {
-            abort(403, 'Ikke tilladt.');
+            abort(403, __('ui.not_allowed'));
         }
         $shift = Shift::findOrFail($shiftId);
         $shift->delete();
@@ -303,7 +303,7 @@ class ShiftController extends Controller
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
         if (!Permissions::hasPermission($role, 'volunteer-shift')) {
-            abort(403, 'Ikke tilladt.');
+            abort(403, __('ui.not_allowed'));
         }
         
         $shift = Shift::where('taskId', $taskId)
@@ -313,14 +313,14 @@ class ShiftController extends Controller
                   ->first();
 
         if (!$shift) {
-            return redirect()->back()->withErrors(['message' => 'Ingen ledige vagter at melde sig på.']);
+            return redirect()->back()->withErrors(['message' => __('ui.shift_no_open_slots')]);
         }
         
         $shift->userId = $userId;
         $shift->status = 'pending';
         $shift->save();
 
-        return redirect()->back()->with('success', 'Du har meldt dig som frivillig for opgaven.');
+        return redirect()->back()->with('success', __('ui.shift_volunteer_signed_up'));
     }
 
     public function acceptVolunteer($taskId, $shiftId)
@@ -332,23 +332,23 @@ class ShiftController extends Controller
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
         if (!Permissions::hasPermission($role, 'edit-shift')) {
-            abort(403, 'Ikke tilladt.');
+            abort(403, __('ui.not_allowed'));
         }
 
         $shift = Shift::where('taskId', $taskId)->findOrFail($shiftId);
         if (!$shift->userId) {
-            return redirect()->back()->withErrors(['message' => 'Vagten har ingen frivillig at godkende.']);
+            return redirect()->back()->withErrors(['message' => __('ui.shift_no_volunteer_to_approve')]);
         }
 
         $isVolunteerRequest = $shift->status === 'pending' && $shift->created_at && $shift->updated_at && !$shift->created_at->equalTo($shift->updated_at);
         if (!$isVolunteerRequest) {
-            return redirect()->back()->withErrors(['message' => 'Kun afventende vagter kan godkendes.']);
+            return redirect()->back()->withErrors(['message' => __('ui.shift_only_pending_approve')]);
         }
 
         $shift->status = 'accepted';
         $shift->save();
 
-        return redirect()->back()->with('success', 'Frivillig er godkendt til vagten.');
+        return redirect()->back()->with('success', __('ui.shift_volunteer_approved'));
     }
 
     public function denyVolunteer($taskId, $shiftId)
@@ -360,23 +360,23 @@ class ShiftController extends Controller
             ->first();
         $role = $currentParticipant?->eventRole ?? 'participant';
         if (!Permissions::hasPermission($role, 'edit-shift')) {
-            abort(403, 'Ikke tilladt.');
+            abort(403, __('ui.not_allowed'));
         }
 
         $shift = Shift::where('taskId', $taskId)->findOrFail($shiftId);
         if (!$shift->userId) {
-            return redirect()->back()->withErrors(['message' => 'Vagten har ingen frivillig at afvise.']);
+            return redirect()->back()->withErrors(['message' => __('ui.shift_no_volunteer_to_reject')]);
         }
 
         $isVolunteerRequest = $shift->status === 'pending' && $shift->created_at && $shift->updated_at && !$shift->created_at->equalTo($shift->updated_at);
         if (!$isVolunteerRequest) {
-            return redirect()->back()->withErrors(['message' => 'Kun afventende vagter kan afvises.']);
+            return redirect()->back()->withErrors(['message' => __('ui.shift_only_pending_reject')]);
         }
 
         $shift->userId = null;
         $shift->status = 'pending';
         $shift->save();
 
-        return redirect()->back()->with('success', 'Frivillig er afvist, og vagten er ledig igen.');
+        return redirect()->back()->with('success', __('ui.shift_volunteer_rejected'));
     }
 }

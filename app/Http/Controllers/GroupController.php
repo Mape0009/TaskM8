@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\PinCode;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Notifications\NotificationMessages;
 use App\Http\Controllers\NotificationController;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\GroupInviteExistingUser;
+use App\Mail\GroupInviteNewUser;
 
 class GroupController extends Controller
 {
@@ -188,14 +192,34 @@ class GroupController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = User::where('email', $request->input('email'))->first();
-        if (!$user) {
-            return redirect()->back()->with('success', 'Bruger med den e-mail blev ikke fundet.');
+        $email = trim(mb_strtolower((string)$request->input('email')));
+        $user = User::whereRaw('LOWER(email) = ?', [$email])->first();
+
+        $groupData = [
+            'id' => $group->id,
+            'name' => $group->groupName ?? '',
+            'description' => $group->description ?? '',
+            'group_url' => url('/groups/overview'),
+            'invite_email' => $email,
+        ];
+
+        if ($user) {
+            GroupMember::firstOrCreate([
+                'groupId' => $group->id,
+                'userId' => $user->id,
+            ]);
+
+            Mail::to($email)->send(new GroupInviteExistingUser($groupData));
+            return redirect()->back();
         }
 
-        GroupMember::firstOrCreate([
+        $pinCode = str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+
+        PinCode::create([
+            'pincode' => $pinCode,
+            'email' => $email,
             'groupId' => $group->id,
-            'userId' => $user->id,
+            'createdAt' => now(),
         ]);
 
         // Notify the user that they have been added to the group
@@ -205,6 +229,17 @@ class GroupController extends Controller
             $group->id,
             NotificationMessages::GROUP_JOINED
         );
+        $payload = base64_encode(json_encode([
+            'email' => $email,
+            'pin' => $pinCode,
+            'group' => $group->id,
+            'ts' => now()->timestamp,
+        ]));
+
+        $groupData['pin_code'] = $pinCode;
+        $groupData['invite_url'] = url('/signup') . '?token=' . urlencode($payload);
+
+        Mail::to($email)->send(new GroupInviteNewUser($groupData));
 
         return redirect()->back();
     }

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Exists;
 use App\Models\PinCode;
 use App\Models\EventParticipant;
+use App\Models\GroupMember;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -22,6 +23,7 @@ class UserController extends Controller
             // Optional invitation fields
             'pin' => 'nullable|string|size:4',
             'event_id' => 'nullable|integer',
+            'group_id' => 'nullable|integer',
         ]);
         
         if (User::where('email', $request->input('email'))->exists()) {
@@ -31,17 +33,22 @@ class UserController extends Controller
         // Prepare invitation linkage (optional)
         $invitePin = trim((string)$request->input('pin', ''));
         $inviteEventId = $request->input('event_id');
+        $inviteGroupId = $request->input('group_id');
         $inviteEmail = trim(mb_strtolower((string)$request->input('email', '')));
         $validatedPinCode = null;
 
-        if (empty($inviteEventId) && !empty($invitePin)) {
-            // If the form didn't carry event_id, derive it from the pin + email
+        if (empty($inviteEventId) && empty($inviteGroupId) && !empty($invitePin)) {
+            // If the form didn't carry event_id/group_id, derive it from the pin + email
             $pinRowForEvent = PinCode::where('pincode', $invitePin)
                 ->whereRaw('LOWER(email) = ?', [$inviteEmail])
                 ->orderByDesc('created_at')
                 ->first();
             if ($pinRowForEvent && !empty($pinRowForEvent->eventId)) {
                 $inviteEventId = $pinRowForEvent->eventId;
+                $validatedPinCode = $pinRowForEvent;
+            }
+            if ($pinRowForEvent && empty($inviteEventId) && !empty($pinRowForEvent->groupId)) {
+                $inviteGroupId = $pinRowForEvent->groupId;
                 $validatedPinCode = $pinRowForEvent;
             }
         }
@@ -70,6 +77,27 @@ class UserController extends Controller
             }
         }
 
+        if (!empty($inviteGroupId)) {
+            if (!empty($invitePin)) {
+                $validatedPinCode = PinCode::where('pincode', $invitePin)
+                    ->whereRaw('LOWER(email) = ?', [$inviteEmail])
+                    ->where('groupId', $inviteGroupId)
+                    ->first();
+            }
+
+            if (!$validatedPinCode) {
+                $validatedPinCode = PinCode::whereRaw('LOWER(email) = ?', [$inviteEmail])
+                    ->where('groupId', $inviteGroupId)
+                    ->first();
+            }
+
+            if (!$validatedPinCode && !empty($invitePin)) {
+                $validatedPinCode = PinCode::where('pincode', $invitePin)
+                    ->where('groupId', $inviteGroupId)
+                    ->first();
+            }
+        }
+
         // Create a new user
         $user = new User();
         $user->name = $request->input('name');
@@ -91,6 +119,21 @@ class UserController extends Controller
                 $validatedPinCode->delete();
             } else {
                 PinCode::where('eventId', $inviteEventId)
+                    ->whereRaw('LOWER(email) = ?', [$inviteEmail])
+                    ->delete();
+            }
+        }
+
+        if ($inviteGroupId) {
+            GroupMember::firstOrCreate([
+                'groupId' => $inviteGroupId,
+                'userId' => $user->id,
+            ]);
+
+            if ($validatedPinCode && !empty($validatedPinCode->groupId)) {
+                $validatedPinCode->delete();
+            } else {
+                PinCode::where('groupId', $inviteGroupId)
                     ->whereRaw('LOWER(email) = ?', [$inviteEmail])
                     ->delete();
             }

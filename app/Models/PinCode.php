@@ -11,5 +11,6 @@ class PinCode extends Model
         'createdAt',
         'email',
         'eventId',
+        'groupId',
     ];
 }

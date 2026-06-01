@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Trust reverse proxy headers so HTTPS is correctly detected behind load balancers/CDNs
         // Use signature compatible with your framework version
         $middleware->trustProxies(at: '*');
+        $middleware->appendToGroup('web', [\App\Http\Middleware\SetLocale::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

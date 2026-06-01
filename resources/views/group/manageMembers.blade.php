@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = 'Administrer medlemmer | TaskM8';
-        $metaDescription = 'Administrer medlemmer i gruppen ' . ($group->groupName ?? 'gruppe') . ' på TaskM8.';
+        $pageTitle = __('ui.group_manage_page_title');
+        $metaDescription = __('ui.group_manage_meta', ['group' => ($group->groupName ?? __('ui.group'))]);
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -20,14 +20,14 @@
         <div class="overview-shell">
             <section class="overview-hero">
                 <div class="hero-copy">
-                    <p class="eyebrow">Gruppeadministration</p>
+                    <p class="eyebrow">{{ __('ui.group_admin') }}</p>
                     <h1>{{ $group->groupName }}</h1>
                     <p class="lede">
-                        Tilføj eller fjern medlemmer i gruppen. Du er ejer af denne gruppe, og ændringer træder i kraft med det samme.
+                        {{ __('ui.group_manage_intro') }}
                     </p>
                 </div>
                 <div class="hero-actions">
-                    <a href="{{ route('groups.overview') }}" class="btn create-btn">Tilbage til grupper</a>
+                    <a href="{{ route('groups.overview') }}" class="btn create-btn">{{ __('ui.back_to_groups') }}</a>
                 </div>
             </section>
 
@@ -36,24 +36,24 @@
                     <article class="group-card manage-members-card">
                         <div class="group-card-header">
                             <div>
-                                <p class="card-eyebrow">Tilføj medlem</p>
-                                <h2>Invitér via e-mail</h2>
+                                <p class="card-eyebrow">{{ __('ui.group_add_member') }}</p>
+                                <h2>{{ __('ui.group_invite_by_email') }}</h2>
                             </div>
                             <span class="group-private {{ $group->private ? 'private' : 'public' }}">
-                                {{ $group->private ? 'Privat gruppe' : 'Offentlig gruppe' }}
+                                {{ $group->private ? __('ui.group_private_group') : __('ui.group_public_group') }}
                             </span>
                         </div>
                         <p class="group-description">
-                            Skriv e-mailen på en bruger, der allerede har en TaskM8-konto, for at tilføje vedkommende som medlem.
+                            {{ __('ui.group_manage_helper') }}
                         </p>
                         <form action="{{ route('groups.members.add', $group->id) }}" method="POST" class="group-form manage-members-form">
                             @csrf
                             <div class="form-row">
-                                <label for="member-email">E-mailadresse</label>
-                                <input type="email" id="member-email" name="email" placeholder="person@example.com" required>
+                                <label for="member-email">{{ __('ui.email') }}</label>
+                                <input type="email" id="member-email" name="email" placeholder="{{ __('ui.group_enter_email') }}" required>
                             </div>
                             <div class="form-actions manage-members-form-actions">
-                                <button type="submit" class="btn primary-btn">Tilføj medlem</button>
+                                <button type="submit" class="btn primary-btn">{{ __('ui.group_add_member_btn') }}</button>
                             </div>
                         </form>
                     </article>
@@ -61,18 +61,18 @@
                     <article class="group-card manage-members-card">
                         <div class="group-card-header">
                             <div>
-                                <p class="card-eyebrow">Medlemmer</p>
-                                <h2>Aktuelle gruppemedlemmer</h2>
+                                <p class="card-eyebrow">{{ __('ui.group_members') }}</p>
+                                <h2>{{ __('ui.group_current_members') }}</h2>
                             </div>
                             <span class="group-private manage-members-count">
-                                {{ $members->count() }} medlem{{ $members->count() === 1 ? '' : 'mer' }}
+                                {{ $members->count() }} {{ $members->count() === 1 ? __('ui.group_member') : __('ui.group_members') }}
                             </span>
                         </div>
 
                         @if($members->isEmpty())
                             <div class="empty-state manage-members-empty-state">
-                                <p class="empty-title">Ingen medlemmer endnu</p>
-                                <p class="empty-text">Tilføj dit første medlem via formularen til venstre.</p>
+                                <p class="empty-title">{{ __('ui.group_no_members_title') }}</p>
+                                <p class="empty-text">{{ __('ui.group_no_members_text') }}</p>
                             </div>
                         @else
                             <div class="members-list manage-members-list">
@@ -84,24 +84,24 @@
                                             </div>
                                             <div class="manage-member-meta">
                                                 <span class="manage-member-name">
-                                                    {{ $member->user?->name ?? 'Ukendt bruger' }}
+                                                    {{ $member->user?->name ?? __('ui.unknown_user') }}
                                                 </span>
                                                 <span class="manage-member-email">
-                                                    {{ $member->user?->email ?? 'Ingen e-mail' }}
+                                                    {{ $member->user?->email ?? __('ui.no_email') }}
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="manage-member-actions">
                                             <span class="pill manage-member-since">
-                                                Medlem siden {{ optional($member->created_at)->format('d.m.Y') ?? '—' }}
+                                                {{ __('ui.group_member_since') }} {{ optional($member->created_at)->format('d.m.Y') ?? '—' }}
                                             </span>
                                             @if($member->userId === $group->ownerId)
-                                                <span class="pill neutral manage-owner-pill">Ejer</span>
+                                                <span class="pill neutral manage-owner-pill">{{ __('ui.owner') }}</span>
                                             @else
                                                 <form action="{{ route('groups.members.remove', [$group->id, $member->id]) }}" method="POST" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn delete-btn">Fjern</button>
+                                                    <button type="submit" class="btn delete-btn">{{ __('ui.remove') }}</button>
                                                 </form>
                                             @endif
                                         </div>

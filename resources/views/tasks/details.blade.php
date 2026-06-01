@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $pageTitle = ($task->taskName ?? 'Opgave') . ' | TaskM8';
-        $metaDescription = Str::limit($task->description ?? 'Se detaljer for opgaven i TaskM8.', 150);
+        $pageTitle = __('ui.task_details_page_title');
+        $metaDescription = Str::limit($task->description ?? __('ui.task_details_meta'), 150);
     @endphp
     @include('partials.seo', [
         'title' => $pageTitle,
@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ asset('css/task.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
     <link rel="stylesheet" href="{{ asset('css/overview-hero.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anke+Devanagari&display=swap" rel="stylesheet">
 </head>
 <body>  
 @include('partials.header', ['currentPage' => 'tasks'])
@@ -28,12 +28,12 @@
     <div class="overview-shell">
         <section class="overview-hero">
             <div class="hero-copy">
-                <p class="eyebrow">Opgavedetaljer</p>
+                <p class="eyebrow">{{ __('ui.task_details_eyebrow') }}</p>
                 <h1>{{ $task->taskName }}</h1>
-                <p class="lede">Få overblik over tidsrum, beskrivelse og handlinger for denne opgave.</p>
+                <p class="lede">{{ __('ui.task_details_lede') }}</p>
             </div>
             <div class="hero-actions">
-                <a href="{{ url()->previous() }}" class="btn secondary-ghost">Tilbage</a>
+                <a href="{{ url()->previous() }}" class="btn secondary-ghost">{{ __('ui.back') }}</a>
             </div>
         </section>
 
@@ -59,9 +59,9 @@
         @endif
 
         <div class="event-actions-details" style="display:flex; gap:.75rem; align-items:center; flex-wrap:wrap;">
-            <a href="{{ url()->previous() }}" class="btn white-btn">Tilbage</a>
-            <a href="/tasks/{{ $task->id }}/edit" class="btn primary-btn">Rediger</a>
-            <button type="button" class="bin-button" aria-label="Slet opgave" onclick="document.getElementById('delete-task-modal').style.display='flex'">
+            <a href="{{ url()->previous() }}" class="btn white-btn">{{ __('ui.back') }}</a>
+            <a href="/tasks/{{ $task->id }}/edit" class="btn primary-btn">{{ __('ui.edit') }}</a>
+            <button type="button" class="bin-button" aria-label="{{ __('ui.delete_task') }}" onclick="document.getElementById('delete-task-modal').style.display='flex'">
                 <svg class="bin-top" viewBox="0 0 39 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
                     <line x1="12" y1="1.5" x2="26.0357" y2="1.5" stroke="white" stroke-width="3"></line>
@@ -83,15 +83,15 @@
                     <svg fill="currentColor" viewBox="0 0 20 20" class="confirm-icon" xmlns="http://www.w3.org/2000/svg">
                         <path clip-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" fill-rule="evenodd"></path>
                     </svg>
-                    <h2 id="delete-task-title" class="confirm-title">Er du sikker?</h2>
-                    <p class="confirm-text">Vil du slette denne opgave? Dette kan ikke fortrydes.</p>
+                    <h2 id="delete-task-title" class="confirm-title">{{ __('ui.confirm_are_you_sure') }}</h2>
+                    <p class="confirm-text">{{ __('ui.confirm_delete_task') }}</p>
                 </div>
                 <div class="confirm-actions">
-                    <button type="button" class="confirm-btn cancel" onclick="document.getElementById('delete-task-modal').style.display='none'">Annuller</button>
+                    <button type="button" class="confirm-btn cancel" onclick="document.getElementById('delete-task-modal').style.display='none'">{{ __('ui.cancel') }}</button>
                     <form action="{{ route('task.delete', ['id' => $task->id]) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="confirm-btn danger">Slet</button>
+                        <button type="submit" class="confirm-btn danger">{{ __('ui.delete') }}</button>
                     </form>
                 </div>
             </div>
@@ -104,4 +104,3 @@
 
 </body>
 </html>
-

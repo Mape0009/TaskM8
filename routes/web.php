@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\EventParticipantController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MailController;
@@ -22,6 +24,19 @@ use App\Http\Controllers\GroupMemberController;
 Route::get('/', function () {
     return redirect('/dashboard');
 });
+
+Route::post('/locale', function (Request $request) {
+    $locale = $request->input('locale');
+    $supportedLocales = ['da', 'en', 'es', 'fi', 'it', 'uk', 'ru'];
+
+    abort_unless(in_array($locale, $supportedLocales, true), 404);
+
+    session(['locale' => $locale]);
+    App::setLocale($locale);
+    Cookie::queue(cookie('locale', $locale, 60 * 24 * 365));
+
+    return back();
+})->name('locale.switch');
 
 Route::get('/dashboard', function () {
     if (auth()->check()) {
@@ -69,7 +84,7 @@ Route::get('/previousEvents', function () {
     $userId = auth()->id();
     $controller = app(EventController::class);
     $previousEvents = $controller->getPreviousEventsForUser($userId)->sortByDesc('endDate')->values();
-    $participant = App\Models\EventParticipant::where('userId', $userId)->get();
+    $participant = EventParticipant::where('userId', $userId)->get();
     return view('previousEvents', compact('previousEvents', 'participant'));
 })->middleware('auth');
 
@@ -89,6 +104,7 @@ Route::get('signup', function(Request $request){
                 'email' => $data['email'] ?? $request->query('email'),
                 'pin' => $data['pin'] ?? $request->query('pin'),
                 'event' => $data['event'] ?? $request->query('event'),
+                'group' => $data['group'] ?? $request->query('group'),
             ]);
         }
     }

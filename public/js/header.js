@@ -1,3 +1,60 @@
+function toggleTm8Loader(show) {
+    const loader = document.getElementById('tm8-page-loader');
+    if (!loader) {
+        return;
+    }
+
+    if (show) {
+        loader.classList.add('is-visible');
+        loader.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('tm8-loader-lock');
+    } else {
+        loader.classList.remove('is-visible');
+        loader.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('tm8-loader-lock');
+    }
+}
+
+function wireTm8Loader(formId, delayMs, options) {
+    const form = document.getElementById(formId);
+    if (!form || form.dataset.tm8LoaderWired === 'true') {
+        return;
+    }
+
+    const loaderOptions = options || {};
+    form.dataset.tm8LoaderWired = 'true';
+    form.addEventListener('submit', function(event) {
+        if (form.dataset.tm8LoaderSubmitting === 'true') {
+            return;
+        }
+
+        if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+            if (typeof form.reportValidity === 'function') {
+                form.reportValidity();
+            }
+            return;
+        }
+
+        event.preventDefault();
+        form.dataset.tm8LoaderSubmitting = 'true';
+
+        const loaderTitle = document.querySelector('#tm8-page-loader .tm8-page-loader__title');
+        const loaderText = document.querySelector('#tm8-page-loader .tm8-page-loader__text');
+        if (loaderTitle && loaderOptions.title) {
+            loaderTitle.textContent = loaderOptions.title;
+        }
+        if (loaderText && loaderOptions.text) {
+            loaderText.textContent = loaderOptions.text;
+        }
+
+        toggleTm8Loader(true);
+
+        window.setTimeout(function() {
+            form.submit();
+        }, delayMs || 1000);
+    });
+}
+
 // Modal logic
 const modal = document.getElementById('new-event-modal');
 const modalContent = document.getElementById('modal-content');
@@ -71,14 +128,9 @@ if (startInput && endInput) {
     });
 }
 if (form) {
-    form.addEventListener('submit', function(e) {
-        // Show loading state
-        const submitBtn = form.querySelector('.primary-btn');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Opretter...';
-        submitBtn.disabled = true;
-        
-      
+    wireTm8Loader('new-event-form', 1000, {
+        title: 'Vi opretter begivenhed',
+        text: 'Et øjeblik mens vi gemmer din nye begivenhed.'
     });
 }
 
@@ -133,6 +185,8 @@ function prefillFromTemplate() {
 // Initialize on load as well (for pages where modal is already in DOM)
 document.addEventListener('DOMContentLoaded', function() {
     wireEventDescriptionCounter();
+    wireTm8Loader('taskWizard', 1000);
+    wireTm8Loader('shiftWizard', 1000);
     try {
         const params = new URLSearchParams(window.location.search);
         if (params.get('open') === 'create') {
@@ -738,8 +792,14 @@ function initializeModalListeners() {
     const closeBtn = document.getElementById('mnav-close');
     const userBtn = document.getElementById('mnav-user');
     const submenu = document.getElementById('mnav-user-menu');
+    const languageBtn = document.getElementById('mnav-language');
+    const languageMenu = document.getElementById('mnav-language-menu');
     const createBtn = document.getElementById('mnav-create');
     const settingsBtnMobile = document.getElementById('mnav-settings');
+    const localeForm = document.getElementById('locale-switcher-form');
+    const localeInput = document.getElementById('locale-switcher-input');
+    const localeTrigger = document.getElementById('locale-switcher-trigger');
+    const localeMenu = document.getElementById('locale-switcher-menu');
 
     function openNav() {
         mnav.classList.add('is-open');
@@ -752,6 +812,8 @@ function initializeModalListeners() {
         document.body.style.overflow = '';
         if (userBtn) userBtn.setAttribute('aria-expanded', 'false');
         if (submenu) submenu.hidden = true;
+        if (languageBtn) languageBtn.setAttribute('aria-expanded', 'false');
+        if (languageMenu) languageMenu.hidden = true;
     }
 
     toggleBtn.addEventListener('click', (e) => { e.preventDefault(); openNav(); });
@@ -790,4 +852,218 @@ function initializeModalListeners() {
             if (settingsModal) settingsModal.style.display = 'flex';
         });
     }
+    if (languageBtn && languageMenu) {
+        languageBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const expanded = languageBtn.getAttribute('aria-expanded') === 'true';
+            languageBtn.setAttribute('aria-expanded', String(!expanded));
+            languageMenu.hidden = expanded;
+        });
+    }
+    document.querySelectorAll('.mnav__action--locale').forEach((button) => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const locale = button.dataset.locale;
+            if (!locale || !localeForm || !localeInput || localeInput.value === locale) {
+                closeNav();
+                return;
+            }
+
+            localeInput.value = locale;
+            if (localeMenu) {
+                localeMenu.hidden = true;
+            }
+            if (localeTrigger) {
+                localeTrigger.setAttribute('aria-expanded', 'false');
+            }
+            closeNav();
+            localeForm.submit();
+        });
+    });
 })();
+
+// Settings Tabs Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabBtns = document.querySelectorAll('.settings-tab-btn');
+    const tabContents = document.querySelectorAll('.settings-tab-content');
+    const cancelNotificationsBtn = document.getElementById('cancel-notifications-btn');
+    const notificationCenter = document.querySelector('.notification-center');
+    const notificationBtnHeader = document.getElementById('notification-btn-header');
+    const notificationPanel = document.getElementById('notification-panel');
+    const notificationMarkReadBtn = document.getElementById('notification-mark-read-btn');
+    const notificationCountPill = document.getElementById('notification-count-pill');
+
+    function getUnreadNotifications() {
+        return document.querySelectorAll('.notification-item--unread');
+    }
+
+    function getTotalNotifications() {
+        return document.querySelectorAll('.notification-item').length;
+    }
+
+    function syncNotificationBadge(unreadCount) {
+        if (!notificationBtnHeader || !notificationCountPill) {
+            return;
+        }
+
+        const badge = notificationBtnHeader.querySelector('.notification-btn-header__badge');
+        if (badge) {
+            // show badge only when there are unread notifications
+            badge.hidden = unreadCount <= 0;
+            // also set inline display to ensure CSS specificity doesn't leave an empty red dot
+            badge.style.display = unreadCount > 0 ? '' : 'none';
+            badge.textContent = unreadCount > 0 ? String(unreadCount) : '';
+        }
+
+        // count pill reflects unread count and is hidden when none
+        notificationCountPill.hidden = unreadCount <= 0;
+        notificationCountPill.textContent = unreadCount === 1 ? '1 ny' : `${unreadCount} nye`;
+
+        if (notificationMarkReadBtn) {
+            notificationMarkReadBtn.hidden = unreadCount <= 0;
+            notificationMarkReadBtn.disabled = unreadCount <= 0;
+        }
+    }
+
+    function closeNotificationPanel() {
+        if (!notificationBtnHeader || !notificationPanel) {
+            return;
+        }
+
+        notificationBtnHeader.setAttribute('aria-expanded', 'false');
+        notificationPanel.hidden = true;
+    }
+
+    function openNotificationPanel() {
+        if (!notificationBtnHeader || !notificationPanel) {
+            return;
+        }
+
+        notificationBtnHeader.setAttribute('aria-expanded', 'true');
+        notificationPanel.hidden = false;
+    }
+
+    function toggleNotificationPanel() {
+        if (!notificationBtnHeader || !notificationPanel) {
+            return;
+        }
+
+        if (notificationPanel.hidden) {
+            openNotificationPanel();
+        } else {
+            closeNotificationPanel();
+        }
+    }
+
+    if (notificationBtnHeader && notificationPanel) {
+        notificationBtnHeader.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleNotificationPanel();
+            const userProfileDropdown = document.querySelector('.user-profile-dropdown');
+            if (userProfileDropdown) {
+                userProfileDropdown.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (notificationCenter && !notificationCenter.contains(e.target)) {
+                closeNotificationPanel();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeNotificationPanel();
+            }
+        });
+    }
+
+    if (notificationMarkReadBtn) {
+        notificationMarkReadBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const unreadNotifications = getUnreadNotifications();
+            unreadNotifications.forEach(notification => {
+                notification.classList.remove('notification-item--unread');
+            });
+
+            syncNotificationBadge(0);
+            notificationMarkReadBtn.disabled = true;
+            notificationMarkReadBtn.textContent = 'Marked as read';
+        });
+    }
+
+    syncNotificationBadge(getUnreadNotifications().length);
+
+    // Tab switching
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+
+            // Remove active class from all tabs and contents
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked tab and corresponding content
+            this.classList.add('active');
+            const activeContent = document.querySelector(`[data-tab-content="${tabName}"]`);
+            if (activeContent) {
+                activeContent.classList.add('active');
+            }
+        });
+    });
+
+    // Cancel notifications button
+    if (cancelNotificationsBtn) {
+        cancelNotificationsBtn.addEventListener('click', function() {
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Settings modal close button
+    const closeSettingsBtn = document.getElementById('close-settings-modal-btn');
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', function() {
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Cancel password settings button
+    const cancelSettingsBtn = document.getElementById('cancel-settings-btn');
+    if (cancelSettingsBtn) {
+        cancelSettingsBtn.addEventListener('click', function() {
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Notification checkboxes - just for UI (backend implementation separate)
+    const notificationCheckboxes = document.querySelectorAll('.notification-checkbox');
+    notificationCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            // Store in localStorage for demo (backend will handle real persistence)
+            const notification = this.getAttribute('data-notification');
+            const channel = this.getAttribute('data-channel');
+            const key = `notification_${notification}_${channel}`;
+            localStorage.setItem(key, this.checked ? 'true' : 'false');
+        });
+
+        // Load saved state from localStorage
+        const notification = checkbox.getAttribute('data-notification');
+        const channel = checkbox.getAttribute('data-channel');
+        const key = `notification_${notification}_${channel}`;
+        const saved = localStorage.getItem(key);
+        if (saved !== null) {
+            checkbox.checked = saved === 'true';
+        }
+    });
+});

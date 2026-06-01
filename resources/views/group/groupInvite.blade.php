@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Group Invitation | TaskM8</title>
+        <title>TaskM8 | Invitation</title>
     </head>
 
     <body>

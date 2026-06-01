@@ -5,7 +5,12 @@
     $defaultUrl = $canonical ?? url()->current();
     $defaultImage = $image ?? asset('TaskM8-Logo.png');
     $robots = $robots ?? 'index, follow';
-    $locale = 'da';
+    $locale = app()->getLocale() ?: 'da';
+    $ogLocale = match ($locale) {
+        'en' => 'en_US',
+        'es' => 'es_ES',
+        default => 'da_DK',
+    };
 @endphp
 
 <meta charset="UTF-8">
@@ -17,7 +22,7 @@
 <meta name="theme-color" content="#111827">
 
 <!-- Open Graph -->
-<meta property="og:locale" content="{{ $locale }}_DK">
+<meta property="og:locale" content="{{ $ogLocale }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{{ $appName }}">
 <meta property="og:title" content="{{ $defaultTitle }}">

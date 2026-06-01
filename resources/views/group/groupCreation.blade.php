@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opret gruppe | TaskM8</title>
+    <title>{{ __('ui.group_create_page_title') }}</title>
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/groupCreation.css') }}">
     <link rel="stylesheet" href="{{ asset('css/design-system.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anke+Devanagari&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -18,35 +18,35 @@
         <section class="group-create-shell form-card">
             <header class="form-header">
                 <div>
-                    <p class="eyebrow">Ny gruppe</p>
-                    <h1>Opret en gruppe</h1>
-                    <p class="lede">Navngiv gruppen, tilføj en kort beskrivelse og vælg synlighed.</p>
+                    <p class="eyebrow">{{ __('ui.group_new') }}</p>
+                    <h1>{{ __('ui.group_create_title') }}</h1>
+                    <p class="lede">{{ __('ui.group_create_intro') }}</p>
                 </div>
-                <a href="{{ url('/groups/overview') }}" class="ghost-link">Tilbage til oversigten</a>
+                <a href="{{ url('/groups/overview') }}" class="ghost-link">{{ __('ui.back_to_overview') }}</a>
             </header>
 
             <form class="group-form" action="{{ route('groups.create') }}" method="POST">
                 @csrf
 
                 <div class="form-row">
-                    <label for="groupName">Gruppenavn</label>
-                    <p class="helper">Et klart navn gør det let at finde gruppen senere.</p>
-                    <input type="text" id="groupName" name="groupName" placeholder="Fx 'Arbejdskollegaer'" required>
+                    <label for="groupName">{{ __('ui.group_name') }}</label>
+                    <p class="helper">{{ __('ui.group_name_helper') }}</p>
+                    <input type="text" id="groupName" name="groupName" placeholder="{{ __('ui.group_name_placeholder') }}" required>
                 </div>
 
                 <div class="form-row">
-                    <label for="description">Beskrivelse</label>
-                    <p class="helper">Beskriv kort formålet med gruppen.</p>
+                    <label for="description">{{ __('ui.description') }}</label>
+                    <p class="helper">{{ __('ui.group_description_helper') }}</p>
                     <div class="textarea-wrap">
-                        <textarea id="description" name="description" placeholder="Hvad samler gruppen, hvilke aktiviteter osv."></textarea>
+                        <textarea id="description" name="description" placeholder="{{ __('ui.group_description_placeholder') }}"></textarea>
                         <span class="counter" id="description-counter">0 / 240</span>
                     </div>
                 </div>
 
                 <div class="form-row visibility-row">
                     <div>
-                        <label for="private">Synlighed</label>
-                        <p class="helper">Privat skjuler gruppen for andre end inviterede medlemmer.</p>
+                        <label for="private">{{ __('ui.visibility') }}</label>
+                        <p class="helper">{{ __('ui.group_visibility_helper') }}</p>
                     </div>
                     <label class="toggle">
                         <input type="hidden" name="private" value="0">
@@ -54,13 +54,13 @@
                         <span class="toggle-track">
                             <span class="toggle-thumb"></span>
                         </span>
-                        <span class="toggle-label" data-off="Offentlig" data-on="Privat">Offentlig</span>
+                        <span class="toggle-label" data-off="{{ __('ui.group_public') }}" data-on="{{ __('ui.group_private') }}">{{ __('ui.group_public') }}</span>
                     </label>
                 </div>
 
                 <div class="form-actions">
-                    <a href="{{ url('/groups/overview') }}" class="btn secondary-btn">Annuller</a>
-                    <button type="submit" class="btn primary-btn">Opret gruppe</button>
+                    <a href="{{ url('/groups/overview') }}" class="btn secondary-btn">{{ __('ui.cancel') }}</a>
+                    <button type="submit" class="btn primary-btn">{{ __('ui.group_create_btn') }}</button>
                 </div>
             </form>
         </section>

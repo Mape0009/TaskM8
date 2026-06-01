@@ -19,7 +19,7 @@ return new class extends Migration
     {
         DB::statement("
             ALTER TABLE `event_participants`
-            MODIFY `eventRole` ENUM('owner','coOwner','taskManager','taskWorker','participant')
+            MODIFY `eventRole` ENUM('owner','coOwner','taskManager','taskWorker','volunteer','participant')
             NOT NULL
             DEFAULT 'participant'
         ");

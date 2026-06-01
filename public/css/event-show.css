@@ -1,7 +1,14 @@
+body.event-show-page {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
 body.event-show-page .event-page-shell {
     max-width: 1180px;
     margin: 0 auto;
     padding: 1.2rem 1.1rem 2.2rem;
+    flex: 1 0 auto;
 }
 
 body.event-show-page .event-page-grid {
@@ -13,7 +20,7 @@ body.event-show-page .event-page-grid {
 
 body.event-show-page .event-surface {
     box-sizing: border-box;
-    background: var(--color-background-secondary, #18181c);
+    background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
     border: 1px solid var(--color-border, #222);
     border-radius: 22px;
     box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
@@ -120,9 +127,9 @@ body.event-show-page .event-body-grid {
 }
 
 body.event-show-page .event-panel {
-    border: 1px solid var(--color-border, #222);
+    /* border: 1px solid var(--color-border, #222); */
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.015);
+    /* background: rgba(255, 255, 255, 0.015); */
     padding: 1rem;
     min-width: 0;
     display: flex;
@@ -172,7 +179,7 @@ body.event-show-page .event-facts-list {
     padding: 0;
     display: grid;
     gap: 0;
-    border: 1px solid var(--color-border, #222);
+    /* border: 1px solid var(--color-border, #222); */
     border-radius: 16px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.012);
@@ -187,7 +194,7 @@ body.event-show-page .event-fact-row {
     grid-template-columns: minmax(90px, 120px) minmax(0, 1fr);
     gap: 0.9rem;
     padding: 0.95rem 1rem;
-    border-top: 1px solid var(--color-border, #222);
+    /* border-top: 1px solid var(--color-border, #222); */
 }
 
 body.event-show-page .event-fact-row:first-child {

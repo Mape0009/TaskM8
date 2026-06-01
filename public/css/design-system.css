@@ -1,11 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anke+Devanagari&family=Sora:wght@500;600;700;800&display=swap");
 
 /* Global design system override */
 :root {
-    --ds-font-body: "Inter Tight", "Inter", "Segoe UI", sans-serif;
-    --ds-font-heading: "Sora", "Inter Tight", "Inter", sans-serif;
+    --ds-font-body: "Anke Devanagari", "Segoe UI", sans-serif;
+    --ds-font-heading: "Sora", "Anke Devanagari", sans-serif;
 
-    --ds-bg: #e7ecf5;
+    --ds-bg: #d9e1ef;
     --ds-bg-soft: #edf2f7;
     --ds-surface: rgba(255, 255, 255, 0.86);
     --ds-surface-strong: rgba(255, 255, 255, 0.96);
@@ -58,7 +58,7 @@
 
 html.dark-mode,
 body.dark-mode {
-    --ds-bg: #090d14;
+    --ds-bg: radial-gradient(90% 90% at 15% 10%, rgba(26, 58, 158, 0.22) 0%, transparent 55%), radial-gradient(100% 100% at 100% 100%, rgba(8, 14, 35, 0.9) 0%, rgba(1, 2, 8, 1) 100%);
     --ds-bg-soft: #0f1722;
     --ds-surface: rgba(15, 23, 35, 0.82);
     --ds-surface-strong: rgba(15, 23, 35, 0.95);
@@ -80,9 +80,7 @@ body {
 
 body {
     font-family: var(--ds-font-body);
-    background-image:
-    radial-gradient(52rem 52rem at -14% -22%, rgba(14, 165, 164, 0.08), transparent 64%),
-    radial-gradient(52rem 52rem at 112% -18%, rgba(37, 99, 235, 0.08), transparent 64%);
+
 }
 
 h1,
@@ -100,7 +98,7 @@ h6,
 }
 
 .main-header {
-    background: color-mix(in srgb, var(--ds-surface-strong) 92%, transparent);
+    background: #f5f7fb;
     border-bottom: 1px solid var(--ds-border);
     backdrop-filter: blur(10px);
     box-shadow: none;
@@ -151,7 +149,6 @@ h6,
     backdrop-filter: none;
 }
 
-/* Keep fixed overlays viewport-bound when modal markup is rendered inside event cards. */
 .event-card {
     backdrop-filter: none;
 }
@@ -343,7 +340,6 @@ textarea::placeholder {
 /* ANIMATIONS & TRANSITIONS */
 /* ============================================================================ */
 
-/* Smooth transitions for all interactive elements */
 * {
     --transition-fast: var(--ds-transition-fast, 0.15s ease);
     --transition-base: var(--ds-transition-base, 0.2s ease);
@@ -376,6 +372,7 @@ select,
     transition:
         border-color var(--transition-base),
         background-color var(--transition-base);
+        background: linear-gradient(160deg, #ffffff 0%, #f8fbff 62%, #eff6ff 100%);
 }
 
 .stat-card:hover,
@@ -443,6 +440,7 @@ select,
     transition: 
         background-color var(--transition-base),
         color var(--transition-base);
+        font-weight: 600;
 }
 
 /* Smooth dropdown animations */

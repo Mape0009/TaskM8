@@ -6,33 +6,38 @@ let filteredParticipants = [];
 let currentCategory = 'all';
 let searchQuery = '';
 
+function pmT(key, replacements = {}) {
+    const i18n = window.participantsModalI18n || {};
+    let text = i18n[key] || '';
+    Object.entries(replacements).forEach(([name, value]) => {
+        text = text.replace(new RegExp(':' + name, 'g'), value);
+    });
+    return text;
+}
+
 // Modal functions
 function openParticipantsModal(eventId, eventName) {
     currentEventId = eventId;
     currentEventName = eventName;
-    
-    // Update modal title
-    document.getElementById('participants-modal-subtitle').textContent = `Se alle deltagere for "${eventName}"`;
-    
-    // Show modal
+
+    document.getElementById('participants-modal-subtitle').textContent =
+        pmT('participantsSubtitleFor', { event: eventName });
+
     document.getElementById('participants-modal').style.display = 'flex';
-    
-    // Load participants
+
     loadParticipants();
 }
 
 function closeParticipantsModal() {
     document.getElementById('participants-modal').style.display = 'none';
-    
-    // Reset state
+
     currentEventId = null;
     currentEventName = '';
     allParticipants = [];
     filteredParticipants = [];
     currentCategory = 'all';
     searchQuery = '';
-    
-    // Reset UI
+
     document.getElementById('participants-search').value = '';
     document.querySelectorAll('.participants-category-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -40,27 +45,32 @@ function closeParticipantsModal() {
     document.querySelector('[data-category="all"]').classList.add('active');
 }
 
+function loadingSpinnerHtml() {
+    return `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="2" x2="12" y2="6"></line>
+            <line x1="12" y1="18" x2="12" y2="22"></line>
+            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+            <line x1="2" y1="12" x2="6" y2="12"></line>
+            <line x1="18" y1="12" x2="22" y2="12"></line>
+            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+        </svg>
+    `;
+}
+
 // Load participants from API
 async function loadParticipants() {
     const participantsList = document.getElementById('participants-list');
-    
-    // Show loading state
+
     participantsList.innerHTML = `
         <div class="participants-loading">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="2" x2="12" y2="6"></line>
-                <line x1="12" y1="18" x2="12" y2="22"></line>
-                <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-                <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-                <line x1="2" y1="12" x2="6" y2="12"></line>
-                <line x1="18" y1="12" x2="22" y2="12"></line>
-                <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
-                <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
-            </svg>
-            Henter deltagere...
+            ${loadingSpinnerHtml()}
+            ${pmT('loading')}
         </div>
     `;
-    
+
     try {
         const response = await fetch(`/events/${currentEventId}/participants-list`, {
             headers: {
@@ -68,17 +78,17 @@ async function loadParticipants() {
                 'Accept': 'application/json'
             }
         });
-        
+
         if (!response.ok) {
             throw new Error('Failed to load participants');
         }
-        
+
         allParticipants = await response.json();
         filteredParticipants = [...allParticipants];
-        
+
         updateCategoryCounts();
         renderParticipants();
-        
+
     } catch (error) {
         console.error('Error loading participants:', error);
         participantsList.innerHTML = `
@@ -88,8 +98,8 @@ async function loadParticipants() {
                     <line x1="12" y1="8" x2="12" y2="12"></line>
                     <line x1="12" y1="16" x2="12.01" y2="16"></line>
                 </svg>
-                <h3>Fejl ved indlæsning</h3>
-                <p>Kunne ikke hente deltagere. Prøv igen senere.</p>
+                <h3>${pmT('loadErrorTitle')}</h3>
+                <p>${pmT('loadErrorText')}</p>
             </div>
         `;
     }
@@ -103,7 +113,7 @@ function updateCategoryCounts() {
         declined: allParticipants.filter(p => p.status === 'declined').length,
         pending: allParticipants.filter(p => p.status === 'pending').length
     };
-    
+
     Object.keys(counts).forEach(category => {
         const countElement = document.getElementById(`count-${category}`);
         if (countElement) {
@@ -115,28 +125,34 @@ function updateCategoryCounts() {
 // Filter participants based on category and search
 function filterParticipants() {
     filteredParticipants = allParticipants.filter(participant => {
-        // Category filter
         if (currentCategory !== 'all' && participant.status !== currentCategory) {
             return false;
         }
-        
-        // Search filter
+
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
             const name = (participant.name || '').toLowerCase();
             return name.includes(query);
         }
-        
+
         return true;
     });
-    
+
     renderParticipants();
+}
+
+function statusLabels() {
+    return {
+        accepted: pmT('statusAccepted'),
+        declined: pmT('statusDeclined'),
+        pending: pmT('statusPending'),
+    };
 }
 
 // Render participants list
 function renderParticipants() {
     const participantsList = document.getElementById('participants-list');
-    
+
     if (filteredParticipants.length === 0) {
         let emptyMessage = '';
         if (searchQuery) {
@@ -146,24 +162,21 @@ function renderParticipants() {
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
-                    <h3>Ingen deltagere fundet</h3>
-                    <p>Ingen deltagere matcher din søgning.</p>
+                    <h3>${pmT('emptySearchTitle')}</h3>
+                    <p>${pmT('emptySearchText')}</p>
                 </div>
             `;
         } else if (currentCategory !== 'all') {
-            const categoryNames = {
-                accepted: 'Deltager',
-                declined: 'Deltager ikke',
-                pending: 'Afventer svar'
-            };
+            const labels = statusLabels();
+            const categoryLabel = (labels[currentCategory] || currentCategory).toLowerCase();
             emptyMessage = `
                 <div class="participants-empty-state">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                         <circle cx="8.5" cy="7" r="4"></circle>
                     </svg>
-                    <h3>Ingen ${categoryNames[currentCategory].toLowerCase()}</h3>
-                    <p>Der er ingen deltagere i denne kategori.</p>
+                    <h3>${pmT('emptyCategoryTitle', { category: categoryLabel })}</h3>
+                    <p>${pmT('emptyCategoryText')}</p>
                 </div>
             `;
         } else {
@@ -173,26 +186,26 @@ function renderParticipants() {
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                         <circle cx="8.5" cy="7" r="4"></circle>
                     </svg>
-                    <h3>Ingen deltagere</h3>
-                    <p>Der er ingen deltagere på denne begivenhed endnu.</p>
+                    <h3>${pmT('emptyTitle')}</h3>
+                    <p>${pmT('emptyText')}</p>
                 </div>
             `;
         }
-        
+
         participantsList.innerHTML = emptyMessage;
         return;
     }
-    
+
     participantsList.innerHTML = filteredParticipants.map(participant => {
         const initials = (participant.name || '?').charAt(0).toUpperCase();
         const statusText = getStatusText(participant.status, participant.eventRole);
         const statusClass = participant.status;
-        
+
         return `
             <div class="participant-item" data-status="${participant.status}">
                 <div class="participant-avatar">${initials}</div>
                 <div class="participant-info">
-                    <div class="participant-name">${participant.name || 'Ukendt'}</div>
+                    <div class="participant-name">${participant.name || pmT('unknown')}</div>
                     <div class="participant-status">
                         <span class="participant-status-dot ${statusClass}"></span>
                         <span class="participant-status-text">${statusText}</span>
@@ -203,19 +216,12 @@ function renderParticipants() {
     }).join('');
 }
 
-// Get status text in Danish
 function getStatusText(status, eventRole = null) {
-    const statusMap = {
-        'accepted': 'Deltager',
-        'declined': 'Deltager ikke',
-        'pending': 'Afventer svar'
-    };
-
+    const statusMap = statusLabels();
     const baseStatus = statusMap[status] || status;
 
-    // Volunteers are always accepted; show this as an add-on in the accepted state.
     if (status === 'accepted' && eventRole === 'volunteer') {
-        return `${baseStatus} - frivillig`;
+        return `${baseStatus} - ${pmT('statusVolunteer')}`;
     }
 
     return baseStatus;
@@ -223,7 +229,6 @@ function getStatusText(status, eventRole = null) {
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    // Search input
     const searchInput = document.getElementById('participants-search');
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
@@ -231,23 +236,18 @@ document.addEventListener('DOMContentLoaded', function() {
             filterParticipants();
         });
     }
-    
-    // Category buttons
+
     document.querySelectorAll('.participants-category-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            // Update active state
             document.querySelectorAll('.participants-category-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            
-            // Update current category
+
             currentCategory = this.getAttribute('data-category');
-            
-            // Filter participants
+
             filterParticipants();
         });
     });
-    
-    // Modal close on backdrop click
+
     const modal = document.getElementById('participants-modal');
     if (modal) {
         modal.addEventListener('click', function(e) {
@@ -256,8 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
-    // Close modal on Escape key
+
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
             closeParticipantsModal();
