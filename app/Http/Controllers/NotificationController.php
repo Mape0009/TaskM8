@@ -9,6 +9,23 @@ use App\Http\Controllers\Notifications\NotificationMessages;
 
 class NotificationController extends Controller
 {
+    private const SETTINGS_FIELDS = [
+        'newEventSystemNotifications',
+        'newShiftSystemNotifications',
+        'participantLeaveSystemNotifications',
+        'employeeLeaveSystemNotifications',
+        'eventDeletedSystemNotifications',
+        'eventInvitationSystemNotifications',
+        'groupInvitationSystemNotifications',
+        'newEventEmailNotifications',
+        'newShiftEmailNotifications',
+        'participantLeaveEmailNotifications',
+        'employeeLeaveEmailNotifications',
+        'eventDeletedEmailNotifications',
+        'eventInvitationEmailNotifications',
+        'groupInvitationEmailNotifications',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -57,14 +74,34 @@ class NotificationController extends Controller
             default => NotificationMessages::EVENT_UPDATED,
         };
 
-        $notification = Notification::create([
+        $notification = $this->dispatchNotification($userId, (int) $eventId, $message);
+
+        return response()->json($notification, 201);
+    }
+
+    public function dispatchNotification(int|string $userId, int $eventId, string $message, ?string $settingField = null)
+    {
+        if ($settingField && ! $this->isNotificationEnabled($userId, $settingField)) {
+            return null;
+        }
+
+        return Notification::create([
             'userId' => $userId,
             'eventId' => $eventId,
             'message' => $message,
             'isRead' => false,
         ]);
+    }
 
-        return response()->json($notification, 201);
+    public function isNotificationEnabled(int|string $userId, string $settingField): bool
+    {
+        $settings = NotificationSettings::where('userId', $userId)->first();
+
+        if (! $settings || ! in_array($settingField, self::SETTINGS_FIELDS, true)) {
+            return false;
+        }
+
+        return (bool) $settings->{$settingField};
     }
 
     public function markAsRead(string $id)
@@ -129,20 +166,9 @@ class NotificationController extends Controller
         $currentUserId = auth()->id();
         $settings = NotificationSettings::updateOrCreate(
             ['userId' => $currentUserId],
-            [
-                'newEventSystemNotifications' => $request->boolean('newEventSystemNotifications'),
-                'newShiftSystemNotifications' => $request->boolean('newShiftSystemNotifications'),
-                'participantLeaveSystemNotifications' => $request->boolean('participantLeaveSystemNotifications'),
-                'employeeLeaveSystemNotifications' => $request->boolean('employeeLeaveSystemNotifications'),
-                'eventDeletedSystemNotifications' => $request->boolean('eventDeletedSystemNotifications'),
-                'groupInvitationSystemNotifications' => $request->boolean('groupInvitationSystemNotifications'),
-                'newEventEmailNotifications' => $request->boolean('newEventEmailNotifications'),
-                'newShiftEmailNotifications' => $request->boolean('newShiftEmailNotifications'),
-                'participantLeaveEmailNotifications' => $request->boolean('participantLeaveEmailNotifications'),
-                'employeeLeaveEmailNotifications' => $request->boolean('employeeLeaveEmailNotifications'),
-                'eventDeletedEmailNotifications' => $request->boolean('eventDeletedEmailNotifications'),
-                'groupInvitationEmailNotifications' => $request->boolean('groupInvitationEmailNotifications'),
-            ]
+            collect(self::SETTINGS_FIELDS)->mapWithKeys(function (string $field): array {
+                return [$field => request()->boolean($field)];
+            })->all()
         );
 
         if ($request->expectsJson()) {

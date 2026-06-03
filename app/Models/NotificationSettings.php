@@ -13,12 +13,14 @@ class NotificationSettings extends Model
         'participantLeaveSystemNotifications',
         'employeeLeaveSystemNotifications',
         'eventDeletedSystemNotifications',
+        'eventInvitationSystemNotifications',
         'groupInvitationSystemNotifications',
         'newEventEmailNotifications',
         'newShiftEmailNotifications',
         'participantLeaveEmailNotifications',
         'employeeLeaveEmailNotifications',
         'eventDeletedEmailNotifications',
+        'eventInvitationEmailNotifications',
         'groupInvitationEmailNotifications',
     ];
 
@@ -28,12 +30,14 @@ class NotificationSettings extends Model
         'participantLeaveSystemNotifications' => 'boolean',
         'employeeLeaveSystemNotifications' => 'boolean',
         'eventDeletedSystemNotifications' => 'boolean',
+        'eventInvitationSystemNotifications' => 'boolean',
         'groupInvitationSystemNotifications' => 'boolean',
         'newEventEmailNotifications' => 'boolean',
         'newShiftEmailNotifications' => 'boolean',
         'participantLeaveEmailNotifications' => 'boolean',
         'employeeLeaveEmailNotifications' => 'boolean',
         'eventDeletedEmailNotifications' => 'boolean',
+        'eventInvitationEmailNotifications' => 'boolean',
         'groupInvitationEmailNotifications' => 'boolean',
     ];
 

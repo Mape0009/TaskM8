@@ -570,6 +570,8 @@ return [
     'notif_event_leave_employee_desc' => 'Получайте уведомление, когда сотрудник покидает мероприятие',
     'notif_event_delete_title' => 'Мероприятие удалено',
     'notif_event_delete_desc' => 'Получайте уведомление, когда мероприятие удаляется',
+    'notif_event_invitation_title' => 'Приглашение на мероприятие',
+    'notif_event_invitation_desc' => 'Получайте уведомление, когда вас приглашают на мероприятие',
     'notif_group_invitation_title' => 'Приглашение в группу',
     'notif_group_invitation_desc' => 'Получайте уведомление, когда вас приглашают в группу',
 ];

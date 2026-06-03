@@ -570,6 +570,8 @@ return [
     'notif_event_leave_employee_desc' => 'Saat ilmoituksen, kun työntekijä poistuu tapahtumasta',
     'notif_event_delete_title' => 'Tapahtuma poistetaan',
     'notif_event_delete_desc' => 'Saat ilmoituksen, kun tapahtuma poistetaan',
+    'notif_event_invitation_title' => 'Tapahtumakutsu',
+    'notif_event_invitation_desc' => 'Saat ilmoituksen, kun sinut kutsutaan tapahtumaan',
     'notif_group_invitation_title' => 'Ryhmäkutsu',
     'notif_group_invitation_desc' => 'Saat ilmoituksen, kun sinut kutsutaan ryhmään',
 ];

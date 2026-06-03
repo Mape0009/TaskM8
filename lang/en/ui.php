@@ -570,6 +570,8 @@ return [
     'notif_event_leave_employee_desc' => 'Get notified when a staff member leaves an event',
     'notif_event_delete_title' => 'Event deleted',
     'notif_event_delete_desc' => 'Get notified when an event is deleted',
+    'notif_event_invitation_title' => 'Event invitation',
+    'notif_event_invitation_desc' => 'Get notified when you are invited to an event',
     'notif_group_invitation_title' => 'Group invitation',
     'notif_group_invitation_desc' => 'Get notified when you are invited to a group',
 ];

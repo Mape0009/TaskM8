@@ -570,6 +570,8 @@ return [
     'notif_event_leave_employee_desc' => 'Ricevi una notifica quando un dipendente lascia un evento',
     'notif_event_delete_title' => 'Evento eliminato',
     'notif_event_delete_desc' => 'Ricevi una notifica quando un evento viene eliminato',
+    'notif_event_invitation_title' => 'Invito all’evento',
+    'notif_event_invitation_desc' => 'Ricevi una notifica quando vieni invitato a un evento',
     'notif_group_invitation_title' => 'Invito al gruppo',
     'notif_group_invitation_desc' => 'Ricevi una notifica quando vieni invitato in un gruppo',
 ];

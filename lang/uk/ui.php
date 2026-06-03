@@ -570,6 +570,8 @@ return [
     'notif_event_leave_employee_desc' => 'Отримуйте сповіщення, коли співробітник залишає захід',
     'notif_event_delete_title' => 'Захід видалено',
     'notif_event_delete_desc' => 'Отримуйте сповіщення, коли захід видаляється',
+    'notif_event_invitation_title' => 'Запрошення на захід',
+    'notif_event_invitation_desc' => 'Отримуйте сповіщення, коли вас запрошують на захід',
     'notif_group_invitation_title' => 'Запрошення до групи',
     'notif_group_invitation_desc' => 'Отримуйте сповіщення, коли вас запрошують до групи',
 ];

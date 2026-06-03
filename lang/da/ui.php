@@ -570,6 +570,8 @@ return [
     'notif_event_leave_employee_desc' => 'Få besked når en medarbejder forlader en begivenhed',
     'notif_event_delete_title' => 'Begivenhed slettes',
     'notif_event_delete_desc' => 'Få besked når en begivenhed slettes',
+    'notif_event_invitation_title' => 'Begivenhedsinvitation',
+    'notif_event_invitation_desc' => 'Få besked når du bliver inviteret til en begivenhed',
     'notif_group_invitation_title' => 'Gruppeinvitation',
     'notif_group_invitation_desc' => 'Få besked når du bliver inviteret til en gruppe',
 ];

@@ -426,6 +426,19 @@
                             <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="email" {{ $notificationSettings?->eventDeletedEmailNotifications ? 'checked' : '' }} name="eventDeletedEmailNotifications">
                         </div>
                     </div>
+
+                    <div class="notifications-row">
+                        <div class="notifications-col notifications-col-notification">
+                            <p class="notifications-title">{{ __('ui.notif_event_invitation_title') }}</p>
+                            <p class="notifications-description">{{ __('ui.notif_event_invitation_desc') }}</p>
+                        </div>
+                        <div class="notifications-col notifications-col-system">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-invitation" data-channel="system" {{ $notificationSettings?->eventInvitationSystemNotifications ? 'checked' : '' }} name="eventInvitationSystemNotifications">
+                        </div>
+                        <div class="notifications-col notifications-col-email">
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-invitation" data-channel="email" {{ $notificationSettings?->eventInvitationEmailNotifications ? 'checked' : '' }} name="eventInvitationEmailNotifications">
+                        </div>
+                    </div>
                     
                     <div class="notifications-row">
                         <div class="notifications-col notifications-col-notification">

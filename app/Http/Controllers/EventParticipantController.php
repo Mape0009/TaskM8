@@ -103,10 +103,11 @@ class EventParticipantController extends Controller
 
         foreach ($organizers as $organizer) {
             $notificationController = new NotificationController();
-            $notificationController->sendNotification(
+            $notificationController->dispatchNotification(
                 $organizer->userId,
-                $event->id,
-                NotificationMessages::PARTICIPANT_LEFT
+                (int) $event->id,
+                NotificationMessages::PARTICIPANT_LEFT,
+                'participantLeaveSystemNotifications'
             );
         }
 

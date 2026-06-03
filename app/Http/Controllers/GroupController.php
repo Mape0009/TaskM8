@@ -209,6 +209,14 @@ class GroupController extends Controller
                 'userId' => $user->id,
             ]);
 
+            $notificationController = new NotificationController();
+            $notificationController->dispatchNotification(
+                $user->id,
+                0,
+                NotificationMessages::GROUP_INVITED,
+                'groupInvitationSystemNotifications'
+            );
+
             Mail::to($email)->send(new GroupInviteExistingUser($groupData));
             return redirect()->back();
         }

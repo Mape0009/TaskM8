@@ -13,6 +13,8 @@ use App\Models\Event;
 use App\Models\PinCode;
 use App\Models\EventParticipant;
 use App\Models\Mail as MailModel;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Notifications\NotificationMessages;
 
 class MailController extends Controller
 {
@@ -94,6 +96,13 @@ class MailController extends Controller
                 $eventData = $eventDataBase;
                 $eventData['invite_email'] = $email;
                 Mail::to($email)->send(new ExistingUserInvite($eventData));
+                $notificationController = new NotificationController();
+                $notificationController->dispatchNotification(
+                    $existingUser->id,
+                    (int) $event->id,
+                    NotificationMessages::EVENT_INVITED,
+                    'eventInvitationSystemNotifications'
+                );
                 // Record mail for previous invitees list
                 if ($inviter) {
                     MailModel::create([
