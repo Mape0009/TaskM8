@@ -473,7 +473,7 @@ body > .site-footer {
 }
 
 :is(html.dark-mode, body.dark-mode) .stat-card {
-    background: radial-gradient(120% 120% at 0% 0%, rgba(30, 64, 175, 0.2) 0%, rgba(15, 23, 42, 0.9) 55%, rgba(2, 6, 23, 0.94) 100%);
+    background: linear-gradient(135deg, #090e1c 0%, #0d1425 160%);
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
 }
 
