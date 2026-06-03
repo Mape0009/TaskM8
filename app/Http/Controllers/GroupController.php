@@ -209,6 +209,13 @@ class GroupController extends Controller
                 'userId' => $user->id,
             ]);
 
+            $notificationController = new NotificationController();
+            $notificationController->sendNotification(
+                $request,
+                (string) $user->id,
+                NotificationMessages::GROUP_JOINED
+            );
+
             Mail::to($email)->send(new GroupInviteExistingUser($groupData));
             return redirect()->back();
         }
@@ -222,13 +229,6 @@ class GroupController extends Controller
             'createdAt' => now(),
         ]);
 
-        // Notify the user that they have been added to the group
-        $notificationController = new NotificationController();
-        $notificationController->sendNotification(
-            $user->id,
-            $group->id,
-            NotificationMessages::GROUP_JOINED
-        );
         $payload = base64_encode(json_encode([
             'email' => $email,
             'pin' => $pinCode,

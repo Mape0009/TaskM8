@@ -13,6 +13,7 @@ use App\Models\Event;
 use App\Models\PinCode;
 use App\Models\EventParticipant;
 use App\Models\Mail as MailModel;
+use App\Http\Controllers\NotificationController;
 
 class MailController extends Controller
 {
@@ -105,6 +106,14 @@ class MailController extends Controller
                     ]);
                 }
                 continue;
+
+                // Notify the user that they have been added to the group
+                $notificationController = new NotificationController();
+                $notificationController->sendNotification(
+                    $existingUser->id,
+                    $event->id,
+                    NotificationMessages::GROUP_JOINED
+                );
             }
 
             // New user: generate PIN and send invite link
