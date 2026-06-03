@@ -173,6 +173,7 @@ return [
     'join_shift' => 'Записаться',
     'language' => 'Язык',
     'latest_notifications' => 'Последние 5',
+    'save_settings' => 'Сохранить настройки',
     'leave_event' => 'Покинуть мероприятие',
     'leave_event_button' => 'Покинуть мероприятие',
     'legal_cookie_consent_li' => 'Файлы cookie согласия могут храниться до 12 месяцев.',

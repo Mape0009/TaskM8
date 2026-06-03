@@ -173,6 +173,7 @@ return [
     'join_shift' => 'Unisci turno',
     'language' => 'Lingua',
     'latest_notifications' => 'Ultime 5',
+    'save_settings' => 'Salva impostazioni',
     'leave_event' => 'Abbandona evento',
     'leave_event_button' => 'Abbandona evento',
     'legal_cookie_consent_li' => 'I cookie di consenso possono essere memorizzati per un massimo di 12 mesi',

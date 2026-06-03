@@ -6,6 +6,8 @@ namespace App\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
@@ -50,5 +52,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'userId');
+    }
+
+    public function notificationSettings(): HasOne
+    {
+        return $this->hasOne(NotificationSettings::class, 'userId');
     }
 }

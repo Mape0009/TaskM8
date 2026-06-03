@@ -893,36 +893,190 @@ document.addEventListener('DOMContentLoaded', function() {
     const notificationMarkReadBtn = document.getElementById('notification-mark-read-btn');
     const notificationCountPill = document.getElementById('notification-count-pill');
 
-    function getUnreadNotifications() {
-        return document.querySelectorAll('.notification-item--unread');
+    const notificationList = document.getElementById('notification-list');
+    const notificationLoadingState = document.getElementById('notification-loading-state');
+    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+    const notificationApiUrl = notificationCenter?.dataset.notificationsUrl || '/notifications';
+    const notificationCountUrl = notificationCenter?.dataset.notificationsCountUrl || '/notifications/count';
+    const notificationMarkReadBaseUrl = notificationCenter?.dataset.notificationMarkReadBase || '/notifications';
+
+    let cachedNotifications = [];
+    let notificationsLoadingPromise = null;
+
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
     }
 
-    function getTotalNotifications() {
-        return document.querySelectorAll('.notification-item').length;
+    function getCsrfToken() {
+        return csrfTokenMeta ? (csrfTokenMeta.getAttribute('content') || '') : '';
     }
 
-    function syncNotificationBadge(unreadCount) {
+    function formatRelativeTime(isoString) {
+        if (!isoString) {
+            return '';
+        }
+
+        const createdAt = new Date(isoString);
+        if (Number.isNaN(createdAt.getTime())) {
+            return '';
+        }
+
+        const diffSeconds = Math.max(0, Math.floor((Date.now() - createdAt.getTime()) / 1000));
+        if (diffSeconds < 60) {
+            return diffSeconds <= 1 ? 'Lige nu' : `${diffSeconds} sek`;
+        }
+
+        const diffMinutes = Math.floor(diffSeconds / 60);
+        if (diffMinutes < 60) {
+            return diffMinutes === 1 ? '1 min' : `${diffMinutes} min`;
+        }
+
+        const diffHours = Math.floor(diffMinutes / 60);
+        if (diffHours < 24) {
+            return diffHours === 1 ? '1 t' : `${diffHours} t`;
+        }
+
+        const diffDays = Math.floor(diffHours / 24);
+        return diffDays === 1 ? '1 dag' : `${diffDays} dage`;
+    }
+
+    function setNotificationBadgeCount(unreadCount) {
+        const normalizedUnreadCount = Number(unreadCount) || 0;
+
         if (!notificationBtnHeader || !notificationCountPill) {
             return;
         }
 
         const badge = notificationBtnHeader.querySelector('.notification-btn-header__badge');
         if (badge) {
-            // show badge only when there are unread notifications
-            badge.hidden = unreadCount <= 0;
-            // also set inline display to ensure CSS specificity doesn't leave an empty red dot
-            badge.style.display = unreadCount > 0 ? '' : 'none';
-            badge.textContent = unreadCount > 0 ? String(unreadCount) : '';
+            badge.hidden = normalizedUnreadCount <= 0;
+            badge.style.display = normalizedUnreadCount > 0 ? '' : 'none';
+            badge.textContent = normalizedUnreadCount > 0 ? String(normalizedUnreadCount) : '';
         }
 
-        // count pill reflects unread count and is hidden when none
-        notificationCountPill.hidden = unreadCount <= 0;
-        notificationCountPill.textContent = unreadCount === 1 ? '1 ny' : `${unreadCount} nye`;
+        notificationCountPill.hidden = normalizedUnreadCount <= 0;
+        notificationCountPill.textContent = normalizedUnreadCount === 1 ? '1 ny' : `${normalizedUnreadCount} nye`;
 
         if (notificationMarkReadBtn) {
-            notificationMarkReadBtn.hidden = unreadCount <= 0;
-            notificationMarkReadBtn.disabled = unreadCount <= 0;
+            notificationMarkReadBtn.hidden = normalizedUnreadCount <= 0;
+            notificationMarkReadBtn.disabled = normalizedUnreadCount <= 0;
         }
+    }
+
+    function renderNotifications(notifications) {
+        if (!notificationList) {
+            return;
+        }
+
+        cachedNotifications = Array.isArray(notifications) ? notifications : [];
+
+        const itemsHtml = cachedNotifications.map((notification) => {
+            const title = notification.event?.eventName || notification.message || 'Notifikation';
+            const text = notification.event?.eventName && notification.message && notification.event.eventName !== notification.message
+                ? notification.message
+                : '';
+
+            return `
+                <li class="notification-item${notification.isRead ? '' : ' notification-item--unread'}" data-notification-id="${notification.id}">
+                    <span class="notification-item__dot" aria-hidden="true"></span>
+                    <div class="notification-item__body">
+                        <p class="notification-item__title">${escapeHtml(title)}</p>
+                        ${text ? `<p class="notification-item__text">${escapeHtml(text)}</p>` : ''}
+                    </div>
+                    <span class="notification-item__time">${escapeHtml(formatRelativeTime(notification.created_at))}</span>
+                </li>
+            `;
+        }).join('');
+
+        notificationList.innerHTML = `${itemsHtml || ''}`;
+
+        if (notificationLoadingState) {
+            notificationLoadingState.remove();
+        }
+
+        if (cachedNotifications.length === 0) {
+            const emptyState = document.createElement('li');
+            emptyState.className = 'notification-item';
+            emptyState.id = 'notification-empty-state';
+
+            const body = document.createElement('div');
+            body.className = 'notification-item__body';
+
+            const title = document.createElement('p');
+            title.className = 'notification-item__title';
+            title.textContent = 'Ingen notifikationer endnu.';
+
+            body.appendChild(title);
+            emptyState.appendChild(body);
+            notificationList.appendChild(emptyState);
+        }
+    }
+
+    async function fetchJson(url, options = {}) {
+        const method = (options.method || 'GET').toUpperCase();
+        const response = await fetch(url, {
+            credentials: 'same-origin',
+            headers: {
+                Accept: 'application/json',
+                ...(method !== 'GET' ? { 'X-CSRF-TOKEN': getCsrfToken() } : {}),
+                ...(options.headers || {}),
+            },
+            ...options,
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        return response.json();
+    }
+
+    async function loadNotifications() {
+        if (notificationsLoadingPromise) {
+            return notificationsLoadingPromise;
+        }
+
+        notificationsLoadingPromise = (async () => {
+            try {
+                const payload = await fetchJson(notificationApiUrl);
+                const notifications = Array.isArray(payload.notifications) ? payload.notifications : [];
+                renderNotifications(notifications);
+                setNotificationBadgeCount(payload.unreadCount ?? notifications.filter(notification => !notification.isRead).length);
+            } catch (error) {
+                if (notificationList) {
+                    notificationList.innerHTML = `
+                        <li class="notification-item">
+                            <div class="notification-item__body">
+                                <p class="notification-item__title">Kunne ikke indlæse notifikationer.</p>
+                            </div>
+                        </li>
+                    `;
+                }
+                setNotificationBadgeCount(0);
+            } finally {
+                notificationsLoadingPromise = null;
+            }
+        })();
+
+        return notificationsLoadingPromise;
+    }
+
+    async function refreshNotificationCount() {
+        try {
+            const payload = await fetchJson(notificationCountUrl);
+            setNotificationBadgeCount(payload.unreadCount ?? 0);
+        } catch (error) {
+            setNotificationBadgeCount(cachedNotifications.filter(notification => !notification.isRead).length);
+        }
+    }
+
+    function getUnreadNotifications() {
+        return cachedNotifications.filter(notification => !notification.isRead);
     }
 
     function closeNotificationPanel() {
@@ -966,6 +1120,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        loadNotifications();
+
         document.addEventListener('click', function(e) {
             if (notificationCenter && !notificationCenter.contains(e.target)) {
                 closeNotificationPanel();
@@ -980,21 +1136,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (notificationMarkReadBtn) {
-        notificationMarkReadBtn.addEventListener('click', function(e) {
+        notificationMarkReadBtn.addEventListener('click', async function(e) {
             e.preventDefault();
 
             const unreadNotifications = getUnreadNotifications();
-            unreadNotifications.forEach(notification => {
-                notification.classList.remove('notification-item--unread');
-            });
+            if (unreadNotifications.length === 0) {
+                return;
+            }
 
-            syncNotificationBadge(0);
             notificationMarkReadBtn.disabled = true;
-            notificationMarkReadBtn.textContent = 'Marked as read';
+            notificationMarkReadBtn.textContent = 'Gemmer...';
+
+            try {
+                await Promise.all(unreadNotifications.map(async (notification) => {
+                    await fetchJson(`${notificationMarkReadBaseUrl}/${notification.id}/mark-as-read`, {
+                        method: 'POST',
+                    });
+                    notification.isRead = true;
+                }));
+
+                renderNotifications(cachedNotifications);
+                await refreshNotificationCount();
+            } catch (error) {
+                notificationMarkReadBtn.textContent = 'Prøv igen';
+            } finally {
+                notificationMarkReadBtn.disabled = false;
+            }
         });
     }
 
-    syncNotificationBadge(getUnreadNotifications().length);
+    refreshNotificationCount();
 
     // Tab switching
     tabBtns.forEach(btn => {
@@ -1046,24 +1217,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Notification checkboxes - just for UI (backend implementation separate)
-    const notificationCheckboxes = document.querySelectorAll('.notification-checkbox');
-    notificationCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            // Store in localStorage for demo (backend will handle real persistence)
-            const notification = this.getAttribute('data-notification');
-            const channel = this.getAttribute('data-channel');
-            const key = `notification_${notification}_${channel}`;
-            localStorage.setItem(key, this.checked ? 'true' : 'false');
-        });
-
-        // Load saved state from localStorage
-        const notification = checkbox.getAttribute('data-notification');
-        const channel = checkbox.getAttribute('data-channel');
-        const key = `notification_${notification}_${channel}`;
-        const saved = localStorage.getItem(key);
-        if (saved !== null) {
-            checkbox.checked = saved === 'true';
-        }
-    });
 });

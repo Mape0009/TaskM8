@@ -173,6 +173,7 @@ return [
     'join_shift' => 'Liity vuoroon',
     'language' => 'Kieli',
     'latest_notifications' => 'Viimeiset 5',
+    'save_settings' => 'Tallenna asetukset',
     'leave_event' => 'Poistu tapahtumasta',
     'leave_event_button' => 'Poistu tapahtumasta',
     'legal_cookie_consent_li' => 'Suostumusevästeitä voidaan säilyttää enintään 12 kuukautta',

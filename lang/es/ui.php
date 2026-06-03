@@ -173,6 +173,7 @@ return [
     'join_shift' => 'Apuntarme',
     'language' => 'Idioma',
     'latest_notifications' => 'Últimas 5',
+    'save_settings' => 'Guardar ajustes',
     'leave_event' => 'Salir del evento',
     'leave_event_button' => 'Salir del evento',
     'legal_cookie_consent_li' => 'La cookie de consentimiento puede guardarse hasta 12 meses',

@@ -22,6 +22,21 @@ class NotificationSettings extends Model
         'groupInvitationEmailNotifications',
     ];
 
+    protected $casts = [
+        'newEventSystemNotifications' => 'boolean',
+        'newShiftSystemNotifications' => 'boolean',
+        'participantLeaveSystemNotifications' => 'boolean',
+        'employeeLeaveSystemNotifications' => 'boolean',
+        'eventDeletedSystemNotifications' => 'boolean',
+        'groupInvitationSystemNotifications' => 'boolean',
+        'newEventEmailNotifications' => 'boolean',
+        'newShiftEmailNotifications' => 'boolean',
+        'participantLeaveEmailNotifications' => 'boolean',
+        'employeeLeaveEmailNotifications' => 'boolean',
+        'eventDeletedEmailNotifications' => 'boolean',
+        'groupInvitationEmailNotifications' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'userId');

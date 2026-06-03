@@ -13,6 +13,10 @@ class Notification extends Model
         'isRead',
     ];
 
+    protected $casts = [
+        'isRead' => 'boolean',
+    ];
+
     public function event()
     {
         return $this->belongsTo(Event::class, 'eventId');

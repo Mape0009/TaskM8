@@ -10,6 +10,7 @@
     ];
     $currentLocale = app()->getLocale();
     $currentLocaleData = $supportedLocales[$currentLocale] ?? ['label' => strtoupper($currentLocale), 'icon' => '🌐', 'code' => strtoupper($currentLocale)];
+    $notificationSettings = Auth::check() ? Auth::user()->notificationSettings : null;
 ?>
 <header class="main-header<?php echo e((!Auth::check() && ($currentPage ?? null) === 'dashboard') ? ' guest-dashboard' : ''); ?>">
     <div class="header-left">
@@ -63,13 +64,13 @@
             <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         </button>
         <?php if(Auth::check()): ?>
-        <div class="notification-center">
-            <button class="notification-btn-header" id="notification-btn-header" aria-label="Open notifications" aria-haspopup="true" aria-expanded="false" aria-controls="notification-panel">
+        <div class="notification-center" data-notifications-url="<?php echo e(route('notifications.index')); ?>" data-notifications-count-url="<?php echo e(route('notifications.count')); ?>" data-notification-mark-read-base="<?php echo e(url('/notifications')); ?>">
+            <button type="button" class="notification-btn-header" id="notification-btn-header" aria-label="Open notifications" aria-haspopup="true" aria-expanded="false" aria-controls="notification-panel">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                     <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
-                <span class="notification-btn-header__badge" aria-hidden="true">5</span>
+                <span class="notification-btn-header__badge" aria-hidden="true" hidden></span>
             </button>
             <div class="notification-panel" id="notification-panel" hidden>
                 <div class="notification-panel__header">
@@ -78,50 +79,20 @@
                         <h3 class="notification-panel__title"><?php echo e(__('ui.latest_notifications')); ?></h3>
                     </div>
                     <div class="notification-panel__actions">
-                        <span class="notification-panel__count" id="notification-count-pill">5 nye</span>
+                        <span class="notification-panel__count" id="notification-count-pill" hidden></span>
                         <button type="button" class="notification-panel__mark-read" id="notification-mark-read-btn"><?php echo e(__('ui.mark_as_read')); ?></button>
                     </div>
                 </div>
-                <ul class="notification-panel__list" aria-label="Seneste notifikationer">
-                    <li class="notification-item notification-item--unread">
-                        <span class="notification-item__dot" aria-hidden="true"></span>
+                <ul class="notification-panel__list" id="notification-list" aria-label="Seneste notifikationer">
+                    <li class="notification-item" id="notification-loading-state">
                         <div class="notification-item__body">
-                            <p class="notification-item__title">Ny begivenhed oprettet</p>
-                            <p class="notification-item__text">Mads oprettede “Sommerfest 2026”.</p>
+                            <p class="notification-item__title">Indlæser notifikationer…</p>
                         </div>
-                        <span class="notification-item__time">2 min</span>
                     </li>
-                    <li class="notification-item notification-item--unread">
-                        <span class="notification-item__dot" aria-hidden="true"></span>
+                    <li class="notification-item" id="notification-empty-state" hidden>
                         <div class="notification-item__body">
-                            <p class="notification-item__title">Du er tildelt en vagt</p>
-                            <p class="notification-item__text">Fredag 14:00 - 18:00 er nu din.</p>
+                            <p class="notification-item__title">Ingen notifikationer endnu.</p>
                         </div>
-                        <span class="notification-item__time">15 min</span>
-                    </li>
-                    <li class="notification-item notification-item--unread">
-                        <span class="notification-item__dot" aria-hidden="true"></span>
-                        <div class="notification-item__body">
-                            <p class="notification-item__title">Ny gruppeinvitation</p>
-                            <p class="notification-item__text">Maria inviterede dig til "Skoleoplæringen".</p>
-                        </div>
-                        <span class="notification-item__time">34 min</span>
-                    </li>
-                    <li class="notification-item">
-                        <span class="notification-item__dot" aria-hidden="true"></span>
-                        <div class="notification-item__body">
-                            <p class="notification-item__title">Begivenhed opdateret</p>
-                            <p class="notification-item__text">Tidsplanen for "Byfest" er ændret.</p>
-                        </div>
-                        <span class="notification-item__time">1 t</span>
-                    </li>
-                    <li class="notification-item">
-                        <span class="notification-item__dot" aria-hidden="true"></span>
-                        <div class="notification-item__body">
-                            <p class="notification-item__title">Ny deltager</p>
-                            <p class="notification-item__text">Jonas tilmeldte sig "Havnefest".</p>
-                        </div>
-                        <span class="notification-item__time">2 t</span>
                     </li>
                 </ul>
             </div>
@@ -400,7 +371,8 @@ unset($__errorArgs, $__bag); ?>
                 <div class="notifications-intro">
                     <p><?php echo e(__('ui.notifications_intro')); ?></p>
                 </div>
-                
+                <form id="notifications-settings-form" method="POST" action="<?php echo e(route('user.update-notifications')); ?>">
+                    <?php echo csrf_field(); ?>
                 <div class="notifications-table">
                     <div class="notifications-header">
                         <div class="notifications-col notifications-col-notification"><?php echo e(__('ui.notification_name')); ?></div>
@@ -414,10 +386,10 @@ unset($__errorArgs, $__bag); ?>
                             <p class="notifications-description"><?php echo e(__('ui.notif_event_new_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="system" <?php echo e($notificationSettings?->newEventSystemNotifications ? 'checked' : ''); ?> name="newEventSystemNotifications">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-new" data-channel="email" <?php echo e($notificationSettings?->newEventEmailNotifications ? 'checked' : ''); ?> name="newEventEmailNotifications">
                         </div>
                     </div>
                     
@@ -426,11 +398,11 @@ unset($__errorArgs, $__bag); ?>
                             <p class="notifications-title"><?php echo e(__('ui.notif_event_shifts_title')); ?></p>
                             <p class="notifications-description"><?php echo e(__('ui.notif_event_shifts_desc')); ?></p>
                         </div>
-                        <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="system" checked>
+                        <div class="notifications-col notifications-col-system" >
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="system" <?php echo e($notificationSettings?->newShiftSystemNotifications ? 'checked' : ''); ?> name="newShiftSystemNotifications">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-shifts" data-channel="email" <?php echo e($notificationSettings?->newShiftEmailNotifications ? 'checked' : ''); ?> name="newShiftEmailNotifications">
                         </div>
                     </div>
                     
@@ -440,10 +412,10 @@ unset($__errorArgs, $__bag); ?>
                             <p class="notifications-description"><?php echo e(__('ui.notif_event_leave_participant_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="system" <?php echo e($notificationSettings?->participantLeaveSystemNotifications ? 'checked' : ''); ?> name="participantLeaveSystemNotifications">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-participant" data-channel="email" <?php echo e($notificationSettings?->participantLeaveEmailNotifications ? 'checked' : ''); ?> name="participantLeaveEmailNotifications">
                         </div>
                     </div>
                     
@@ -453,10 +425,10 @@ unset($__errorArgs, $__bag); ?>
                             <p class="notifications-description"><?php echo e(__('ui.notif_event_leave_employee_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="system" <?php echo e($notificationSettings?->employeeLeaveSystemNotifications ? 'checked' : ''); ?> name="employeeLeaveSystemNotifications">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-leave-employee" data-channel="email" <?php echo e($notificationSettings?->employeeLeaveEmailNotifications ? 'checked' : ''); ?> name="employeeLeaveEmailNotifications">
                         </div>
                     </div>
 
@@ -466,10 +438,10 @@ unset($__errorArgs, $__bag); ?>
                             <p class="notifications-description"><?php echo e(__('ui.notif_event_delete_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="system" <?php echo e($notificationSettings?->eventDeletedSystemNotifications ? 'checked' : ''); ?> name="eventDeletedSystemNotifications">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="event-delete" data-channel="email" <?php echo e($notificationSettings?->eventDeletedEmailNotifications ? 'checked' : ''); ?> name="eventDeletedEmailNotifications">
                         </div>
                     </div>
                     
@@ -479,17 +451,19 @@ unset($__errorArgs, $__bag); ?>
                             <p class="notifications-description"><?php echo e(__('ui.notif_group_invitation_desc')); ?></p>
                         </div>
                         <div class="notifications-col notifications-col-system">
-                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="system" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="system" <?php echo e($notificationSettings?->groupInvitationSystemNotifications ? 'checked' : ''); ?> name="groupInvitationSystemNotifications">
                         </div>
                         <div class="notifications-col notifications-col-email">
-                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="email" checked>
+                            <input type="checkbox" class="notification-checkbox" data-notification="group-invitation" data-channel="email" <?php echo e($notificationSettings?->groupInvitationEmailNotifications ? 'checked' : ''); ?> name="groupInvitationEmailNotifications">
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="notifications-footer">
                     <button type="button" class="btn secondary-btn" id="cancel-notifications-btn"><?php echo e(__('ui.cancel')); ?></button>
+                    <button type="submit" class="btn primary-btn">Gem indstillinger</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>

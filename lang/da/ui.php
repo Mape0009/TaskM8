@@ -173,6 +173,7 @@ return [
     'join_shift' => 'Meld mig',
     'language' => 'Sprog',
     'latest_notifications' => 'Seneste 5',
+    'save_settings' => 'Gem indstillinger',
     'leave_event' => 'Forlad begivenhed',
     'leave_event_button' => 'Forlad begivenhed',
     'legal_cookie_consent_li' => 'Samtykkecookie kan gemmes i op til 12 måneder',

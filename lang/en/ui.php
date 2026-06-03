@@ -173,6 +173,7 @@ return [
     'join_shift' => 'Join shift',
     'language' => 'Language',
     'latest_notifications' => 'Latest 5',
+    'save_settings' => 'Save settings',
     'leave_event' => 'Leave event',
     'leave_event_button' => 'Leave event',
     'legal_cookie_consent_li' => 'Consent cookies can be stored for up to 12 months',
