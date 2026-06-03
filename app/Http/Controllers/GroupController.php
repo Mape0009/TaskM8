@@ -8,6 +8,9 @@ use App\Models\GroupMember;
 use App\Models\PinCode;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Notifications\NotificationMessages;
+use App\Http\Controllers\NotificationController;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GroupInviteExistingUser;
 use App\Mail\GroupInviteNewUser;
@@ -219,6 +222,13 @@ class GroupController extends Controller
             'createdAt' => now(),
         ]);
 
+        // Notify the user that they have been added to the group
+        $notificationController = new NotificationController();
+        $notificationController->sendNotification(
+            $user->id,
+            $group->id,
+            NotificationMessages::GROUP_JOINED
+        );
         $payload = base64_encode(json_encode([
             'email' => $email,
             'pin' => $pinCode,

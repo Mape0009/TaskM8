@@ -19,6 +19,7 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupMemberController;
+use App\Http\Controllers\NotificationController;
 
 
 Route::get('/', function () {
@@ -246,3 +247,10 @@ Route::get('/sitemap.xml', function () {
         'Content-Type' => 'application/xml'
     ]);
 });
+
+// Notification routes
+Route::get('/notifications', [NotificationController::class, 'index'])->middleware('auth')->name('notifications.index');
+Route::get('/notifications/count', [NotificationController::class, 'notificationsCount'])->middleware('auth')->name('notifications.count');
+Route::post('/notifications/send/{userId}/{eventId}', [NotificationController::class, 'sendNotification'])->middleware('auth')->name('notifications.send');
+Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->middleware('auth')->name('notifications.markAsRead');
+Route::post('/user/update-notifications', [NotificationController::class, 'updateNotificationSettings'])->middleware('auth')->name('user.update-notifications');

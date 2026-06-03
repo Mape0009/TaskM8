@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\NotificationSettings;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -24,18 +26,12 @@ class NotificationController extends Controller
         return response()->json(['unreadCount' => $unreadCount]);
     }
 
-    public function sendNotification(Request $request)
+    public function sendNotification($userId, $eventId, $message)
     {
-        $request->validate([
-            'userId' => 'required|exists:users,id',
-            'eventId' => 'required|exists:events,id',
-            'message' => 'required|string',
-        ]);
-
         $notification = Notification::create([
-            'userId' => $request->userId,
-            'eventId' => $request->eventId,
-            'message' => $request->message,
+            'userId' => $userId,
+            'eventId' => $eventId,
+            'message' => $message,
         ]);
 
         return response()->json($notification, 201);
@@ -73,5 +69,43 @@ class NotificationController extends Controller
         $notification = Notification::findOrFail($id);
         $notification->delete();
         return response()->json(['message' => 'Notification deleted successfully']);
+    }
+
+    public function autoDeleteOldNotifications()
+    {
+        $notifications = Notification::all();
+
+        if ($notifications->isRead == true) {
+            $thresholdDate = now()->subMinutes(3);
+            Notification::where('isRead', true)->where('created_at', '<', $thresholdDate)->delete();
+        }
+
+         return response()->json(['message' => 'Old notifications deleted successfully']);
+    }
+
+    public function updateNotificationSettings(Request $request)
+    {
+        $currentUserId = auth()->id();
+        $settings = NotificationSettings::updateOrCreate(
+            ['userId' => $currentUserId],
+            $request->only([
+                'newEventSystemNotifications',
+                'newShiftSystemNotifications',
+                'participantLeaveSystemNotifications',
+                'employeeLeaveSystemNotifications',
+                'eventDeletedSystemNotifications',
+                'groupInvitationSystemNotifications',
+                'newEventEmailNotifications',
+                'newShiftEmailNotifications',
+                'participantLeaveEmailNotifications',
+                'employeeLeaveEmailNotifications',
+                'eventDeletedEmailNotifications',
+                'groupInvitationEmailNotifications',
+            ])
+        );
+
+        $settings->save();
+        
+        return response()->json($settings);
     }
 }

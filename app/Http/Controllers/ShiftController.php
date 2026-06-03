@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\EventParticipant;
 use App\Models\Event;
 use App\Http\RolePermissions\Permissions;
+use App\Http\Controllers\Notifications\NotificationMessages;
+use App\Http\Controllers\NotificationController;
+use App\Models\Notification;
 
 class ShiftController extends Controller
 {
@@ -182,6 +185,14 @@ class ShiftController extends Controller
             'status' => 'accepted',
         ]);
 
+        // Notify assigned user if shift is updated
+        $notificationController = new NotificationController();
+        $notificationController->sendNotification(
+            $request->userId,
+            $task->eventId,
+            NotificationMessages::SHIFT_UPDATED
+        );
+
         return redirect()->route('tasks.shifts.index', $taskId);
     }
 
@@ -199,6 +210,16 @@ class ShiftController extends Controller
         }
         $shift = Shift::findOrFail($shiftId);
         $shift->delete();
+
+        // Notify assigned user if shift is deleted
+        if ($shift->userId) {
+            $notificationController = new NotificationController();
+            $notificationController->sendNotification(
+                $shift->userId,
+                $event->id,
+                NotificationMessages::SHIFT_DELETED
+            );
+        }
 
         return redirect()->route('tasks.shifts.index', $taskId);
     }

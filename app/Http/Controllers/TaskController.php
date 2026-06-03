@@ -7,6 +7,9 @@ use App\Models\Event;
 use App\Models\User;
 use App\Models\EventParticipant;
 use App\Http\RolePermissions\Permissions;
+use App\Http\Controllers\Notifications\NotificationMessages;
+use App\Http\Controllers\NotificationController;
+use App\Models\Notification;
 
 
 use Illuminate\Http\Request;
@@ -132,6 +135,17 @@ class TaskController extends Controller
         }
         $task->save();
 
+        // Notify assigned users if task is updated
+        $assignedUsers = $task->users;
+        foreach ($assignedUsers as $assignedUser) {
+            $notificationController = new NotificationController();
+            $notificationController->sendNotification(
+                $assignedUser->id,
+                $eventId,
+                NotificationMessages::TASK_UPDATED
+            );
+        }
+
         return redirect()->route('events.tasks.index', ['eventId' => $eventId]);
     }
 
@@ -164,10 +178,23 @@ class TaskController extends Controller
         if (!Permissions::hasPermission($role, 'delete-task')) {
             abort(403, 'Ikke tilladt.');
         }
+
+        $assignedUsers = $task->users;
         $task->delete();
+
+        foreach ($assignedUsers as $assignedUser) {
+            $notificationController = new NotificationController();
+            $notificationController->sendNotification(
+                $assignedUser->id,
+                $eventId,
+                NotificationMessages::TASK_DELETED
+            );
+        }
+
         if ($eventId) {
             return redirect()->route('events.tasks.index', ['eventId' => $eventId]);
         }
+
         return redirect('/tasks');
     }
 

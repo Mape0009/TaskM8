@@ -10,6 +10,9 @@ use App\Enums\EventRole;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\Notification;
+use App\Http\Controllers\Notifications\NotificationMessages;
+use App\Http\Controllers\NotificationController;
 
 class EventController extends Controller
 {
@@ -227,10 +230,23 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
         if (!Permissions::hasPermission($role, 'delete-event')) {
             abort(403, 'Ikke tilladt.');
-        }  
+        }
 
-        $event = Event::findOrFail($id);
+        $participantUserIds = EventParticipant::where('eventId', $id)
+            ->pluck('userId')
+            ->unique();
+
         $event->delete();
+
+        $notificationController = new NotificationController();
+        foreach ($participantUserIds as $participantUserId) {
+            $notificationController->sendNotification(
+                $participantUserId,
+                $id,
+                NotificationMessages::EVENT_DELETED
+            );
+        }
+
         return redirect('/events');
     }
 }
