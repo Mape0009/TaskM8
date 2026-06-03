@@ -64,7 +64,16 @@
             <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         </button>
         <?php if(Auth::check()): ?>
-        <div class="notification-center" data-notifications-url="<?php echo e(route('notifications.index')); ?>" data-notifications-count-url="<?php echo e(route('notifications.count')); ?>" data-notification-mark-read-base="<?php echo e(url('/notifications')); ?>">
+        <div class="notification-center"
+            data-notifications-url="<?php echo e(route('notifications.index')); ?>"
+            data-notifications-count-url="<?php echo e(route('notifications.count')); ?>"
+            data-notification-mark-read-base="<?php echo e(url('/notifications')); ?>"
+            data-notification-loading-text="<?php echo e(__('ui.notifications_loading')); ?>"
+            data-notification-empty-text="<?php echo e(__('ui.notifications_empty')); ?>"
+            data-notification-load-failed-text="<?php echo e(__('ui.notifications_load_failed')); ?>"
+            data-notification-saving-text="<?php echo e(__('ui.notifications_saving')); ?>"
+            data-notification-try-again-text="<?php echo e(__('ui.notifications_try_again')); ?>"
+            data-notification-default-title="<?php echo e(__('ui.notification_default_title')); ?>">
             <button type="button" class="notification-btn-header" id="notification-btn-header" aria-label="Open notifications" aria-haspopup="true" aria-expanded="false" aria-controls="notification-panel">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
@@ -86,12 +95,12 @@
                 <ul class="notification-panel__list" id="notification-list" aria-label="Seneste notifikationer">
                     <li class="notification-item" id="notification-loading-state">
                         <div class="notification-item__body">
-                            <p class="notification-item__title">Indlæser notifikationer…</p>
+                            <p class="notification-item__title"><?php echo e(__('ui.notifications_loading')); ?></p>
                         </div>
                     </li>
                     <li class="notification-item" id="notification-empty-state" hidden>
                         <div class="notification-item__body">
-                            <p class="notification-item__title">Ingen notifikationer endnu.</p>
+                            <p class="notification-item__title"><?php echo e(__('ui.notifications_empty')); ?></p>
                         </div>
                     </li>
                 </ul>

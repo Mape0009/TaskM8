@@ -199,7 +199,7 @@
 
                         <div class="rsvp-menu" id="rsvp-menu-event">
                             <button type="button" class="rsvp-menu-trigger" onclick="toggleRsvpDropdown('rsvp-menu-event')">
-                                {{ $hasResponded ? __('ui.confirm') : __('ui.invite') }}
+                                {{ $hasResponded ? __('ui.confirm') : __('ui.answer') }}
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="caret"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </button>
                             <div class="rsvp-menu-list" role="menu">

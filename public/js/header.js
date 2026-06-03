@@ -899,6 +899,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const notificationApiUrl = notificationCenter?.dataset.notificationsUrl || '/notifications';
     const notificationCountUrl = notificationCenter?.dataset.notificationsCountUrl || '/notifications/count';
     const notificationMarkReadBaseUrl = notificationCenter?.dataset.notificationMarkReadBase || '/notifications';
+    const notificationLoadingText = notificationCenter?.dataset.notificationLoadingText || 'Loading notifications...';
+    const notificationEmptyText = notificationCenter?.dataset.notificationEmptyText || 'No notifications yet.';
+    const notificationLoadFailedText = notificationCenter?.dataset.notificationLoadFailedText || 'Could not load notifications.';
+    const notificationSavingText = notificationCenter?.dataset.notificationSavingText || 'Saving...';
+    const notificationTryAgainText = notificationCenter?.dataset.notificationTryAgainText || 'Try again';
+    const notificationDefaultTitle = notificationCenter?.dataset.notificationDefaultTitle || 'Notification';
 
     let cachedNotifications = [];
     let notificationsLoadingPromise = null;
@@ -1009,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const title = document.createElement('p');
             title.className = 'notification-item__title';
-            title.textContent = 'Ingen notifikationer endnu.';
+            title.textContent = notificationEmptyText;
 
             body.appendChild(title);
             emptyState.appendChild(body);
@@ -1052,7 +1058,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     notificationList.innerHTML = `
                         <li class="notification-item">
                             <div class="notification-item__body">
-                                <p class="notification-item__title">Kunne ikke indlæse notifikationer.</p>
+                                <p class="notification-item__title">${escapeHtml(notificationLoadFailedText)}</p>
                             </div>
                         </li>
                     `;
@@ -1145,7 +1151,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             notificationMarkReadBtn.disabled = true;
-            notificationMarkReadBtn.textContent = 'Gemmer...';
+            notificationMarkReadBtn.textContent = notificationSavingText;
 
             try {
                 await Promise.all(unreadNotifications.map(async (notification) => {
@@ -1158,7 +1164,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderNotifications(cachedNotifications);
                 await refreshNotificationCount();
             } catch (error) {
-                notificationMarkReadBtn.textContent = 'Prøv igen';
+                notificationMarkReadBtn.textContent = notificationTryAgainText;
             } finally {
                 notificationMarkReadBtn.disabled = false;
             }

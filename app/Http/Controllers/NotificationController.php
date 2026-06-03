@@ -38,6 +38,22 @@ class NotificationController extends Controller
             ->take(5)
             ->get();
 
+        $notifications = $notifications->map(function (Notification $notification): array {
+            return [
+                'id' => $notification->id,
+                'userId' => $notification->userId,
+                'eventId' => $notification->eventId,
+                'message' => $this->localizedNotificationMessage($notification->message),
+                'raw_message' => $notification->message,
+                'isRead' => $notification->isRead,
+                'created_at' => $notification->created_at?->toIso8601String(),
+                'event' => $notification->event ? [
+                    'id' => $notification->event->id,
+                    'eventName' => $notification->event->eventName,
+                ] : null,
+            ];
+        });
+
         return response()->json([
             'notifications' => $notifications,
             'unreadCount' => Notification::where('userId', $currentUserId)->where('isRead', false)->count(),
@@ -176,5 +192,28 @@ class NotificationController extends Controller
         }
 
         return back()->with('success', 'Notifikationsindstillinger er gemt.');
+    }
+
+    private function localizedNotificationMessage(string $message): string
+    {
+        $translationKey = match ($message) {
+            NotificationMessages::NEW_TASK_ASSIGNED => 'ui.notification_message_new_task_assigned',
+            NotificationMessages::TASK_UPDATED => 'ui.notification_message_task_updated',
+            NotificationMessages::TASK_DELETED => 'ui.notification_message_task_deleted',
+            NotificationMessages::SHIFT_ASSIGNED => 'ui.notification_message_shift_assigned',
+            NotificationMessages::SHIFT_UPDATED => 'ui.notification_message_shift_updated',
+            NotificationMessages::SHIFT_DELETED => 'ui.notification_message_shift_deleted',
+            NotificationMessages::EVENT_UPDATED => 'ui.notification_message_event_updated',
+            NotificationMessages::EVENT_DELETED => 'ui.notification_message_event_deleted',
+            NotificationMessages::EVENT_INVITED => 'ui.notification_message_event_invited',
+            NotificationMessages::PARTICIPANT_LEFT => 'ui.notification_message_participant_left',
+            NotificationMessages::PARTICIPANT_JOINED => 'ui.notification_message_participant_joined',
+            NotificationMessages::GROUP_INVITED => 'ui.notification_message_group_invited',
+            NotificationMessages::GROUP_JOINED => 'ui.notification_message_group_joined',
+            NotificationMessages::GROUP_LEFT => 'ui.notification_message_group_left',
+            default => null,
+        };
+
+        return $translationKey ? __($translationKey) : $message;
     }
 }
