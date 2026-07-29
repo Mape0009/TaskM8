@@ -16,13 +16,12 @@
 </head>
 <body>
     @include('partials.header', ['currentPage' => null])
-    <main class="legal-shell">
+    <main class="legal-shell legal-shell--compact">
 
         <header class="legal-hero" aria-labelledby="legal-title">
             <div class="legal-hero-head">
                 <div class="legal-eyebrow">{{ __('ui.legal_privacy_eyebrow') }}</div>
                 <h1 id="legal-title" class="legal-title">{{ __('ui.legal_privacy_title') }}</h1>
-                <p class="legal-sub">{{ __('ui.legal_privacy_sub') }}</p>
             </div>
         </header>
 

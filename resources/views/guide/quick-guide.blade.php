@@ -113,9 +113,9 @@
     <link rel="stylesheet" href="{{ asset('css/guide.css') }}">
     <style>
         .guide-shell .legal-hero {
-            padding: 28px 28px 30px;
-            margin-bottom: 32px;
-            gap: 14px;
+            padding: 22px 24px 24px;
+            margin-bottom: 24px;
+            gap: 10px;
         }
 
         .guide-shell .legal-eyebrow {
@@ -123,11 +123,11 @@
         }
 
         .guide-shell .legal-title {
-            font-size: clamp(1.8rem, 3vw, 2.2rem);
+            font-size: clamp(1.55rem, 2.6vw, 1.95rem);
         }
 
         .guide-shell .legal-sub {
-            max-width: 58ch;
+            max-width: 54ch;
         }
 
         .guide-search-wrap,
@@ -139,8 +139,8 @@
 
         @media (max-width: 768px) {
             .guide-shell .legal-hero {
-                padding: 22px 20px 24px;
-                margin-bottom: 24px;
+                padding: 18px 18px 20px;
+                margin-bottom: 20px;
             }
         }
     </style>

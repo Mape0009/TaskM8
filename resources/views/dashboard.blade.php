@@ -29,7 +29,6 @@
                 <div class="stat-info">
                     <span class="stat-value">{{$pendingEventsCount}}</span>
                     <span class="stat-title">{{ __('ui.stat_pending') }}</span>
-                    <span class="stat-note">{{ __('ui.stat_pending_note') }}</span>
                 </div>
             </div>
             <div class="stat-card stat-card--mine">
@@ -39,7 +38,6 @@
                 <div class="stat-info">
                     <span class="stat-value">{{$participatedEventsCount}}</span>
                     <span class="stat-title">{{ __('ui.stat_my_events') }}</span>
-                    <span class="stat-note">{{ __('ui.stat_my_events_note') }}</span>
                 </div>
             </div>
             <div class="stat-card stat-card--network">
@@ -51,7 +49,6 @@
                 <div class="stat-info">
                     <span class="stat-value">{{ $previousInviteesCount }}</span>
                     <span class="stat-title">{{ __('ui.stat_previous_invitees') }}</span>
-                    <span class="stat-note">{{ __('ui.stat_previous_invitees_note') }}</span>
                 </div>
             </div>
         </section>
