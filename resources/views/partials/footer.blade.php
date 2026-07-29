@@ -6,6 +6,7 @@
                 <p class="footer-tagline">{{ __('ui.footer_tagline') }}</p>
             </div>
             <nav class="footer-nav" aria-label="Politikker">
+                <a href="{{ url('/hurtig-guide') }}" class="footer-link">{{ __('ui.footer_quick_guide') }}</a>
                 <a href="{{ url('/privatlivspolitik') }}" class="footer-link">{{ __('ui.footer_privacy') }}</a>
                 <a href="{{ url('/cookiepolitik') }}" class="footer-link">{{ __('ui.footer_cookie') }}</a>
                 <a href="{{ url('/vilkar') }}" class="footer-link">{{ __('ui.footer_terms') }}</a>

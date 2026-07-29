@@ -94,6 +94,7 @@ Route::view('/om-os', 'about');
 Route::view('/privatlivspolitik', 'legal.privatlivspolitik');
 Route::view('/cookiepolitik', 'legal.cookiepolitik');
 Route::view('/vilkar', 'legal.vilkar');
+Route::view('/hurtig-guide', 'guide.quick-guide')->name('guide.quick');
 
 
 Route::get('signup', function(Request $request){

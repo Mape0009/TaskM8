@@ -136,7 +136,7 @@ img, iframe, embed, video {
 }
 
 .dark-mode .legal-sub {
-	color: var(--neutral-400, #64748b);
+	color: #e2e8f0;
 }
 
 .legal-facts {

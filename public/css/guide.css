@@ -1,0 +1,352 @@
+/* Quick Guide – extends legal page layout */
+
+html {
+	scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
+
+.guide-shell {
+	max-width: 1100px;
+}
+
+.guide-layout {
+	display: grid;
+	grid-template-columns: 240px 1fr;
+	gap: 32px;
+	align-items: start;
+}
+
+.guide-toc {
+	position: sticky;
+	top: 88px;
+	display: block;
+	padding: 20px;
+	border-radius: 16px;
+	background: var(--neutral-100, #f3f4f6);
+	border: 1px solid var(--neutral-200, #e5e7eb);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.dark-mode .guide-toc {
+	background: rgba(30, 41, 59, 0.5);
+	border-color: rgba(148, 163, 184, 0.15);
+}
+
+.guide-toc h2 {
+	margin: 0 0 12px;
+	font-size: 0.8rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--neutral-600, #4b5563);
+}
+
+.dark-mode .guide-toc h2 {
+	color: #f8fafc;
+}
+
+.guide-toc-links {
+	display: grid;
+	gap: 4px;
+}
+
+.guide-toc-links a {
+	padding: 8px 10px;
+	border-radius: 10px;
+	color: var(--neutral-600, #4b5563);
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 0.875rem;
+	line-height: 1.35;
+	transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.dark-mode .guide-toc-links a {
+	color: #f1f5f9;
+}
+
+.guide-toc-links a:hover,
+.guide-toc-links a:focus-visible {
+	background: rgba(102, 126, 234, 0.1);
+	color: #667eea;
+	transform: translateX(3px);
+	outline: none;
+}
+
+.guide-toc-links a.is-active {
+	background: rgba(102, 126, 234, 0.14);
+	color: #667eea;
+}
+
+.guide-content {
+	display: grid;
+	gap: 20px;
+}
+
+.guide-section {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 20px;
+	align-items: start;
+	background: var(--neutral-100, #f3f4f6);
+	border-radius: 16px;
+	padding: 28px 32px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	border: 1px solid transparent;
+	transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.guide-section:hover {
+	border-color: rgba(102, 126, 234, 0.18);
+	box-shadow: 0 6px 20px rgba(102, 126, 234, 0.08);
+}
+
+.dark-mode .guide-section {
+	background: rgba(30, 41, 59, 0.5);
+}
+
+.guide-section.is-hidden {
+	display: none;
+}
+
+.guide-section__icon {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 52px;
+	height: 52px;
+	border-radius: 14px;
+	background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.12) 100%);
+	color: #667eea;
+}
+
+.guide-section__icon svg {
+	width: 26px;
+	height: 26px;
+}
+
+.guide-section__body {
+	min-width: 0;
+}
+
+.guide-section__number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	margin-bottom: 6px;
+	border-radius: 6px;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: #fff;
+	font-size: 0.75rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.guide-section h2 {
+	margin: 0 0 10px;
+	font-size: 1.15rem;
+	line-height: 1.35;
+	font-weight: 700;
+	color: var(--neutral-900, #111827);
+}
+
+.dark-mode .guide-section h2 {
+	color: #f8fafc;
+}
+
+.guide-section p {
+	margin: 0;
+	color: var(--neutral-600, #4b5563);
+	line-height: 1.65;
+	font-size: 0.95rem;
+}
+
+.dark-mode .guide-section p {
+	color: #e2e8f0;
+}
+
+.guide-sublist {
+	margin: 14px 0 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 10px;
+}
+
+.guide-sublist li {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 10px;
+	align-items: start;
+	padding: 12px 14px;
+	border-radius: 12px;
+	background: rgba(102, 126, 234, 0.06);
+	border: 1px solid rgba(102, 126, 234, 0.12);
+}
+
+.dark-mode .guide-sublist li {
+	background: rgba(102, 126, 234, 0.1);
+	border-color: rgba(102, 126, 234, 0.2);
+}
+
+.guide-sublist__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
+	background: rgba(102, 126, 234, 0.12);
+	color: #667eea;
+}
+
+.guide-sublist__icon svg {
+	width: 16px;
+	height: 16px;
+}
+
+.guide-sublist strong {
+	display: block;
+	margin-bottom: 2px;
+	font-size: 0.9rem;
+	font-weight: 700;
+	color: var(--neutral-900, #111827);
+}
+
+.dark-mode .guide-sublist strong {
+	color: #f8fafc;
+}
+
+.guide-sublist span {
+	font-size: 0.875rem;
+	line-height: 1.55;
+	color: var(--neutral-600, #4b5563);
+}
+
+.dark-mode .guide-sublist span {
+	color: #e2e8f0;
+}
+
+.guide-section {
+	scroll-margin-top: 112px;
+}
+
+.guide-back-to-top {
+	position: fixed;
+	right: 24px;
+	bottom: 24px;
+	z-index: 900;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border: none;
+	border-radius: 999px;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: #fff;
+	cursor: pointer;
+	box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(12px);
+	transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease, box-shadow 0.2s ease;
+}
+
+.guide-back-to-top.is-visible {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.guide-back-to-top:hover {
+	box-shadow: 0 6px 22px rgba(102, 126, 234, 0.45);
+	transform: translateY(-2px);
+}
+
+.guide-back-to-top:focus-visible {
+	outline: 2px solid #667eea;
+	outline-offset: 3px;
+}
+
+.guide-back-to-top svg {
+	width: 20px;
+	height: 20px;
+}
+
+@media (max-width: 960px) {
+	.guide-layout {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+
+	.guide-toc {
+		position: static;
+		padding: 16px;
+	}
+
+	.guide-toc-links {
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 6px;
+	}
+}
+
+@media (max-width: 768px) {
+	.guide-section {
+		grid-template-columns: 1fr;
+		gap: 14px;
+		padding: 24px;
+	}
+
+	.guide-section__icon {
+		width: 44px;
+		height: 44px;
+	}
+
+	.guide-section__icon svg {
+		width: 22px;
+		height: 22px;
+	}
+
+	.guide-search-wrap {
+		max-width: 100%;
+	}
+}
+
+@media (max-width: 480px) {
+	.guide-section {
+		padding: 20px;
+		border-radius: 14px;
+	}
+
+	.guide-section h2 {
+		font-size: 1.05rem;
+	}
+
+	.guide-toc-links {
+		grid-template-columns: 1fr;
+	}
+
+	.guide-back-to-top {
+		right: 16px;
+		bottom: 16px;
+		width: 40px;
+		height: 40px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.guide-section,
+	.guide-toc-links a,
+	.guide-back-to-top {
+		transition: none;
+	}
+}

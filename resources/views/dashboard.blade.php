@@ -223,9 +223,7 @@
                 <div class="guest-hero__content">
                     <p class="guest-hero__eyebrow animate-from-top">{{ __('ui.guest_eyebrow') }}</p>
                     <h1 class="guest-hero__title animate-from-top">{{ __('ui.guest_title') }}</h1>
-                    <p class="guest-hero__subtitle animate-from-left delay-150">{{ __('ui.guest_subtitle') }}
-
-</p>
+                    <p class="guest-hero__subtitle animate-from-left delay-150">{{ __('ui.guest_subtitle') }}</p>
                     <div class="guest-hero__cta animate-from-right delay-300">
                         <a href="/signup" class="btn primary-btn guest-hero__cta-btn">{{ __('ui.get_started') }}</a>
                         <a href="/signin" class="btn secondary-btn guest-hero__cta-btn guest-hero__cta-btn--secondary">{{ __('ui.login') }}</a>
